@@ -1,1 +1,44 @@
-<p>login works!</p>
+<div class="body_content">
+  <!-- Our Compare Area -->
+  <section class="our-compare pt60 pb60">
+    <img src="assets/images/icon/login-page-icon.svg" alt="" class="login-bg-icon wow fadeInLeft" data-wow-delay="300ms">
+    <div class="container">
+      <div class="row wow fadeInRight" data-wow-delay="300ms">
+        <div class="col-lg-6">
+          <div class="log-reg-form signup-modal form-style1 bgc-white p50 p30-sm default-box-shadow2 bdrs12">
+            <div class="text-center mb40">
+              <img class="mb25" src="assets/images/header-logo2.svg" alt="">
+              <h2>Connectez-vous !</h2>
+              <p class="text">Connectez-vous pour avoir accès à nos fonctionnalités.</p>
+            </div>
+            <div class="alert alert-danger" *ngIf="connexionNonReussie">{{ message }}</div>
+            <form [formGroup]="LoginForm" (ngSubmit)="login()">
+              <div class="mb25">
+                <label class="form-label fw600 dark-color">Username</label>
+                <input type="text" class="form-control" placeholder="Entrer votre nom d'utilisateur" id="username" name="username" formControlName="username" [(ngModel)]="loginForm.username" required>
+                <div class="alert alert-danger" [hidden]="username.valid || username.pristine && !username.touched ">Le nom d'utilisateur est obligatoire</div>
+              </div>
+              <div class="mb15">
+                <label class="form-label fw600 dark-color">Mot de passe</label>
+                <input type="password" class="form-control" placeholder="Entrer votre mot de passe" id="password" name="password" formControlName="password" [(ngModel)]="loginForm.password" required>
+                <div class="alert alert-danger" [hidden]="password.valid || password.pristine && !password.touched ">Le mot de passe est obligatoire</div>
+              </div>
+              <div class="checkbox-style1 d-block d-sm-flex align-items-center justify-content-between mb10">
+                <label class="custom_checkbox fz14 ff-heading">Se souvenir de moi
+                  <input type="checkbox" checked="checked">
+                  <span class="checkmark"></span>
+                </label>
+                <a class="fz14 ff-heading" href="#">Mot de passe oublié?</a>
+              </div>
+              <div class="d-grid mb20">
+                <button class="ud-btn btn-thm" [disabled]="LoginForm.invalid" type="submit">Se connecter <i class="fal fa-arrow-right-long"></i></button>
+              </div>
+            </form>
+            <p class="dark-color text-center mb0 mt10">Nouveau sur la plateforme? <a class="dark-color fw600" href="/register">Créer un compte.</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <a class="scrollToHome" href="#"><i class="fas fa-angle-up"></i></a>
+</div>

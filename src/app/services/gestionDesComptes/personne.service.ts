@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
+import { LoginForm } from 'src/app/models/auth/LoginForm';
 import { RegisterForm } from 'src/app/models/auth/RegisterForm';
 import { Personne } from 'src/app/models/gestionDesComptes/Personne';
 import { environment } from 'src/environments/environment';
@@ -25,7 +26,7 @@ export class PersonneService {
 
   // Création de compte
   // url: http://localhost:4040/api/register
-  register(r: RegisterForm): Observable<RegisterForm>{
+  register(r: RegisterForm): Observable<any>{
     return this.httpClient.post<RegisterForm>(this.url + 'register', r);
   }
 
@@ -41,7 +42,7 @@ export class PersonneService {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.cookieService.get('access_token')}`
     });
-    return this.httpClient.post<Personne>(this.url + 'modifier/profil/'+ id, r, { headers });
+    return this.httpClient.put<Personne>(this.url + 'modifier/profil/'+ id, r, { headers });
   }
 
   // Recupérer les info de l'utilisateur connecté
@@ -56,13 +57,19 @@ export class PersonneService {
   }
 
   // url: http://localhost:4040/api/activer/compte/{id}
-  activerCompte(id: number): Observable<Personne>{
-    return this.httpClient.get<Personne>(this.url + 'activer/compte/' + id);
+  activerCompte(id: number) {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
+    });
+    return this.httpClient.get<Personne>(this.url + 'activer/compte/' + id, { headers });
   }
 
   // url: http://localhost:9000/api/desactiver/compte/{id}
-  desactiverCompte(id: number): Observable<Personne>{
-    return this.httpClient.get<Personne>(this.url + 'desactiver/compte/' + id);
+  desactiverCompte(id: number) {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
+    });
+    return this.httpClient.get<Personne>(this.url + 'desactiver/compte/' + id, { headers });
   }
 
   // url: http://localhost:9000/api/request-reset-password
@@ -80,6 +87,14 @@ export class PersonneService {
   countUsers(): Observable<any>{
     return this.httpClient.get<any>(this.url + 'count/users');
   };
+
+  // url: http://localhost:4040/api/user/{id}
+  findById(id: number): Observable<Personne>{
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
+    });
+    return this.httpClient.get<Personne>(this.url + 'user/' + id, { headers });
+  }
 
   // Fonction pour vérifier si l'utilisateur est connecté
   isUserLoggedIn(): boolean {

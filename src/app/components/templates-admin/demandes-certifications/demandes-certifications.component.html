@@ -1,0 +1,204 @@
+<div class="dashboard__content property-page bgc-f7">
+  <div class="row pb40 d-block d-lg-none">
+    <!-- Menu responsive -->
+    <app-menu-responsive></app-menu-responsive>
+    <!-- End Menu responsive -->
+  </div>
+
+  <!-- Formulaire d'ajout d'une demande de certification -->
+  <div *ngIf="visibleAddForm == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-5">
+        <div class="dashboard_title_area">
+          <h4>Ajout d'une demande de certification</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xxl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <div class="bd-example" *ngIf="erreur">
+            <div class="alert alert-left alert-danger alert-dismissible fade show mb-3" role="alert">
+              {{ messageErreur }}
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+          <form class="form-style1" (ngSubmit)="ajoutDemandeCertif()">
+            <div class="row">
+              <div class="col-sm-6 col-xl-4">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">
+                    <i class="fa fa-id-card"></i> Carte d'identité (CNI) sous format numérique
+                  </label>
+                  <input class="form-control" type="file" accept="application/pdf" (change)="onSelectFile($event)">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="text-end">
+                  <a class="ud-btn btn-thm" type="button" (click)="ajoutDemandeCertif()">Ajouter</a>
+                  &nbsp;
+                  <a class="ud-btn btn-secondary" (click)="voirListe()">Annuler</a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Formulaire d'ajout d'une demande de certification -->
+
+  <!-- Liste des demandes de certifications -->
+  <div *ngIf="affichage == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-5">
+        <div class="dashboard_title_area">
+          <h4>Liste des demandes de certifications</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+      <div class="col-xxl-7 d-flex justify-content-end">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <div class="item1 mb15-sm">
+            <div class="search_area">
+              <input type="text" class="form-control bdrs12" placeholder="Search">
+              <label><span class="flaticon-search"></span></label>
+            </div>
+          </div>
+          &nbsp;
+          <a type="button" *ngIf="visibleAddForm == 0 && user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_DEMARCHEUR' || user.role.code === 'ROLE_AGENTIMMOBILIER'"
+            (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
+            Ajouter une demande
+            <i class="fal fa-arrow-right-long"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="bd-example" *ngIf="messageSuccess">
+        <div class="alert alert-left alert-success alert-dismissible fade show mb-3" role="alert">
+          {{ messageSuccess }}
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <div class="packages_table table-responsive">
+            <table class="table-style3 table at-savesearch">
+              <thead class="t-head">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Date demande</th>
+                  <th scope="col">Demandeur</th>
+                  <th scope="col">Statut demande</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="t-body">
+                <tr *ngFor="let demandeCertif of demandesCertificationsParPage;  let i = index">
+                  <td class="vam">{{ (pageActuelle - 1) * elementsParPage + i + 1 }}</td>
+                  <td class="vam">{{ demandeCertif.dateDemande | date: "yyyy-dd-MM" }}</td>
+                  <td class="vam">{{ demandeCertif.personne.nom }} {{ demandeCertif.personne.prenom }} <i *ngIf="demandeCertif.personne.estCertifie && (demandeCertif.personne.role.code === 'ROLE_AGENTIMMOBILER' || demandeCertif.personne.role.code === 'ROLE_PROPRIETAIRE' || demandeCertif.personne.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-2xl" style="color: #0f77e6;"></i></td>
+                  <td>
+                    <span *ngIf="demandeCertif.statutDemande == 1" class="pending-style style2">Validée</span>
+                    <span *ngIf="demandeCertif.statutDemande == 0" class="pending-style style3">En attente</span>
+                  </td>
+                  <td class="vam">
+                    <div class="d-flex">
+                      <a type="button" (click)="afficherPageDetail(demandeCertif.id)" class="icon" placement="start" ngbTooltip="Details"><i class="fa-regular fa-eye"></i></a>
+                      <a *ngIf="demandeCertif.statutDemande == 0 && user.role.code === 'ROLE_NOTAIRE'" type="button" class="icon" (click)="certifierCompte(demandeCertif.personne.id, demandeCertif.id)" placement="start" ngbTooltip="Certifier le compte du demandeur"><i class="fa fa-certificate" aria-hidden="true"></i></a>
+                      <a href="{{this.APIEndpoint+'api/document/demande-certification/'+demandeCertif.id}}" class="icon" placement="start" ngbTooltip="Télécharger le document justificatif"><i class="fa-solid fa-download"></i></a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div *ngIf="demandeCertifications.length !== 0" class="mbp_pagination text-center mt30">
+              <ul class="page_navigation">
+                <li class="page-item" [class.disabled]="pageActuelle === 1">
+                  <a class="page-link" type="button" (click)="pagePrecedente()"> <span class="fas fa-angle-left"></span></a>
+                </li>
+
+                <!-- Affichage des pages -->
+                <ng-container *ngFor="let page of pages">
+                  <li class="page-item" [class.active]="pageActuelle === page" [class.disabled]="page === -1">
+                    <a class="page-link" (click)="page !== -1 && setPage(page)">{{ page !== -1 ? page : '...' }}</a>
+                  </li>
+                </ng-container>
+
+                <li class="page-item" [class.disabled]="pageActuelle === totalPages">
+                  <a class="page-link" type="button" (click)="pageSuivante()"><span class="fas fa-angle-right"></span></a>
+                </li>
+              </ul>
+              <p class="mt10 pagination_page_count text-center">{{ demandeCertifications.length }} demandes de certifications de comptes enregistrées</p>
+            </div>
+            <div *ngIf="demandeCertifications.length == 0" class="mbp_pagination text-center mt30">
+              <p class="mt10 pagination_page_count text-center">Aucune demande de certification enregistrée pour le moment</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Liste des demandes de certifications -->
+
+  <!-- Details d'une demande de certification -->
+  <div *ngIf="affichage == 2">
+    <div  class="row align-items-center pb40">
+      <div class="col-xxl-6">
+        <div class="dashboard_title_area">
+          <h3>Détails d'une demande de certification</h3>
+          <p class="text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <table class="table-style3 table at-savesearch">
+            <tbody>
+              <tbody class="t-body">
+                <tr>
+                  <td class="vam">Date de la demande de certification</td>
+                  <td>{{ demandeCertification.dateDemande | date: "yyyy-dd-MM" }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Nom & prénom du demandeur</td>
+                  <td>{{ demandeCertification.personne.nom }} {{ demandeCertification.personne.prenom }} <i *ngIf="demandeCertification.personne.estCertifie && (demandeCertification.personne.role.code === 'ROLE_AGENTIMMOBILER' || demandeCertification.personne.role.code === 'ROLE_PROPRIETAIRE' || demandeCertification.personne.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-2xl" style="color: #0f77e6;"></i></td>
+                </tr>
+                <tr>
+                  <td class="vam">Numéro de téléphone du demandeur</td>
+                  <td>{{ demandeCertification.personne.telephone }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Email du demandeur</td>
+                  <td>{{ demandeCertification.personne.email }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Etat du compte du demande</td>
+                  <td>
+                    <span *ngIf="demandeCertification.personne.etatCompte == true" class="pending-style style2">Actif</span>
+                    <span *ngIf="demandeCertification.personne.etatCompte == false" class="pending-style style3">Inactif</span></td>
+                </tr>
+                <tr>
+                  <td class="vam">Statut de la demande de certification</td>
+                  <td>
+                    <span *ngIf="demandeCertification.statutDemande == 1" class="pending-style style2">Validée</span>
+                    <span *ngIf="demandeCertification.statutDemande == 0" class="pending-style style3">En attente</span>
+                  </td>
+                </tr>
+            </tbody>
+          </table>
+          <div class="text-end">
+            <a class="ud-btn btn-success" (click)="voirListe()"  type="button">Retour</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Details d'une demande de certification -->
+

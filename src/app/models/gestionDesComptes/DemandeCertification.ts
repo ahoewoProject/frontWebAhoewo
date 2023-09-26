@@ -7,7 +7,7 @@ export class DemandeCertification extends EntiteDeBase {
   dateDemande!: Date;
   documentJustificatif: string;
   statutDemande:number;
-  personne: Personne;
+  personne!: Personne;
 
   constructor(){
     super();

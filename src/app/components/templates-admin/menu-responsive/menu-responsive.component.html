@@ -1,0 +1,44 @@
+<div class="col-lg-12">
+  <div class="dashboard_navigationbar">
+    <div class="dropdown">
+      <button onclick="myFunction()" class="dropbtn"><i class="fa fa-bars pr10"></i> Navigation du tableau de bord</button>
+      <ul id="myDropdown" class="dropdown-content">
+        <li><p class="fz15 fw400 ff-heading mt30 pl30">TABLEAU DE BORD</p></li>
+        <li>
+          <a routerLink="/admin/dashboard" class="items-center -is-active"><i class="flaticon-discovery mr15"></i>Tableau de bord</a>
+        </li>
+        <li><p class="fz15 fw400 ff-heading mt30 pl30">GESTION DES COMPTES</p></li>
+        <li>
+          <a routerLink="/admin/roles" class="items-center"><i class="fa-sharp fa-regular fa-gears mr15"></i>Rôles</a>
+        </li>
+        <li class="active">
+          <a routerLink="/admin/admins" class="items-center"><i class="fa-regular fa-user-gear mr15"></i>Administrateurs</a>
+        </li>
+        <li>
+          <a routerLink="/admin/notaires" class="items-center"><i class="fa-regular fa-user-shield mr15"></i>Notaires</a>
+        </li>
+        <li>
+          <a routerLink="/admin/proprietaires" class="items-center"><i class="fa-regular fa-user-group mr15"></i>Propriétaires</a>
+        </li>
+        <li>
+          <a routerLink="/admin/agents-immobiliers" class="items-center"><i class="fa-regular fa-user-group mr15"></i>Agents immobiliers</a>
+        </li>
+        <li>
+          <a routerLink="/admin/demarcheurs" class="items-center"><i class="fa-regular fa-user-group mr15"></i>Démarcheurs</a>
+        </li>
+        <li>
+          <a routerLink="/admin/gerants" class="items-center"><i class="fa-regular fa-user-group mr15"></i>Gérants</a>
+        </li>
+        <li>
+          <a routerLink="/admin/demandes-certifications" class="items-center"><i class="fa-solid fa-certificate mr15"></i>&nbsp;Certifications</a>
+        </li>
+        <li>
+          <a routerLink="/admin/profil"><i class="flaticon-user mr15"></i>&nbsp;Mon profil</a>
+        </li>
+        <li>
+          <a type="button" (click)="seDeconnecter()" class="items-center"><i class="flaticon-logout mr15"></i>Se déconnecter</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

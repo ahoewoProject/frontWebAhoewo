@@ -1,1 +1,68 @@
-<p>register works!</p>
+<div class="body_content">
+  <!-- Our Compare Area -->
+  <section class="our-compare pt60 pb60">
+    <img src="assets/images/icon/register-page-icon.svg" alt="" class="login-bg-icon wow fadeInLeft" data-wow-delay="300ms">
+    <div class="container">
+      <div class="row wow fadeInRight" data-wow-delay="300ms">
+        <div class="col-lg-6">
+          <div class="log-reg-form signup-modal form-style1 bgc-white p50 p30-sm default-box-shadow2 bdrs12">
+            <div class="text-center mb40">
+              <img class="mb25" src="assets/images/header-logo2.svg" alt="">
+              <h2>Creation de compte</h2>
+              <p class="text">Créer un compte pour avoir accès à nos fonctionnalités.</p>
+            </div>
+            <div class="alert alert-danger" *ngIf="inscriptionNonReussie">{{ message }}</div>
+            <form [formGroup]="RegisterForm" (ngSubmit)="register()">
+              <div class="mb25">
+                <label class="form-label fw600 dark-color">Nom</label>
+                <input type="text" class="form-control" placeholder="Entrer votre nom" id="nom" name="nom" formControlName="nom" [(ngModel)]="registerForm.nom" required>
+                <div class="alert alert-danger" [hidden]="nom.valid || nom.pristine && !nom.touched ">Le nom est obligatoire</div>
+              </div>
+              <div class="mb25">
+                <label class="form-label fw600 dark-color">Prenom</label>
+                <input type="text" class="form-control" placeholder="Entrer votre prenom" id="prenom" name="prenom" formControlName="prenom" [(ngModel)]="registerForm.prenom" required>
+                <div class="alert alert-danger" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le prenom est obligatoire</div>
+              </div>
+              <div class="mb25">
+                <label class="form-label fw600 dark-color">Username</label>
+                <input type="text" class="form-control" placeholder="Entrer votre nom d'utilisateur" id="username" name="username" formControlName="username" [(ngModel)]="registerForm.username" required>
+                <div class="alert alert-danger" [hidden]="username.valid || username.pristine && !username.touched ">Le nom d'utilisateur est obligatoire</div>
+              </div>
+              <div class="mb25">
+                <label class="form-label fw600 dark-color">Email</label>
+                <input type="email" class="form-control" placeholder="Entrer votre email" id="email" name="email" formControlName="email" [(ngModel)]="registerForm.email" required>
+                <div class="alert alert-danger" [hidden]="email.valid || email.pristine && !email.touched ">L'email est obligatoire</div>
+              </div>
+              <div class="mb25">
+                <label class="form-label fw600 dark-color">Mot de passe</label>
+                <input type="password" class="form-control" placeholder="Entrer votre mot de passe" id="motDePasse" name="motDePasse" formControlName="motDePasse" [(ngModel)]="registerForm.motDePasse" required>
+                <div class="alert alert-danger" [hidden]="motDePasse.valid || motDePasse.pristine && !motDePasse.touched ">Le mot de passe est obligatoire</div>
+              </div>
+              <div class="mb25">
+                <label class="form-label fw600 dark-color">Téléphone</label>
+                <input type="tel" class="form-control" placeholder="Entrer votre numero de téléphone" id="telephone" name="telephone" formControlName="telephone" [(ngModel)]="registerForm.telephone" required>
+                <div class="alert alert-danger" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numero de téléphone est obligatoire</div>
+              </div>
+              <div class="mb15">
+                <label class="heading-color ff-heading fw600 mb10">Profil</label>
+                <div class="location-area">
+                  <select class="selectpicker" [(ngModel)]="selectedRole" [ngModelOptions]="{standalone: true}">
+                    <option value="Proprietaire">Propriétaire</option>
+                    <option value="Agent immobilier">Agent immobilier</option>
+                    <option value="Demarcheur">Démarcheur</option>
+                    <option value="Client">Client</option>
+                  </select>
+                </div>
+              </div>
+              <div class="d-grid mb20">
+                <button class="ud-btn btn-thm" [disabled]="RegisterForm.invalid" type="submit">Créer un compte <i class="fal fa-arrow-right-long"></i></button>
+              </div>
+            </form>
+            <p class="dark-color text-center mb0 mt10">Vous avez déjà un compte? <a class="dark-color fw600" routerLink="/login">Se connecter.</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <a class="scrollToHome" href="#"><i class="fas fa-angle-up"></i></a>
+</div>

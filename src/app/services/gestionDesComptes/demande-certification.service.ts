@@ -24,7 +24,9 @@ export class DemandeCertificationService {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.cookieService.get('access_token')}`
     });
-    return this.httpClient.post<DemandeCertification>(this.url + 'demande-certification/ajouter', d , { headers });
+    console.log(headers)
+    console.log(d)
+    return this.httpClient.post<DemandeCertification>(this.url + 'demande-certification/ajouter', d, { headers });
   }
 
   // url: http://localhost:4040/api/demandes-certifications
@@ -51,12 +53,12 @@ export class DemandeCertificationService {
     return this.httpClient.get<DemandeCertification>(this.url + 'demande-certification/' + id, { headers });
   }
 
-  // url: http://localhost:4040/api/certifier/user/{id}
-  certifierCompte(id: number): Observable<any>{
+  // url: http://localhost:4040/api/certifier/user/{idPersonne}/{idDemandeCertif}
+  certifierCompte(idPersonne: number, idDemandeCertif: number): Observable<any>{
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.cookieService.get('access_token')}`
     });
-    return this.httpClient.get<any>(this.url + 'certifier/user/' + id, { headers });
+    return this.httpClient.get<any>(this.url + 'certifier/user/' + idPersonne + '/' + idDemandeCertif, { headers });
   }
 
   // url: http://localhost:4040/api/count/demandes-certifications

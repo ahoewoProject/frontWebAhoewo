@@ -1,0 +1,155 @@
+<div class="dashboard__content property-page bgc-f7">
+  <div class="row pb40 d-block d-lg-none">
+    <!-- Menu responsive -->
+    <app-menu-responsive></app-menu-responsive>
+    <!-- End Menu responsive -->
+  </div>
+
+  <!-- Liste des démarcheurs -->
+  <div *ngIf="affichage == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-3">
+        <div class="dashboard_title_area">
+          <h4>Liste des démarcheurs</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+      <div class="col-xxl-9">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <div class="item1 mb15-sm">
+            <div class="search_area">
+              <input type="text" class="form-control bdrs12" placeholder="Faire une recherche">
+              <label><span class="flaticon-search"></span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="bd-example" *ngIf="messageSuccess">
+        <div class="alert alert-left alert-success alert-dismissible fade show mb-3" role="alert">
+          {{ messageSuccess }}
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <div class="packages_table table-responsive">
+            <table class="table-style3 table at-savesearch">
+              <thead class="t-head">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Nom</th>
+                  <th scope="col">Prenom</th>
+                  <th scope="col">Username</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="t-body">
+                <tr *ngFor="let demarcheur of demarcheursParPage;  let i = index">
+                  <td class="vam">{{ (pageActuelle - 1) * elementsParPage + i + 1 }}</td>
+                  <td class="vam">{{ demarcheur.nom }}</td>
+                  <td class="vam">{{ demarcheur.prenom }} <i *ngIf="demarcheur.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-2xl" style="color: #0f77e6;"></i></td>
+                  <td class="vam">{{ demarcheur.username }}</td>
+                  <td class="vam">{{ demarcheur.email }}</td>
+                  <td class="vam">
+                    <div class="d-flex">
+                      <a type="button" (click)="afficherPageDetail(demarcheur.id)" class="icon" placement="top" ngbTooltip="Details"><i class="fa-regular fa-eye"></i></a>
+                      <a *ngIf="demarcheur.etatCompte === true" type="button" class="icon" (click)="desactiverCompte(demarcheur.id)" placement="top" ngbTooltip="Désactiver le compte"><i class="fa-regular fa-user-unlock"></i></a>
+                      <a *ngIf="demarcheur.etatCompte === false" type="button" class="icon" (click)="activerCompte(demarcheur.id)" placement="top" ngbTooltip="Activer le compte"><i class="fa-regular fa-user-lock"></i></a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div *ngIf="demarcheurs.length !== 0" class="mbp_pagination text-center mt30">
+              <ul class="page_navigation">
+                <li class="page-item" [class.disabled]="pageActuelle === 1">
+                  <a class="page-link" type="button" (click)="pagePrecedente()"> <span class="fas fa-angle-left"></span></a>
+                </li>
+
+                <!-- Affichage des pages -->
+                <ng-container *ngFor="let page of pages">
+                  <li class="page-item" [class.active]="pageActuelle === page" [class.disabled]="page === -1">
+                    <a class="page-link" (click)="page !== -1 && setPage(page)">{{ page !== -1 ? page : '...' }}</a>
+                  </li>
+                </ng-container>
+
+                <li class="page-item" [class.disabled]="pageActuelle === totalPages">
+                  <a class="page-link" type="button" (click)="pageSuivante()"><span class="fas fa-angle-right"></span></a>
+                </li>
+              </ul>
+              <p class="mt10 pagination_page_count text-center">{{ demarcheurs.length }} demarcheurs disponibles</p>
+            </div>
+            <div *ngIf="demarcheurs.length == 0" class="mbp_pagination text-center mt30">
+              <p class="mt10 pagination_page_count text-center">Aucun démarcheur enregistré pour le moment</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Liste des démarcheurs -->
+
+  <!-- Details d'un démarcheur -->
+  <div *ngIf="affichage == 2">
+    <div  class="row align-items-center pb40">
+      <div class="col-xxl-3">
+        <div class="dashboard_title_area">
+          <h3>Détails d'un démarcheur</h3>
+          <p class="text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <table class="table-style3 table at-savesearch">
+            <tbody>
+              <tbody class="t-body">
+                <tr>
+                  <td class="vam">Nom & Prénom</td>
+                  <td>{{ demarcheur.nom }} {{ demarcheur.prenom }} <i *ngIf="demarcheur.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-2xl" style="color: #0f77e6;"></i></td>
+                </tr>
+                <tr>
+                  <td class="vam">Username</td>
+                  <td>{{ demarcheur.username }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Email</td>
+                  <td>{{ demarcheur.email }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Rôle</td>
+                  <td>{{ demarcheur.role.libelle }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Téléphone</td>
+                  <td>{{ demarcheur.telephone }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Etat compte</td>
+                  <td>
+                    <span *ngIf="demarcheur.etatCompte == true" class="pending-style style2">Actif</span>
+                    <span *ngIf="demarcheur.etatCompte == false" class="pending-style style3">Inactif</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="vam">Est certifié</td>
+                  <td>
+                    <span *ngIf="demarcheur.estCertifie == true" class="pending-style style2">Oui</span>
+                    <span *ngIf="demarcheur.estCertifie == false" class="pending-style style3">Non</span>
+                  </td>
+                </tr>
+            </tbody>
+          </table>
+          <div class="text-end">
+            <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Details d'un démarcheur -->

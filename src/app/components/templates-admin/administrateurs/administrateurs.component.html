@@ -1,0 +1,233 @@
+<div class="dashboard__content property-page bgc-f7">
+  <div class="row pb40 d-block d-lg-none">
+    <!-- Menu responsive -->
+    <app-menu-responsive></app-menu-responsive>
+    <!-- End Menu responsive -->
+  </div>
+
+
+  <!-- Formulaire d'ajout d'un admin -->
+  <div *ngIf="visibleAddForm == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-3">
+        <div class="dashboard_title_area">
+          <h4>Ajout d'un administrateur</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <div class="bd-example" *ngIf="erreur">
+            <div class="alert alert-left alert-danger alert-dismissible fade show mb-3" role="alert">
+              {{ messageErreur }}
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          </div>
+          <form [formGroup]="adminForm" (ngSubmit)="ajouterAdmin()" class="form-style1">
+            <div class="row">
+              <div class="col-sm-6 col-xl-4">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Nom</label>
+                  <input type="text" class="form-control" id="nom" name="nom" placeholder="Le nom de l'administrateur" formControlName="nom" [(ngModel)]="admin.nom" required>
+                  <div class="alert alert-danger" [hidden]="nom.valid || nom.pristine && !nom.touched ">Le nom de l'administrateur est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Prenom</label>
+                  <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Le prenom de l'administrateur" formControlName="prenom" [(ngModel)]="admin.prenom" required>
+                  <div class="alert alert-danger" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le prenom de l'administrateur est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Username</label>
+                  <input type="text" class="form-control" id="username" name="username" placeholder="Le nom d'utilisateur de l'administrateur" formControlName="username" [(ngModel)]="admin.username" required>
+                  <div class="alert alert-danger" [hidden]="username.valid || username.pristine && !username.touched ">Le nom d'utilisateur de l'administrateur est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="L'email de l'administrateur" formControlName="email" [(ngModel)]="admin.email" required>
+                  <div class="alert alert-danger" [hidden]="email.valid || email.pristine && !email.touched ">L'email de l'administrateur est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Mot de passe</label>
+                  <input type="text" class="form-control" id="motDePasse" name="motDePasse" placeholder="Le mot de passe de l'administrateur" formControlName="motDePasse" [(ngModel)]="admin.motDePasse" required>
+                  <div class="alert alert-danger" [hidden]="motDePasse.valid || motDePasse.pristine && !motDePasse.touched ">Le mot de passe de l'administrateur est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Téléphone</label>
+                  <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Le numéro de téléphone de l'administrateur" formControlName="telephone" [(ngModel)]="admin.telephone" required>
+                  <div class="alert alert-danger" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numéro de téléphone de l'administrateur obligatoire</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="text-end">
+                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': adminForm.invalid }" (click)="adminForm.invalid ? null : ajouterAdmin()" type="submit">Ajouter</a>
+                &nbsp;
+                <a class="ud-btn btn-secondary" type="button" (click)="voirListe()">Annuler</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Formulaire d'ajout d'un admin -->
+
+  <!-- Liste des admins -->
+  <div *ngIf="affichage == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-3">
+        <div class="dashboard_title_area">
+          <h4>Liste des administrateurs</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+      <div class="col-xxl-9">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <div class="item1 mb15-sm">
+            <div class="search_area">
+              <input type="text" class="form-control bdrs12" placeholder="Faire une recherche">
+              <label><span class="flaticon-search"></span></label>
+            </div>
+          </div>
+          &nbsp;
+          <a type="button" *ngIf="visibleAddForm == 0" (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">Ajouter un admin<i class="fal fa-arrow-right-long"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="bd-example" *ngIf="messageSuccess">
+        <div class="alert alert-left alert-success alert-dismissible fade show mb-3" role="alert">
+          {{ messageSuccess }}
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <div class="packages_table table-responsive">
+            <table class="table-style3 table at-savesearch">
+              <thead class="t-head">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Nom</th>
+                  <th scope="col">Prenom</th>
+                  <th scope="col">Username</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="t-body">
+                <tr *ngFor="let admin of administrateursParPage;  let i = index">
+                  <td class="vam">{{ (pageActuelle - 1) * elementsParPage + i + 1 }}</td>
+                  <td class="vam">{{ admin.nom }}</td>
+                  <td class="vam">{{ admin.prenom }}</td>
+                  <td class="vam">{{ admin.username }}</td>
+                  <td class="vam">{{ admin.email }}</td>
+                  <td class="vam">
+                    <div class="d-flex">
+                      <a type="button" (click)="afficherPageDetail(admin.id)" class="icon" placement="top" ngbTooltip="Details"><i class="fa-regular fa-eye"></i></a>
+                      <a *ngIf="admin.etatCompte === true" type="button" class="icon" (click)="desactiverCompte(admin.id)"  placement="top" ngbTooltip="Désactiver le compte"><i class="fa-regular fa-user-lock"></i></a>
+                      <a *ngIf="admin.etatCompte === false" type="button" class="icon" (click)="activerCompte(admin.id)" placement="top" ngbTooltip="Activer le compte"><i class="fa-regular fa-user-unlock"></i></a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div *ngIf="administrateurs.length !== 0" class="mbp_pagination text-center mt30">
+              <ul class="page_navigation">
+                <li class="page-item" [class.disabled]="pageActuelle === 1">
+                  <a class="page-link" type="button" (click)="pagePrecedente()"> <span class="fas fa-angle-left"></span></a>
+                </li>
+
+                <!-- Affichage des pages -->
+                <ng-container *ngFor="let page of pages">
+                  <li class="page-item" [class.active]="pageActuelle === page" [class.disabled]="page === -1">
+                    <a class="page-link" (click)="page !== -1 && setPage(page)">{{ page !== -1 ? page : '...' }}</a>
+                  </li>
+                </ng-container>
+
+                <li class="page-item" [class.disabled]="pageActuelle === totalPages">
+                  <a class="page-link" type="button" (click)="pageSuivante()"><span class="fas fa-angle-right"></span></a>
+                </li>
+              </ul>
+              <p class="mt10 pagination_page_count text-center">{{ administrateurs.length }} administrateurs disponibles</p>
+            </div>
+            <div *ngIf="administrateurs.length == 0" class="mbp_pagination text-center mt30">
+              <p class="mt10 pagination_page_count text-center">Aucun administrateur enregistré pour le moment</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Liste des admins -->
+
+  <!-- Details d'un admin -->
+  <div *ngIf="affichage == 3">
+    <div  class="row align-items-center pb40">
+      <div class="col-xxl-3">
+        <div class="dashboard_title_area">
+          <h4>Détails d'un administrateur</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <table class="table-style3 table at-savesearch">
+            <tbody>
+              <tbody class="t-body">
+                <tr>
+                  <td class="vam">Nom</td>
+                  <td>{{ admin.nom }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Prenom</td>
+                  <td>{{ admin.prenom }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Username</td>
+                  <td>{{ admin.username }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Email</td>
+                  <td>{{ admin.email }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Rôle</td>
+                  <td>{{ admin.role.libelle }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Téléphone</td>
+                  <td>{{ admin.telephone }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Etat compte</td>
+                  <td>
+                    <span *ngIf="admin.etatCompte == true" class="pending-style style2">Actif</span>
+                    <span *ngIf="admin.etatCompte == false" class="pending-style style3">Inactif</span>
+                  </td>
+                </tr>
+            </tbody>
+          </table>
+          <div class="text-end">
+            <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Details d'un admin -->

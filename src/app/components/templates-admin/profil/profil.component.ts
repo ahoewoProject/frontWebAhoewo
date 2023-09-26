@@ -1,0 +1,133 @@
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
+import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
+
+@Component({
+  selector: 'app-profil',
+  templateUrl: './profil.component.html',
+  styleUrls: ['./profil.component.css']
+})
+export class ProfilComponent implements OnInit{
+
+  user: any;
+  affichage = 1;
+
+  erreur: boolean = false;
+  personne = this.personneService.personne;
+  messageErreur: string | null = null;
+  messageSuccess: string | null = null;
+
+  userForm: any;
+
+  constructor(private cookieService: CookieService,
+    private personneService: PersonneService) {
+    const userCookie = this.cookieService.get('user');
+    this.user = JSON.parse(userCookie);
+  }
+
+  ngOnInit(): void {
+    this.detailUser();
+    this.initUserForm()
+  }
+
+
+  initUserForm(): void {
+    this.userForm = new FormGroup({
+      nom: new FormControl(this.personne.nom, [Validators.required]),
+      prenom: new FormControl(this.personne.prenom, [Validators.required]),
+      username: new FormControl(this.personne.username, [Validators.required]),
+      email: new FormControl(this.personne.email, [Validators.required]),
+      motDePasse: new FormControl(this.personne.motDePasse, [Validators.required]),
+      telephone: new FormControl(this.personne.telephone, [Validators.required]),
+    })
+  }
+
+  retour(): void {
+    this.userForm.reset();
+    this.affichage = 1;
+    this.erreur = false;
+  }
+
+  get nom(){
+    return this.userForm.get('nom');
+  }
+
+  get prenom(){
+    return this.userForm.get('prenom');
+  }
+
+  get username(){
+    return this.userForm.get('username');
+  }
+
+  get email(){
+    return this.userForm.get('email');
+  }
+
+  get motDePasse(){
+    return this.userForm.get('motDePasse');
+  }
+
+  get telephone(){
+    return this.userForm.get('telephone');
+  }
+
+  afficherFormulaireModifier(): void {
+    this.detailUser();
+    this.affichage = 2
+  }
+
+  detailUser(): void {
+    console.log(this.user.id)
+    this.personneService.findById(this.user.id)
+    .subscribe(response=>{
+      this.personne = response;
+      console.log(response);
+    })
+  }
+
+  modifierUser(): void {
+    this.personne.nom = this.userForm.value.nom;
+    this.personne.prenom = this.userForm.value.prenom;
+    this.personne.username = this.userForm.value.username;
+    this.personne.email = this.userForm.value.email;
+    this.personne.motDePasse = this.userForm.value.motDePasse;
+    this.personne.telephone = this.userForm.value.telephone;
+    this.personne.role = this.user.role;
+    console.log(this.personne)
+    this.personneService.modifierProfil(this.personne, this.personne.id).subscribe(
+      (response) =>{
+        console.log(response);
+        if(response.id > 0) {
+          this.retour();
+          this.messageSuccess = "Votre profil a été modifié avec succès.";
+          setTimeout(() => {
+            this.messageSuccess = null;
+          }, 3000);
+        }
+        else{
+          this.erreur = true;
+          this.messageErreur = "Erreur lors de la modification de vos informations !";
+          setTimeout(() => {
+            this.erreur = false;
+            this.messageErreur = null;
+          }, 3000);
+          this.afficherFormulaireModifier();
+        }
+    },
+    (error) =>{
+      console.log(error)
+      if(error.status === 409){
+        this.erreur = true;
+        this.messageErreur = "Ce nom d'utilisateur a été déjà utilisé!";
+        setTimeout(() => {
+          this.erreur = false;
+          this.messageErreur = null;
+        }, 3000);
+        this.afficherFormulaireModifier();
+      }
+    })
+  }
+
+}
