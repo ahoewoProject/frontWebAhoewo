@@ -10,41 +10,126 @@
     <h6 class="text">Nous sommes heureux de vous revoir!</h6>
     <br>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
     <div class="col-sm-6 col-xxl-3">
       <div class="d-flex justify-content-between statistics_funfact">
         <div class="details">
-          <div class="text fz25">All Properties</div>
-          <div class="title">583</div>
+          <div class="text fz25">Rôles</div>
+          <div class="title">{{ _nombreRoles }}</div>
         </div>
-        <div class="icon text-center"><i class="flaticon-home"></i></div>
+        <div class="icon text-center"><i class="fa-light fa-gears"></i></div>
       </div>
     </div>
     <div class="col-sm-6 col-xxl-3">
       <div class="d-flex justify-content-between statistics_funfact">
         <div class="details">
-          <div class="text fz25">Total Views</div>
-          <div class="title">192</div>
+          <div class="text fz25">Utilisateurs</div>
+          <div class="title">{{ _nombreUtilisateurs }}</div>
         </div>
-        <div class="icon text-center"><i class="flaticon-search-chart"></i></div>
+        <div class="icon text-center"><i class="fa-light fa-user-group"></i></div>
       </div>
     </div>
     <div class="col-sm-6 col-xxl-3">
       <div class="d-flex justify-content-between statistics_funfact">
         <div class="details">
-          <div class="text fz25">Total Visitor Reviews</div>
-          <div class="title">438</div>
+          <div class="text fz25">Administrateurs</div>
+          <div class="title">{{ _nombreAdministrateurs }}</div>
         </div>
-        <div class="icon text-center"><i class="flaticon-review"></i></div>
+        <div class="icon text-center"><i class="fa-light fa-user-gear"></i></div>
       </div>
     </div>
     <div class="col-sm-6 col-xxl-3">
       <div class="d-flex justify-content-between statistics_funfact">
         <div class="details">
-          <div class="text fz25">Total Favorites</div>
-          <div class="title">67</div>
+          <div class="text fz25">Notaires</div>
+          <div class="title">{{ _nombreNotaires }}</div>
         </div>
-        <div class="icon text-center"><i class="flaticon-like"></i></div>
+        <div class="icon text-center"><i class="fa-light fa-user-shield"></i></div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+      <div class="d-flex justify-content-between statistics_funfact">
+        <div class="details">
+          <div class="text fz25">Propriétaires</div>
+          <div class="title">{{ _nombreProprietaires }}</div>
+        </div>
+        <div class="icon text-center"><i class="fa-light fa-user-group"></i></div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+      <div class="d-flex justify-content-between statistics_funfact">
+        <div class="details">
+          <div class="text fz25">Gérants</div>
+          <div class="title">{{ _nombreGerants }}</div>
+        </div>
+        <div class="icon text-center"><i class="fa-light fa-user-group"></i></div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+      <div class="d-flex justify-content-between statistics_funfact">
+        <div class="details">
+          <div class="text fz25">Agents immobiliers</div>
+          <div class="title">{{ _nombreAgentImmobiliers }}</div>
+        </div>
+        <div class="icon text-center"><i class="fa-light fa-user-group"></i></div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+      <div class="d-flex justify-content-between statistics_funfact">
+        <div class="details">
+          <div class="text fz25">Démarcheurs</div>
+          <div class="title">{{ _nombreDemarcheurs }}</div>
+        </div>
+        <div class="icon text-center"><i class="fa-light fa-user-group"></i></div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+      <div class="d-flex justify-content-between statistics_funfact">
+        <div class="details">
+          <div class="text fz25">Clients</div>
+          <div class="title">{{ _nombreClients }}</div>
+        </div>
+        <div class="icon text-center"><i class="fa-light fa-user-group"></i></div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="user.role.code == 'ROLE_NOTAIRE'">
+    <div class="col-sm-6 col-xxl-3">
+      <div class="d-flex justify-content-between statistics_funfact">
+        <div class="details">
+          <div class="text fz25">Demandes de certifications</div>
+          <div class="title">{{ _nombreDemandeCertifs }}</div>
+        </div>
+        <div class="icon text-center"><i class="fa-sharp fa-light fa-certificate"></i></div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+      <div class="d-flex justify-content-between statistics_funfact">
+        <div class="details">
+          <div class="text fz25">Demandes de <br> certifications en attente</div>
+          <div class="title">{{ _nombreDemandeCertifsEnAttente }}</div>
+        </div>
+        <div class="icon text-center"><i class="fa-sharp fa-light fa-certificate"></i></div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+      <div class="d-flex justify-content-between statistics_funfact">
+        <div class="details">
+          <div class="text fz25">Demandes de <br> certifications validées</div>
+          <div class="title">{{ _nombreDemandeCertifsValidees }}</div>
+        </div>
+        <div class="icon text-center"><i class="fa-sharp fa-light fa-certificate"></i></div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'">
+    <div class="col-sm-6 col-xxl-3">
+      <div class="d-flex justify-content-between statistics_funfact">
+        <div class="details">
+          <div class="text fz25">Gérants</div>
+          <div class="title">{{ _nombreGerantsParProprietaire }}</div>
+        </div>
+        <div class="icon text-center"><i class="fa-light fa-user-group"></i></div>
       </div>
     </div>
   </div>

@@ -43,7 +43,10 @@ export class ProprietaireService {
   }
 
   // url: http://localhost:4040/api/count/proprietaires
-  countProprietaires(): Observable<any>{
-    return this.httpClient.get<any>(this.url + 'count/proprietaires');
+  countProprietaires(): Observable<number>{
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
+    });
+    return this.httpClient.get<number>(this.url + 'count/proprietaires', { headers });
   };
 }

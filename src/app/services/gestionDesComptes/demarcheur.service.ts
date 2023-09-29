@@ -43,7 +43,10 @@ export class DemarcheurService {
   }
 
   // url: http://localhost:4040/api/count/demarcheurs
-  countDemarcheurs(): Observable<any>{
-    return this.httpClient.get<any>(this.url + 'count/demarcheurs');
+  countDemarcheurs(): Observable<number>{
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
+    });
+    return this.httpClient.get<number>(this.url + 'count/demarcheurs', { headers });
   };
 }

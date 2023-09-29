@@ -26,8 +26,10 @@ export class DemandesCertificationsComponent implements OnInit {
   APIEndpoint: string;
   documentJustificatif: any;
 
-  constructor(private demandeCertifService: DemandeCertificationService,
-    private cookieService: CookieService){
+  constructor(
+    private demandeCertifService: DemandeCertificationService,
+    private cookieService: CookieService
+  ){
       this.APIEndpoint = environment.APIEndpoint;
       const userCookie = this.cookieService.get('user');
       this.user = JSON.parse(userCookie);
@@ -42,17 +44,19 @@ export class DemandesCertificationsComponent implements OnInit {
   }
 
   listeDemandeCertifications(){
-    this.demandeCertifService.getAll()
-    .subscribe(response=>{
-      this.demandeCertifications = response;
-    })
+    this.demandeCertifService.getAll().subscribe(
+      (response) => {
+        this.demandeCertifications = response;
+      }
+    );
   }
 
   listeDemandeCertifParUtilisateur(){
-    this.demandeCertifService.getAll()
-    .subscribe(response=>{
-      this.demandeCertifications = response;
-    })
+    this.demandeCertifService.getAll().subscribe(
+      (response) => {
+        this.demandeCertifications = response;
+      }
+    )
   }
 
   // Récupération des demandes de certifications de la page courante
@@ -131,14 +135,14 @@ export class DemandesCertificationsComponent implements OnInit {
     const formValues = {
       personne: this.user
     }
-    console.log(this.documentJustificatif)
-    console.log(JSON.stringify(formValues))
+
     this.demandeCertifData.append('demandeCertificationJson', JSON.stringify(formValues))
     this.demandeCertifData.append('documentJustificatif', this.documentJustificatif);
+
     this.demandeCertifService.addDemandeCertif(this.demandeCertifData)
     .subscribe(
       (response) => {
-        console.log(response);
+
         if(response.id > 0) {
           this.voirListe();
           this.messageSuccess = "La demande de certification a été ajouté avec succès!";
@@ -163,11 +167,11 @@ export class DemandesCertificationsComponent implements OnInit {
   }
 
   detailDemandeCertif(id: number): void {
-    console.log(id)
-    this.demandeCertifService.findById(id)
-    .subscribe(response=>{
-      this.demandeCertification = response;
-    })
+    this.demandeCertifService.findById(id).subscribe(
+      (response) => {
+        this.demandeCertification = response;
+      }
+    );
   }
 
   afficherPageDetail(id: number): void {
@@ -177,14 +181,16 @@ export class DemandesCertificationsComponent implements OnInit {
   }
 
   certifierCompte(idPersonne: number, idDemandeCertif: number): void{
-    this.demandeCertifService.certifierCompte(idPersonne, idDemandeCertif).subscribe(response=>{
-      console.log(response);
-      this.ngOnInit()
-      this.voirListe();
-      this.messageSuccess = "Le compte de l'utilisateur a été certifié avec succès!";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    });
+    this.demandeCertifService.certifierCompte(idPersonne, idDemandeCertif).subscribe(
+      (response) => {
+        console.log(response);
+        this.ngOnInit()
+        this.voirListe();
+        this.messageSuccess = "Le compte de l'utilisateur a été certifié avec succès!";
+        setTimeout(() => {
+          this.messageSuccess = null;
+        }, 3000);
+      }
+    );
   }
 }

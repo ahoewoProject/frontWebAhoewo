@@ -84,8 +84,11 @@ export class PersonneService {
 
   // Fonction pour recupérer les nombres d'utilisateurs
   // url: http://localhost:4040/api/count/users
-  countUsers(): Observable<any>{
-    return this.httpClient.get<any>(this.url + 'count/users');
+  countUsers(): Observable<number>{
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
+    });
+    return this.httpClient.get<number>(this.url + 'count/users', { headers });
   };
 
   // url: http://localhost:4040/api/user/{id}
@@ -103,9 +106,8 @@ export class PersonneService {
 
   // Fonction pour déconnecter un utilisateur
   logout() {
-    this.cookieService.delete('access_token');
-    this.cookieService.delete('user');
     this.router.navigate(['/login']);
+    this.cookieService.deleteAll();
     this.isLoggedIn = false;
   }
 }

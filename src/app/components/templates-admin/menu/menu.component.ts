@@ -10,8 +10,10 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 export class MenuComponent implements OnInit {
 
   user: any;
-  constructor(private cookieService: CookieService,
-    private personneService: PersonneService) {
+  constructor(
+    private cookieService: CookieService,
+    private personneService: PersonneService
+  ) {
     const userCookie = this.cookieService.get('user');
     this.user = JSON.parse(userCookie);
   }

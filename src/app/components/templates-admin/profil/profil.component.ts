@@ -20,8 +20,10 @@ export class ProfilComponent implements OnInit{
 
   userForm: any;
 
-  constructor(private cookieService: CookieService,
-    private personneService: PersonneService) {
+  constructor(
+    private cookieService: CookieService,
+    private personneService: PersonneService
+  ) {
     const userCookie = this.cookieService.get('user');
     this.user = JSON.parse(userCookie);
   }
@@ -33,11 +35,12 @@ export class ProfilComponent implements OnInit{
 
 
   initUserForm(): void {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     this.userForm = new FormGroup({
       nom: new FormControl(this.personne.nom, [Validators.required]),
       prenom: new FormControl(this.personne.prenom, [Validators.required]),
       username: new FormControl(this.personne.username, [Validators.required]),
-      email: new FormControl(this.personne.email, [Validators.required]),
+      email: new FormControl(this.personne.email, [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
       motDePasse: new FormControl(this.personne.motDePasse, [Validators.required]),
       telephone: new FormControl(this.personne.telephone, [Validators.required]),
     })
@@ -80,11 +83,11 @@ export class ProfilComponent implements OnInit{
 
   detailUser(): void {
     console.log(this.user.id)
-    this.personneService.findById(this.user.id)
-    .subscribe(response=>{
-      this.personne = response;
-      console.log(response);
-    })
+    this.personneService.findById(this.user.id).subscribe(
+      (response) => {
+        this.personne = response;
+      }
+    );
   }
 
   modifierUser(): void {
@@ -95,10 +98,9 @@ export class ProfilComponent implements OnInit{
     this.personne.motDePasse = this.userForm.value.motDePasse;
     this.personne.telephone = this.userForm.value.telephone;
     this.personne.role = this.user.role;
-    console.log(this.personne)
+
     this.personneService.modifierProfil(this.personne, this.personne.id).subscribe(
       (response) =>{
-        console.log(response);
         if(response.id > 0) {
           this.retour();
           this.messageSuccess = "Votre profil a été modifié avec succès.";

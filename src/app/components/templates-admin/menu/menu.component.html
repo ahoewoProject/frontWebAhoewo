@@ -5,31 +5,31 @@
   </div>
   <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
   <div class="sidebar_list_item ">
-    <a routerLink="/admin/roles" *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'" class="items-center"><i class="fa-sharp fa-regular fa-gears mr15"></i>Rôles</a>
+    <a routerLink="/admin/roles" *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'" class="items-center"><i class="fa-light fa-gears mr15"></i>Rôles</a>
   </div>
   <div class="sidebar_list_item " *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
-    <a routerLink="/admin/admins" class="items-center"><i class="fa-regular fa-user-gear mr15"></i>Administrateurs</a>
+    <a routerLink="/admin/admins" class="items-center"><i class="fa-light fa-user-gear mr15"></i>Administrateurs</a>
   </div>
   <div class="sidebar_list_item " *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
-    <a routerLink="/admin/notaires" class="items-center"><i class="fa-regular fa-user-shield mr15"></i>Notaires</a>
+    <a routerLink="/admin/notaires" class="items-center"><i class="fa-light fa-user-shield mr15"></i>Notaires</a>
   </div>
   <div class="sidebar_list_item " *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
-    <a routerLink="/admin/proprietaires" class="items-center"><i class="fa-regular fa-user-group mr15"></i>Propriétaires</a>
+    <a routerLink="/admin/proprietaires" class="items-center"><i class="fa-light fa-user-group mr15"></i>Propriétaires</a>
   </div>
   <div class="sidebar_list_item " *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
-    <a routerLink="/admin/agents-immobiliers" class="items-center"><i class="fa-regular fa-user-group mr15"></i>Agents immobiliers</a>
+    <a routerLink="/admin/agents-immobiliers" class="items-center"><i class="fa-light fa-user-group mr15"></i>Agents immobiliers</a>
   </div>
   <div class="sidebar_list_item " *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
-    <a routerLink="/admin/demarcheurs" class="items-center"><i class="fa-regular fa-user-group mr15"></i>Démarcheurs</a>
+    <a routerLink="/admin/demarcheurs" class="items-center"><i class="fa-light fa-user-group mr15"></i>Démarcheurs</a>
   </div>
   <div class="sidebar_list_item " *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR' || user.role.code == 'ROLE_PROPRIETAIRE'">
-    <a routerLink="/admin/gerants" class="items-center"><i class="fa-regular fa-user-group mr15"></i>Gérants</a>
+    <a routerLink="/admin/gerants" class="items-center"><i class="fa-light fa-user-group mr15"></i>Gérants</a>
   </div>
   <div class="sidebar_list_item " *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
-    <a routerLink="/admin/clients" class="items-center"><i class="fa-regular fa-user-group mr15"></i>Clients</a>
+    <a routerLink="/admin/clients" class="items-center"><i class="fa-light fa-user-group mr15"></i>Clients</a>
   </div>
-  <div class="sidebar_list_item " *ngIf="user.role.code == 'ROLE_NOTAIRE' || user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR' ">
-    <a routerLink="/admin/demandes-certifications" class="items-center"><i class="fa-solid fa-certificate mr15"></i>&nbsp;Certifications</a>
+  <div class="sidebar_list_item " *ngIf="user.role.code == 'ROLE_NOTAIRE' || user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_AGENTIMMOBILIER'">
+    <a routerLink="/admin/demandes-certifications" class="items-center"><i class="fa-light fa-certificate mr15"></i>&nbsp;Certifications</a>
   </div>
   <div class="sidebar_list_item ">
     <a type="button" (click)="seDeconnecter()" class="items-center"><i class="flaticon-logout mr15"></i>Se déconnecter</a>

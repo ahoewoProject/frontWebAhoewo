@@ -25,7 +25,7 @@ export class NotairesComponent implements OnInit{
   messageSuccess: string | null = null;
 
   notaireForm: any;
-  
+
   roleNotaire: Role = {
     id: 6,
     code: 'ROLE_NOTAIRE',
@@ -46,20 +46,23 @@ export class NotairesComponent implements OnInit{
   }
 
   initNotaireForm(): void{
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     this.notaireForm = new FormGroup({
       nom: new FormControl(this.notaire.nom, [Validators.required]),
       prenom: new FormControl(this.notaire.prenom, [Validators.required]),
       username: new FormControl(this.notaire.username, [Validators.required]),
-      email: new FormControl(this.notaire.email, [Validators.required]),
+      email: new FormControl(this.notaire.email, [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
       motDePasse: new FormControl(this.notaire.motDePasse, [Validators.required]),
       telephone: new FormControl(this.notaire.telephone, [Validators.required]),
     })
   }
 
   listeNotaires():void{
-    this.notaireService.getAll().subscribe(response=>{
-      this.notaires = response;
-    })
+    this.notaireService.getAll().subscribe(
+      (response) => {
+        this.notaires = response;
+      }
+    );
   }
 
   // Récupération des notaires de la page courante
@@ -127,11 +130,11 @@ export class NotairesComponent implements OnInit{
   }
 
   detailNotaire(id: number): void {
-    console.log(id)
-    this.notaireService.findById(id).subscribe(response=>{
-      this.notaire = response;
-      console.log(response);
-    })
+    this.notaireService.findById(id).subscribe(
+      (response) => {
+        this.notaire = response;
+      }
+    );
   }
 
   afficherPageDetail(id: number): void {
@@ -172,10 +175,10 @@ export class NotairesComponent implements OnInit{
   }
 
   ajouterNotaire(): void {
-    console.log(this.notaire)
     this.notaire.role = this.roleNotaire;
+
     this.notaireService.addNotaire(this.notaire).subscribe(
-      (response) =>{
+      (response) => {
         console.log(response);
         if(response.id > 0) {
           this.notaires.push({
@@ -231,35 +234,41 @@ export class NotairesComponent implements OnInit{
   }
 
   deleteNotaire(id: number): void{
-    this.notaireService.deleteById(id).subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "Le notaire a été supprimé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.notaireService.deleteById(id).subscribe(
+      (response) => {
+        console.log(response);
+        this.voirListe();
+        this.messageSuccess = "Le notaire a été supprimé avec succès.";
+        setTimeout(() => {
+          this.messageSuccess = null;
+        }, 3000);
+      }
+    );
   }
 
   activerCompte(id: number): void{
-    this.personneService.activerCompte(id).subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "Le compte a été activé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.personneService.activerCompte(id).subscribe(
+      (response) => {
+        console.log(response);
+        this.voirListe();
+        this.messageSuccess = "Le compte a été activé avec succès.";
+        setTimeout(() => {
+          this.messageSuccess = null;
+        }, 3000);
+      }
+    );
   }
 
   desactiverCompte(id: number): void{
-    this.personneService.desactiverCompte(id).subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "Le compte a été désactivé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.personneService.desactiverCompte(id).subscribe(
+      (response) => {
+        console.log(response);
+        this.voirListe();
+        this.messageSuccess = "Le compte a été désactivé avec succès.";
+        setTimeout(() => {
+          this.messageSuccess = null;
+        }, 3000);
+      }
+    );
   }
 }

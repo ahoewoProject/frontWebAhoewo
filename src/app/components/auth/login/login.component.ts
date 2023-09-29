@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { LoginForm } from 'src/app/models/auth/LoginForm';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
@@ -18,21 +18,33 @@ export class LoginComponent implements OnInit{
   message: string = "";
   loginForm: LoginForm = new LoginForm();
   loginData: FormData = new  FormData();
+  reinitialisationMotDePasseReussie: any;
 
-  constructor(private authService: PersonneService,
-    private cookieService: CookieService, private router: Router)
-    { }
+  constructor(
+    private authService: PersonneService,
+    private cookieService: CookieService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   LoginForm: any;
 
   ngOnInit(): void {
+    this.reinitialisationMotDePasseReussie = this.activatedRoute.snapshot.queryParamMap.get('passwordResetSuccess') || '';
+    if(this.reinitialisationMotDePasseReussie){
+      this.message = 'Mot de passe réinitialisé avec succès !';
+      setTimeout(() => {
+        this.message = '';
+        this.reinitialisationMotDePasseReussie = null
+      }, 3000);
+    }
     this.initLoginForm();
   }
 
   initLoginForm(): void{
     this.LoginForm = new FormGroup({
-      username: new FormControl(this.loginForm.username, [Validators.required]),
-      password: new FormControl(this.loginForm.password, [Validators.required]),
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
     })
   }
 
@@ -81,9 +93,9 @@ export class LoginComponent implements OnInit{
 
     if (this.user.etatCompte === true) {
       this.cookieService.set('user', JSON.stringify(user));
-      this.router.navigate(['/admin/dashboard']).then(() => {
+      this.router.navigate(['/admin/dashboard'])/*.then(() => {
         window.location.reload();
-      });
+      });*/
     } else {
       this.connexionNonReussie = true;
       this.message = "Votre compte est désactivé. Veuillez contacter l'équipe support technique ahoewo pour obtenir de l'aide supplémentaire";

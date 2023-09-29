@@ -51,8 +51,13 @@
               <div class="col-sm-6 col-xl-4">
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Email</label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="L'email de l'administrateur" formControlName="email" [(ngModel)]="admin.email" required>
-                  <div class="alert alert-danger" [hidden]="email.valid || email.pristine && !email.touched ">L'email de l'administrateur est obligatoire</div>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="L'adresse e-mail de l'administrateur" formControlName="email" [(ngModel)]="admin.email" required>
+                  <div class="alert alert-danger" [hidden]="!email?.hasError('required') || !email.touched">
+                    L'adresse e-mail de l'administrateur est obligatoire
+                  </div>
+                  <div class="alert alert-danger" [hidden]="!email?.hasError('email') || !email.touched">
+                    L'adresse e-mail de l'administrateur n'est pas valide.
+                  </div>
                 </div>
               </div>
               <div class="col-sm-6 col-xl-4">

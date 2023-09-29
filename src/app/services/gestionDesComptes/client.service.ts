@@ -43,7 +43,10 @@ export class ClientService {
   }
 
   // url: http://localhost:4040/api/count/clients
-  countClients(): Observable<any>{
-    return this.httpClient.get<any>(this.url + 'count/clients');
+  countClients(): Observable<number>{
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
+    });
+    return this.httpClient.get<number>(this.url + 'count/clients', { headers });
   };
 }

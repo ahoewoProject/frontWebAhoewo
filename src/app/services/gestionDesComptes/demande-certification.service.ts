@@ -62,7 +62,26 @@ export class DemandeCertificationService {
   }
 
   // url: http://localhost:4040/api/count/demandes-certifications
-  countDemandeCertifications(): Observable<any>{
-    return this.httpClient.get<any>(this.url + 'count/demandes-certifications');
+  countDemandeCertifications(): Observable<number>{
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
+    });
+    return this.httpClient.get<number>(this.url + 'count/demandes-certifications', { headers });
+  };
+
+  // url: http://localhost:4040/api/count/demandes-certifications/validees
+  countDemandeCertificationsValidees(): Observable<number>{
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
+    });
+    return this.httpClient.get<number>(this.url + 'count/demandes-certifications/validees', { headers });
+  };
+
+  // url: http://localhost:4040/api/count/demandes-certifications/en-attente
+  countDemandeCertificationsEnAttente(): Observable<number>{
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
+    });
+    return this.httpClient.get<number>(this.url + 'count/demandes-certifications/en-attente', { headers });
   };
 }

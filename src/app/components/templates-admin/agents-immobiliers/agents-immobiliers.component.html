@@ -136,6 +136,13 @@
                     <span *ngIf="agentImmobilier.etatCompte == false" class="pending-style style3">Inactif</span>
                   </td>
                 </tr>
+                <tr>
+                  <td class="vam">Est certifié</td>
+                  <td>
+                    <span *ngIf="agentImmobilier.estCertifie == true" class="pending-style style2">Oui</span>
+                    <span *ngIf="agentImmobilier.estCertifie == false" class="pending-style style3">Non</span>
+                  </td>
+                </tr>
             </tbody>
           </table>
           <div class="text-end">

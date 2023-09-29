@@ -32,7 +32,7 @@
                 <tbody class="t-body">
                   <tr>
                     <td class="vam">Nom & Prénom</td>
-                    <td>{{ personne.nom }} {{ personne.prenom }} <i *ngIf="personne.estCertifie && (personne.role.code === 'ROLE_AGENTIMMOBILER' || personne.role.code === 'ROLE_PROPRIETAIRE' || personne.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-2xl" style="color: #0f77e6;"></i>
+                    <td>{{ personne.nom }} {{ personne.prenom }} <i *ngIf="personne.estCertifie && (personne.role.code === 'ROLE_AGENTIMMOBILER' || personne.role.code === 'ROLE_PROPRIETAIRE' || personne.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i>
                     </td>
                   </tr>
                   <tr>
@@ -108,7 +108,12 @@
               <div class="mb20">
                 <label class="heading-color ff-heading fw600 mb10">Email</label>
                 <input type="email" class="form-control"  placeholder="Votre email" formControlName="email" id="email" name="email" [ngModel]="personne.email" required>
-                <div class="alert alert-danger" [hidden]="email.valid || email.pristine && !email.touched ">L'email est obligatoire</div>
+                <div class="alert alert-danger" [hidden]="!email?.hasError('required') || !email.touched">
+                  L'adresse e-mail est obligatoire
+                </div>
+                <div class="alert alert-danger" [hidden]="!email?.hasError('email') || !email.touched">
+                  L'adresse e-mail saisie n'est pas valide.
+                </div>
               </div>
             </div>
             <div class="col-sm-6 col-xl-4">

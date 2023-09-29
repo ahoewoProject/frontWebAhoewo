@@ -30,8 +30,13 @@
               </div>
               <div class="mb25">
                 <label class="form-label fw600 dark-color">Email</label>
-                <input type="email" class="form-control" placeholder="Entrer votre email" id="email" name="email" formControlName="email" [(ngModel)]="registerForm.email" required>
-                <div class="alert alert-danger" [hidden]="email.valid || email.pristine && !email.touched ">L'email est obligatoire</div>
+                <input type="email" class="form-control" placeholder="Entrer votre adresse e-mail" id="email" name="email" formControlName="email" [(ngModel)]="registerForm.email" required>
+                <div class="alert alert-danger" [hidden]="!email?.hasError('required') || !email.touched">
+                  La saisie de votre adresse e-mail est obligatoire
+                </div>
+                <div class="alert alert-danger" [hidden]="!email?.hasError('email') || !email.touched">
+                  L'adresse e-mail saisie n'est pas valide.
+                </div>
               </div>
               <div class="mb25">
                 <label class="form-label fw600 dark-color">Mot de passe</label>

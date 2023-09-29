@@ -50,7 +50,7 @@
                 <tr *ngFor="let proprietaire of proprietairesParPage;  let i = index">
                   <td class="vam">{{ (pageActuelle - 1) * elementsParPage + i + 1 }}</td>
                   <td class="vam">{{ proprietaire.nom }}</td>
-                  <td class="vam">{{ proprietaire.prenom }} <i *ngIf="proprietaire.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-2xl" style="color: #0f77e6;"></i></td>
+                  <td class="vam">{{ proprietaire.prenom }} <i *ngIf="proprietaire.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
                   <td class="vam">{{ proprietaire.username }}</td>
                   <td class="vam">{{ proprietaire.email }}</td>
                   <td class="vam">
@@ -111,7 +111,7 @@
               <tbody class="t-body">
                 <tr>
                   <td class="vam">Nom & Prénom</td>
-                  <td>{{ proprietaire.nom }} {{ proprietaire.prenom }} <i *ngIf="proprietaire.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-2xl" style="color: #0f77e6;"></i></td>
+                  <td>{{ proprietaire.nom }} {{ proprietaire.prenom }} <i *ngIf="proprietaire.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
                 </tr>
                 <tr>
                   <td class="vam">Username</td>

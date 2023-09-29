@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 
 @Component({
@@ -8,9 +9,14 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 })
 export class MenuResponsiveComponent implements OnInit{
 
-  constructor(private personneService: PersonneService)
-  {
+  user:any;
 
+  constructor(
+    private personneService: PersonneService,
+    private cookieService: CookieService
+  ){
+    const userCookie = this.cookieService.get('user');
+    this.user = JSON.parse(userCookie);
   }
 
   ngOnInit(): void {

@@ -14,10 +14,14 @@ import { GerantsComponent } from './components/templates-admin/gerants/gerants.c
 import { ClientsComponent } from './components/templates-admin/clients/clients.component';
 import { ProfilComponent } from './components/templates-admin/profil/profil.component';
 import { DemandesCertificationsComponent } from './components/templates-admin/demandes-certifications/demandes-certifications.component';
+import { ForgotPasswordComponent } from './components/auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'admin', component: TemplatesAdminComponent,
     children:[
       { path: 'dashboard', component: DashboardComponent },

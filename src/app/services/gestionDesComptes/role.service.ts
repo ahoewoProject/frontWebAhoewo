@@ -66,8 +66,11 @@ export class RoleService {
 
   // Affichage du nombre d'occurrences de role.
   // url: http://localhost:4040/api/role/count
-  countRoles(): Observable<any>{
-    return this.httpClient.get<any>(this.url + 'count/roles');
+  countRoles(): Observable<number>{
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
+    });
+    return this.httpClient.get<number>(this.url + 'count/roles', { headers });
   };
 
 }

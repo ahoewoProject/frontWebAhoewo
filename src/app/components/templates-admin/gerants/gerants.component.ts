@@ -20,7 +20,7 @@ export class GerantsComponent implements OnInit{
 
   elementsParPage = 5; // Nombre d'éléments par page
   pageActuelle = 1; // Page actuelle
-  
+
   erreur: boolean = false;
   gerant = this.gerantService.gerant;
   gerants : Gerant[] = [];
@@ -56,27 +56,31 @@ export class GerantsComponent implements OnInit{
   }
 
   initGerantForm(): void{
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     this.gerantForm = new FormGroup({
       nom: new FormControl(this.gerant.nom, [Validators.required]),
       prenom: new FormControl(this.gerant.prenom, [Validators.required]),
       username: new FormControl(this.gerant.username, [Validators.required]),
-      email: new FormControl(this.gerant.email, [Validators.required]),
+      email: new FormControl(this.gerant.email, [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
       motDePasse: new FormControl(this.gerant.motDePasse, [Validators.required]),
       telephone: new FormControl(this.gerant.telephone, [Validators.required]),
     })
   }
 
   listeGerants(): void{
-    this.gerantService.getAll().subscribe(response=>{
-      this.gerants = response;
-    })
+    this.gerantService.getAll().subscribe(
+      (response) => {
+        this.gerants = response;
+      }
+    );
   }
 
   listeGerantsParProprietaire(): void{
-    this.gerantService.findGerantsByProprietaire()
-    .subscribe(response=>{
-      this.gerants = response;
-    })
+    this.gerantService.findGerantsByProprietaire().subscribe(
+      (response) => {
+        this.gerants = response;
+      }
+    );
   }
 
   // Récupération des gérants de la page courante
@@ -149,10 +153,11 @@ export class GerantsComponent implements OnInit{
 
   detailGerant(id: number): void {
     console.log(id)
-    this.gerantService.findById(id).subscribe(response=>{
-      this.gerant = response;
-      console.log(response);
-    })
+    this.gerantService.findById(id).subscribe(
+      (response) => {
+        this.gerant = response;
+      }
+    );
   }
 
   afficherPageDetail(id: number): void {
@@ -193,8 +198,8 @@ export class GerantsComponent implements OnInit{
   }
 
   ajouterGerant(): void {
-    console.log(this.gerant)
     this.gerant.role = this.roleGerant;
+
     this.gerantService.addGerant(this.gerant).subscribe(
       (response) =>{
         console.log(response);

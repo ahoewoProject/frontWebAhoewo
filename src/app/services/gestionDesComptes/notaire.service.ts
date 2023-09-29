@@ -60,7 +60,10 @@ export class NotaireService {
   }
 
   // url: http://localhost:4040/api/count/notaires
-  countNotaires(): Observable<any>{
-    return this.httpClient.get<any>(this.url + 'count/notaires');
+  countNotaires(): Observable<number>{
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
+    });
+    return this.httpClient.get<number>(this.url + 'count/notaires', { headers });
   };
 }

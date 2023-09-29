@@ -19,17 +19,21 @@ export class AgentsImmobiliersComponent implements OnInit{
   agentImmobiliers : AgentImmobilier[] = [];
   messageSuccess: string | null = null;
 
-  constructor(private agentImmobilierService: AgentImmobilierService,
-    private personneService: PersonneService) { }
+  constructor(
+    private agentImmobilierService: AgentImmobilierService,
+    private personneService: PersonneService
+  ) {}
 
   ngOnInit(): void {
     this.listeAgentImmobiliers();
   }
 
   listeAgentImmobiliers():void{
-    this.agentImmobilierService.getAll().subscribe(response=>{
-      this.agentImmobiliers = response;
-    })
+    this.agentImmobilierService.getAll().subscribe(
+      (response) => {
+        this.agentImmobiliers = response;
+      }
+    );
   }
 
   // Récupération des agents immobiliers de la page courante
@@ -88,10 +92,11 @@ export class AgentsImmobiliersComponent implements OnInit{
 
   detailAgentImmobilier(id: number): void {
     console.log(id)
-    this.agentImmobilierService.findById(id).subscribe(response=>{
-      this.agentImmobilier = response;
-      console.log(response);
-    })
+    this.agentImmobilierService.findById(id).subscribe(
+      (response) => {
+        this.agentImmobilier = response;
+      }
+    );
   }
 
   afficherPageDetail(id: number): void {
@@ -100,35 +105,41 @@ export class AgentsImmobiliersComponent implements OnInit{
   }
 
   deleteAgentImmobilier(id: number): void{
-    this.agentImmobilierService.deleteById(id).subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "L'agent immobilier a été supprimé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.agentImmobilierService.deleteById(id).subscribe(
+      (response) => {
+        console.log(response);
+        this.voirListe();
+        this.messageSuccess = "L'agent immobilier a été supprimé avec succès.";
+        setTimeout(() => {
+          this.messageSuccess = null;
+        }, 3000);
+      }
+    );
   }
 
   activerCompte(id: number): void{
-    this.personneService.activerCompte(id).subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "Le compte a été activé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.personneService.activerCompte(id).subscribe(
+      (response) => {
+        console.log(response);
+        this.voirListe();
+        this.messageSuccess = "Le compte a été activé avec succès.";
+        setTimeout(() => {
+          this.messageSuccess = null;
+        }, 3000);
+      }
+    );
   }
 
   desactiverCompte(id: number): void{
-    this.personneService.desactiverCompte(id).subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "Le compte a été désactivé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.personneService.desactiverCompte(id).subscribe(
+      (response) => {
+        console.log(response);
+        this.voirListe();
+        this.messageSuccess = "Le compte a été désactivé avec succès.";
+        setTimeout(() => {
+          this.messageSuccess = null;
+        }, 3000);
+      }
+    );
   }
 }

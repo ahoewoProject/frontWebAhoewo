@@ -37,8 +37,10 @@ export class AdministrateursComponent implements OnInit {
     statut: false
   }
 
-  constructor(private adminService: AdministrateurService,
-    private personneService: PersonneService) { }
+  constructor(
+    private adminService: AdministrateurService,
+    private personneService: PersonneService
+  ) {}
 
   ngOnInit(): void {
     this.listeAdmins();
@@ -46,20 +48,23 @@ export class AdministrateursComponent implements OnInit {
   }
 
   initAdminForm(): void{
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     this.adminForm = new FormGroup({
       nom: new FormControl(this.admin.nom, [Validators.required]),
       prenom: new FormControl(this.admin.prenom, [Validators.required]),
       username: new FormControl(this.admin.username, [Validators.required]),
-      email: new FormControl(this.admin.email, [Validators.required]),
+      email: new FormControl(this.admin.email, [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
       motDePasse: new FormControl(this.admin.motDePasse, [Validators.required]),
       telephone: new FormControl(this.admin.telephone, [Validators.required]),
     })
   }
 
   listeAdmins():void{
-    this.adminService.getAll().subscribe(response=>{
-      this.administrateurs = response;
-    })
+    this.adminService.getAll().subscribe(
+      (response) => {
+        this.administrateurs = response;
+      }
+    );
   }
 
   // Récupération des admins de la page courante
@@ -128,11 +133,11 @@ export class AdministrateursComponent implements OnInit {
   }
 
   detailAdmin(id: number): void {
-    console.log(id)
-    this.adminService.findById(id).subscribe(response=>{
-      this.admin = response;
-      console.log(response);
-    })
+    this.adminService.findById(id).subscribe(
+      (response) => {
+        this.admin = response;
+      }
+    );
   }
 
   afficherPageDetail(id: number): void {
@@ -173,8 +178,8 @@ export class AdministrateursComponent implements OnInit {
   }
 
   ajouterAdmin(): void {
-    console.log(this.admin)
     this.admin.role = this.roleAdmin;
+    
     this.adminService.addAdministrateur(this.admin).subscribe(
       (response) =>{
         console.log(response);
@@ -232,38 +237,41 @@ export class AdministrateursComponent implements OnInit {
   }
 
   deleteAdmin(id: number): void{
-    this.adminService.deleteById(id)
-    .subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "L'administrateur a été supprimé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.adminService.deleteById(id).subscribe(
+      (response) => {
+        console.log(response);
+        this.voirListe();
+        this.messageSuccess = "L'administrateur a été supprimé avec succès.";
+        setTimeout(() => {
+          this.messageSuccess = null;
+        }, 3000);
+      }
+    );
   }
 
   activerCompte(id: number): void{
-    this.personneService.activerCompte(id)
-    .subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "Le compte a été activé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.personneService.activerCompte(id).subscribe(
+      (response) => {
+        console.log(response);
+        this.voirListe();
+        this.messageSuccess = "Le compte a été activé avec succès.";
+        setTimeout(() => {
+          this.messageSuccess = null;
+        }, 3000);
+      }
+    );
   }
 
   desactiverCompte(id: number): void{
-    this.personneService.desactiverCompte(id)
-    .subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "Le compte a été désactivé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.personneService.desactiverCompte(id).subscribe(
+      (response) => {
+        console.log(response);
+        this.voirListe();
+        this.messageSuccess = "Le compte a été désactivé avec succès.";
+        setTimeout(() => {
+          this.messageSuccess = null;
+        }, 3000);
+      }
+    );
   }
 }

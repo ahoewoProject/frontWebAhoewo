@@ -19,17 +19,21 @@ export class DemarcheursComponent implements OnInit{
   demarcheurs : Demarcheur[] = [];
   messageSuccess: string | null = null;
 
-  constructor(private demarcheurService: DemarcheurService,
-    private personneService: PersonneService) { }
+  constructor(
+    private demarcheurService: DemarcheurService,
+    private personneService: PersonneService
+  ) {}
 
   ngOnInit(): void {
     this.listeDemarcheurs();
   }
 
   listeDemarcheurs():void{
-    this.demarcheurService.getAll().subscribe(response=>{
-      this.demarcheurs = response;
-    })
+    this.demarcheurService.getAll().subscribe(
+      (response) => {
+        this.demarcheurs = response;
+      }
+    );
   }
 
   // Récupération des démarcheurs de la page courante
@@ -87,11 +91,11 @@ export class DemarcheursComponent implements OnInit{
   }
 
   detailDemarcheur(id: number): void {
-    console.log(id)
-    this.demarcheurService.findById(id).subscribe(response=>{
-      this.demarcheur = response;
-      console.log(response);
-    })
+    this.demarcheurService.findById(id).subscribe(
+      (response) => {
+        this.demarcheur = response;
+      }
+    );
   }
 
   afficherPageDetail(id: number): void {
@@ -100,35 +104,41 @@ export class DemarcheursComponent implements OnInit{
   }
 
   deleteDemarcheur(id: number): void{
-    this.demarcheurService.deleteById(id).subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "Le démarcheur a été supprimé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.demarcheurService.deleteById(id).subscribe(
+      (response) => {
+        console.log(response);
+        this.voirListe();
+        this.messageSuccess = "Le démarcheur a été supprimé avec succès.";
+        setTimeout(() => {
+          this.messageSuccess = null;
+        }, 3000);
+      }
+    );
   }
 
   activerCompte(id: number): void{
-    this.personneService.activerCompte(id).subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "Le compte a été activé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.personneService.activerCompte(id).subscribe(
+      (response) => {
+        console.log(response);
+        this.voirListe();
+        this.messageSuccess = "Le compte a été activé avec succès.";
+        setTimeout(() => {
+          this.messageSuccess = null;
+        }, 3000);
+      }
+    );
   }
 
   desactiverCompte(id: number): void{
-    this.personneService.desactiverCompte(id).subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "Le compte a été désactivé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.personneService.desactiverCompte(id).subscribe(
+      (response) => {
+        console.log(response);
+        this.voirListe();
+        this.messageSuccess = "Le compte a été désactivé avec succès.";
+        setTimeout(() => {
+          this.messageSuccess = null;
+        }, 3000);
+      }
+    );
   }
 }

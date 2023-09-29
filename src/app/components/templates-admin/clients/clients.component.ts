@@ -19,17 +19,21 @@ export class ClientsComponent implements OnInit{
   clients : Client[] = [];
   messageSuccess: string | null = null;
 
-  constructor(private clientService: ClientService,
-    private personneService: PersonneService) { }
+  constructor(
+    private clientService: ClientService,
+    private personneService: PersonneService
+  ) {}
 
   ngOnInit(): void {
     this.listeClients();
   }
 
   listeClients():void{
-    this.clientService.getAll().subscribe(response=>{
-      this.clients = response;
-    })
+    this.clientService.getAll().subscribe(
+      (response) => {
+        this.clients = response;
+      }
+    );
   }
 
   // Récupération des clients de la page courante
@@ -87,11 +91,12 @@ export class ClientsComponent implements OnInit{
   }
 
   detailClient(id: number): void {
-    console.log(id)
-    this.clientService.findById(id).subscribe(response=>{
-      this.client = response;
-      console.log(response);
-    })
+    this.clientService.findById(id).subscribe(
+      (response) => {
+        this.client = response;
+        console.log(response);
+      }
+    );
   }
 
   afficherPageDetail(id: number): void {
@@ -100,35 +105,41 @@ export class ClientsComponent implements OnInit{
   }
 
   deleteDemarcheur(id: number): void{
-    this.clientService.deleteById(id).subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "Le client a été supprimé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.clientService.deleteById(id).subscribe(
+      (response) => {
+        console.log(response);
+        this.voirListe();
+        this.messageSuccess = "Le client a été supprimé avec succès.";
+        setTimeout(() => {
+          this.messageSuccess = null;
+        }, 3000);
+      }
+    );
   }
 
   activerCompte(id: number): void{
-    this.personneService.activerCompte(id).subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "Le compte a été activé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.personneService.activerCompte(id).subscribe(
+      (response) => {
+        console.log(response);
+        this.voirListe();
+        this.messageSuccess = "Le compte a été activé avec succès.";
+        setTimeout(() => {
+          this.messageSuccess = null;
+        }, 3000);
+      }
+    );
   }
 
   desactiverCompte(id: number): void{
-    this.personneService.desactiverCompte(id).subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "Le compte a été désactivé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.personneService.desactiverCompte(id).subscribe(
+      (response) => {
+        console.log(response);
+        this.voirListe();
+        this.messageSuccess = "Le compte a été désactivé avec succès.";
+        setTimeout(() => {
+          this.messageSuccess = null;
+        }, 3000);
+      }
+    );
   }
 }

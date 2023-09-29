@@ -11,6 +11,7 @@
               <h2>Connectez-vous !</h2>
               <p class="text">Connectez-vous pour avoir accès à nos fonctionnalités.</p>
             </div>
+            <div class="alert alert-success" *ngIf="reinitialisationMotDePasseReussie">{{ message }}</div>
             <div class="alert alert-danger" *ngIf="connexionNonReussie">{{ message }}</div>
             <form [formGroup]="LoginForm" (ngSubmit)="login()">
               <div class="mb25">
@@ -28,7 +29,7 @@
                   <input type="checkbox" checked="checked">
                   <span class="checkmark"></span>
                 </label>
-                <a class="fz14 ff-heading" href="#">Mot de passe oublié?</a>
+                <a class="fz14 ff-heading" routerLink="/forgot-password">Mot de passe oublié?</a>
               </div>
               <div class="d-grid mb20">
                 <button class="ud-btn btn-thm" [disabled]="LoginForm.invalid" type="submit">Se connecter <i class="fal fa-arrow-right-long"></i></button>

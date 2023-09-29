@@ -23,7 +23,9 @@ export class RolesComponent implements OnInit{
   messageErreur: string = "";
   messageSuccess: string | null = null;
 
-  constructor(private roleService: RoleService) { }
+  constructor(
+    private roleService: RoleService
+  ) {}
 
   roleForm: any;
 
@@ -40,9 +42,11 @@ export class RolesComponent implements OnInit{
   }
 
   listeRoles():void{
-    this.roleService.getAll().subscribe(response=>{
-      this.roles = response;
-    })
+    this.roleService.getAll().subscribe(
+      (response) => {
+        this.roles = response;
+      }
+    );
   }
 
   // Récupération des rôles de la page courante
@@ -111,10 +115,11 @@ export class RolesComponent implements OnInit{
 
   detailRole(id: number): void {
     console.log(id)
-    this.roleService.findById(id).subscribe(response=>{
-      this.role = response;
-      console.log(response);
-    })
+    this.roleService.findById(id).subscribe(
+      (response) => {
+        this.role = response;
+      }
+    );
   }
 
   afficherPageDetail(id: number): void {
@@ -139,10 +144,8 @@ export class RolesComponent implements OnInit{
   }
 
   ajouterRole(): void {
-    console.log(this.role)
     this.roleService.addRole(this.role).subscribe(
       (response) =>{
-        console.log(response);
         if(response.id > 0) {
           this.roles.push({
             id: response.id,
@@ -186,10 +189,8 @@ export class RolesComponent implements OnInit{
   }
 
   modifierRole(): void {
-    console.log(this.role.id)
     this.roleService.updateRole(this.role.id, this.role).subscribe(
       (response) =>{
-        console.log(response);
         if(response.id > 0) {
           this.voirListe();
           this.messageSuccess = "Le rôle a été modifié avec succès.";
@@ -222,13 +223,15 @@ export class RolesComponent implements OnInit{
   }
 
   deleteRole(id: number): void{
-    this.roleService.deleteById(id).subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "Le rôle a été supprimé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.roleService.deleteById(id).subscribe(
+      (response) => {
+        console.log(response);
+        this.voirListe();
+        this.messageSuccess = "Le rôle a été supprimé avec succès.";
+        setTimeout(() => {
+          this.messageSuccess = null;
+        }, 3000);
+      }
+    );
   }
 }

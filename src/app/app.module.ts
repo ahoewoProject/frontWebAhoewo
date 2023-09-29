@@ -25,6 +25,8 @@ import { ProfilComponent } from './components/templates-admin/profil/profil.comp
 import { DemandesCertificationsComponent } from './components/templates-admin/demandes-certifications/demandes-certifications.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ForgotPasswordComponent } from './components/auth/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
     GerantsComponent,
     ClientsComponent,
     ProfilComponent,
-    DemandesCertificationsComponent
+    DemandesCertificationsComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

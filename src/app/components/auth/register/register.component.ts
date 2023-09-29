@@ -63,20 +63,20 @@ export class RegisterComponent implements OnInit {
 
   RegisterForm: any;
 
-  constructor(private authService: PersonneService,
-    private router: Router,
-    private cookieService: CookieService) {
-
-    }
+  constructor(
+    private authService: PersonneService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     this.RegisterForm = new FormGroup({
-      nom: new FormControl(this.registerForm.nom, [Validators.required]),
-      prenom: new FormControl(this.registerForm.prenom, [Validators.required]),
-      username: new FormControl(this.registerForm.username, [Validators.required]),
-      email: new FormControl(this.registerForm.email, [Validators.required]),
-      motDePasse: new FormControl(this.registerForm.motDePasse, [Validators.required]),
-      telephone: new FormControl(this.registerForm.telephone, [Validators.required])
+      nom: new FormControl('', [Validators.required]),
+      prenom: new FormControl('', [Validators.required]),
+      username: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
+      motDePasse: new FormControl('', [Validators.required]),
+      telephone: new FormControl('', [Validators.required])
     })
   }
 
