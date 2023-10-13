@@ -1,6 +1,6 @@
 
 
-  <div class="dashboard__content property-page bgc-f7">
+  <div class="dashboard__content bgc-f7">
     <div class="row pb40 d-block d-lg-none">
       <!-- Menu responsive -->
       <app-menu-responsive></app-menu-responsive>
@@ -12,8 +12,8 @@
       <div  class="row align-items-center pb40">
         <div class="col-xxl-3">
           <div class="dashboard_title_area">
-            <h3>Mon profil</h3>
-            <h6 *ngIf="!personne.estCertifie && (personne.role.code === 'ROLE_AGENTIMMOBILER' || personne.role.code === 'ROLE_PROPRIETAIRE' || personne.role.code === 'ROLE_DEMARCHEUR')" class="text" style="color: rgb(202, 8, 8);">Votre compte n'est pas certifié, veuillez demander la certification de compte !</h6>
+            <h4>Mon profil</h4>
+            <h6 *ngIf="!personne.estCertifie && (personne.role.code === 'ROLE_AGENTIMMOBILER' || personne.role.code === 'ROLE_PROPRIETAIRE' || personne.role.code === 'ROLE_DEMARCHEUR')" class="text" style="color: rgb(202, 8, 8);">Votre compte n'est pas certifié, veuillez demander la certification de compte en cliquant sur le menu <b>certifications</b> !</h6>
           </div>
         </div>
       </div>
@@ -36,7 +36,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td class="vam">Username</td>
+                    <td class="vam">Nom d'utilisateur</td>
                     <td>{{ personne.username }}</td>
                   </tr>
                   <tr>
@@ -54,21 +54,21 @@
                   <tr>
                     <td class="vam">Etat compte</td>
                     <td>
-                      <span *ngIf="personne.etatCompte == true" class="pending-style style2">Actif</span>
-                      <span *ngIf="personne.etatCompte == false" class="pending-style style3">Inactif</span>
+                      <p-tag *ngIf="personne.etatCompte == true" severity="success" value="Activé"></p-tag>
+                      <p-tag *ngIf="personne.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
                     </td>
                   </tr>
                   <tr *ngIf="personne.role.code == 'ROLE_AGENTIMMOBILIER' || personne.role.code == 'ROLE_DEMARCHEUR' || personne.role.code == 'ROLE_PROPRIETAIRE'">
                     <td class="vam">Est certifié</td>
                     <td>
-                      <span *ngIf="personne.estCertifie == true" class="pending-style style2">Oui</span>
-                      <span *ngIf="personne.estCertifie == false" class="pending-style style3">Non</span>
+                      <p-tag *ngIf="personne.estCertifie == true" severity="success" value="Oui"></p-tag>
+                      <p-tag *ngIf="personne.estCertifie == false" severity="danger" value="Non"></p-tag>
                     </td>
                   </tr>
               </tbody>
             </table>
             <div class="text-end">
-              <a class="ud-btn btn-thm" (click)="afficherFormulaireModifier()" type="button">Modifier mes informations<i class="fal fa-arrow-right-long"></i></a>
+              <a class="ud-btn btn-thm" (click)="afficherFormulaireModifier()" type="button">Modifier</a>
             </div>
           </div>
         </div>
@@ -92,14 +92,14 @@
             </div>
             <div class="col-sm-6 col-xl-4">
               <div class="mb20">
-                <label class="heading-color ff-heading fw600 mb10">Prenom</label>
+                <label class="heading-color ff-heading fw600 mb10">Prénom</label>
                 <input type="text" class="form-control" placeholder="Votre prenom" formControlName="prenom" id="prenom" name="prenom" [ngModel]="personne.prenom" required>
-                <div class="alert alert-danger" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le prenom est obligatoire</div>
+                <div class="alert alert-danger" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le prénom est obligatoire</div>
               </div>
             </div>
             <div class="col-sm-6 col-xl-4">
               <div class="mb20">
-                <label class="heading-color ff-heading fw600 mb10">Username</label>
+                <label class="heading-color ff-heading fw600 mb10">Nom d'utilisateur</label>
                 <input type="text" class="form-control"  placeholder="Votre nom d'utilisateur" formControlName="username" id="username" name="username" [ngModel]="personne.username" required>
                 <div class="alert alert-danger" [hidden]="username.valid || username.pristine && !username.touched ">Le nom d'utilisateur est obligatoire</div>
               </div>
@@ -133,9 +133,9 @@
             <br>
             <div class="col-md-12">
               <div class="text-end">
-                <a class="ud-btn btn-warning" [ngClass]="{ 'disabled-link': userForm.invalid }" (click)="userForm.invalid ? null : modifierUser()" type="submit">Modifier</a>
+                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': userForm.invalid }" (click)="userForm.invalid ? null : modifierUser()" type="submit">Modifier</a>
                 &nbsp;
-                <a class="ud-btn btn-secondary" type="button" (click)="retour()">Annuler</a>
+                <a class="ud-btn btn-thm4" id="retour" type="button" (click)="retour()">Annuler</a>
               </div>
             </div>
           </div>
@@ -143,3 +143,4 @@
       </div>
     </div>
     <!-- End Mes informations -->
+  </div>

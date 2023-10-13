@@ -41,32 +41,31 @@ export class ForgotPasswordComponent implements OnInit{
 
     this.loading = true;
     this.messageLoading = "Recherche de votre compte en cours..."
-    setTimeout(() => {
-      this.personneService.requestResetPassword(emailData)
-      .subscribe(
-        (response) => {
-          console.log(response);
-          this.cacherFormulaire = true;
 
+    this.personneService.requestResetPassword(emailData)
+    .subscribe(
+      (response) => {
+        console.log(response);
+        this.cacherFormulaire = true;
+
+        this.loading = false;
+        this.messageLoading = null;
+      },
+      (error) => {
+        console.log(error)
+        if(error.status === 400){
           this.loading = false;
           this.messageLoading = null;
-        },
-        (error) => {
-          console.log(error)
-          if(error.status === 400){
-            this.loading = false;
-            this.messageLoading = null;
 
-            this.emailNonTrouve = true;
-            this.message = "L'adresse e-mail saisie est introuvable! Veuillez entrer une adresse e-mail valide."
-            setTimeout(() => {
-              this.emailNonTrouve = false;
-              this.message = '';
-            }, 3000);
-          }
+          this.emailNonTrouve = true;
+          this.message = "L'adresse e-mail saisie est introuvable! Veuillez entrer une adresse e-mail valide."
+          setTimeout(() => {
+            this.emailNonTrouve = false;
+            this.message = '';
+          }, 3000);
         }
-      )
-    }, 4000);
+      }
+    );
   }
 
 }

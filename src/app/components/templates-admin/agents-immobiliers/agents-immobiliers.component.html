@@ -1,4 +1,4 @@
-<div class="dashboard__content property-page bgc-f7">
+<div class="dashboard__content bgc-f7">
   <div class="row pb40 d-block d-lg-none">
     <!-- Menu responsive -->
     <app-menu-responsive></app-menu-responsive>
@@ -26,38 +26,34 @@
       </div>
     </div>
     <div class="row">
-      <div class="bd-example" *ngIf="messageSuccess">
-        <div class="alert alert-left alert-success alert-dismissible fade show mb-3" role="alert">
-          {{ messageSuccess }}
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      </div>
+      <p-toast></p-toast>
+      <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
       <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-          <div class="packages_table table-responsive">
+        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+          <div class="packages_table">
             <table class="table-style3 table at-savesearch">
               <thead class="t-head">
                 <tr>
                   <th scope="col">ID</th>
                   <th scope="col">Nom</th>
-                  <th scope="col">Prenom</th>
-                  <th scope="col">Username</th>
+                  <th scope="col">Prénom</th>
+                  <th scope="col">Nom d'utilisateur</th>
                   <th scope="col">Email</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
               <tbody class="t-body">
                 <tr *ngFor="let agentImmobilier of agentsImmobiliersParPage;  let i = index">
-                  <td class="vam">{{ (pageActuelle - 1) * elementsParPage + i + 1 }}</td>
+                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
                   <td class="vam">{{ agentImmobilier.nom }}</td>
                   <td class="vam">{{ agentImmobilier.prenom }} <i *ngIf="agentImmobilier.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-2xl" style="color: #0f77e6;"></i></td>
                   <td class="vam">{{ agentImmobilier.username }}</td>
                   <td class="vam">{{ agentImmobilier.email }}</td>
                   <td class="vam">
                     <div class="d-flex">
-                      <a type="button" (click)="afficherPageDetail(agentImmobilier.id)" class="icon" placement="top" ngbTooltip="Details"><i class="fa-regular fa-eye"></i></a>
-                      <a *ngIf="agentImmobilier.etatCompte === true" type="button" class="icon" (click)="desactiverCompte(agentImmobilier.id)" placement="top" ngbTooltip="Désactiver le compte"><i class="fa-regular fa-user-lock"></i></a>
-                      <a *ngIf="agentImmobilier.etatCompte === false" type="button" class="icon" (click)="activerCompte(agentImmobilier.id)" placement="top" ngbTooltip="Activer le compte"><i class="fa-regular fa-user-unlock"></i></a>
+                      <a type="button" (click)="afficherPageDetail(agentImmobilier.id)" class="icon" pTooltip="Détails" tooltipPosition="top"><i class="pi pi-eye" style="font-size: 1rem"></i></a>
+                      <a *ngIf="agentImmobilier.etatCompte === true" type="button" class="icon" (click)="desactiverCompte(agentImmobilier.id)" pTooltip="Désactiver ce compte" tooltipPosition="right"><i class="pi pi-lock" style="font-size: 1rem"></i></a>
+                      <a *ngIf="agentImmobilier.etatCompte === false" type="button" class="icon" (click)="activerCompte(agentImmobilier.id)" pTooltip="Activer ce compte" tooltipPosition="left"><i class="pi pi-lock-open" style="font-size: 1rem"></i></a>
                     </div>
                   </td>
                 </tr>
@@ -65,23 +61,13 @@
             </table>
 
             <div *ngIf="agentImmobiliers.length !== 0" class="mbp_pagination text-center mt30">
-              <ul class="page_navigation">
-                <li class="page-item" [class.disabled]="pageActuelle === 1">
-                  <a class="page-link" type="button" (click)="pagePrecedente()"> <span class="fas fa-angle-left"></span></a>
-                </li>
-
-                <!-- Affichage des pages -->
-                <ng-container *ngFor="let page of pages">
-                  <li class="page-item" [class.active]="pageActuelle === page" [class.disabled]="page === -1">
-                    <a class="page-link" (click)="page !== -1 && setPage(page)">{{ page !== -1 ? page : '...' }}</a>
-                  </li>
-                </ng-container>
-
-                <li class="page-item" [class.disabled]="pageActuelle === totalPages">
-                  <a class="page-link" type="button" (click)="pageSuivante()"><span class="fas fa-angle-right"></span></a>
-                </li>
-              </ul>
-              <p class="mt10 pagination_page_count text-center">{{ agentImmobiliers.length }} agents immobiliers disponibles</p>
+              <p-paginator
+                (onPageChange)="pagination($event)" [first]="pageActuelle"
+                [rows]="elementsParPage"  [totalRecords]="agentImmobiliers.length"
+                [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} agents immobiliers"
+                [showPageLinks]="true" [showFirstLastIcon]="true">
+              </p-paginator>
             </div>
             <div *ngIf="agentImmobiliers.length == 0" class="mbp_pagination text-center mt30">
               <p class="mt10 pagination_page_count text-center">Aucun agent immobilier enregistré pour le moment</p>
@@ -98,7 +84,7 @@
     <div  class="row align-items-center pb40">
       <div class="col-xxl-5">
         <div class="dashboard_title_area">
-          <h3>Détails d'un agent immobilier</h3>
+          <h4>Détails d'un agent immobilier</h4>
           <p class="text"></p>
         </div>
       </div>
@@ -114,7 +100,7 @@
                   <td>{{ agentImmobilier.nom }} {{ agentImmobilier.prenom }} <i *ngIf="agentImmobilier.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-2xl" style="color: #0f77e6;"></i></td>
                 </tr>
                 <tr>
-                  <td class="vam">Username</td>
+                  <td class="vam">Nom d'utilisateur</td>
                   <td>{{ agentImmobilier.username }}</td>
                 </tr>
                 <tr>
@@ -132,15 +118,15 @@
                 <tr>
                   <td class="vam">Etat compte</td>
                   <td>
-                    <span *ngIf="agentImmobilier.etatCompte == true" class="pending-style style2">Actif</span>
-                    <span *ngIf="agentImmobilier.etatCompte == false" class="pending-style style3">Inactif</span>
+                    <p-tag *ngIf="agentImmobilier.etatCompte == true" severity="success" value="Activé"></p-tag>
+                    <p-tag *ngIf="agentImmobilier.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
                   </td>
                 </tr>
                 <tr>
                   <td class="vam">Est certifié</td>
                   <td>
-                    <span *ngIf="agentImmobilier.estCertifie == true" class="pending-style style2">Oui</span>
-                    <span *ngIf="agentImmobilier.estCertifie == false" class="pending-style style3">Non</span>
+                    <p-tag *ngIf="agentImmobilier.estCertifie == true" severity="success" value="Oui"></p-tag>
+                    <p-tag *ngIf="agentImmobilier.estCertifie == false" severity="danger" value="Non"></p-tag>
                   </td>
                 </tr>
             </tbody>
@@ -153,3 +139,4 @@
     </div>
   </div>
   <!-- End Details d'un agent immobilier -->
+</div>

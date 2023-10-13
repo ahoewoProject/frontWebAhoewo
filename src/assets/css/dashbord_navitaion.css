@@ -63,12 +63,18 @@ font-size: 18px;
 padding-right: 10px;
 vertical-align: middle;
 }
-.dashboard_navigationbar .dropdown-content li.active a {
-background-color: #181A20;
-color: #FFFFFF;
+
+.dashboard_navigationbar .dropdown-content li a:hover,
+.dashboard_navigationbar .dropdown-content li a:active,
+.dashboard_navigationbar .dropdown-content li a:focus,
+.dashboard_navigationbar .dropdown-content li a.-is-active {
+  background-color: #0d7915;;
+  color: #ffffff;
 }
+
 .dashboard_navigationbar .dropdown a:hover {
-color: #EB6753;
+background-color: #0d7915;;
+color: #FFFFFF;
 }
 .dashboard_navigationbar .show {
 background-color: #fff;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
+import { ConfirmEventType, ConfirmationService, Message, MessageService } from 'primeng/api';
 import { Gerant } from 'src/app/models/gestionDesComptes/Gerant';
 import { Role } from 'src/app/models/gestionDesComptes/Role';
 import { GerantService } from 'src/app/services/gestionDesComptes/gerant.service';
@@ -13,13 +14,14 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 })
 export class GerantsComponent implements OnInit{
 
+  message: Message[] = [];
   user: any;
   affichage = 1;
   visibleAddForm = 0;
   visibleUpdateForm = 0;
 
   elementsParPage = 5; // Nombre d'éléments par page
-  pageActuelle = 1; // Page actuelle
+  pageActuelle = 0; // Page actuelle
 
   erreur: boolean = false;
   gerant = this.gerantService.gerant;
@@ -41,7 +43,10 @@ export class GerantsComponent implements OnInit{
 
   constructor(private gerantService: GerantService,
     private personneService: PersonneService,
-    private cookieService: CookieService) {
+    private cookieService: CookieService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
+    ) {
       const userCookie = this.cookieService.get('user');
       this.user = JSON.parse(userCookie);
      }
@@ -57,12 +62,13 @@ export class GerantsComponent implements OnInit{
 
   initGerantForm(): void{
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
     this.gerantForm = new FormGroup({
       nom: new FormControl(this.gerant.nom, [Validators.required]),
       prenom: new FormControl(this.gerant.prenom, [Validators.required]),
       username: new FormControl(this.gerant.username, [Validators.required]),
       email: new FormControl(this.gerant.email, [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
-      motDePasse: new FormControl(this.gerant.motDePasse, [Validators.required]),
+      motDePasse: new FormControl(this.gerant.motDePasse, [Validators.required, Validators.maxLength(14), Validators.minLength(7), Validators.pattern(passwordRegex)]),
       telephone: new FormControl(this.gerant.telephone, [Validators.required]),
     })
   }
@@ -85,51 +91,15 @@ export class GerantsComponent implements OnInit{
 
   // Récupération des gérants de la page courante
   get gerantsParPage(): any[] {
-    const startIndex = (this.pageActuelle - 1) * this.elementsParPage;
+    const startIndex = this.pageActuelle;
     const endIndex = startIndex + this.elementsParPage;
     return this.gerants.slice(startIndex, endIndex);
   }
 
-  // Fonction pour passer à la page précédente
-  pagePrecedente() {
-    if (this.pageActuelle > 1) {
-      this.pageActuelle--;
-    }
-  }
-
-  // Fonction pour passer à la page suivante
-  pageSuivante() {
-    if (this.pageActuelle < this.totalPages) {
-      this.pageActuelle++;
-    }
-  }
-
-  // Calcul du nombre total de pages
-  get totalPages(): number {
-    return Math.ceil(this.gerants.length / this.elementsParPage);
-  }
-
-  // Génération du tableau des numéros de page
-  get pages(): number[] {
-    const totalPagesToShow = 3; // Nombre total de pages à afficher avant d'afficher "..." et la dernière page
-
-    if (this.totalPages <= totalPagesToShow) {
-      return Array(this.totalPages).fill(0).map((x, i) => i + 1);
-    }
-
-    // Affiche les 3 premières pages
-    const firstPages = Array(totalPagesToShow).fill(0).map((x, i) => i + 1);
-
-    // Affiche "..." et la dernière page
-    const lastPage = this.totalPages;
-    return [...firstPages, -1, lastPage];
-  }
-
-  // Fonction pour définir la page actuelle
-  setPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.pageActuelle = page;
-    }
+  pagination(event: any) {
+    this.pageActuelle = event.first;
+    this.elementsParPage = event.rows;
+    this.listeGerants()
   }
 
   voirListe(): void{
@@ -224,9 +194,7 @@ export class GerantsComponent implements OnInit{
           });
           this.voirListe();
           this.messageSuccess = "Le gérant a été ajouté avec succès.";
-          setTimeout(() => {
-            this.messageSuccess = null;
-          }, 3000);
+          this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
         }
         else{
           this.erreur = true;
@@ -237,9 +205,11 @@ export class GerantsComponent implements OnInit{
           this.gerant.username = response.username;
           this.gerant.email = response.email;
           this.gerant.telephone = response.telephone;
+          this.message = [
+            { severity: 'error', summary: 'Erreur de modification', detail: this.messageErreur }
+          ];
           setTimeout(() => {
-            this.erreur = false;
-            this.messageErreur = "";
+            this.message = [];
           }, 3000);
         }
     },
@@ -248,9 +218,11 @@ export class GerantsComponent implements OnInit{
       if(error.status === 409){
         this.erreur = true;
         this.messageErreur = "Un gérant avec ce nom d'utilisateur existe déjà !";
+        this.message = [
+          { severity: 'warn', summary: 'Ajout non réussi', detail: this.messageErreur }
+        ];
         setTimeout(() => {
-          this.erreur = false;
-          this.messageErreur = "";
+          this.message = [];
         }, 3000);
       }
     })
@@ -261,32 +233,62 @@ export class GerantsComponent implements OnInit{
       console.log(response);
       this.voirListe();
       this.messageSuccess = "Le gérant a été supprimé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
+      this.messageService.add({ severity: 'success', summary: 'Suppression réussie', detail: this.messageSuccess })
     })
   }
 
   activerCompte(id: number): void{
-    this.personneService.activerCompte(id)
-    .subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "Le compte a été activé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.confirmationService.confirm({
+      message: 'Vous êtes sûr de vouloir activer ce compte ?',
+      header: "Activation de compte",
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.personneService.activerCompte(id).subscribe(response=>{
+          console.log(response);
+          this.voirListe();
+          this.messageSuccess = "Le compte a été activé avec succès !";
+          this.messageService.add({ severity: 'success', summary: 'Activation de compte confirmé', detail: this.messageSuccess })
+        });
+
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Activation de compte rejetée', detail: "Vous avez rejeté l'activation de ce compte !" });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({ severity: 'warn', summary: 'Activation de compte annulée', detail: "Vous avez annulé l'activation de ce compte !" });
+            break;
+        }
+      }
+    });
   }
 
   desactiverCompte(id: number): void{
-    this.personneService.desactiverCompte(id).subscribe(response=>{
-      console.log(response);
-      this.voirListe();
-      this.messageSuccess = "Le compte a été désactivé avec succès.";
-      setTimeout(() => {
-        this.messageSuccess = null;
-      }, 3000);
-    })
+    this.confirmationService.confirm({
+      message: 'Vous êtes sûr de vouloir désactiver ce compte ?',
+      header: "Désactivation de compte",
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.personneService.desactiverCompte(id).subscribe(response=>{
+          console.log(response);
+          this.voirListe();
+          this.messageSuccess = "Le compte a été désactivé avec succès.";
+          this.messageService.add({ severity: 'success', summary: 'Désactivaction de compte confirmé', detail: this.messageSuccess })
+        });
+
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Désactivation de compte rejetée', detail: 'Vous avez rejeté la désactivation de ce compte !' });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({ severity: 'warn', summary: 'Désactivation de compte annulée', detail: 'Vous avez annulé la désactivation de ce compte !' });
+            break;
+        }
+      }
+    });
   }
+
 }

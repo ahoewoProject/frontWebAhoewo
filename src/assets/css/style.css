@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /*
 Project/Template Name:  Homez - Real Estate HTML Template
-Template Url:  
+Template Url:
 Author: CreativeLayers
 Author Url: https://themeforest.net/user/creativelayers/portfolio
 Version: 1.0.0
@@ -95,7 +95,7 @@ a,
 }
 a:hover,
 .btn:hover {
-  color: #EB6753;
+  color: #db6b15;
 }
 a:active, a:focus, a:hover, a:visited,
 .btn:active,
@@ -569,7 +569,7 @@ h2 {
 .user_setting .dropdown-menu .dropdown-item.active span,
 .user_setting .dropdown-menu .dropdown-item:hover,
 .user_setting .dropdown-menu .dropdown-item:hover span {
-  background-color: #181A20;
+  background-color: #0d7915;
   color: #ffffff;
 }
 
@@ -577,7 +577,7 @@ h2 {
 .dashboard_sidebar_list .sidebar_list_item a:active,
 .dashboard_sidebar_list .sidebar_list_item a:focus,
 .dashboard_sidebar_list .sidebar_list_item a.-is-active {
-  background-color: #181A20;
+  background-color: #0d7915;
   color: #ffffff;
 }
 
@@ -684,7 +684,7 @@ h2 {
 
 .dashboard__content {
   border-radius: 16px;
-  padding: 60px 60px 20px;
+  padding: 60px 60px 30px;
   width: 100%;
 }
 @media (max-width: 767.98px) {
@@ -4628,10 +4628,10 @@ section {
 
 .scrollToHome {
   background-color: transparent;
-  border: 1px solid #EB6753;
+  border: 1px solid #db6b15;
   border-radius: 50%;
   bottom: -45px;
-  color: #EB6753;
+  color: #db6b15;
   display: block;
   height: 50px;
   line-height: 50px;
@@ -4662,7 +4662,7 @@ section {
 }
 
 .scrollToHome:hover {
-  background-color: #EB6753;
+  background-color: #db6b15;
   color: #ffffff;
 }
 
@@ -4940,8 +4940,10 @@ section {
 /* Error Pages Styles */
 .login-bg-icon {
   position: absolute;
-  right: 0;
-  bottom: 0;
+  width: 400px;
+  height: 400px;
+  top: 30%;
+  left: 65%;
 }
 
 .error_page_content .erro_code {
@@ -6599,8 +6601,13 @@ textarea:focus {
 }
 
 .btn-thm {
-  background-color: #EB6753;
-  border: 1px solid #EB6753;
+  background-color: #ee944e;
+  border: 1px solid #ee944e;
+  color: #ffffff;
+}
+
+.btn-thm4 {
+  background-color: #0d7915;
   color: #ffffff;
 }
 
@@ -6621,7 +6628,7 @@ textarea:focus {
 .btn-light-gray:before,
 .btn-transparent:before,
 .btn-transparent2:before {
-  background-color: #EE4C34;
+  background-color: #db6b15;
   content: "";
   height: 100%;
   left: -100%;
@@ -8220,9 +8227,11 @@ li.mm-listitem:focus {
   box-shadow: 0px 1px 4px rgba(24, 26, 32, 0.07);
 }
 .mbp_pagination .page-item.active .page-link {
-  background-color: #EB6753;
+  background-color: #ee944e;
   color: #ffffff;
 }
+
+
 .mbp_pagination .page-link {
   background-color: transparent;
   border: none;

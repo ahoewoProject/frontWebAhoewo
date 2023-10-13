@@ -18,23 +18,18 @@
     <div class="row">
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-          <div class="bd-example" *ngIf="erreur">
-            <div class="alert alert-left alert-danger alert-dismissible fade show mb-3" role="alert">
-              {{ messageErreur }}
-              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          </div>
+          <p-messages [(value)]="message" [enableService]="false"></p-messages>
           <form [formGroup]="roleForm" (ngSubmit)="ajouterRole()" class="form-style1">
             <div class="row">
               <div class="form-group col-md-6">
                 <label class="heading-color ff-heading fw600 mb10">Code</label>
                 <input type="text" class="form-control" id="code" name="code" placeholder="Le code du rôle" formControlName="code" [(ngModel)]="role.code" required>
-                <div class="alert alert-danger" [hidden]="code.valid || code.pristine && !code.touched ">Le code du rôle est obligatoire</div>
+                <div class="text-danger" [hidden]="code.valid || code.pristine && !code.touched ">Le code du rôle est obligatoire</div>
               </div>
               <div class="form-group col-md-6">
                 <label class="heading-color ff-heading fw600 mb10">Libelle</label>
                 <input type="text" class="form-control" id="libelle" name="libelle" placeholder="Le libelle du rôle" formControlName="libelle" [(ngModel)]="role.libelle" required>
-                <div class="alert alert-danger" [hidden]="libelle.valid || libelle.pristine && !libelle.touched ">Le code du rôle est obligatoire</div>
+                <div class="text-danger" [hidden]="libelle.valid || libelle.pristine && !libelle.touched ">Le code du rôle est obligatoire</div>
               </div>
             </div>
             <br>
@@ -42,7 +37,7 @@
               <div class="text-end">
                 <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': roleForm.invalid }" (click)="roleForm.invalid ? null : ajouterRole()" type="submit">Ajouter</a>
                 &nbsp;
-                <a class="ud-btn btn-secondary" type="button" (click)="voirListe()">Annuler</a>
+                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
               </div>
             </div>
           </form>
@@ -65,23 +60,18 @@
     <div class="row">
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-          <div class="bd-example" *ngIf="erreur">
-            <div class="alert alert-left alert-danger alert-dismissible fade show mb-3" role="alert">
-              {{ messageErreur }}
-              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          </div>
+          <p-messages [(value)]="message" [enableService]="false"></p-messages>
           <form [formGroup]="roleForm" (ngSubmit)="modifierRole()" class="form-style1">
             <div class="row">
               <div class="form-group col-md-6">
                 <label class="heading-color ff-heading fw600 mb10">Code</label>
                 <input type="text" class="form-control" id="code" name="code" placeholder="Le code du rôle" formControlName="code" [(ngModel)]="role.code" required>
-                <div class="alert alert-danger" [hidden]="code.valid || code.pristine && !code.touched ">Le code du rôle est obligatoire</div>
+                <div class="text-danger" [hidden]="code.valid || code.pristine && !code.touched ">Le code du rôle est obligatoire</div>
               </div>
               <div class="form-group col-md-6">
                 <label class="heading-color ff-heading fw600 mb10">Libelle</label>
                 <input type="text" class="form-control" id="libelle" name="libelle" placeholder="Le libelle du rôle" formControlName="libelle" [(ngModel)]="role.libelle" required>
-                <div class="alert alert-danger" [hidden]="libelle.valid || libelle.pristine && !libelle.touched ">Le code du rôle est obligatoire</div>
+                <div class="text-danger" [hidden]="libelle.valid || libelle.pristine && !libelle.touched ">Le code du rôle est obligatoire</div>
               </div>
             </div>
             <br>
@@ -89,7 +79,7 @@
               <div class="text-end">
                 <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': roleForm.invalid }" (click)="roleForm.invalid ? null : modifierRole()" type="submit">Modifier</a>
                 &nbsp;
-                <a class="ud-btn btn-secondary" type="button" (click)="voirListe()">Annuler</a>
+                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
               </div>
             </div>
           </form>
@@ -117,20 +107,15 @@
             </div>
           </div>
           &nbsp;
-          <a type="button" *ngIf="visibleAddForm == 0" (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">Ajouter un rôle<i class="fal fa-arrow-right-long"></i></a>
+          <a type="button" *ngIf="visibleAddForm == 0" (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">Ajouter un rôle</a>
         </div>
       </div>
     </div>
     <div class="row">
-      <div class="bd-example" *ngIf="messageSuccess">
-        <div class="alert alert-left alert-success alert-dismissible fade show mb-3" role="alert">
-          {{ messageSuccess }}
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      </div>
+      <p-toast></p-toast>
       <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-          <div class="packages_table table-responsive">
+        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+          <div class="packages_table">
             <table class="table-style3 table at-savesearch">
               <thead class="t-head">
                 <tr>
@@ -141,40 +126,29 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <ng-container *ngFor="let role of rolesParPage; let i = index">
-                  <tr>
-                    <td class="vam">{{ (pageActuelle - 1) * elementsParPage + i + 1 }}</td>
+                  <tr *ngFor="let role of rolesParPage; let i = index">
+                    <td class="vam">{{ pageActuelle + i + 1 }}</td>
                     <td class="vam">{{ role.code }}</td>
                     <td class="vam">{{ role.libelle }}</td>
                     <td class="vam">
                       <div class="d-flex">
-                        <a type="button" (click)="afficherFormulaireModifier(role.id)" class="icon" placement="top" ngbTooltip="Modifier"><span class="fas fa-pen fa"></span></a>
+                        <a type="button" (click)="afficherFormulaireModifier(role.id)" class="icon" pTooltip="Modifier" tooltipPosition="top"><i class="pi pi-pencil" style="font-size: 1rem"></i></a>
                       </div>
                     </td>
                   </tr>
-                </ng-container>
               </tbody>
             </table>
 
             <div *ngIf="roles.length !== 0" class="mbp_pagination text-center mt30">
-              <ul class="page_navigation">
-                <li class="page-item" [class.disabled]="pageActuelle === 1">
-                  <a class="page-link" type="button" (click)="pagePrecedente()"> <span class="fas fa-angle-left"></span></a>
-                </li>
-
-                <!-- Affichage des pages -->
-                <ng-container *ngFor="let page of pages">
-                  <li class="page-item" [class.active]="pageActuelle === page" [class.disabled]="page === -1">
-                    <a class="page-link" (click)="page !== -1 && setPage(page)">{{ page !== -1 ? page : '...' }}</a>
-                  </li>
-                </ng-container>
-
-                <li class="page-item" [class.disabled]="pageActuelle === totalPages">
-                  <a class="page-link" type="button" (click)="pageSuivante()"><span class="fas fa-angle-right"></span></a>
-                </li>
-              </ul>
-              <p class="mt10 pagination_page_count text-center">{{ roles.length }} rôles disponibles</p>
+              <p-paginator
+                (onPageChange)="pagination($event)" [first]="pageActuelle"
+                [rows]="elementsParPage"  [totalRecords]="roles.length"
+                [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} rôles"
+                [showPageLinks]="true" [showFirstLastIcon]="true">
+              </p-paginator>
             </div>
+
           </div>
           <div *ngIf="roles.length == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucun rôle enregistré pour le moment</p>

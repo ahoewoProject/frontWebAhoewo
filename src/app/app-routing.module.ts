@@ -16,12 +16,15 @@ import { ProfilComponent } from './components/templates-admin/profil/profil.comp
 import { DemandesCertificationsComponent } from './components/templates-admin/demandes-certifications/demandes-certifications.component';
 import { ForgotPasswordComponent } from './components/auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
+import { TemplatesClientComponent } from './components/templates-client/templates-client.component';
 
 const routes: Routes = [
+  { path: '', redirectTo:'', pathMatch: 'full'},
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
+  { path: '', component: TemplatesClientComponent },
   { path: 'admin', component: TemplatesAdminComponent,
     children:[
       { path: 'dashboard', component: DashboardComponent },

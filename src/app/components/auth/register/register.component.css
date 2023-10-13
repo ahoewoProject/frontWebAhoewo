@@ -6,3 +6,22 @@
 .ng-invalid:not(form) {
     border-left: 5px solid #a94442;
 }
+
+.img {
+  margin-top: 5%;
+}
+
+.heading {
+  margin-top: 0%;
+}
+
+.disabled-link {
+  pointer-events: none; /* Désactive les événements de pointage, rendant le lien non cliquable */
+  opacity: 0.5; /* Réduit l'opacité pour montrer qu'il est désactivé */
+  cursor: not-allowed; /* Affiche un curseur "non autorisé" */
+}
+
+.large-select {
+  height: 55px; /* Remplacez par la largeur que vous souhaitez */
+}
+

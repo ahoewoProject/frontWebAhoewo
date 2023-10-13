@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
-import { LoginForm } from 'src/app/models/auth/LoginForm';
 import { RegisterForm } from 'src/app/models/auth/RegisterForm';
 import { Personne } from 'src/app/models/gestionDesComptes/Personne';
 import { environment } from 'src/environments/environment';
@@ -105,9 +104,10 @@ export class PersonneService {
   }
 
   // Fonction pour déconnecter un utilisateur
-  logout() {
-    this.router.navigate(['/login']);
+  logout(): void {
     this.cookieService.deleteAll();
+    localStorage.clear()
+    this.router.navigate(['/login']);
     this.isLoggedIn = false;
   }
 }

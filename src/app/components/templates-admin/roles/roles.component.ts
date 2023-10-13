@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Message, MessageService } from 'primeng/api';
 import { Role } from 'src/app/models/gestionDesComptes/Role';
 import { RoleService } from 'src/app/services/gestionDesComptes/role.service';
 
@@ -10,12 +11,13 @@ import { RoleService } from 'src/app/services/gestionDesComptes/role.service';
 })
 export class RolesComponent implements OnInit{
 
+  message: Message[] = [];
   affichage = 1;
   visibleAddForm = 0;
   visibleUpdateForm = 0;
 
-  elementsParPage = 5; // Nombre d'éléments par page
-  pageActuelle = 1; // Page actuelle
+  pageActuelle = 0;
+  elementsParPage = 5;
 
   erreur: boolean = false;
   role = this.roleService.role;
@@ -24,7 +26,8 @@ export class RolesComponent implements OnInit{
   messageSuccess: string | null = null;
 
   constructor(
-    private roleService: RoleService
+    private roleService: RoleService,
+    private messageService: MessageService
   ) {}
 
   roleForm: any;
@@ -49,53 +52,14 @@ export class RolesComponent implements OnInit{
     );
   }
 
-  // Récupération des rôles de la page courante
-  get rolesParPage(): any[] {
-    const startIndex = (this.pageActuelle - 1) * this.elementsParPage;
-    const endIndex = startIndex + this.elementsParPage;
-    return this.roles.slice(startIndex, endIndex);
+  get rolesParPage(): any[]{
+    return this.roles.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
   }
 
-  // Fonction pour passer à la page précédente
-  pagePrecedente() {
-    if (this.pageActuelle > 1) {
-      this.pageActuelle--;
-    }
-  }
-
-  // Fonction pour passer à la page suivante
-  pageSuivante() {
-    if (this.pageActuelle < this.totalPages) {
-      this.pageActuelle++;
-    }
-  }
-
-  // Calcul du nombre total de pages
-  get totalPages(): number {
-    return Math.ceil(this.roles.length / this.elementsParPage);
-  }
-
-  // Génération du tableau des numéros de page
-  get pages(): number[] {
-    const totalPagesToShow = 3; // Nombre total de pages à afficher avant d'afficher "..." et la dernière page
-
-    if (this.totalPages <= totalPagesToShow) {
-      return Array(this.totalPages).fill(0).map((x, i) => i + 1);
-    }
-
-    // Affiche les 3 premières pages
-    const firstPages = Array(totalPagesToShow).fill(0).map((x, i) => i + 1);
-
-    // Affiche "..." et la dernière page
-    const lastPage = this.totalPages;
-    return [...firstPages, -1, lastPage];
-  }
-
-  // Fonction pour définir la page actuelle
-  setPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.pageActuelle = page;
-    }
+  pagination(event: any) {
+    this.pageActuelle = event.first;
+    this.elementsParPage = event.rows;
+    this.listeRoles()
   }
 
   voirListe(): void{
@@ -159,9 +123,7 @@ export class RolesComponent implements OnInit{
           });
           this.voirListe();
           this.messageSuccess = "Le rôle a été ajouté avec succès.";
-          setTimeout(() => {
-            this.messageSuccess = null;
-          }, 3000);
+          this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
         }
         else{
           this.erreur = true;
@@ -169,9 +131,11 @@ export class RolesComponent implements OnInit{
           this.afficherFormulaireAjouter();
           this.role.code = response.code;
           this.role.libelle = response.libelle;
+          this.message = [
+            { severity: 'error', summary: "Erreur d'ajout", detail: this.messageErreur }
+          ];
           setTimeout(() => {
-            this.erreur = false;
-            this.messageErreur = "";
+            this.message = [];
           }, 3000);
         }
     },
@@ -180,9 +144,11 @@ export class RolesComponent implements OnInit{
       if(error.status === 409){
         this.erreur = true;
         this.messageErreur = "Un rôle avec ce code existe déjà !";
+        this.message = [
+          { severity: 'warn', summary: "Erreur d'ajout", detail: this.messageErreur }
+        ];
         setTimeout(() => {
-          this.erreur = false;
-          this.messageErreur = "";
+          this.message = [];
         }, 3000);
       }
     })
@@ -194,16 +160,16 @@ export class RolesComponent implements OnInit{
         if(response.id > 0) {
           this.voirListe();
           this.messageSuccess = "Le rôle a été modifié avec succès.";
-          setTimeout(() => {
-            this.messageSuccess = null;
-          }, 3000);
+          this.messageService.add({ severity: 'success', summary: 'Modification réussie', detail: this.messageSuccess })
         }
         else{
           this.erreur = true;
           this.messageErreur = "Erreur lors de la modification du rôle !";
+          this.message = [
+            { severity: 'error', summary: 'Erreur modification', detail: this.messageErreur }
+          ];
           setTimeout(() => {
-            this.erreur = false;
-            this.messageErreur = "";
+            this.message = [];
           }, 3000);
           this.afficherFormulaireModifier(this.role.id);
         }
@@ -213,9 +179,11 @@ export class RolesComponent implements OnInit{
       if(error.status === 409){
         this.erreur = true;
         this.messageErreur = "Un rôle avec ce code existe déjà !";
+        this.message = [
+          { severity: 'warn', summary: 'Modification non réussie', detail: this.messageErreur }
+        ];
         setTimeout(() => {
-          this.erreur = false;
-          this.messageErreur = "";
+          this.message = [];
         }, 3000);
         this.afficherFormulaireModifier(this.role.id);
       }
@@ -228,9 +196,7 @@ export class RolesComponent implements OnInit{
         console.log(response);
         this.voirListe();
         this.messageSuccess = "Le rôle a été supprimé avec succès.";
-        setTimeout(() => {
-          this.messageSuccess = null;
-        }, 3000);
+        this.messageService.add({ severity: 'success', summary: 'Ahoewo', detail: this.messageSuccess })
       }
     );
   }

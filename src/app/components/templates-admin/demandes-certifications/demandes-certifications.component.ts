@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { ConfirmEventType, ConfirmationService, Message, MessageService } from 'primeng/api';
 import { DemandeCertification } from 'src/app/models/gestionDesComptes/DemandeCertification';
 import { DemandeCertificationService } from 'src/app/services/gestionDesComptes/demande-certification.service';
 import { environment } from 'src/environments/environment';
@@ -10,12 +11,13 @@ import { environment } from 'src/environments/environment';
 })
 export class DemandesCertificationsComponent implements OnInit {
 
+  message: Message[] = [];
   affichage = 1;
   visibleAddForm = 0;
   user : any;
 
   elementsParPage = 5; // Nombre d'éléments par page
-  pageActuelle = 1; // Page actuelle
+  pageActuelle = 0; // Page actuelle
 
   erreur: boolean = false;
   demandeCertification = this.demandeCertifService.demandeCertification;
@@ -28,7 +30,9 @@ export class DemandesCertificationsComponent implements OnInit {
 
   constructor(
     private demandeCertifService: DemandeCertificationService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ){
       this.APIEndpoint = environment.APIEndpoint;
       const userCookie = this.cookieService.get('user');
@@ -61,51 +65,15 @@ export class DemandesCertificationsComponent implements OnInit {
 
   // Récupération des demandes de certifications de la page courante
   get demandesCertificationsParPage(): any[] {
-    const startIndex = (this.pageActuelle - 1) * this.elementsParPage;
+    const startIndex = this.pageActuelle;
     const endIndex = startIndex + this.elementsParPage;
     return this.demandeCertifications.slice(startIndex, endIndex);
   }
 
-  // Fonction pour passer à la page précédente
-  pagePrecedente() {
-    if (this.pageActuelle > 1) {
-      this.pageActuelle--;
-    }
-  }
-
-  // Fonction pour passer à la page suivante
-  pageSuivante() {
-    if (this.pageActuelle < this.totalPages) {
-      this.pageActuelle++;
-    }
-  }
-
-  // Calcul du nombre total de pages
-  get totalPages(): number {
-    return Math.ceil(this.demandeCertifications.length / this.elementsParPage);
-  }
-
-  // Génération du tableau des numéros de page
-  get pages(): number[] {
-    const totalPagesToShow = 3; // Nombre total de pages à afficher avant d'afficher "..." et la dernière page
-
-    if (this.totalPages <= totalPagesToShow) {
-      return Array(this.totalPages).fill(0).map((x, i) => i + 1);
-    }
-
-    // Affiche les 3 premières pages
-    const firstPages = Array(totalPagesToShow).fill(0).map((x, i) => i + 1);
-
-    // Affiche "..." et la dernière page
-    const lastPage = this.totalPages;
-    return [...firstPages, -1, lastPage];
-  }
-
-  // Fonction pour définir la page actuelle
-  setPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.pageActuelle = page;
-    }
+  pagination(event: any) {
+    this.pageActuelle = event.first;
+    this.elementsParPage = event.rows;
+    this.listeDemandeCertifications()
   }
 
   voirListe(): void{
@@ -124,14 +92,23 @@ export class DemandesCertificationsComponent implements OnInit {
     this.demandeCertification = new DemandeCertification();
   }
 
+  onUpload(event: any) {
+    const uploadedFile: File = event.files[0];
+    console.log(uploadedFile)
+    this.documentJustificatif = uploadedFile;
+    this.ajoutDemandeCertif()
+  }
+
   onSelectFile(event: any){
     if(event.target.files.length > 0){
       const file = event.target.files[0];
       this.documentJustificatif = file;
+      console.log(file)
     }
   }
 
   ajoutDemandeCertif(): void{
+
     const formValues = {
       personne: this.user
     }
@@ -146,16 +123,16 @@ export class DemandesCertificationsComponent implements OnInit {
         if(response.id > 0) {
           this.voirListe();
           this.messageSuccess = "La demande de certification a été ajouté avec succès!";
-          setTimeout(() => {
-            this.messageSuccess = null;
-          }, 3000);
+          this.messageService.add({ severity: 'success', summary: 'Demande de certification réussie', detail: this.messageSuccess })
         }
         else{
           this.erreur = true;
           this.messageErreur = "Erreur lors de l'ajout de votre demande de certification!"
+          this.message = [
+            { severity: 'error', summary: "Erreur d'ajout de la demande de certification", detail: this.messageErreur }
+          ];
           setTimeout(() => {
-            this.erreur = false;
-            this.messageErreur = "";
+            this.message = [];
           }, 3000);
           this.afficherFormulaireAjouter();
         }
@@ -181,16 +158,31 @@ export class DemandesCertificationsComponent implements OnInit {
   }
 
   certifierCompte(idPersonne: number, idDemandeCertif: number): void{
-    this.demandeCertifService.certifierCompte(idPersonne, idDemandeCertif).subscribe(
-      (response) => {
-        console.log(response);
-        this.ngOnInit()
-        this.voirListe();
-        this.messageSuccess = "Le compte de l'utilisateur a été certifié avec succès!";
-        setTimeout(() => {
-          this.messageSuccess = null;
-        }, 3000);
+    this.confirmationService.confirm({
+      message: 'Vous êtes sûr de vouloir certifier ce compte ?',
+      header: "Certification de compte",
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.demandeCertifService.certifierCompte(idPersonne, idDemandeCertif).subscribe(
+          (response) => {
+            console.log(response);
+            this.ngOnInit()
+            this.voirListe();
+            this.messageSuccess = "Le compte du demandeur a été certifié avec succès!";
+            this.messageService.add({ severity: 'success', summary: 'Certification de compte confirmé', detail: this.messageSuccess })
+          }
+        );
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Certification de compte rejetée', detail: 'Vous avez rejeté la certification de ce compte !' });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({ severity: 'warn', summary: 'Certification de compte annulée', detail: 'Vous avez annulé la la certification de ce compte !' });
+            break;
+        }
       }
-    );
+    });
   }
 }

@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit{
   loginForm: LoginForm = new LoginForm();
   loginData: FormData = new  FormData();
   reinitialisationMotDePasseReussie: any;
+  inscriptionReussie: any;
 
   constructor(
     private authService: PersonneService,
@@ -31,11 +32,18 @@ export class LoginComponent implements OnInit{
 
   ngOnInit(): void {
     this.reinitialisationMotDePasseReussie = this.activatedRoute.snapshot.queryParamMap.get('passwordResetSuccess') || '';
+    this.inscriptionReussie = this.activatedRoute.snapshot.queryParamMap.get('inscriptionSuccess') || '';
     if(this.reinitialisationMotDePasseReussie){
       this.message = 'Mot de passe réinitialisé avec succès !';
       setTimeout(() => {
         this.message = '';
         this.reinitialisationMotDePasseReussie = null
+      }, 3000);
+    }else if(this.inscriptionReussie){
+      this.message = 'Compte crée avec succès !';
+      setTimeout(() => {
+        this.message = '';
+        this.inscriptionReussie = null
       }, 3000);
     }
     this.initLoginForm();
@@ -57,6 +65,9 @@ export class LoginComponent implements OnInit{
   }
 
   login(): void {
+
+    console.log(this.loginForm.username);
+    console.log(this.loginForm.password)
 
     this.loginData.append('username', this.loginForm.username);
     this.loginData.append('password', this.loginForm.password);
@@ -92,10 +103,9 @@ export class LoginComponent implements OnInit{
     this.user = user;
 
     if (this.user.etatCompte === true) {
+      localStorage.setItem('activeLink', '/admin/dashboard');
       this.cookieService.set('user', JSON.stringify(user));
-      this.router.navigate(['/admin/dashboard'])/*.then(() => {
-        window.location.reload();
-      });*/
+      this.router.navigate(['/admin/dashboard'])
     } else {
       this.connexionNonReussie = true;
       this.message = "Votre compte est désactivé. Veuillez contacter l'équipe support technique ahoewo pour obtenir de l'aide supplémentaire";
@@ -111,6 +121,8 @@ export class LoginComponent implements OnInit{
   private loginError(error: any): void {
     console.log(error);
     this.connexionNonReussie = true;
+    this.loginData.delete('username');
+    this.loginData.delete('password')
 
     if (error.status === 401) {
       this.message = "Username ou mot de passe incorrect. Veuillez réessayer.";

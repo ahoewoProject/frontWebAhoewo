@@ -1,1 +1,66 @@
 /* You can add global styles to this file, and also import other style files */
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+/* .p-element{
+  background-color:#4ebc87;
+  border-color: #4ebc87;
+} */
+
+/* Style pour les boutons de pagination */
+.p-paginator .p-paginator-pages button {
+  font-family: "Poppins", sans-serif;;
+  padding: 8px 12px;
+  margin: 0 2px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: #ee944e;;
+  color: white;
+}
+
+.p-paginator .p-paginator-pages button:hover {
+  background-color: #ee944e;
+  color: white;
+}
+
+/* Style pour la flèche de pagination précédente */
+.p-paginator .p-paginator-prev {
+  border-radius: 50%;
+}
+
+/* Style pour la flèche de pagination suivante */
+.p-paginator .p-paginator-next {
+  border-radius: 50%;
+}
+
+.p-paginator .p-paginator-first {
+  border-radius: 50%;
+}
+
+.p-paginator .p-paginator-last {
+  border-radius: 50%;
+}
+
+/* .p-disabled {
+  border-radius: 6px;
+  margin-right: 3.5px;
+} */
+
+.p-fileupload {
+  width: 500px;
+}
+
+.p-fileupload .p-fileupload-buttonbar {
+  display: flex;
+}
+
+.p-button {
+  border-radius: 7px;
+  margin-right: 9px;
+}
+

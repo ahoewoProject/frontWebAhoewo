@@ -1,0 +1,35 @@
+:host ::ng-deep .choose-label {
+  background-color: #4ebc87;;
+  border-color: #4ebc87;;
+}
+
+:host ::ng-deep .upload-label {
+  background-color: #ee944e;
+  border-color: #ee944e;
+}
+
+:host ::ng-deep .cancel-label {
+  background-color: #f43838;
+  border-color: #f43838;
+}
+
+:host ::ng-deep .remove-label {
+  background-color: #f43838;
+  border-color: #f43838;
+}
+
+.disabled-link {
+  pointer-events: none; /* Désactive les événements de pointage, rendant le lien non cliquable */
+  opacity: 0.5; /* Réduit l'opacité pour montrer qu'il est désactivé */
+  cursor: not-allowed; /* Affiche un curseur "non autorisé" */
+}
+
+
+.ng-valid[required],
+.ng-valid.required {
+    border-left: 5px solid #42A948;
+}
+
+.ng-invalid:not(form) {
+    border-left: 5px solid #a94442;
+}

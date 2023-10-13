@@ -6,7 +6,7 @@
         <div class="col-6 col-lg-auto">
           <div class="text-center text-lg-start d-flex align-items-center">
             <div class="dashboard_header_logo position-relative me-2 me-xl-5">
-              <a href="index.html" class="logo"><img src="assets/images/header-logo2.svg" alt=""></a>
+              <a routerLink="/" class="logo"><img src="assets/images/ahoe-min.png" width="145" height="38" alt=""></a>
             </div>
             <div class="fz20 ms-2 ms-xl-5">
               <a href="#" class="dashboard_sidebar_toggle_icon text-thm1 vam"><img src="assets/images/dark-nav-icon.svg" alt=""></a>
@@ -16,22 +16,21 @@
         <div class="d-none d-lg-block col-lg-auto">
           <!-- Responsive Menu Structure-->
           <ul id="respMenu" class="ace-responsive-menu" data-menu-style="horizontal">
-            <li class="visible_list"> <a *ngIf="demandeCertifications.length == 0 && user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="list-item" routerLink="/admin/demandes-certifications"><span class="title">Demander la certification de compte</span></a>
-            </li>
+            <!-- <li class="visible_list"> <a *ngIf="demandeCertifications.length == 0 && user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="list-item" routerLink="/admin/demandes-certifications"><span class="title">Demander la certification de compte</span></a>
+            </li> -->
           </ul>
         </div>
         <div class="col-6 col-lg-auto">
           <div class="text-center text-lg-end header_right_widgets">
             <ul class="mb0 d-flex justify-content-center justify-content-sm-end p-0">
-              <li class="d-none d-sm-block"><a class="text-center mr20 notif" href="#"><span class="flaticon-bell"></span></a></li>
+              <li class="d-none d-sm-block"><a class="text-center mr15 notif" href="#"><span class="flaticon-bell"></span></a></li>
               <li class=" user_setting">
                 <div class="dropdown">
                   <a class="btn" href="#" data-bs-toggle="dropdown">
-                    <img src="assets/images/resource/user.png" style="width: 40px; height: 40px;" alt="user.png">
+                    <span style="font-family: Arial, sans-serif; font-size: 14px;" class="text text-center mr10 notif">{{ user.nom }} {{ user.prenom }} | <b>{{ user.role.libelle }}</b></span><img src="assets/images/user.jpg" style="width: 40px; height:40px" alt="user.png">
                   </a>
                   <div class="dropdown-menu">
                     <div class="user_setting_content">
-                      <p class="fz15 fw400 ff-heading mt30">MON PROFIL</p>
                       <a class="dropdown-item" routerLink="/admin/profil" ><i class="flaticon-user mr10"></i>Mes informations</a>
                       <a class="dropdown-item" type="button" (click)="seDeconnecter()" ><i class="flaticon-logout mr10"></i>Se déconnecter</a>
                     </div>

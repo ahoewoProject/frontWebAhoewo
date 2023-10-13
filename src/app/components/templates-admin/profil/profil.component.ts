@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
+import { MessageService } from 'primeng/api';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 
 @Component({
@@ -22,7 +23,8 @@ export class ProfilComponent implements OnInit{
 
   constructor(
     private cookieService: CookieService,
-    private personneService: PersonneService
+    private personneService: PersonneService,
+    private messageService: MessageService
   ) {
     const userCookie = this.cookieService.get('user');
     this.user = JSON.parse(userCookie);
@@ -104,17 +106,12 @@ export class ProfilComponent implements OnInit{
         if(response.id > 0) {
           this.retour();
           this.messageSuccess = "Votre profil a été modifié avec succès.";
-          setTimeout(() => {
-            this.messageSuccess = null;
-          }, 3000);
+          this.messageService.add({ severity: 'success', summary: 'Mise à jour réussie', detail: this.messageSuccess })
         }
         else{
           this.erreur = true;
           this.messageErreur = "Erreur lors de la modification de vos informations !";
-          setTimeout(() => {
-            this.erreur = false;
-            this.messageErreur = null;
-          }, 3000);
+          this.messageService.add({ severity: 'error', summary: 'Erreur de modification', detail: this.messageErreur })
           this.afficherFormulaireModifier();
         }
     },
@@ -123,10 +120,7 @@ export class ProfilComponent implements OnInit{
       if(error.status === 409){
         this.erreur = true;
         this.messageErreur = "Ce nom d'utilisateur a été déjà utilisé!";
-        setTimeout(() => {
-          this.erreur = false;
-          this.messageErreur = null;
-        }, 3000);
+        this.messageService.add({ severity: 'warn', summary: 'Mise à jour non réussie', detail: this.messageErreur })
         this.afficherFormulaireModifier();
       }
     })

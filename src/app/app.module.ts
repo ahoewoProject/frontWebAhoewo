@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PaginatorModule } from 'primeng/paginator';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ToastModule } from 'primeng/toast';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -23,10 +26,14 @@ import { GerantsComponent } from './components/templates-admin/gerants/gerants.c
 import { ClientsComponent } from './components/templates-admin/clients/clients.component';
 import { ProfilComponent } from './components/templates-admin/profil/profil.component';
 import { DemandesCertificationsComponent } from './components/templates-admin/demandes-certifications/demandes-certifications.component';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { ForgotPasswordComponent } from './components/auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
+import { TemplatesClientComponent } from './components/templates-client/templates-client.component';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
+import { TooltipModule } from 'primeng/tooltip';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TagModule } from 'primeng/tag';
 
 @NgModule({
   declarations: [
@@ -50,7 +57,8 @@ import { ResetPasswordComponent } from './components/auth/reset-password/reset-p
     ProfilComponent,
     DemandesCertificationsComponent,
     ForgotPasswordComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    TemplatesClientComponent
   ],
   imports: [
     BrowserModule,
@@ -58,10 +66,19 @@ import { ResetPasswordComponent } from './components/auth/reset-password/reset-p
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbTooltipModule,
-    NgxPaginationModule
+    BrowserAnimationsModule,
+    PaginatorModule,
+    FileUploadModule,
+    ToastModule,
+    MessagesModule,
+    TooltipModule,
+    ConfirmDialogModule,
+    TagModule
   ],
-  providers: [],
+  providers: [
+    MessageService,
+    ConfirmationService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

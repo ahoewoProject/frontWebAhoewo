@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Client } from 'src/app/models/gestionDesComptes/Client';
 import { ClientService } from 'src/app/services/gestionDesComptes/client.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
@@ -13,7 +14,7 @@ export class ClientsComponent implements OnInit{
   affichage = 1;
 
   elementsParPage = 5; // Nombre d'éléments par page
-  pageActuelle = 1; // Page actuelle
+  pageActuelle = 0; // Page actuelle
 
   client = new Client();
   clients : Client[] = [];
@@ -21,7 +22,9 @@ export class ClientsComponent implements OnInit{
 
   constructor(
     private clientService: ClientService,
-    private personneService: PersonneService
+    private personneService: PersonneService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
@@ -38,51 +41,13 @@ export class ClientsComponent implements OnInit{
 
   // Récupération des clients de la page courante
   get clientsParPage(): any[] {
-    const startIndex = (this.pageActuelle - 1) * this.elementsParPage;
-    const endIndex = startIndex + this.elementsParPage;
-    return this.clients.slice(startIndex, endIndex);
+    return this.clients.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
   }
 
-  // Fonction pour passer à la page précédente
-  pagePrecedente() {
-    if (this.pageActuelle > 1) {
-      this.pageActuelle--;
-    }
-  }
-
-  // Fonction pour passer à la page suivante
-  pageSuivante() {
-    if (this.pageActuelle < this.totalPages) {
-      this.pageActuelle++;
-    }
-  }
-
-  // Calcul du nombre total de pages
-  get totalPages(): number {
-    return Math.ceil(this.clients.length / this.elementsParPage);
-  }
-
-  // Génération du tableau des numéros de page
-  get pages(): number[] {
-    const totalPagesToShow = 3; // Nombre total de pages à afficher avant d'afficher "..." et la dernière page
-
-    if (this.totalPages <= totalPagesToShow) {
-      return Array(this.totalPages).fill(0).map((x, i) => i + 1);
-    }
-
-    // Affiche les 3 premières pages
-    const firstPages = Array(totalPagesToShow).fill(0).map((x, i) => i + 1);
-
-    // Affiche "..." et la dernière page
-    const lastPage = this.totalPages;
-    return [...firstPages, -1, lastPage];
-  }
-
-  // Fonction pour définir la page actuelle
-  setPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.pageActuelle = page;
-    }
+  pagination(event: any) {
+    this.pageActuelle = event.first;
+    this.elementsParPage = event.rows;
+    this.listeClients()
   }
 
   voirListe(): void{
@@ -110,36 +75,62 @@ export class ClientsComponent implements OnInit{
         console.log(response);
         this.voirListe();
         this.messageSuccess = "Le client a été supprimé avec succès.";
-        setTimeout(() => {
-          this.messageSuccess = null;
-        }, 3000);
+        this.messageService.add({ severity: 'success', summary: 'Suppression réussie', detail: this.messageSuccess })
       }
     );
   }
 
   activerCompte(id: number): void{
-    this.personneService.activerCompte(id).subscribe(
-      (response) => {
-        console.log(response);
-        this.voirListe();
-        this.messageSuccess = "Le compte a été activé avec succès.";
-        setTimeout(() => {
-          this.messageSuccess = null;
-        }, 3000);
+    this.confirmationService.confirm({
+      message: 'Vous êtes sûr de vouloir activer ce compte ?',
+      header: "Activation de compte",
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.personneService.activerCompte(id).subscribe(response=>{
+          console.log(response);
+          this.voirListe();
+          this.messageSuccess = "Le compte a été activé avec succès !";
+          this.messageService.add({ severity: 'success', summary: 'Activation de compte confirmé', detail: this.messageSuccess })
+        });
+
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Activation de compte rejetée', detail: "Vous avez rejeté l'activation de ce compte !" });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({ severity: 'warn', summary: 'Activation de compte annulée', detail: "Vous avez annulé l'activation de ce compte !" });
+            break;
+        }
       }
-    );
+    });
   }
 
   desactiverCompte(id: number): void{
-    this.personneService.desactiverCompte(id).subscribe(
-      (response) => {
-        console.log(response);
-        this.voirListe();
-        this.messageSuccess = "Le compte a été désactivé avec succès.";
-        setTimeout(() => {
-          this.messageSuccess = null;
-        }, 3000);
+    this.confirmationService.confirm({
+      message: 'Vous êtes sûr de vouloir désactiver ce compte ?',
+      header: "Désactivation de compte",
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.personneService.desactiverCompte(id).subscribe(response=>{
+          console.log(response);
+          this.voirListe();
+          this.messageSuccess = "Le compte a été désactivé avec succès.";
+          this.messageService.add({ severity: 'success', summary: 'Désactivaction de compte confirmé', detail: this.messageSuccess })
+        });
+
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Désactivation de compte rejetée', detail: 'Vous avez rejeté la désactivation de ce compte !' });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({ severity: 'warn', summary: 'Désactivation de compte annulée', detail: 'Vous avez annulé la désactivation de ce compte !' });
+            break;
+        }
       }
-    );
+    });
   }
 }

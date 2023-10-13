@@ -10,7 +10,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 export class MenuResponsiveComponent implements OnInit{
 
   user:any;
-
+  activeLink: string = localStorage.getItem('activeLink') || '';
   constructor(
     private personneService: PersonneService,
     private cookieService: CookieService
@@ -21,6 +21,11 @@ export class MenuResponsiveComponent implements OnInit{
 
   ngOnInit(): void {
 
+  }
+
+  setActiveLink(link: string) {
+    this.activeLink = link;
+    localStorage.setItem('activeLink', this.activeLink);
   }
 
   seDeconnecter(): void{

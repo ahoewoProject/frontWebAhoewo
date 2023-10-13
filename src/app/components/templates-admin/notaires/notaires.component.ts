@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ConfirmEventType, ConfirmationService, Message, MessageService } from 'primeng/api';
 import { Notaire } from 'src/app/models/gestionDesComptes/Notaire';
 import { Role } from 'src/app/models/gestionDesComptes/Role';
 import { NotaireService } from 'src/app/services/gestionDesComptes/notaire.service';
@@ -12,11 +13,13 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 })
 export class NotairesComponent implements OnInit{
 
+  message: Message[] = [];
   affichage = 1;
   visibleAddForm = 0;
   visibleUpdateForm = 0;
+
   elementsParPage = 5; // Nombre d'éléments par page
-  pageActuelle = 1; // Page actuelle
+  pageActuelle = 0; // Page actuelle
 
   erreur: boolean = false;
   notaire = this.notaireService.notaire;
@@ -38,7 +41,10 @@ export class NotairesComponent implements OnInit{
   }
 
   constructor(private notaireService: NotaireService,
-    private personneService: PersonneService) { }
+    private personneService: PersonneService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
+    ) { }
 
   ngOnInit(): void {
     this.listeNotaires();
@@ -47,12 +53,13 @@ export class NotairesComponent implements OnInit{
 
   initNotaireForm(): void{
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
     this.notaireForm = new FormGroup({
       nom: new FormControl(this.notaire.nom, [Validators.required]),
       prenom: new FormControl(this.notaire.prenom, [Validators.required]),
       username: new FormControl(this.notaire.username, [Validators.required]),
       email: new FormControl(this.notaire.email, [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
-      motDePasse: new FormControl(this.notaire.motDePasse, [Validators.required]),
+      motDePasse: new FormControl(this.notaire.motDePasse, [Validators.required, Validators.maxLength(14), Validators.minLength(7), Validators.pattern(passwordRegex)]),
       telephone: new FormControl(this.notaire.telephone, [Validators.required]),
     })
   }
@@ -67,51 +74,15 @@ export class NotairesComponent implements OnInit{
 
   // Récupération des notaires de la page courante
   get notairesParPage(): any[] {
-    const startIndex = (this.pageActuelle - 1) * this.elementsParPage;
+    const startIndex = this.pageActuelle;
     const endIndex = startIndex + this.elementsParPage;
     return this.notaires.slice(startIndex, endIndex);
   }
 
-  // Fonction pour passer à la page précédente
-  pagePrecedente() {
-    if (this.pageActuelle > 1) {
-      this.pageActuelle--;
-    }
-  }
-
-  // Fonction pour passer à la page suivante
-  pageSuivante() {
-    if (this.pageActuelle < this.totalPages) {
-      this.pageActuelle++;
-    }
-  }
-
-  // Calcul du nombre total de pages
-  get totalPages(): number {
-    return Math.ceil(this.notaires.length / this.elementsParPage);
-  }
-
-  // Génération du tableau des numéros de page
-  get pages(): number[] {
-    const totalPagesToShow = 3; // Nombre total de pages à afficher avant d'afficher "..." et la dernière page
-
-    if (this.totalPages <= totalPagesToShow) {
-      return Array(this.totalPages).fill(0).map((x, i) => i + 1);
-    }
-
-    // Affiche les 3 premières pages
-    const firstPages = Array(totalPagesToShow).fill(0).map((x, i) => i + 1);
-
-    // Affiche "..." et la dernière page
-    const lastPage = this.totalPages;
-    return [...firstPages, -1, lastPage];
-  }
-
-  // Fonction pour définir la page actuelle
-  setPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.pageActuelle = page;
-    }
+  pagination(event: any) {
+    this.pageActuelle = event.first;
+    this.elementsParPage = event.rows;
+    this.listeNotaires()
   }
 
   voirListe(): void{
@@ -201,9 +172,7 @@ export class NotairesComponent implements OnInit{
           });
           this.voirListe();
           this.messageSuccess = "Le notaire a été ajouté avec succès.";
-          setTimeout(() => {
-            this.messageSuccess = null;
-          }, 3000);
+          this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
         }
         else{
           this.erreur = true;
@@ -214,9 +183,11 @@ export class NotairesComponent implements OnInit{
           this.notaire.username = response.username;
           this.notaire.email = response.email;
           this.notaire.telephone = response.telephone;
+          this.message = [
+            { severity: 'error', summary: "Erreur d'ajout", detail: this.messageErreur }
+          ];
           setTimeout(() => {
-            this.erreur = false;
-            this.messageErreur = "";
+            this.message = [];
           }, 3000);
         }
     },
@@ -225,9 +196,11 @@ export class NotairesComponent implements OnInit{
       if(error.status === 409){
         this.erreur = true;
         this.messageErreur = "Un notaire avec ce nom d'utilisateur existe déjà !";
+        this.message = [
+          { severity: 'warn', summary: 'Ajout non réussi', detail: this.messageErreur }
+        ];
         setTimeout(() => {
-          this.erreur = false;
-          this.messageErreur = "";
+          this.message = [];
         }, 3000);
       }
     })
@@ -239,36 +212,62 @@ export class NotairesComponent implements OnInit{
         console.log(response);
         this.voirListe();
         this.messageSuccess = "Le notaire a été supprimé avec succès.";
-        setTimeout(() => {
-          this.messageSuccess = null;
-        }, 3000);
+        this.messageService.add({ severity: 'success', summary: 'Suppression réussie', detail: this.messageSuccess })
       }
     );
   }
 
   activerCompte(id: number): void{
-    this.personneService.activerCompte(id).subscribe(
-      (response) => {
-        console.log(response);
-        this.voirListe();
-        this.messageSuccess = "Le compte a été activé avec succès.";
-        setTimeout(() => {
-          this.messageSuccess = null;
-        }, 3000);
+    this.confirmationService.confirm({
+      message: 'Vous êtes sûr de vouloir activer ce compte ?',
+      header: "Activation de compte",
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.personneService.activerCompte(id).subscribe(response=>{
+          console.log(response);
+          this.voirListe();
+          this.messageSuccess = "Le compte a été activé avec succès !";
+          this.messageService.add({ severity: 'success', summary: 'Activation de compte confirmé', detail: this.messageSuccess })
+        });
+
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Activation de compte rejetée', detail: "Vous avez rejeté l'activation de ce compte !" });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({ severity: 'warn', summary: 'Activation de compte annulée', detail: "Vous avez annulé l'activation de ce compte !" });
+            break;
+        }
       }
-    );
+    });
   }
 
   desactiverCompte(id: number): void{
-    this.personneService.desactiverCompte(id).subscribe(
-      (response) => {
-        console.log(response);
-        this.voirListe();
-        this.messageSuccess = "Le compte a été désactivé avec succès.";
-        setTimeout(() => {
-          this.messageSuccess = null;
-        }, 3000);
+    this.confirmationService.confirm({
+      message: 'Vous êtes sûr de vouloir désactiver ce compte ?',
+      header: "Désactivation de compte",
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.personneService.desactiverCompte(id).subscribe(response=>{
+          console.log(response);
+          this.voirListe();
+          this.messageSuccess = "Le compte a été désactivé avec succès.";
+          this.messageService.add({ severity: 'success', summary: 'Désactivaction de compte confirmé', detail: this.messageSuccess })
+        });
+
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Désactivation de compte rejetée', detail: 'Vous avez rejeté la désactivation de ce compte !' });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({ severity: 'warn', summary: 'Désactivation de compte annulée', detail: 'Vous avez annulé la désactivation de ce compte !' });
+            break;
+        }
       }
-    );
+    });
   }
 }
