@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
-import { ConfirmEventType, ConfirmationService, Message, MessageService } from 'primeng/api';
+import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Gerant } from 'src/app/models/gestionDesComptes/Gerant';
 import { Role } from 'src/app/models/gestionDesComptes/Role';
 import { GerantService } from 'src/app/services/gestionDesComptes/gerant.service';
@@ -14,7 +14,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 })
 export class GerantsComponent implements OnInit{
 
-  message: Message[] = [];
+  recherche: string = '';
   user: any;
   affichage = 1;
   visibleAddForm = 0;
@@ -68,7 +68,7 @@ export class GerantsComponent implements OnInit{
       prenom: new FormControl(this.gerant.prenom, [Validators.required]),
       username: new FormControl(this.gerant.username, [Validators.required]),
       email: new FormControl(this.gerant.email, [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
-      motDePasse: new FormControl(this.gerant.motDePasse, [Validators.required, Validators.maxLength(14), Validators.minLength(7), Validators.pattern(passwordRegex)]),
+      motDePasse: new FormControl(this.gerant.motDePasse, [Validators.required, Validators.maxLength(14), Validators.minLength(8), Validators.pattern(passwordRegex)]),
       telephone: new FormControl(this.gerant.telephone, [Validators.required]),
     })
   }
@@ -205,12 +205,7 @@ export class GerantsComponent implements OnInit{
           this.gerant.username = response.username;
           this.gerant.email = response.email;
           this.gerant.telephone = response.telephone;
-          this.message = [
-            { severity: 'error', summary: 'Erreur de modification', detail: this.messageErreur }
-          ];
-          setTimeout(() => {
-            this.message = [];
-          }, 3000);
+          this.messageService.add({ severity: 'error', summary: 'Erreur de modification', detail: this.messageErreur });
         }
     },
     (error) =>{
@@ -218,12 +213,7 @@ export class GerantsComponent implements OnInit{
       if(error.status === 409){
         this.erreur = true;
         this.messageErreur = "Un gérant avec ce nom d'utilisateur existe déjà !";
-        this.message = [
-          { severity: 'warn', summary: 'Ajout non réussi', detail: this.messageErreur }
-        ];
-        setTimeout(() => {
-          this.message = [];
-        }, 3000);
+        this.messageService.add({ severity: 'warn', summary: 'Ajout non réussi', detail: this.messageErreur });
       }
     })
   }

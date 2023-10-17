@@ -38,12 +38,13 @@ export class ProfilComponent implements OnInit{
 
   initUserForm(): void {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
     this.userForm = new FormGroup({
       nom: new FormControl(this.personne.nom, [Validators.required]),
       prenom: new FormControl(this.personne.prenom, [Validators.required]),
       username: new FormControl(this.personne.username, [Validators.required]),
       email: new FormControl(this.personne.email, [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
-      motDePasse: new FormControl(this.personne.motDePasse, [Validators.required]),
+      motDePasse: new FormControl(this.personne.motDePasse, [Validators.required, Validators.maxLength(14), Validators.minLength(7), Validators.pattern(passwordRegex)]),
       telephone: new FormControl(this.personne.telephone, [Validators.required]),
     })
   }

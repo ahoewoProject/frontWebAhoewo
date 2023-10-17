@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ConfirmEventType, ConfirmationService, Message, MessageService } from 'primeng/api';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Administrateur } from 'src/app/models/gestionDesComptes/Administrateur';
 import { Role } from 'src/app/models/gestionDesComptes/Role';
 import { AdministrateurService } from 'src/app/services/gestionDesComptes/administrateur.service';
@@ -13,7 +13,6 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 })
 export class AdministrateursComponent implements OnInit {
 
-  message: Message[] = [];
   affichage = 1;
   visibleAddForm = 0;
   visibleUpdateForm = 0;
@@ -59,7 +58,7 @@ export class AdministrateursComponent implements OnInit {
       prenom: new FormControl(this.admin.prenom, [Validators.required]),
       username: new FormControl(this.admin.username, [Validators.required]),
       email: new FormControl(this.admin.email, [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
-      motDePasse: new FormControl(this.admin.motDePasse, [Validators.required, Validators.maxLength(14), Validators.minLength(7), Validators.pattern(passwordRegex)]),
+      motDePasse: new FormControl(this.admin.motDePasse, [Validators.required, Validators.maxLength(14), Validators.minLength(8), Validators.pattern(passwordRegex)]),
       telephone: new FormControl(this.admin.telephone, [Validators.required]),
     })
   }
@@ -182,12 +181,7 @@ export class AdministrateursComponent implements OnInit {
           this.admin.username = response.username;
           this.admin.email = response.email;
           this.admin.telephone = response.telephone;
-          this.message = [
-            { severity: 'error', summary: "Erreur d'ajout", detail: this.messageErreur }
-          ];
-          setTimeout(() => {
-            this.message = [];
-          }, 3000);
+          this.messageService.add({ severity: 'error', summary: "Erreur d'ajout", detail: this.messageErreur });
         }
     },
     (error) =>{
@@ -195,12 +189,7 @@ export class AdministrateursComponent implements OnInit {
       if(error.status === 409){
         this.erreur = true;
         this.messageErreur = "Un administrateur avec ce nom d'utilisateur existe déjà !";
-        this.message = [
-          { severity: 'warn', summary: 'Ajout non réussi', detail: this.messageErreur }
-        ];
-        setTimeout(() => {
-          this.message = [];
-        }, 3000);
+        this.messageService.add({ severity: 'warn', summary: 'Ajout non réussi', detail: this.messageErreur });
       }
     })
   }

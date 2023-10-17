@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ConfirmEventType, ConfirmationService, Message, MessageService } from 'primeng/api';
+import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Notaire } from 'src/app/models/gestionDesComptes/Notaire';
 import { Role } from 'src/app/models/gestionDesComptes/Role';
 import { NotaireService } from 'src/app/services/gestionDesComptes/notaire.service';
@@ -13,7 +13,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 })
 export class NotairesComponent implements OnInit{
 
-  message: Message[] = [];
+  recherche: string = '';
   affichage = 1;
   visibleAddForm = 0;
   visibleUpdateForm = 0;
@@ -59,7 +59,7 @@ export class NotairesComponent implements OnInit{
       prenom: new FormControl(this.notaire.prenom, [Validators.required]),
       username: new FormControl(this.notaire.username, [Validators.required]),
       email: new FormControl(this.notaire.email, [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
-      motDePasse: new FormControl(this.notaire.motDePasse, [Validators.required, Validators.maxLength(14), Validators.minLength(7), Validators.pattern(passwordRegex)]),
+      motDePasse: new FormControl(this.notaire.motDePasse, [Validators.required, Validators.maxLength(14), Validators.minLength(8), Validators.pattern(passwordRegex)]),
       telephone: new FormControl(this.notaire.telephone, [Validators.required]),
     })
   }
@@ -183,12 +183,7 @@ export class NotairesComponent implements OnInit{
           this.notaire.username = response.username;
           this.notaire.email = response.email;
           this.notaire.telephone = response.telephone;
-          this.message = [
-            { severity: 'error', summary: "Erreur d'ajout", detail: this.messageErreur }
-          ];
-          setTimeout(() => {
-            this.message = [];
-          }, 3000);
+          this.messageService.add({ severity: 'error', summary: "Erreur d'ajout", detail: this.messageErreur });
         }
     },
     (error) =>{
@@ -196,12 +191,7 @@ export class NotairesComponent implements OnInit{
       if(error.status === 409){
         this.erreur = true;
         this.messageErreur = "Un notaire avec ce nom d'utilisateur existe déjà !";
-        this.message = [
-          { severity: 'warn', summary: 'Ajout non réussi', detail: this.messageErreur }
-        ];
-        setTimeout(() => {
-          this.message = [];
-        }, 3000);
+        this.messageService.add({ severity: 'warn', summary: 'Ajout non réussi', detail: this.messageErreur });
       }
     })
   }

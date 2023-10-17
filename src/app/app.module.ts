@@ -30,10 +30,12 @@ import { ForgotPasswordComponent } from './components/auth/forgot-password/forgo
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { TemplatesClientComponent } from './components/templates-client/templates-client.component';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { MessagesModule } from 'primeng/messages';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TagModule } from 'primeng/tag';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
+import { GenericFilterPipe } from './services/genericFilter';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,8 @@ import { TagModule } from 'primeng/tag';
     DemandesCertificationsComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    TemplatesClientComponent
+    TemplatesClientComponent,
+    GenericFilterPipe
   ],
   imports: [
     BrowserModule,
@@ -70,10 +73,11 @@ import { TagModule } from 'primeng/tag';
     PaginatorModule,
     FileUploadModule,
     ToastModule,
-    MessagesModule,
     TooltipModule,
     ConfirmDialogModule,
-    TagModule
+    TagModule,
+    DropdownModule,
+    TableModule
   ],
   providers: [
     MessageService,

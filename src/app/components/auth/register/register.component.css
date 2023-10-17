@@ -8,7 +8,7 @@
 }
 
 .img {
-  margin-top: 5%;
+  margin-top: -1%;
 }
 
 .heading {
@@ -23,5 +23,14 @@
 
 .large-select {
   height: 55px; /* Remplacez par la largeur que vous souhaitez */
+}
+
+.mb5 {
+  margin-bottom: 1%;
+  margin-top: -3%;
+}
+
+.puce-visible {
+  list-style-type: disc;
 }
 

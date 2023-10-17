@@ -17,13 +17,8 @@
           </div>
         </div>
       </div>
+      <p-toast></p-toast>
       <div class="row" *ngIf="affichage == 1">
-        <div class="bd-example" *ngIf="messageSuccess">
-          <div class="alert alert-left alert-success alert-dismissible fade show mb-3" role="alert">
-            {{ messageSuccess }}
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        </div>
         <div class="col-xl-12">
           <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
             <h4 class="title fz17 mb30">Mes informations</h4>
@@ -75,43 +70,37 @@
       </div>
       <div *ngIf="affichage == 2" class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
         <h4 class="title fz17 mb30">Modification des informations</h4>
-        <div class="bd-example" *ngIf="erreur">
-          <div class="alert alert-left alert-danger alert-dismissible fade show mb-3" role="alert">
-            {{ messageErreur }}
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        </div>
         <form class="form-style1" [formGroup]="userForm" (ngSubmit)="modifierUser()">
           <div class="row">
             <div class="col-sm-6 col-xl-4">
               <div class="mb20">
                 <label class="heading-color ff-heading fw600 mb10">Nom</label>
                 <input type="text" class="form-control" placeholder="Votre nom" formControlName="nom" id="nom" name="nom" [ngModel]="personne.nom" required>
-                <div class="alert alert-danger" [hidden]="nom.valid || nom.pristine && !nom.touched ">Le nom est obligatoire</div>
+                <div class="text-danger" [hidden]="nom.valid || nom.pristine && !nom.touched ">Le nom est obligatoire</div>
               </div>
             </div>
             <div class="col-sm-6 col-xl-4">
               <div class="mb20">
                 <label class="heading-color ff-heading fw600 mb10">Prénom</label>
                 <input type="text" class="form-control" placeholder="Votre prenom" formControlName="prenom" id="prenom" name="prenom" [ngModel]="personne.prenom" required>
-                <div class="alert alert-danger" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le prénom est obligatoire</div>
+                <div class="text-danger" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le prénom est obligatoire</div>
               </div>
             </div>
             <div class="col-sm-6 col-xl-4">
               <div class="mb20">
                 <label class="heading-color ff-heading fw600 mb10">Nom d'utilisateur</label>
                 <input type="text" class="form-control"  placeholder="Votre nom d'utilisateur" formControlName="username" id="username" name="username" [ngModel]="personne.username" required>
-                <div class="alert alert-danger" [hidden]="username.valid || username.pristine && !username.touched ">Le nom d'utilisateur est obligatoire</div>
+                <div class="text-danger" [hidden]="username.valid || username.pristine && !username.touched ">Le nom d'utilisateur est obligatoire</div>
               </div>
             </div>
             <div class="col-sm-6 col-xl-4">
               <div class="mb20">
                 <label class="heading-color ff-heading fw600 mb10">Email</label>
                 <input type="email" class="form-control"  placeholder="Votre email" formControlName="email" id="email" name="email" [ngModel]="personne.email" required>
-                <div class="alert alert-danger" [hidden]="!email?.hasError('required') || !email.touched">
+                <div class="text-danger" [hidden]="!email?.hasError('required') || !email.touched">
                   L'adresse e-mail est obligatoire
                 </div>
-                <div class="alert alert-danger" [hidden]="!email?.hasError('email') || !email.touched">
+                <div class="text-danger" [hidden]="!email?.hasError('email') || !email.touched">
                   L'adresse e-mail saisie n'est pas valide.
                 </div>
               </div>
@@ -120,14 +109,16 @@
               <div class="mb20">
                 <label class="heading-color ff-heading fw600 mb10">Mot de passe</label>
                 <input type="password" class="form-control" formControlName="motDePasse" id="motDePasse" name="motDePasse" [ngModel]="personne.motDePasse" required>
-                <div class="alert alert-danger" [hidden]="motDePasse.valid || motDePasse.pristine && !motDePasse.touched ">L'email est obligatoire</div>
+                <div class="text-danger" *ngIf="motDePasse?.hasError('required') && motDePasse.touched">Le mot de passe du notaire est obligatoire</div>
+                <div class="text-danger" *ngIf="motDePasse?.errors?.['minlength'] || motDePasse.errors?.['maxlength'] && motDePasse.touched">Le mot de passe doit comporter au minimum 7 et au maximum 14 caractères.</div>
+                <div class="text-danger" *ngIf="motDePasse?.hasError('pattern')">Le mot de passe doit inclure au moins une minuscule, une majuscule, un chiffre et un caractère spécial.</div>
               </div>
             </div>
             <div class="col-sm-6 col-xl-4">
               <div class="mb20">
                 <label class="heading-color ff-heading fw600 mb10">Téléphone</label>
                 <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Le numéro de téléphone du notaire" formControlName="telephone" [(ngModel)]="personne.telephone" required>
-                <div class="alert alert-danger" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numéro de téléphone est obligatoire</div>
+                <div class="text-danger" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numéro de téléphone est obligatoire</div>
               </div>
             </div>
             <br>

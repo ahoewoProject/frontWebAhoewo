@@ -11,6 +11,7 @@ import { ProprietaireService } from 'src/app/services/gestionDesComptes/propriet
 })
 export class ProprietairesComponent {
 
+  recherche: string = '';
   affichage = 1;
 
   elementsParPage = 5; // Nombre d'éléments par page

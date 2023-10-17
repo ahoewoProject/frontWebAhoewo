@@ -6,18 +6,18 @@
       <div class="row wow fadeInRight" data-wow-delay="300ms">
         <div class="col-lg-6">
 
-          <div class="text-center mb40">
-            <a routerLink="/" class="logo"><img class="mb25 img" src="assets/images/ahoe-min.png" width="145" height="38" alt=""></a>
-            <h3 class="heading">Connectez-vous !</h3>
-            <p class="text">Connectez-vous pour avoir accès à nos fonctionnalités.</p>
-          </div>
+          <div class="log-reg-form signup-modal form-style1 bgc-white p50 p30-sm default-box-shadow2 bdrs12">
 
-          <div style="margin-top: -4%;" class="log-reg-form signup-modal form-style1 bgc-white p50 p30-sm default-box-shadow2 bdrs12">
+            <div class="text-center mb40">
+              <a routerLink="/" class="logo"><img class="mb25 img" src="assets/images/ahoe-min.png" width="145" height="38" alt=""></a>
+              <h3 class="heading">Connectez-vous !</h3>
+              <p class="text">Connectez-vous pour avoir accès à nos fonctionnalités.</p>
+            </div>
 
             <div class="alert alert-success" *ngIf="reinitialisationMotDePasseReussie || inscriptionReussie">{{ message }}</div>
             <div class="alert alert-danger" *ngIf="connexionNonReussie">{{ message }}</div>
 
-            <form [formGroup]="LoginForm" (ngSubmit)="login()" style="margin-top: -2%;">
+            <form [formGroup]="LoginForm" (ngSubmit)="login()" style="margin-top: -1%;">
               <div class="mb25">
                 <label class="form-label fw600 dark-color">Nom d'utilisateur</label>
                 <input type="text" class="form-control" placeholder="Entrer votre nom d'utilisateur" id="username" name="username" formControlName="username" [(ngModel)]="loginForm.username" required>
@@ -38,7 +38,7 @@
               <div class="d-grid mb20">
                 <button class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': LoginForm.invalid }" type="submit">Se connecter</button>
               </div>
-              <p class="dark-color mb0 mt10 text-center">Nouveau sur la plateforme ? <a class="dark-color fw600" routerLink="/register">Créer un compte.</a></p>
+              <p class="dark-color mb0 mt10 text-center">Nouveau sur la plateforme ? <a class="dark-color fw600" href="/inscription">Créer un compte.</a></p>
             </form>
           </div>
 

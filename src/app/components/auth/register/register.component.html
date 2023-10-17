@@ -6,17 +6,17 @@
       <div class="row wow fadeInRight" data-wow-delay="300ms">
         <div class="col-lg-7">
 
-          <div class="text-center mb40">
-            <a routerLink="/" class="logo"><img class="mb25 img" src="assets/images/ahoe-min.png" width="145" height="38" alt=""></a>
-            <h3 class="heading">Création de compte</h3>
-            <p class="text">Pour avoir accès aux fonctionnalités qu'offrent notre plateforme, créer un compte !</p>
-          </div>
+          <div class="log-reg-form signup-modal form-style1 bgc-white p50 p30-sm default-box-shadow2 bdrs12">
 
-          <div style="margin-top: -3%;" class="log-reg-form signup-modal form-style1 bgc-white p50 p30-sm default-box-shadow2 bdrs12">
+            <div class="text-center mb40">
+              <a routerLink="/" class="logo"><img class="mb25 img" src="assets/images/ahoe-min.png" width="145" height="38" alt=""></a>
+              <h3 class="heading">Création de compte</h3>
+              <p class="text">Pour avoir accès aux fonctionnalités qu'offrent notre plateforme, créer un compte !</p>
+            </div>
 
             <div class="alert alert-danger" *ngIf="inscriptionNonReussie">{{ message }}</div>
 
-            <form [formGroup]="RegisterForm" (ngSubmit)="register()" style="margin-top: -2%;">
+            <form [formGroup]="RegisterForm" (ngSubmit)="register()" style="margin-top: -1%;">
               <div class="row">
                 <div class="col-lg-6">
                   <div class="mb20">
@@ -41,6 +41,14 @@
                 </div>
                 <div class="col-lg-6">
                   <div class="mb20">
+                    <label class="form-label fw600 dark-color">Téléphone</label>
+                    <input type="tel" class="form-control" placeholder="Entrer votre numero de téléphone" id="telephone" name="telephone" formControlName="telephone" [(ngModel)]="registerForm.telephone" required>
+                    <div class="text-danger" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numero de téléphone est obligatoire</div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="mb20">
                     <label class="form-label fw600 dark-color">Email</label>
                     <input type="email" class="form-control" placeholder="Entrer votre adresse e-mail" id="email" name="email" formControlName="email" [(ngModel)]="registerForm.email" required>
                     <div class="text-danger" [hidden]="!email?.hasError('required') || !email.touched">
@@ -51,48 +59,57 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="col-lg-6">
+                  <div class="mb20">
+                    <label class="form-label fw600 dark-color">Profil</label>
+                    <div class="bootselect-multiselect">
+                      <select class="selectpicker" [(ngModel)]="selectedRole" [ngModelOptions]="{standalone: true}">
+                        <option value="Proprietaire">Propriétaire</option>
+                        <option value="Agent immobilier">Agent immobilier</option>
+                        <option value="Demarcheur">Démarcheur</option>
+                        <option value="Client">Client</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="col-lg-6">
                   <div class="mb20">
                     <label class="form-label fw600 dark-color">Mot de passe</label>
                     <input type="password" class="form-control" placeholder="Entrer votre mot de passe" id="motDePasse" name="motDePasse" formControlName="motDePasse" [(ngModel)]="registerForm.motDePasse" required>
                     <div class="text-danger" *ngIf="motDePasse?.hasError('required') && motDePasse.touched">Le mot de passe est obligatoire</div>
-                    <div class="text-danger" *ngIf="motDePasse?.errors?.['minlength'] || motDePasse.errors?.['maxlength'] && motDePasse.touched">Le mot de passe doit comporter au minimum 7 et au maximum 14 caractères.</div>
-                    <div class="text-danger" *ngIf="motDePasse?.hasError('pattern')">Le mot de passe doit inclure au moins une minuscule, une majuscule, un chiffre et un caractère spécial.</div>
                   </div>
                 </div>
-                <div class="col-lg-6">
-                  <div class="mb20">
-                    <label class="form-label fw600 dark-color">Téléphone</label>
-                    <input type="tel" class="form-control" placeholder="Entrer votre numero de téléphone" id="telephone" name="telephone" formControlName="telephone" [(ngModel)]="registerForm.telephone" required>
-                    <div class="text-danger" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numero de téléphone est obligatoire</div>
-                  </div>
-                </div>
+
                 <div class="col-lg-6">
                   <div class="mb20">
                     <label class="form-label fw600 dark-color">Confirmer le mot de passe</label>
                     <input type="password" class="form-control" placeholder="Entrer votre mot de passe" id="motDePasseConfirmer" name="motDePasseConfirmer" formControlName="motDePasseConfirmer" required>
                     <div class="text-danger" *ngIf="motDePasseConfirmer?.hasError('required') && motDePasseConfirmer.touched">La confirmation du mot de passe est obligatoire</div>
                     <div class="text-danger" *ngIf="RegisterForm.errors?.['passwordMismatchError'] && motDePasseConfirmer.touched">
-                      Les mots de passes ne sont pas conformes
+                      Les mots de passe ne sont pas conformes
                     </div>
                   </div>
                 </div>
-                <div class="col-lg-6">
-                  <div class="mb20">
-                    <label class="form-label fw600 dark-color">Profil</label>
-                    <select class="form-select large-select form-control" [(ngModel)]="selectedRole" [ngModelOptions]="{standalone: true}">
-                      <option value="Proprietaire">Propriétaire</option>
-                      <option value="Agent immobilier">Agent immobilier</option>
-                      <option value="Demarcheur">Démarcheur</option>
-                      <option value="Client">Client</option>
-                    </select>
+
+                <div class="col-lg-12">
+                  <div class="mb5">
+                    <div class="text-danger" *ngIf="showPasswordErrors()">
+                      <div>Règles de saisie du mot de passe :</div>
+                      <ul>
+                        <li class="puce-visible" *ngIf="showMinLengthError()">Le mot de passe doit comporter au minimum 8 caractères.</li>
+                        <li class="puce-visible" *ngIf="showPatternError()">Le mot de passe doit contenir au minimum une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial.</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
+
               </div>
               <div class="d-grid mb20">
                 <button class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': RegisterForm.invalid }" type="submit">Créer un compte</button>
               </div>
-              <p class="dark-color mb0 mt10 text-center">Vous avez déjà un compte ? <a class="dark-color fw600" routerLink="/login">Se connecter.</a></p>
+              <p class="dark-color mb0 mt10 text-center">Vous avez déjà un compte ? <a class="dark-color fw600" routerLink="/connexion">Se connecter.</a></p>
             </form>
 
           </div>

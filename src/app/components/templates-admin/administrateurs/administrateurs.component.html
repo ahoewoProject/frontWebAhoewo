@@ -18,7 +18,6 @@
     <div class="row">
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-          <p-messages [(value)]="message" [enableService]="false"></p-messages>
           <form [formGroup]="adminForm" (ngSubmit)="ajouterAdmin()" class="form-style1">
             <div class="row">
               <div class="col-sm-6 col-xl-4">
@@ -58,16 +57,21 @@
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Mot de passe</label>
                   <input type="password" class="form-control" id="motDePasse" name="motDePasse" placeholder="Le mot de passe de l'administrateur" formControlName="motDePasse" [(ngModel)]="admin.motDePasse" required>
-                  <div class="text-danger" *ngIf="motDePasse?.hasError('required') && motDePasse.touched">Le mot de passe de l'administrateurest obligatoire</div>
-                  <div class="text-danger" *ngIf="motDePasse?.errors?.['minlength'] || motDePasse.errors?.['maxlength'] && motDePasse.touched">Le mot de passe doit comporter au minimum 7 et au maximum 14 caractères.</div>
-                  <div class="text-danger" *ngIf="motDePasse?.hasError('pattern')">Le mot de passe doit inclure au moins une minuscule, une majuscule, un chiffre et un caractère spécial.</div>
+                  <div class="text-danger" *ngIf="motDePasse?.hasError('required') && motDePasse.touched">Le mot de passe de l'administrateur est obligatoire</div>
+                  <div class="text-danger" *ngIf="motDePasse?.errors?.['minlength'] || motDePasse.errors?.['maxlength'] && motDePasse?.hasError('pattern') && motDePasse.touched">
+                    Règles de saisie du mot de passe :
+                    <ul>
+                      <li class="puce-visible" *ngIf="motDePasse?.errors?.['minlength'] || motDePasse.errors?.['maxlength'] && motDePasse.touched">Le mot de passe doit comporter au minimum 8 caractères.</li>
+                      <li class="puce-visible" *ngIf="motDePasse?.hasError('pattern')">Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial.</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
               <div class="col-sm-6 col-xl-4">
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Téléphone</label>
                   <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Le numéro de téléphone de l'administrateur" formControlName="telephone" [(ngModel)]="admin.telephone" required>
-                  <div class="text-danger" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numéro de téléphone de l'administrateur obligatoire</div>
+                  <div class="text-danger" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numéro de téléphone de l'administrateur est obligatoire</div>
                 </div>
               </div>
             </div>

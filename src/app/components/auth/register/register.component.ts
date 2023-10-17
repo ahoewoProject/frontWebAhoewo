@@ -75,8 +75,8 @@ export class RegisterComponent implements OnInit {
       prenom: new FormControl('', [Validators.required]),
       username: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
-      motDePasse: new FormControl('', [Validators.required, Validators.maxLength(14), Validators.minLength(7), Validators.pattern(passwordRegex)]),
-      motDePasseConfirmer: new FormControl('', [Validators.required, Validators.maxLength(14), Validators.minLength(7), Validators.pattern(passwordRegex)]),
+      motDePasse: new FormControl('', [Validators.required, Validators.maxLength(14), Validators.minLength(8), Validators.pattern(passwordRegex)]),
+      motDePasseConfirmer: new FormControl('', [Validators.required, Validators.maxLength(14), Validators.minLength(8), Validators.pattern(passwordRegex)]),
       telephone: new FormControl('', [Validators.required]),
     }, [ this.passwordMatch("motDePasse", "motDePasseConfirmer") ])
   }
@@ -239,5 +239,29 @@ export class RegisterComponent implements OnInit {
       }
       return { passwordMismatchError: true };
     };
+  }
+
+  showPasswordErrors(): boolean {
+    const motDePasseErrors = this.motDePasse?.errors;
+    const motDePasseConfirmerErrors = this.motDePasseConfirmer?.errors;
+    return (
+      (motDePasseErrors?.['minlength'] || motDePasseErrors?.['maxlength'] && motDePasseErrors?.['pattern'] && this.motDePasse?.touched) ||
+      (motDePasseConfirmerErrors?.['minlength'] || motDePasseConfirmerErrors?.['maxlength'] && motDePasseConfirmerErrors?.['pattern'] && this.motDePasseConfirmer?.touched)
+    );
+  }
+
+  showMinLengthError(): boolean {
+    const motDePasseErrors = this.motDePasse?.errors;
+    const motDePasseConfirmerErrors = this.motDePasseConfirmer?.errors;
+    return (
+      (motDePasseErrors?.['minlength'] || motDePasseErrors?.['maxlength'] && this.motDePasse?.touched) ||
+      (motDePasseConfirmerErrors?.['minlength'] || motDePasseConfirmerErrors?.['maxlength'] && this.motDePasseConfirmer?.touched)
+    );
+  }
+
+  showPatternError(): boolean {
+    const motDePasseErrors = this.motDePasse?.errors;
+    const motDePasseConfirmerErrors = this.motDePasseConfirmer?.errors;
+    return (motDePasseErrors?.['pattern'] || motDePasseConfirmerErrors?.['pattern']);
   }
 }

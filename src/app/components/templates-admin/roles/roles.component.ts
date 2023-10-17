@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Message, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { Role } from 'src/app/models/gestionDesComptes/Role';
 import { RoleService } from 'src/app/services/gestionDesComptes/role.service';
 
@@ -11,7 +11,8 @@ import { RoleService } from 'src/app/services/gestionDesComptes/role.service';
 })
 export class RolesComponent implements OnInit{
 
-  message: Message[] = [];
+  recherche: string = '';
+
   affichage = 1;
   visibleAddForm = 0;
   visibleUpdateForm = 0;
@@ -34,7 +35,7 @@ export class RolesComponent implements OnInit{
 
   ngOnInit(): void {
     this.listeRoles();
-    this.initRoleForm()
+    this.initRoleForm();
   }
 
   initRoleForm(): void{
@@ -131,12 +132,7 @@ export class RolesComponent implements OnInit{
           this.afficherFormulaireAjouter();
           this.role.code = response.code;
           this.role.libelle = response.libelle;
-          this.message = [
-            { severity: 'error', summary: "Erreur d'ajout", detail: this.messageErreur }
-          ];
-          setTimeout(() => {
-            this.message = [];
-          }, 3000);
+          this.messageService.add({ severity: 'error', summary: "Erreur d'ajout", detail: this.messageErreur });
         }
     },
     (error) =>{
@@ -144,12 +140,7 @@ export class RolesComponent implements OnInit{
       if(error.status === 409){
         this.erreur = true;
         this.messageErreur = "Un rôle avec ce code existe déjà !";
-        this.message = [
-          { severity: 'warn', summary: "Erreur d'ajout", detail: this.messageErreur }
-        ];
-        setTimeout(() => {
-          this.message = [];
-        }, 3000);
+        this.messageService.add({ severity: 'warn', summary: "Erreur d'ajout", detail: this.messageErreur });
       }
     })
   }
@@ -165,12 +156,7 @@ export class RolesComponent implements OnInit{
         else{
           this.erreur = true;
           this.messageErreur = "Erreur lors de la modification du rôle !";
-          this.message = [
-            { severity: 'error', summary: 'Erreur modification', detail: this.messageErreur }
-          ];
-          setTimeout(() => {
-            this.message = [];
-          }, 3000);
+          this.messageService.add({ severity: 'error', summary: 'Erreur modification', detail: this.messageErreur });
           this.afficherFormulaireModifier(this.role.id);
         }
     },
@@ -179,12 +165,7 @@ export class RolesComponent implements OnInit{
       if(error.status === 409){
         this.erreur = true;
         this.messageErreur = "Un rôle avec ce code existe déjà !";
-        this.message = [
-          { severity: 'warn', summary: 'Modification non réussie', detail: this.messageErreur }
-        ];
-        setTimeout(() => {
-          this.message = [];
-        }, 3000);
+        this.messageService.add({ severity: 'warn', summary: 'Modification non réussie', detail: this.messageErreur });
         this.afficherFormulaireModifier(this.role.id);
       }
     })

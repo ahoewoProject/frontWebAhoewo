@@ -11,6 +11,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 })
 export class DemarcheursComponent implements OnInit{
 
+  recherche: string = '';
   affichage = 1;
 
   elementsParPage = 5; // Nombre d'éléments par page

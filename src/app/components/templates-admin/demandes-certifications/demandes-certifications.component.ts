@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { ConfirmEventType, ConfirmationService, Message, MessageService } from 'primeng/api';
+import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { DemandeCertification } from 'src/app/models/gestionDesComptes/DemandeCertification';
 import { DemandeCertificationService } from 'src/app/services/gestionDesComptes/demande-certification.service';
 import { environment } from 'src/environments/environment';
@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
 })
 export class DemandesCertificationsComponent implements OnInit {
 
-  message: Message[] = [];
+  recherche: string = '';
   affichage = 1;
   visibleAddForm = 0;
   user : any;
@@ -128,12 +128,7 @@ export class DemandesCertificationsComponent implements OnInit {
         else{
           this.erreur = true;
           this.messageErreur = "Erreur lors de l'ajout de votre demande de certification!"
-          this.message = [
-            { severity: 'error', summary: "Erreur d'ajout de la demande de certification", detail: this.messageErreur }
-          ];
-          setTimeout(() => {
-            this.message = [];
-          }, 3000);
+          this.messageService.add({ severity: 'error', summary: "Erreur d'ajout de la demande de certification", detail: this.messageErreur });
           this.afficherFormulaireAjouter();
         }
       },

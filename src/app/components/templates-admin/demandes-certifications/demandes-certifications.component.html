@@ -16,9 +16,9 @@
       </div>
     </div>
     <div class="row">
+      <p-toast></p-toast>
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-          <p-messages [(value)]="message" [enableService]="false"></p-messages>
           <form class="form-style1">
             <div class="row">
               <div class="col-sm-6 col-xl-4">
@@ -70,7 +70,7 @@
         <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
           <div *ngIf="user.role.code == 'ROLE_NOTAIRE'" class="item1 mb15-sm">
             <div class="search_area">
-              <input type="text" class="form-control bdrs12" placeholder="Faire une recherche">
+              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
               <label><span class="flaticon-search"></span></label>
             </div>
           </div>
@@ -99,7 +99,7 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr *ngFor="let demandeCertif of demandesCertificationsParPage;  let i = index">
+                <tr *ngFor="let demandeCertif of demandesCertificationsParPage | genericFilter: recherche;  let i = index">
                   <td class="vam">{{ pageActuelle + i + 1 }}</td>
                   <td class="vam">{{ demandeCertif.dateDemande | date: "yyyy-dd-MM" }}</td>
                   <td class="vam">{{ demandeCertif.personne.nom }} {{ demandeCertif.personne.prenom }} <i *ngIf="demandeCertif.personne.estCertifie && (demandeCertif.personne.role.code === 'ROLE_AGENTIMMOBILER' || demandeCertif.personne.role.code === 'ROLE_PROPRIETAIRE' || demandeCertif.personne.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>

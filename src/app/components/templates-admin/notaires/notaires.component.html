@@ -18,7 +18,6 @@
     <div class="row">
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-          <p-messages [(value)]="message" [enableService]="false"></p-messages>
           <form [formGroup]="notaireForm" (ngSubmit)="ajouterNotaire()" class="form-style1">
             <div class="row">
               <div class="col-sm-6 col-xl-4">
@@ -59,8 +58,13 @@
                   <label class="heading-color ff-heading fw600 mb10">Mot de passe</label>
                   <input type="password" class="form-control" id="motDePasse" name="motDePasse" placeholder="Le mot de passe du notaire" formControlName="motDePasse" [(ngModel)]="notaire.motDePasse" required>
                   <div class="text-danger" *ngIf="motDePasse?.hasError('required') && motDePasse.touched">Le mot de passe du notaire est obligatoire</div>
-                  <div class="text-danger" *ngIf="motDePasse?.errors?.['minlength'] || motDePasse.errors?.['maxlength'] && motDePasse.touched">Le mot de passe doit comporter au minimum 7 et au maximum 14 caractères.</div>
-                  <div class="text-danger" *ngIf="motDePasse?.hasError('pattern')">Le mot de passe doit inclure au moins une minuscule, une majuscule, un chiffre et un caractère spécial.</div>
+                  <div class="text-danger" *ngIf="motDePasse?.errors?.['minlength'] || motDePasse.errors?.['maxlength'] && motDePasse?.hasError('pattern') && motDePasse.touched">
+                    Règles de saisie du mot de passe :
+                    <ul>
+                      <li class="puce-visible" *ngIf="motDePasse?.errors?.['minlength'] || motDePasse.errors?.['maxlength'] && motDePasse.touched">Le mot de passe doit comporter au minimum 8 caractères.</li>
+                      <li class="puce-visible" *ngIf="motDePasse?.hasError('pattern')">Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial.</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
               <div class="col-sm-6 col-xl-4">
@@ -98,7 +102,7 @@
         <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
           <div class="item1 mb15-sm">
             <div class="search_area">
-              <input type="text" class="form-control bdrs12" placeholder="Faire une recherche">
+              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
               <label><span class="flaticon-search"></span></label>
             </div>
           </div>
@@ -125,7 +129,7 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr *ngFor="let notaire of notairesParPage;  let i = index">
+                <tr *ngFor="let notaire of notairesParPage | genericFilter: recherche;  let i = index">
                   <td class="vam">{{ pageActuelle + i + 1 }}</td>
                   <td class="vam">{{ notaire.nom }}</td>
                   <td class="vam">{{ notaire.prenom }}</td>

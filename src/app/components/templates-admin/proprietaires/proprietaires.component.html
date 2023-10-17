@@ -18,7 +18,7 @@
         <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
           <div class="item1 mb15-sm">
             <div class="search_area">
-              <input type="text" class="form-control bdrs12" placeholder="Faire une recherche">
+              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
               <label><span class="flaticon-search"></span></label>
             </div>
           </div>
@@ -43,7 +43,7 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr *ngFor="let proprietaire of proprietairesParPage;  let i = index">
+                <tr *ngFor="let proprietaire of proprietairesParPage | genericFilter: recherche;  let i = index">
                   <td class="vam">{{ pageActuelle + i + 1 }}</td>
                   <td class="vam">{{ proprietaire.nom }}</td>
                   <td class="vam">{{ proprietaire.prenom }} <i *ngIf="proprietaire.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
