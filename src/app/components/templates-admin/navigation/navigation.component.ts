@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 import { DemandeCertification } from 'src/app/models/gestionDesComptes/DemandeCertification';
 import { DemandeCertificationService } from 'src/app/services/gestionDesComptes/demande-certification.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
@@ -16,11 +15,11 @@ export class NavigationComponent implements OnInit{
 
   constructor(
     private personneService: PersonneService,
-    private cookieService: CookieService,
     private demandeCertificationService: DemandeCertificationService
-  ){
-    const userCookie = this.cookieService.get('user');
-    this.user = JSON.parse(userCookie)
+  )
+  {
+    const utilisateurConnecte = this.personneService.utilisateurConnecte();
+    this.user = JSON.parse(utilisateurConnecte)
   }
 
   ngOnInit(): void {
@@ -36,6 +35,6 @@ export class NavigationComponent implements OnInit{
   }
 
   seDeconnecter(): void {
-    this.personneService.logout();
+    this.personneService.deconnexion();
   }
 }

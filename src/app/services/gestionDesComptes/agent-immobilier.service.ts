@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
@@ -13,57 +13,38 @@ export class AgentImmobilierService {
   public agentImmobilier: AgentImmobilier = new AgentImmobilier();
   url!: string;
 
-  constructor(private httpClient: HttpClient,
-    private cookieService: CookieService) {
+  constructor(private httpClient: HttpClient) {
     const APIEndpoint = environment.APIEndpoint;
     this.url = APIEndpoint + 'api/';
   }
 
   // url: http://localhost:4040/api/agent-immobilier/ajouter
   addAgentImmobilier(a: AgentImmobilier): Observable<AgentImmobilier>{
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
-    });
-    return this.httpClient.post<AgentImmobilier>(this.url + 'agent-immobilier/ajouter', a , { headers });
+    return this.httpClient.post<AgentImmobilier>(this.url + 'agent-immobilier/ajouter', a);
   }
 
   // url: http://localhost:4040/api/agent-immobilier/modifier/{id}
   updateAgentImmobilier(id: number, a: AgentImmobilier): Observable<AgentImmobilier>{
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
-    });
-    return this.httpClient.put<AgentImmobilier>(this.url + 'agent-immobilier/modifier/'+ id, a , { headers });
+    return this.httpClient.put<AgentImmobilier>(this.url + 'agent-immobilier/modifier/'+ id, a);
   }
 
   // url: http://localhost:4040/api/agent-immobilier/supprimer/{id}
   deleteById(id: number){
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
-    });
-    return this.httpClient.delete(this.url + 'agent-immobilier/supprimer/' + id, { headers });
+    return this.httpClient.delete(this.url + 'agent-immobilier/supprimer/' + id);
   }
 
   // url: http://localhost:4040/api/agents-immobiliers
   getAll(): Observable<Array<AgentImmobilier>>{
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
-    });
-    return this.httpClient.get<Array<AgentImmobilier>>(this.url + 'agents-immobiliers', { headers });
+    return this.httpClient.get<Array<AgentImmobilier>>(this.url + 'agents-immobiliers');
   }
 
   // url: http://localhost:4040/api/agent-immobilier/{id}
   findById(id: number): Observable<AgentImmobilier>{
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
-    });
-    return this.httpClient.get<AgentImmobilier>(this.url + 'agent-immobilier/' + id, { headers });
+    return this.httpClient.get<AgentImmobilier>(this.url + 'agent-immobilier/' + id);
   }
 
   // url: http://localhost:4040/api/count/agents-immobiliers
   countAgentImmobiliers(): Observable<number>{
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
-    });
-    return this.httpClient.get<number>(this.url + 'count/agents-immobiliers', { headers });
+    return this.httpClient.get<number>(this.url + 'count/agents-immobiliers');
   };
 }

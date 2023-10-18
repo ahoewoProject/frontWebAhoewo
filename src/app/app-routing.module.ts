@@ -17,6 +17,7 @@ import { DemandesCertificationsComponent } from './components/templates-admin/de
 import { ForgotPasswordComponent } from './components/auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { TemplatesClientComponent } from './components/templates-client/templates-client.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo:'', pathMatch: 'full'},
@@ -28,19 +29,19 @@ const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: '', component: TemplatesClientComponent },
-  { path: 'admin', component: TemplatesAdminComponent,
+  { path: 'admin', component: TemplatesAdminComponent, canActivate: [AuthGuard],
     children:[
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'roles', component: RolesComponent },
-      { path: 'admins', component: AdministrateursComponent },
-      { path: 'notaires', component: NotairesComponent },
-      { path: 'proprietaires', component: ProprietairesComponent },
-      { path: 'agents-immobiliers', component: AgentsImmobiliersComponent },
-      { path: 'demarcheurs', component: DemarcheursComponent },
-      { path: 'gerants', component: GerantsComponent },
-      { path: 'clients', component: ClientsComponent },
-      { path: 'profil', component: ProfilComponent },
-      { path: 'demandes-certifications', component: DemandesCertificationsComponent }
+      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+      { path: 'roles', component: RolesComponent, canActivate: [AuthGuard] },
+      { path: 'admins', component: AdministrateursComponent, canActivate: [AuthGuard] },
+      { path: 'notaires', component: NotairesComponent, canActivate: [AuthGuard] },
+      { path: 'proprietaires', component: ProprietairesComponent, canActivate: [AuthGuard] },
+      { path: 'agents-immobiliers', component: AgentsImmobiliersComponent, canActivate: [AuthGuard] },
+      { path: 'demarcheurs', component: DemarcheursComponent, canActivate: [AuthGuard] },
+      { path: 'gerants', component: GerantsComponent, canActivate: [AuthGuard] },
+      { path: 'clients', component: ClientsComponent, canActivate: [AuthGuard] },
+      { path: 'profil', component: ProfilComponent, canActivate: [AuthGuard] },
+      { path: 'demandes-certifications', component: DemandesCertificationsComponent, canActivate: [AuthGuard] }
     ]
   },
 ];

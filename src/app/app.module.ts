@@ -35,7 +35,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TagModule } from 'primeng/tag';
 import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
-import { GenericFilterPipe } from './services/genericFilter';
+import { GenericFilterPipe } from './helpers/genericFilter';
+import { TokenInterceptorProvider } from './helpers/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { GenericFilterPipe } from './services/genericFilter';
   ],
   providers: [
     MessageService,
-    ConfirmationService
+    ConfirmationService,
+    TokenInterceptorProvider
   ],
   bootstrap: [AppComponent]
 })

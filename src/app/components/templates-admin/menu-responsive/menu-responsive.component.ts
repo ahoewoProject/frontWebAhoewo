@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 
 @Component({
@@ -11,12 +10,13 @@ export class MenuResponsiveComponent implements OnInit{
 
   user:any;
   activeLink: string = localStorage.getItem('activeLink') || '';
+  
   constructor(
-    private personneService: PersonneService,
-    private cookieService: CookieService
-  ){
-    const userCookie = this.cookieService.get('user');
-    this.user = JSON.parse(userCookie);
+    private personneService: PersonneService
+  )
+  {
+    const utilisateurConnecte = this.personneService.utilisateurConnecte();
+    this.user = JSON.parse(utilisateurConnecte);
   }
 
   ngOnInit(): void {
@@ -29,6 +29,6 @@ export class MenuResponsiveComponent implements OnInit{
   }
 
   seDeconnecter(): void{
-    this.personneService.logout();
+    this.personneService.deconnexion();
   }
 }

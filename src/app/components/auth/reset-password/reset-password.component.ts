@@ -30,8 +30,8 @@ export class ResetPasswordComponent implements OnInit{
   initRecupererMotDePasseForm(): void{
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
     this.recupererMotDePasseForm = new FormGroup({
-      motDePasse: new FormControl('', [Validators.required, Validators.maxLength(14), Validators.minLength(7), Validators.pattern(passwordRegex)]),
-      motDePasseConfirmer: new FormControl('', [Validators.required, Validators.maxLength(14), Validators.minLength(7), Validators.pattern(passwordRegex)])
+      motDePasse: new FormControl('', [Validators.required, Validators.maxLength(14), Validators.minLength(8), Validators.pattern(passwordRegex)]),
+      motDePasseConfirmer: new FormControl('', [Validators.required, Validators.maxLength(14), Validators.minLength(8), Validators.pattern(passwordRegex)])
     }, [ this.passwordMatch("motDePasse", "motDePasseConfirmer") ])
   }
 
@@ -61,11 +61,11 @@ export class ResetPasswordComponent implements OnInit{
     const resetPasswordData = new FormData();
     resetPasswordData.append('token', token)
     resetPasswordData.append('newPassword', motDePasse)
-    this.personneService.resetPassword(resetPasswordData).subscribe(
+    this.personneService.reinitialiserMotDePasse(resetPasswordData).subscribe(
       (response) => {
         console.log(response);
         localStorage.removeItem('token')
-        this.router.navigate(['/login'], { queryParams: { passwordResetSuccess: true } });
+        this.router.navigate(['/connexion'], { queryParams: { passwordResetSuccess: true } });
       },
       (error) => {
         console.log(error);
@@ -84,4 +84,28 @@ export class ResetPasswordComponent implements OnInit{
     };
   }
 
+  showPasswordErrors(): boolean {
+    const motDePasseErrors = this.motDePasse?.errors;
+    const motDePasseConfirmerErrors = this.motDePasseConfirmer?.errors;
+    return (
+      (motDePasseErrors?.['minlength'] || motDePasseErrors?.['maxlength'] && motDePasseErrors?.['pattern'] && this.motDePasse?.touched) ||
+      (motDePasseConfirmerErrors?.['minlength'] || motDePasseConfirmerErrors?.['maxlength'] && motDePasseConfirmerErrors?.['pattern'] && this.motDePasseConfirmer?.touched)
+    );
+  }
+
+  showMinLengthError(): boolean {
+    const motDePasseErrors = this.motDePasse?.errors;
+    const motDePasseConfirmerErrors = this.motDePasseConfirmer?.errors;
+    return (
+      (motDePasseErrors?.['minlength'] || motDePasseErrors?.['maxlength'] && this.motDePasse?.touched) ||
+      (motDePasseConfirmerErrors?.['minlength'] || motDePasseConfirmerErrors?.['maxlength'] && this.motDePasseConfirmer?.touched)
+    );
+  }
+
+  showPatternError(): boolean {
+    const motDePasseErrors = this.motDePasse?.errors;
+    const motDePasseConfirmerErrors = this.motDePasseConfirmer?.errors;
+    return (motDePasseErrors?.['pattern'] || motDePasseConfirmerErrors?.['pattern']);
+  }
+  
 }

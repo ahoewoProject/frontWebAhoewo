@@ -40,11 +40,12 @@ export class NotairesComponent implements OnInit{
     statut: false
   }
 
-  constructor(private notaireService: NotaireService,
+  constructor(
+    private notaireService: NotaireService,
     private personneService: PersonneService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.listeNotaires();

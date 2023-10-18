@@ -12,7 +12,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 export class RegisterComponent implements OnInit {
 
   inscriptionNonReussie: boolean = false;
-  registerForm = this.authService.registerForm;
+  registerForm = this.personneService.registerForm;
   message: string = '';
   selectedRole: string = 'Proprietaire';
 
@@ -63,7 +63,7 @@ export class RegisterComponent implements OnInit {
   RegisterForm: any;
 
   constructor(
-    private authService: PersonneService,
+    private personneService: PersonneService,
     private router: Router
   ) {}
 
@@ -118,17 +118,17 @@ export class RegisterComponent implements OnInit {
     if (this.selectedRole === 'Proprietaire') {
       this.registerForm.role = this.roleProprietaire;
       console.log(this.registerForm)
-      this.authService.register(this.registerForm).subscribe(
+      this.personneService.inscription(this.registerForm).subscribe(
         (response) => {
           console.log(response);
-          this.router.navigate(['/login'], { queryParams: { inscriptionSuccess: true } })
+          this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
         },
         (error) => {
           console.log(error)
           if(error.message === "Un utilisateur avec ce nom d'utilisateur existe déjà"){
             this.inscriptionNonReussie = true;
             this.message = "Un propriétaire avec ce nom d'utilisateur existe déjà. Veuillez réessayez !";
-            this.router.navigate(['/register'])
+            this.router.navigate(['/inscription'])
             setTimeout(() => {
               this.inscriptionNonReussie = false;
               this.message = '';
@@ -136,7 +136,7 @@ export class RegisterComponent implements OnInit {
           }else if(error.message === "Un utilisateur avec cette adresse e-mail existe déjà"){
             this.inscriptionNonReussie = true;
             this.message = "Un propriétaire avec cette adresse e-mail existe déjà. Veuillez réessayez !";
-            this.router.navigate(['/register'])
+            this.router.navigate(['/inscription'])
             setTimeout(() => {
               this.inscriptionNonReussie = false;
               this.message = '';
@@ -146,17 +146,17 @@ export class RegisterComponent implements OnInit {
       )
     } else if (this.selectedRole === "Agent immobilier") {
       this.registerForm.role = this.roleAgentImmobilier;
-      this.authService.register(this.registerForm).subscribe(
+      this.personneService.inscription(this.registerForm).subscribe(
         (response) => {
           console.log(response);
-          this.router.navigate(['/login'], { queryParams: { inscriptionSuccess: true } })
+          this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
         },
         (error) => {
           console.log(error)
           if(error.message === "Un utilisateur avec ce nom d'utilisateur existe déjà"){
             this.inscriptionNonReussie = true;
             this.message = "Un agent immobilier avec ce nom d'utilisateur existe déjà. Veuillez réessayez !";
-            this.router.navigate(['/register'])
+            this.router.navigate(['/inscription'])
             setTimeout(() => {
               this.inscriptionNonReussie = false;
               this.message = '';
@@ -164,7 +164,7 @@ export class RegisterComponent implements OnInit {
           }else if(error.message === "Un utilisateur avec cette adresse e-mail existe déjà"){
             this.inscriptionNonReussie = true;
             this.message = "Un agent immobilier avec cette adresse e-mail existe déjà. Veuillez réessayez !";
-            this.router.navigate(['/register'])
+            this.router.navigate(['/inscription'])
             setTimeout(() => {
               this.inscriptionNonReussie = false;
               this.message = '';
@@ -174,16 +174,16 @@ export class RegisterComponent implements OnInit {
       )
     }else if(this.selectedRole === "Demarcheur"){
       this.registerForm.role = this.roleDemarcheur;
-      this.authService.register(this.registerForm).subscribe(
+      this.personneService.inscription(this.registerForm).subscribe(
         (response) =>{
           console.log(response);
-          this.router.navigate(['/login'], { queryParams: { inscriptionSuccess: true } })
+          this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
         },
         (error) =>{
           if(error.message === "Un utilisateur avec ce nom d'utilisateur existe déjà"){
             this.inscriptionNonReussie = true;
             this.message = "Un demarcheur avec ce nom d'utilisateur existe déjà. Veuillez réessayez !";
-            this.router.navigate(['/register'])
+            this.router.navigate(['/inscription'])
             setTimeout(() => {
               this.inscriptionNonReussie = false;
               this.message = '';
@@ -191,7 +191,7 @@ export class RegisterComponent implements OnInit {
           }else if(error.message === "Un utilisateur avec cette adresse e-mail existe déjà"){
             this.inscriptionNonReussie = true;
             this.message = "Un demarcheur avec cette adresse e-mail existe déjà. Veuillez réessayez !";
-            this.router.navigate(['/register'])
+            this.router.navigate(['/inscription'])
             setTimeout(() => {
               this.inscriptionNonReussie = false;
               this.message = '';
@@ -201,17 +201,17 @@ export class RegisterComponent implements OnInit {
       )
     }else{
       this.registerForm.role = this.roleClient;
-      this.authService.register(this.registerForm).subscribe(
+      this.personneService.inscription(this.registerForm).subscribe(
         (response) =>{
           console.log(response);
-          this.router.navigate(['/login'], { queryParams: { inscriptionSuccess: true } })
+          this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
         },
         (error) =>{
           console.log(error)
           if(error.message === "Un utilisateur avec ce nom d'utilisateur existe déjà"){
             this.inscriptionNonReussie = true;
             this.message = "Un client avec ce nom d'utilisateur existe déjà. Veuillez réessayez !";
-            this.router.navigate(['/register'])
+            this.router.navigate(['/inscription'])
             setTimeout(() => {
               this.inscriptionNonReussie = false;
               this.message = '';
@@ -219,7 +219,7 @@ export class RegisterComponent implements OnInit {
           }else if(error.message === "Un utilisateur avec cette adresse e-mail existe déjà"){
             this.inscriptionNonReussie = true;
             this.message = "Un client avec cette adresse e-mail existe déjà. Veuillez réessayez !";
-            this.router.navigate(['/register'])
+            this.router.navigate(['/inscription'])
             setTimeout(() => {
               this.inscriptionNonReussie = false;
               this.message = '';

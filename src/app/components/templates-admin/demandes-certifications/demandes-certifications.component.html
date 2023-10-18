@@ -103,7 +103,7 @@
                   <td class="vam">{{ pageActuelle + i + 1 }}</td>
                   <td class="vam">{{ demandeCertif.dateDemande | date: "yyyy-dd-MM" }}</td>
                   <td class="vam">{{ demandeCertif.personne.nom }} {{ demandeCertif.personne.prenom }} <i *ngIf="demandeCertif.personne.estCertifie && (demandeCertif.personne.role.code === 'ROLE_AGENTIMMOBILER' || demandeCertif.personne.role.code === 'ROLE_PROPRIETAIRE' || demandeCertif.personne.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
-                  <td>
+                  <td class="vam">
                     <p-tag *ngIf="demandeCertif.statutDemande == 1" severity="success" value="Validé"></p-tag>
                     <p-tag *ngIf="demandeCertif.statutDemande == 0" severity="warning" value="En attente"></p-tag>
                   </td>

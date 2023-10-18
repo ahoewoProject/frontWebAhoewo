@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CookieService } from 'ngx-cookie-service';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Gerant } from 'src/app/models/gestionDesComptes/Gerant';
 import { Role } from 'src/app/models/gestionDesComptes/Role';
@@ -43,12 +42,12 @@ export class GerantsComponent implements OnInit{
 
   constructor(private gerantService: GerantService,
     private personneService: PersonneService,
-    private cookieService: CookieService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
-    ) {
-      const userCookie = this.cookieService.get('user');
-      this.user = JSON.parse(userCookie);
+    )
+    {
+      const utilisateurConnecte = this.personneService.utilisateurConnecte();
+      this.user = JSON.parse(utilisateurConnecte);
      }
 
   ngOnInit(): void {

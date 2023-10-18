@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { LoginForm } from 'src/app/models/auth/LoginForm';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 
@@ -13,7 +12,6 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 export class LoginComponent implements OnInit{
 
   connexionNonReussie: boolean = false;
-  erreur: boolean = true;
   user: any;
   message: string = "";
   loginForm: LoginForm = new LoginForm();
@@ -22,8 +20,7 @@ export class LoginComponent implements OnInit{
   inscriptionReussie: any;
 
   constructor(
-    private authService: PersonneService,
-    private cookieService: CookieService,
+    private personneService: PersonneService,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {}
@@ -72,7 +69,7 @@ export class LoginComponent implements OnInit{
     this.loginData.append('username', this.loginForm.username);
     this.loginData.append('password', this.loginForm.password);
 
-    this.authService.login(this.loginData)
+    this.personneService.seConnecter(this.loginData)
       .subscribe(
         response => this.loginSuccess(response),
         error => this.loginError(error)
@@ -81,17 +78,19 @@ export class LoginComponent implements OnInit{
 
   private loginSuccess(response: any): void {
     this.LoginForm.reset();
-    console.log(response.access_token);
+    console.log(response.refresh_token);
 
-    this.cookieService.set('access_token', response.access_token);
-    this.cookieService.set('refresh_token', response.refresh_token);
+    const access_token = response.access_token;
+    const refresh_token = response.refresh_token;
+
+    this.personneService.enregistrerToken(access_token, refresh_token);
 
     this.recupererInfoUser();
 
   }
 
   recupererInfoUser(): void {
-    this.authService.infoUser()
+    this.personneService.infoUser()
       .subscribe(
         user => this.userInfo(user),
         error => console.log(error)
@@ -104,12 +103,14 @@ export class LoginComponent implements OnInit{
 
     if (this.user.etatCompte === true) {
       localStorage.setItem('activeLink', '/admin/dashboard');
-      this.cookieService.set('user', JSON.stringify(user));
+
+      this.personneService.enregistrerInfoUser(JSON.stringify(user));
+
       this.router.navigate(['/admin/dashboard'])
     } else {
       this.connexionNonReussie = true;
       this.message = "Votre compte est désactivé. Veuillez contacter l'équipe support technique ahoewo pour obtenir de l'aide supplémentaire";
-      this.router.navigate(['/login']);
+      this.router.navigate(['/connexion']);
       setTimeout(() => {
         this.connexionNonReussie = false;
         this.message = '';
@@ -144,7 +145,7 @@ export class LoginComponent implements OnInit{
       }, 3000);
     }
 
-    this.router.navigate(['/login']);
+    this.router.navigate(['/connexion']);
   }
 
 }

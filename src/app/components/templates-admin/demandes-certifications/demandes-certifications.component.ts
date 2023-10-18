@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { DemandeCertification } from 'src/app/models/gestionDesComptes/DemandeCertification';
 import { DemandeCertificationService } from 'src/app/services/gestionDesComptes/demande-certification.service';
+import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -29,14 +29,15 @@ export class DemandesCertificationsComponent implements OnInit {
   documentJustificatif: any;
 
   constructor(
+    private personneService: PersonneService,
     private demandeCertifService: DemandeCertificationService,
-    private cookieService: CookieService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
-  ){
-      this.APIEndpoint = environment.APIEndpoint;
-      const userCookie = this.cookieService.get('user');
-      this.user = JSON.parse(userCookie);
+    private confirmationService: ConfirmationService,
+  )
+  {
+    this.APIEndpoint = environment.APIEndpoint;
+    const utilisateurConnecte = this.personneService.utilisateurConnecte();
+    this.user = JSON.parse(utilisateurConnecte);
   }
 
   ngOnInit(): void {

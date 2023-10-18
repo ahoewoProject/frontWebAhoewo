@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CookieService } from 'ngx-cookie-service';
 import { MessageService } from 'primeng/api';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 
@@ -22,12 +21,12 @@ export class ProfilComponent implements OnInit{
   userForm: any;
 
   constructor(
-    private cookieService: CookieService,
     private personneService: PersonneService,
     private messageService: MessageService
-  ) {
-    const userCookie = this.cookieService.get('user');
-    this.user = JSON.parse(userCookie);
+  )
+  {
+    const utilisateurConnecte = this.personneService.utilisateurConnecte();
+    this.user = JSON.parse(utilisateurConnecte);
   }
 
   ngOnInit(): void {

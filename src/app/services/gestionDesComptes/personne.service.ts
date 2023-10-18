@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { RegisterForm } from 'src/app/models/auth/RegisterForm';
 import { Personne } from 'src/app/models/gestionDesComptes/Personne';
@@ -12,63 +11,47 @@ import { environment } from 'src/environments/environment';
 })
 export class PersonneService {
 
-  private isLoggedIn: boolean = false;
   public registerForm: RegisterForm = new RegisterForm();
   public personne: Personne = new Personne();
   url!: string;
 
-  constructor(private httpClient: HttpClient,
-    private cookieService: CookieService, private router: Router) {
+  constructor(private httpClient: HttpClient,private router: Router) {
     const APIEndpoint = environment.APIEndpoint;
     this.url = APIEndpoint + 'api/';
   }
 
   // Création de compte
   // url: http://localhost:4040/api/register
-  register(r: RegisterForm): Observable<any>{
+  inscription(r: RegisterForm): Observable<any>{
     return this.httpClient.post<RegisterForm>(this.url + 'register', r);
   }
 
   // Authentification à un compte
   // url: http://localhost:4040/api/login
-  login(loginData: FormData): Observable<any>{
+  seConnecter(loginData: FormData): Observable<any>{
     return this.httpClient.post<any>(this.url + 'login', loginData);
   }
 
   // Modifier les informations de son compte
   // url: http://localhost:4040/api/modifier/profil/{id}
   modifierProfil(r: RegisterForm, id: number): Observable<Personne>{
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
-    });
-    return this.httpClient.put<Personne>(this.url + 'modifier/profil/'+ id, r, { headers });
+    return this.httpClient.put<Personne>(this.url + 'modifier/profil/'+ id, r);
   }
 
-  // Recupérer les info de l'utilisateur connecté
+  // Recupérer les info de l'utilisateur connecté à partir du token d'accès
   // url: http://localhost:4040/api/user/info
   infoUser(): Observable<Personne> {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
-    });
-    console.log(headers)
-    this.isLoggedIn = true;
-    return this.httpClient.get<Personne>(`${this.url}user/info`, { headers });
+    return this.httpClient.get<Personne>(`${this.url}user/info`);
   }
 
   // url: http://localhost:4040/api/activer/compte/{id}
   activerCompte(id: number) {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
-    });
-    return this.httpClient.get<Personne>(this.url + 'activer/compte/' + id, { headers });
+    return this.httpClient.get<Personne>(this.url + 'activer/compte/' + id);
   }
 
   // url: http://localhost:9000/api/desactiver/compte/{id}
   desactiverCompte(id: number) {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
-    });
-    return this.httpClient.get<Personne>(this.url + 'desactiver/compte/' + id, { headers });
+    return this.httpClient.get<Personne>(this.url + 'desactiver/compte/' + id);
   }
 
   // url: http://localhost:9000/api/request-reset-password
@@ -77,37 +60,73 @@ export class PersonneService {
   }
 
   // url: http://localhost:9000/api/reset-password
-  resetPassword(resetPasswordData: FormData): Observable<any>{
+  reinitialiserMotDePasse(resetPasswordData: FormData): Observable<any>{
     return this.httpClient.post<any>(this.url + 'reset-password', resetPasswordData);
   }
 
   // Fonction pour recupérer les nombres d'utilisateurs
   // url: http://localhost:4040/api/count/users
   countUsers(): Observable<number>{
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
-    });
-    return this.httpClient.get<number>(this.url + 'count/users', { headers });
+    return this.httpClient.get<number>(this.url + 'count/users');
   };
 
   // url: http://localhost:4040/api/user/{id}
   findById(id: number): Observable<Personne>{
+    return this.httpClient.get<Personne>(this.url + 'user/' + id);
+  }
+
+  // Fonction pour le rafraîchissement d'un token
+  // url: http://localhost:4040/api/refresh-token
+  rafraichirToken(): Observable<any>{
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.cookieService.get('access_token')}`
+      'Authorization': `Bearer ${this.recupererRefreshToken()}`
     });
-    return this.httpClient.get<Personne>(this.url + 'user/' + id, { headers });
+    this.effacerToken();
+    return this.httpClient.get<any>(this.url + 'refresh-token', { headers });
   }
 
   // Fonction pour vérifier si l'utilisateur est connecté
-  isUserLoggedIn(): boolean {
-    return this.isLoggedIn;
+  estConnecte(): boolean {
+    const access_token = localStorage.getItem('access_token');
+    return !! access_token;
+  }
+
+  // Fonction pour enregistrer les tokens
+  enregistrerToken(access_token: string, refresh_token: string): void {
+    localStorage.setItem('access_token', access_token);
+    localStorage.setItem('refresh_token', refresh_token);
+  }
+
+  // Fonction pour recupérer le token d'accès
+  recupererAccessToken(): string {
+    return localStorage.getItem('access_token') || '';
+  }
+
+  // Fonction pour recupérer le token de rafraîchissement
+  recupererRefreshToken(): string {
+    return localStorage.getItem('refresh_token') || '';
+  }
+
+  // Fonction pour effacer les tokens lors de la déconnexion
+  effacerToken(): void {
+    localStorage.clear();
+  }
+
+  // Fonction pour sauvegarder les informations d'un utilisateur
+  // dans un local storage
+  enregistrerInfoUser(user: string): void {
+    localStorage.setItem('user', user);
+  }
+
+  // Fonction pour recupérer les informations de l'utilisateur connecté
+  // à partir d'un local storage
+  utilisateurConnecte(): string {
+    return localStorage.getItem('user') || '';
   }
 
   // Fonction pour déconnecter un utilisateur
-  logout(): void {
-    this.cookieService.deleteAll();
-    localStorage.clear()
-    this.router.navigate(['/login']);
-    this.isLoggedIn = false;
+  deconnexion(): void {
+    this.effacerToken();
+    this.router.navigate(['/connexion']);
   }
 }

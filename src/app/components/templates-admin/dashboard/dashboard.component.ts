@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
-import { Gerant } from 'src/app/models/gestionDesComptes/Gerant';
 import { AdministrateurService } from 'src/app/services/gestionDesComptes/administrateur.service';
 import { AgentImmobilierService } from 'src/app/services/gestionDesComptes/agent-immobilier.service';
 import { ClientService } from 'src/app/services/gestionDesComptes/client.service';
@@ -37,7 +35,6 @@ export class DashboardComponent implements OnInit{
 
   constructor(
     private personneService: PersonneService,
-    private cookieService: CookieService,
     private roleService: RoleService,
     private gerantService: GerantService,
     private demandeCertifService: DemandeCertificationService,
@@ -47,9 +44,10 @@ export class DashboardComponent implements OnInit{
     private agentImmobilierService: AgentImmobilierService,
     private administrateurService: AdministrateurService,
     private notaireService: NotaireService
-  ) {
-    const userCookie = this.cookieService.get('user');
-    this.user = JSON.parse(userCookie);
+  )
+  {
+    const utilisateurConnecte = this.personneService.utilisateurConnecte();
+    this.user = JSON.parse(utilisateurConnecte);
   }
 
   ngOnInit(): void {

@@ -2,9 +2,6 @@ import { Role } from "../gestionDesComptes/Role";
 
 
 export class RegisterForm{
-  static get(arg0: string) {
-    throw new Error('Method not implemented.');
-  }
 
   id: number;
   nom: string;
