@@ -24,7 +24,7 @@ export class RoleService {
   }
 
   // Modification d'une occurrence de role;
-  // url: http://localhost:4040/api/role/modifier
+  // url: http://localhost:4040/api/role/modifier/{id}
   updateRole(id: number, r: Role): Observable<Role>{
     return this.httpClient.put<Role>(this.url + 'role/modifier/'+ id, r);
   }

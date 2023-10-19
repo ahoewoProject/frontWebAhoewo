@@ -17,9 +17,14 @@ export class DemandeCertificationService {
     this.url = APIEndpoint + 'api/';
   }
 
-  // url: http://localhost:4040/api/demande-certification/ajouter
+  // url: http://localhost:4040/api/compte/demande-certification/ajouter
   addDemandeCertificationCompte(d: FormData): Observable<DemandeCertification>{
     return this.httpClient.post<DemandeCertification>(this.url + 'compte/demande-certification/ajouter', d);
+  }
+
+  // url: http://localhost:4040/api/agence/demande-certification/ajouter
+  addDemandeCertificationAgence(d: FormData): Observable<DemandeCertification>{
+    return this.httpClient.post<DemandeCertification>(this.url + 'agence/demande-certification/ajouter', d);
   }
 
   // url: http://localhost:4040/api/demandes-certifications
@@ -40,6 +45,11 @@ export class DemandeCertificationService {
   // url: http://localhost:4040/api/certifier/user/{idPersonne}/{idDemandeCertif}
   certifierCompte(idPersonne: number, idDemandeCertif: number): Observable<any>{
     return this.httpClient.get<any>(this.url + 'certifier/user/' + idPersonne + '/' + idDemandeCertif);
+  }
+
+  // url: http://localhost:4040/api/certifier/agence/{idAgence}/{idDemandeCertif}
+  certifierAgence(idAgence: number, idDemandeCertif: number): Observable<any>{
+    return this.httpClient.get<any>(this.url + 'certifier/agence/' + idAgence + '/' + idDemandeCertif);
   }
 
   // url: http://localhost:4040/api/count/demandes-certifications
