@@ -18,8 +18,8 @@ export class DemandeCertificationService {
   }
 
   // url: http://localhost:4040/api/demande-certification/ajouter
-  addDemandeCertif(d: FormData): Observable<DemandeCertification>{
-    return this.httpClient.post<DemandeCertification>(this.url + 'demande-certification/ajouter', d);
+  addDemandeCertificationCompte(d: FormData): Observable<DemandeCertification>{
+    return this.httpClient.post<DemandeCertification>(this.url + 'compte/demande-certification/ajouter', d);
   }
 
   // url: http://localhost:4040/api/demandes-certifications

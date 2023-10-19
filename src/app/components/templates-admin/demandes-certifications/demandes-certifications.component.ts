@@ -117,7 +117,7 @@ export class DemandesCertificationsComponent implements OnInit {
     this.demandeCertifData.append('demandeCertificationJson', JSON.stringify(formValues))
     this.demandeCertifData.append('documentJustificatif', this.documentJustificatif);
 
-    this.demandeCertifService.addDemandeCertif(this.demandeCertifData)
+    this.demandeCertifService.addDemandeCertificationCompte(this.demandeCertifData)
     .subscribe(
       (response) => {
 

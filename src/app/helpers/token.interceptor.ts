@@ -20,17 +20,15 @@ export class TokenInterceptor implements HttpInterceptor {
 
     const access_token = this.personneService.recupererAccessToken();
     if (access_token !== null) {
-
       let clone = this.ajouterEnTeteAuthorization(request, access_token);
 
       return next.handle(clone).pipe(
         catchError(error => {
-          console.log(error);
-          if (error.status === 401) {
-            this.gestionErreur401(request, next);
+          if (error.status === 403) {
+            this.gestionErreur403(request, next);
           }
-          return throwError('Token expiré');
-        })
+          return throwError({ message: 'Token expiré', error: error });
+        }),
       );
     }
     return next.handle(request);
@@ -41,12 +39,12 @@ export class TokenInterceptor implements HttpInterceptor {
     return request.clone({
       headers: new HttpHeaders({
         'Authorization': `Bearer ${access_token}`
-      })
+      }),
     });
   }
 
   // Fonction pour gérer des erreurs 401
-  private gestionErreur401(request: HttpRequest<unknown>, next: HttpHandler){
+  private gestionErreur403(request: HttpRequest<unknown>, next: HttpHandler){
     return this.personneService.rafraichirToken().pipe(
       switchMap((response) => {
         this.personneService.enregistrerToken(response.access_token, response.refresh_token);
@@ -54,9 +52,12 @@ export class TokenInterceptor implements HttpInterceptor {
         return next.handle(clone);
       }),
       catchError((refreshError) => {
-        console.log('Erreur lors du rafraîchissement du token:', refreshError);
-        return throwError('Impossible de rafraîchir le token');
-      })
+        if (refreshError.status === 403) {
+          this.personneService.deconnexion();
+          return throwError({ message: 'Refresh token expiré', error: refreshError });
+        }
+        return throwError({ message: 'Erreur inattendue lors du rafraîchissement du token', error: refreshError });
+      }),
     );
   }
 }

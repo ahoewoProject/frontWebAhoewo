@@ -1,4 +1,5 @@
 import { EntiteDeBase } from "../EntiteDeBase";
+import { AgenceImmobiliere } from "../gestionDesAgencesImmobilieres/AgenceImmobiliere";
 import { Personne } from "./Personne";
 
 export class DemandeCertification extends EntiteDeBase {
@@ -6,8 +7,9 @@ export class DemandeCertification extends EntiteDeBase {
   id: number;
   dateDemande!: Date;
   documentJustificatif: string;
-  statutDemande:number;
-  personne!: Personne;
+  statutDemande: number;
+  personne: Personne;
+  agenceImmobiliere: AgenceImmobiliere;
 
   constructor(){
     super();
@@ -15,5 +17,6 @@ export class DemandeCertification extends EntiteDeBase {
     this.documentJustificatif = '';
     this.statutDemande = 0;
     this.personne = new Personne();
+    this.agenceImmobiliere = new AgenceImmobiliere();
   }
 }
