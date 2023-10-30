@@ -5,8 +5,15 @@
     <!-- End Menu responsive -->
   </div>
   <div class="dashboard_title_area">
-    <h3>Bienvenue, M/Mlle {{ user.nom }} {{ user.prenom }}! <i *ngIf="user.estCertifie && (user.role.code === 'ROLE_AGENTIMMOBILER' || user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6;"></i></h3>
-    <h6 *ngIf="!user.estCertifie && (user.role.code === 'ROLE_AGENTIMMOBILER' || user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_DEMARCHEUR')" class="text" style="color: rgb(202, 8, 8);">Votre compte n'est pas certifié, veuillez demander la certification de compte <br>en cliquant sur le menu <b>certifications</b> !</h6>
+    <h3>Bienvenue, M/Mlle {{ user.nom }} {{ user.prenom }}! <i *ngIf="user.estCertifie && (user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6;"></i></h3>
+    <h6 *ngIf="!user.estCertifie && (user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_DEMARCHEUR')" class="text">
+      <p *ngIf="demandeCertifications.length == 0" style="color: rgb(202, 8, 8);">Votre compte n'est pas certifié, veuillez demander la certification de compte <br>en cliquant sur le menu <b>certifications</b> !</p>
+      <p *ngIf="demandeCertifications.length !== 0" style="color: rgb(202, 8, 8);">Votre compte est en attente de <b>certifications</b> !</p>
+    </h6>
+    <h6 *ngIf="!user.estCertifie && user.role.code === 'ROLE_AGENTIMMOBILIER'" class="text">
+      <p *ngIf="demandeCertifications.length == 0" style="color: rgb(202, 8, 8);">Votre compte n'est pas certifié, veuillez ajouter votre <b>agence immobilière</b> en cliquant sur le menu <b>agences immobilières</b><br> et demander la certification de cette dernière en cliquant sur le menu <b>certifications</b> !</p>
+      <p *ngIf="demandeCertifications.length !== 0" style="color: rgb(202, 8, 8);">Votre compte est en attente de <b>certifications</b> !</p>
+    </h6>
     <h6 class="text">Nous sommes heureux de vous revoir !</h6>
     <br>
   </div>
@@ -98,7 +105,7 @@
       <div class="d-flex justify-content-between statistics_funfact">
         <div class="details">
           <div class="text fz25">Agences <br> Immobilières</div>
-          <div class="title">0</div>
+          <div class="title">{{ _nombreAgencesImmobilieres }}</div>
         </div>
         <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-key" style="color: #ffffff;"></i></div>
       </div>
@@ -112,7 +119,7 @@
       <div class="d-flex justify-content-between statistics_funfact">
         <div class="details">
           <div class="text fz25">Demandes de<br> certifications</div>
-          <div class="title">{{ _nombreDemandeCertifs }}</div>
+          <div class="title">{{ _nombreDemandeCertification }}</div>
         </div>
         <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-sharp fa-light fa-certificate" style="color: #ffffff;"></i></div>
       </div>
@@ -121,7 +128,7 @@
       <div class="d-flex justify-content-between statistics_funfact">
         <div class="details">
           <div class="text fz25">Certifications<br> en attente</div>
-          <div class="title">{{ _nombreDemandeCertifsEnAttente }}</div>
+          <div class="title">{{ _nombreDemandeCertificationEnAttente }}</div>
         </div>
         <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-sharp fa-light fa-certificate" style="color: #ffffff;"></i></div>
       </div>
@@ -130,7 +137,7 @@
       <div class="d-flex justify-content-between statistics_funfact">
         <div class="details">
           <div class="text fz25">Certifications<br> validées</div>
-          <div class="title">{{ _nombreDemandeCertifsValidees }}</div>
+          <div class="title">{{ _nombreDemandeCertificationValidee }}</div>
         </div>
         <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-sharp fa-light fa-certificate" style="color: #ffffff;"></i></div>
       </div>
@@ -343,7 +350,7 @@
       <div class="d-flex justify-content-between statistics_funfact">
         <div class="details">
           <div class="text fz25">Agences Immobilières</div>
-          <div class="title">0</div>
+          <div class="title">{{ _nombreAgencesImmobilieresAgentImmobilier }}</div>
         </div>
         <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-key" style="color: #ffffff;"></i></div>
       </div>
@@ -352,7 +359,7 @@
       <div class="d-flex justify-content-between statistics_funfact">
         <div class="details">
           <div class="text fz25">Vos Services</div>
-          <div class="title">0</div>
+          <div class="title">{{ _nombreServices }}</div>
         </div>
         <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-briefcase" style="color: #ffffff;"></i></div>
       </div>

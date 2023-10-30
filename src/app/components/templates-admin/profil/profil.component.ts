@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { DemandeCertification } from 'src/app/models/gestionDesComptes/DemandeCertification';
+import { DemandeCertificationService } from 'src/app/services/gestionDesComptes/demande-certification.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 
 @Component({
@@ -17,14 +19,21 @@ export class ProfilComponent implements OnInit{
   personne = this.personneService.personne;
   messageErreur: string | null = null;
   messageSuccess: string | null = null;
+  demandeCertifications: DemandeCertification[] = [];
 
   userForm: any;
 
   constructor(
     private personneService: PersonneService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private demandeCertificationService: DemandeCertificationService
   )
   {
+    this.demandeCertificationService.findByUser().subscribe(
+      (response) => {
+        this.demandeCertifications = response;
+      }
+    )
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
     this.user = JSON.parse(utilisateurConnecte);
   }
@@ -49,6 +58,7 @@ export class ProfilComponent implements OnInit{
   }
 
   retour(): void {
+    this.detailUser();
     this.userForm.reset();
     this.affichage = 1;
     this.erreur = false;

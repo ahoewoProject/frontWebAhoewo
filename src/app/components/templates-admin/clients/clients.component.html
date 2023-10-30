@@ -93,48 +93,47 @@
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
           <table class="table-style3 table at-savesearch">
-            <tbody>
-              <tbody class="t-body">
-                <tr>
-                  <td class="vam">Nom</td>
-                  <td>{{ client.nom }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Prénom</td>
-                  <td>{{ client.prenom }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Nom d'utilisateur</td>
-                  <td>{{ client.username }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Email</td>
-                  <td>{{ client.email }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Rôle</td>
-                  <td>{{ client.role.libelle }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Téléphone</td>
-                  <td>{{ client.telephone }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Etat compte</td>
-                  <td>
-                    <p-tag *ngIf="client.etatCompte == true" severity="success" value="Activé"></p-tag>
-                    <p-tag *ngIf="client.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
-                  </td>
-                </tr>
-                <!--
-                <tr>
-                  <td class="vam">Est certifié</td>
-                  <td>
-                    <span *ngIf="client.estCertifie == true" class="pending-style style2">Oui</span>
-                    <span *ngIf="client.estCertifie == false" class="pending-style style3">Non</span>
-                  </td>
-                </tr>
-                -->
+            <tbody class="t-body">
+              <tr>
+                <td class="vam">Nom</td>
+                <td>{{ client.nom }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Prénom</td>
+                <td>{{ client.prenom }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Nom d'utilisateur</td>
+                <td>{{ client.username }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Email</td>
+                <td>{{ client.email }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Rôle</td>
+                <td>{{ client.role.libelle }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Téléphone</td>
+                <td>{{ client.telephone }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Etat du compte</td>
+                <td>
+                  <p-tag *ngIf="client.etatCompte == true" severity="success" value="Activé"></p-tag>
+                  <p-tag *ngIf="client.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+                </td>
+              </tr>
+              <!--
+              <tr>
+                <td class="vam">Est certifié</td>
+                <td>
+                  <span *ngIf="client.estCertifie == true" class="pending-style style2">Oui</span>
+                  <span *ngIf="client.estCertifie == false" class="pending-style style3">Non</span>
+                </td>
+              </tr>
+              -->
             </tbody>
           </table>
           <div class="text-end">

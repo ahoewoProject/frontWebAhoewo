@@ -49,12 +49,12 @@ export class PersonneService {
     return this.httpClient.get<Personne>(this.url + 'activer/compte/' + id);
   }
 
-  // url: http://localhost:9000/api/desactiver/compte/{id}
+  // url: http://localhost:4040/api/desactiver/compte/{id}
   desactiverCompte(id: number) {
     return this.httpClient.get<Personne>(this.url + 'desactiver/compte/' + id);
   }
 
-  // url: http://localhost:9000/api/request-reset-password
+  // url: http://localhost:4040/api/request-reset-password
   requestResetPassword(emailData: FormData): Observable<any>{
     return this.httpClient.post<any>(this.url + 'request-reset-password', emailData);
   }
@@ -77,13 +77,13 @@ export class PersonneService {
 
   // Fonction pour le rafraîchissement d'un token
   // url: http://localhost:4040/api/refresh-token
-  rafraichirToken(): Observable<any>{
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.recupererRefreshToken()}`
-    });
-    this.effacerToken();
-    return this.httpClient.get<any>(this.url + 'refresh-token', { headers });
-  }
+  // rafraichirToken(): Observable<any>{
+  //   const headers = new HttpHeaders({
+  //     'Authorization': `Bearer ${this.recupererRefreshToken()}`
+  //   });
+  //   this.effacerLocalStorageItem();
+  //   return this.httpClient.get<any>(this.url + 'refresh-token', { headers });
+  // }
 
   // Fonction pour vérifier si l'utilisateur est connecté
   estConnecte(): boolean {
@@ -108,7 +108,7 @@ export class PersonneService {
   }
 
   // Fonction pour effacer les tokens lors de la déconnexion
-  effacerToken(): void {
+  effacerLocalStorageItem(): void {
     localStorage.clear();
   }
 
@@ -126,7 +126,7 @@ export class PersonneService {
 
   // Fonction pour déconnecter un utilisateur
   deconnexion(): void {
-    this.effacerToken();
+    this.effacerLocalStorageItem();
     this.router.navigate(['/connexion']);
   }
 }

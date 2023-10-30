@@ -10,10 +10,17 @@
     <!-- Mes informations -->
     <div>
       <div  class="row align-items-center pb40">
-        <div class="col-lg-6">
+        <div class="col-xxl-8">
           <div class="dashboard_title_area">
             <h4>Mon profil</h4>
-            <h6 *ngIf="!personne.estCertifie && (personne.role.code === 'ROLE_AGENTIMMOBILER' || personne.role.code === 'ROLE_PROPRIETAIRE' || personne.role.code === 'ROLE_DEMARCHEUR')" class="text" style="color: rgb(202, 8, 8);">Votre compte n'est pas certifié, veuillez demander la certification de compte en cliquant sur le menu <b>certifications</b> !</h6>
+            <h6 *ngIf="!user.estCertifie && (user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_DEMARCHEUR')" class="text">
+              <p *ngIf="demandeCertifications.length == 0" style="color: rgb(202, 8, 8);">Votre compte n'est pas certifié, veuillez demander la certification de compte <br>en cliquant sur le menu <b>certifications</b> !</p>
+              <p *ngIf="demandeCertifications.length !== 0" style="color: rgb(202, 8, 8);">Votre compte est en attente de <b>certifications</b> !</p>
+            </h6>
+            <h6 *ngIf="!personne.estCertifie && personne.role.code === 'ROLE_AGENTIMMOBILIER'" class="text">
+              <p *ngIf="demandeCertifications.length == 0" style="color: rgb(202, 8, 8);">Votre compte n'est pas certifié, si vous n'avez pas encore d'agence immobilière, veuillez ajouter votre <b>agence immobilière</b> en cliquant sur le menu <b>agences immobilières</b> et demander la certification de cette dernière en cliquant sur le menu <b>certifications</b> !</p>
+              <p *ngIf="demandeCertifications.length !== 0" style="color: rgb(202, 8, 8);">Votre compte est en attente de <b>certifications</b> !</p>
+            </h6>
           </div>
         </div>
       </div>
@@ -23,43 +30,42 @@
           <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
             <h4 class="title fz17 mb30">Mes informations</h4>
             <table class="table-style3 table at-savesearch">
-              <tbody>
-                <tbody class="t-body">
-                  <tr>
-                    <td class="vam">Nom & Prénom</td>
-                    <td>{{ personne.nom }} {{ personne.prenom }} <i *ngIf="personne.estCertifie && (personne.role.code === 'ROLE_AGENTIMMOBILER' || personne.role.code === 'ROLE_PROPRIETAIRE' || personne.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="vam">Nom d'utilisateur</td>
-                    <td>{{ personne.username }}</td>
-                  </tr>
-                  <tr>
-                    <td class="vam">Email</td>
-                    <td>{{ personne.email }}</td>
-                  </tr>
-                  <tr>
-                    <td class="vam">Rôle</td>
-                    <td>{{ personne.role.libelle }}</td>
-                  </tr>
-                  <tr>
-                    <td class="vam">Téléphone</td>
-                    <td>{{ personne.telephone }}</td>
-                  </tr>
-                  <tr>
-                    <td class="vam">Etat compte</td>
-                    <td>
-                      <p-tag *ngIf="personne.etatCompte == true" severity="success" value="Activé"></p-tag>
-                      <p-tag *ngIf="personne.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
-                    </td>
-                  </tr>
-                  <tr *ngIf="personne.role.code == 'ROLE_AGENTIMMOBILIER' || personne.role.code == 'ROLE_DEMARCHEUR' || personne.role.code == 'ROLE_PROPRIETAIRE'">
-                    <td class="vam">Est certifié</td>
-                    <td>
-                      <p-tag *ngIf="personne.estCertifie == true" severity="success" value="Oui"></p-tag>
-                      <p-tag *ngIf="personne.estCertifie == false" severity="danger" value="Non"></p-tag>
-                    </td>
-                  </tr>
+              <tbody class="t-body">
+                <tr>
+                  <td class="vam">Nom & Prénom</td>
+                  <td>{{ personne.nom }} {{ personne.prenom }} <i *ngIf="personne.estCertifie && (personne.role.code === 'ROLE_AGENTIMMOBILIER' || personne.role.code === 'ROLE_PROPRIETAIRE' || personne.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="vam">Nom d'utilisateur</td>
+                  <td>{{ personne.username }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Email</td>
+                  <td>{{ personne.email }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Rôle</td>
+                  <td>{{ personne.role.libelle }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Téléphone</td>
+                  <td>{{ personne.telephone }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Etat compte</td>
+                  <td>
+                    <p-tag *ngIf="personne.etatCompte == true" severity="success" value="Activé"></p-tag>
+                    <p-tag *ngIf="personne.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+                  </td>
+                </tr>
+                <tr *ngIf="personne.role.code == 'ROLE_AGENTIMMOBILIER' || personne.role.code == 'ROLE_DEMARCHEUR' || personne.role.code == 'ROLE_PROPRIETAIRE'">
+                  <td class="vam">Est certifié</td>
+                  <td>
+                    <p-tag *ngIf="personne.estCertifie == true" severity="success" value="Oui"></p-tag>
+                    <p-tag *ngIf="personne.estCertifie == false" severity="danger" value="Non"></p-tag>
+                  </td>
+                </tr>
               </tbody>
             </table>
             <div class="text-end">

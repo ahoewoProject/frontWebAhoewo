@@ -11,10 +11,53 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 })
 export class RegisterComponent implements OnInit {
 
+  profilSelectionne!: Role;
   inscriptionNonReussie: boolean = false;
   registerForm = this.personneService.registerForm;
   message: string = '';
-  selectedRole: string = 'Proprietaire';
+
+  roles: Role[] = [
+    {
+      id: 2,
+      code: 'ROLE_PROPRIETAIRE',
+      libelle: 'Proprietaire',
+      creerPar: 0,
+      creerLe: new Date(),
+      modifierPar: 0,
+      modifierLe: new Date(),
+      statut: false
+    },
+    {
+      id: 3,
+      code: 'ROLE_AGENTIMMOBILIER',
+      libelle: 'Agent immobilier',
+      creerPar: 0,
+      creerLe: new Date(),
+      modifierPar: 0,
+      modifierLe: new Date(),
+      statut: false
+    },
+    {
+      id: 4,
+      code: 'ROLE_DEMARCHEUR',
+      libelle: 'Demarcheur',
+      creerPar: 0,
+      creerLe: new Date(),
+      modifierPar: 0,
+      modifierLe: new Date(),
+      statut: false
+    },
+    {
+      id: 5,
+      code: 'ROLE_CLIENT',
+      libelle: 'Client',
+      creerPar: 0,
+      creerLe: new Date(),
+      modifierPar: 0,
+      modifierLe: new Date(),
+      statut: false
+    }
+  ]
 
   roleProprietaire: Role = {
     id: 2,
@@ -78,6 +121,7 @@ export class RegisterComponent implements OnInit {
       motDePasse: new FormControl('', [Validators.required, Validators.maxLength(14), Validators.minLength(8), Validators.pattern(passwordRegex)]),
       motDePasseConfirmer: new FormControl('', [Validators.required, Validators.maxLength(14), Validators.minLength(8), Validators.pattern(passwordRegex)]),
       telephone: new FormControl('', [Validators.required]),
+      role: new FormControl('', [Validators.required])
     }, [ this.passwordMatch("motDePasse", "motDePasseConfirmer") ])
   }
 
@@ -113,9 +157,14 @@ export class RegisterComponent implements OnInit {
     return this.RegisterForm.get('role');
   }
 
+
+  profilChoisi(event: any) {
+    this.profilSelectionne = event.value;
+  }
+
   register(): void {
 
-    if (this.selectedRole === 'Proprietaire') {
+    if (this.profilSelectionne.libelle === 'Proprietaire') {
       this.registerForm.role = this.roleProprietaire;
       console.log(this.registerForm)
       this.personneService.inscription(this.registerForm).subscribe(
@@ -144,7 +193,7 @@ export class RegisterComponent implements OnInit {
           }
         }
       )
-    } else if (this.selectedRole === "Agent immobilier") {
+    } else if (this.profilSelectionne.libelle === "Agent immobilier") {
       this.registerForm.role = this.roleAgentImmobilier;
       this.personneService.inscription(this.registerForm).subscribe(
         (response) => {
@@ -172,7 +221,7 @@ export class RegisterComponent implements OnInit {
           }
         }
       )
-    }else if(this.selectedRole === "Demarcheur"){
+    }else if(this.profilSelectionne.libelle === "Demarcheur"){
       this.registerForm.role = this.roleDemarcheur;
       this.personneService.inscription(this.registerForm).subscribe(
         (response) =>{

@@ -18,6 +18,8 @@ import { ForgotPasswordComponent } from './components/auth/forgot-password/forgo
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { TemplatesClientComponent } from './components/templates-client/templates-client.component';
 import { AuthGuard } from './guards/auth.guard';
+import { AgencesImmobilieresComponent } from './components/templates-admin/agences-immobilieres/agences-immobilieres.component';
+import { ServicesComponent } from './components/templates-admin/services/services.component';
 
 const routes: Routes = [
   { path: '', redirectTo:'', pathMatch: 'full'},
@@ -41,7 +43,9 @@ const routes: Routes = [
       { path: 'gerants', component: GerantsComponent, canActivate: [AuthGuard] },
       { path: 'clients', component: ClientsComponent, canActivate: [AuthGuard] },
       { path: 'profil', component: ProfilComponent, canActivate: [AuthGuard] },
-      { path: 'demandes-certifications', component: DemandesCertificationsComponent, canActivate: [AuthGuard] }
+      { path: 'demandes-certifications', component: DemandesCertificationsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres', component: AgencesImmobilieresComponent, canActivate: [AuthGuard] },
+      { path: 'services', component: ServicesComponent, canActivate: [AuthGuard] }
     ]
   },
 ];

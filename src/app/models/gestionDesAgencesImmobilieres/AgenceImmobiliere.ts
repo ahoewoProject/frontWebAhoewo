@@ -4,6 +4,7 @@ import { AgentImmobilier } from "../gestionDesComptes/AgentImmobilier";
 export class AgenceImmobiliere extends EntiteDeBase {
 
   id: number;
+  logoAgence: string;
   nomAgence: string;
   adresse: string;
   telephone: string;
@@ -17,11 +18,12 @@ export class AgenceImmobiliere extends EntiteDeBase {
   constructor(){
     super();
     this.id = 0;
+    this.logoAgence = '';
     this.nomAgence = '';
     this.adresse = '';
     this.telephone = '';
     this.adresseEmail = '';
-    this.estCertifie = true;
+    this.estCertifie = false;
     this.etatAgence = true;
   }
 }

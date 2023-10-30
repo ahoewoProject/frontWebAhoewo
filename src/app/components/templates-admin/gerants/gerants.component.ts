@@ -44,11 +44,11 @@ export class GerantsComponent implements OnInit{
     private personneService: PersonneService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
-    )
-    {
-      const utilisateurConnecte = this.personneService.utilisateurConnecte();
-      this.user = JSON.parse(utilisateurConnecte);
-     }
+  )
+  {
+    const utilisateurConnecte = this.personneService.utilisateurConnecte();
+    this.user = JSON.parse(utilisateurConnecte);
+  }
 
   ngOnInit(): void {
     if(this.user.role.code == 'ROLE_ADMINISTRATEUR'){
@@ -195,7 +195,7 @@ export class GerantsComponent implements OnInit{
           this.messageSuccess = "Le gérant a été ajouté avec succès.";
           this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
         }
-        else{
+        else {
           this.erreur = true;
           this.messageErreur = "Erreur lors de l'ajout du gérant !"
           this.afficherFormulaireAjouter();
@@ -209,7 +209,7 @@ export class GerantsComponent implements OnInit{
     },
     (error) =>{
       console.log(error)
-      if(error.status === 409){
+      if(error.status === 409) {
         this.erreur = true;
         this.messageErreur = "Un gérant avec ce nom d'utilisateur existe déjà !";
         this.messageService.add({ severity: 'warn', summary: 'Ajout non réussi', detail: this.messageErreur });
@@ -217,7 +217,7 @@ export class GerantsComponent implements OnInit{
     })
   }
 
-  deleteGerant(id: number): void{
+  supprimerGerant(id: number): void {
     this.gerantService.deleteById(id).subscribe(response=>{
       console.log(response);
       this.voirListe();
@@ -226,7 +226,7 @@ export class GerantsComponent implements OnInit{
     })
   }
 
-  activerCompte(id: number): void{
+  activerCompte(id: number): void {
     this.confirmationService.confirm({
       message: 'Vous êtes sûr de vouloir activer ce compte ?',
       header: "Activation de compte",
@@ -236,7 +236,7 @@ export class GerantsComponent implements OnInit{
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été activé avec succès !";
-          this.messageService.add({ severity: 'success', summary: 'Activation de compte confirmé', detail: this.messageSuccess })
+          this.messageService.add({ severity: 'success', summary: 'Activation de compte confirmée', detail: this.messageSuccess })
         });
 
       },
@@ -253,7 +253,7 @@ export class GerantsComponent implements OnInit{
     });
   }
 
-  desactiverCompte(id: number): void{
+  desactiverCompte(id: number): void {
     this.confirmationService.confirm({
       message: 'Vous êtes sûr de vouloir désactiver ce compte ?',
       header: "Désactivation de compte",
@@ -263,7 +263,7 @@ export class GerantsComponent implements OnInit{
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été désactivé avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Désactivaction de compte confirmé', detail: this.messageSuccess })
+          this.messageService.add({ severity: 'success', summary: 'Désactivaction de compte confirmée', detail: this.messageSuccess })
         });
 
       },

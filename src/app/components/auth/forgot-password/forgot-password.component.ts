@@ -54,6 +54,7 @@ export class ForgotPasswordComponent implements OnInit{
       (error) => {
         console.log(error)
         if(error.status === 400){
+          emailData.delete('email');
           this.loading = false;
           this.messageLoading = null;
 

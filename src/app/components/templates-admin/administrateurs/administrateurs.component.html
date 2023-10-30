@@ -180,39 +180,38 @@
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
           <table class="table-style3 table at-savesearch">
-            <tbody>
-              <tbody class="t-body">
-                <tr>
-                  <td class="vam">Nom</td>
-                  <td>{{ admin.nom }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Prénom</td>
-                  <td>{{ admin.prenom }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Nom d'utilisateur</td>
-                  <td>{{ admin.username }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Email</td>
-                  <td>{{ admin.email }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Rôle</td>
-                  <td>{{ admin.role.libelle }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Téléphone</td>
-                  <td>{{ admin.telephone }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Etat compte</td>
-                  <td>
-                    <p-tag *ngIf="admin.etatCompte == true" severity="success" value="Activé"></p-tag>
-                    <p-tag *ngIf="admin.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
-                  </td>
-                </tr>
+            <tbody class="t-body">
+              <tr>
+                <td class="vam">Nom</td>
+                <td>{{ admin.nom }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Prénom</td>
+                <td>{{ admin.prenom }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Nom d'utilisateur</td>
+                <td>{{ admin.username }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Email</td>
+                <td>{{ admin.email }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Rôle</td>
+                <td>{{ admin.role.libelle }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Téléphone</td>
+                <td>{{ admin.telephone }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Etat du compte</td>
+                <td>
+                  <p-tag *ngIf="admin.etatCompte == true" severity="success" value="Activé"></p-tag>
+                  <p-tag *ngIf="admin.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+                </td>
+              </tr>
             </tbody>
           </table>
           <div class="text-end">

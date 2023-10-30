@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { DemandeCertification } from 'src/app/models/gestionDesComptes/DemandeCertification';
+import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
+import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/services.service';
 import { AdministrateurService } from 'src/app/services/gestionDesComptes/administrateur.service';
 import { AgentImmobilierService } from 'src/app/services/gestionDesComptes/agent-immobilier.service';
 import { ClientService } from 'src/app/services/gestionDesComptes/client.service';
@@ -26,26 +29,36 @@ export class DashboardComponent implements OnInit{
   _nombreAgentImmobiliers: number = 0;
   _nombreNotaires: number = 0;
   _nombreAdministrateurs: number = 0;
-  _nombreDemandeCertifs: number = 0;
-  _nombreDemandeCertifsEnAttente: number = 0;
-  _nombreDemandeCertifsValidees: number = 0;
+  _nombreDemandeCertification: number = 0;
+  _nombreDemandeCertificationEnAttente: number = 0;
+  _nombreDemandeCertificationValidee: number = 0;
   _nombreGerantsParProprietaire: number = 0;
-
+  _nombreAgencesImmobilieres: number = 0;
+  _nombreAgencesImmobilieresAgentImmobilier: number = 0;
+  _nombreServices: number = 0;
+  demandeCertifications : DemandeCertification[] = [];
   user: any;
 
   constructor(
     private personneService: PersonneService,
     private roleService: RoleService,
     private gerantService: GerantService,
-    private demandeCertifService: DemandeCertificationService,
     private demarcheurService: DemarcheurService,
     private proprietaireService: ProprietaireService,
     private clientService: ClientService,
     private agentImmobilierService: AgentImmobilierService,
     private administrateurService: AdministrateurService,
-    private notaireService: NotaireService
+    private notaireService: NotaireService,
+    private demandeCertificationService: DemandeCertificationService,
+    private agenceImmobiliereService: AgenceImmobiliereService,
+    private _serviceService: ServicesService
   )
   {
+    this.demandeCertificationService.findByUser().subscribe(
+      (response) => {
+        this.demandeCertifications = response;
+      }
+    )
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
     this.user = JSON.parse(utilisateurConnecte);
   }
@@ -60,10 +73,15 @@ export class DashboardComponent implements OnInit{
     this.nombreUtilisateurs();
     this.nombreGerants();
     this.nombreDemarcheurs();
-    this.nombreDemandeCertifs();
-    this.nombreDemandeCertifsEnAttente();
-    this.nombreDemandeCertifsValidees();
+    this.nombreDemandeCertification();
+    this.nombreDemandeCertificationEnAttente();
+    this.nombreDemandeCertificationValidee();
     this.nombreGerantsParProprietaire();
+    this.nombreAgencesImmobilieres();
+    if (this.user.role.code == 'ROLE_AGENTIMMOBILIER'){
+      this.nombreAgencesImmobilieresAgentImmobilier();
+      this.nombreServices();
+    }
     this.detailUser();
   }
 
@@ -75,26 +93,26 @@ export class DashboardComponent implements OnInit{
     );
   }
 
-  nombreDemandeCertifs(): void {
-    this.demandeCertifService.countDemandeCertifications().subscribe(
+  nombreDemandeCertification(): void {
+    this.demandeCertificationService.countDemandeCertifications().subscribe(
       (response) => {
-        this._nombreDemandeCertifs = response;
+        this._nombreDemandeCertification = response;
       }
     );
   }
 
-  nombreDemandeCertifsEnAttente(): void {
-    this.demandeCertifService.countDemandeCertificationsEnAttente().subscribe(
+  nombreDemandeCertificationEnAttente(): void {
+    this.demandeCertificationService.countDemandeCertificationsEnAttente().subscribe(
       (response) => {
-        this._nombreDemandeCertifsEnAttente = response;
+        this._nombreDemandeCertificationEnAttente = response;
       }
     );
   }
 
-  nombreDemandeCertifsValidees(): void {
-    this.demandeCertifService.countDemandeCertificationsValidees().subscribe(
+  nombreDemandeCertificationValidee(): void {
+    this.demandeCertificationService.countDemandeCertificationsValidees().subscribe(
       (response) => {
-        this._nombreDemandeCertifsValidees = response;
+        this._nombreDemandeCertificationValidee = response;
       }
     );
   }
@@ -167,6 +185,31 @@ export class DashboardComponent implements OnInit{
     this.personneService.countUsers().subscribe(
       (response) => {
         this._nombreUtilisateurs = response;
+      }
+    );
+  }
+
+  nombreAgencesImmobilieres(): void {
+    this.agenceImmobiliereService.countAgencesImmobilieres().subscribe(
+      (response) => {
+        this._nombreAgencesImmobilieres = response;
+      }
+    );
+  }
+
+
+  nombreAgencesImmobilieresAgentImmobilier(): void {
+    this.agenceImmobiliereService.countAgencesImmobilieresAgentImmobilier().subscribe(
+      (response) => {
+        this._nombreAgencesImmobilieresAgentImmobilier = response;
+      }
+    );
+  }
+
+  nombreServices(): void {
+    this._serviceService.countServices().subscribe(
+      (response) => {
+        this._nombreServices = response;
       }
     );
   }

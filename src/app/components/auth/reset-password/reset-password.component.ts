@@ -32,7 +32,7 @@ export class ResetPasswordComponent implements OnInit{
     this.recupererMotDePasseForm = new FormGroup({
       motDePasse: new FormControl('', [Validators.required, Validators.maxLength(14), Validators.minLength(8), Validators.pattern(passwordRegex)]),
       motDePasseConfirmer: new FormControl('', [Validators.required, Validators.maxLength(14), Validators.minLength(8), Validators.pattern(passwordRegex)])
-    }, [ this.passwordMatch("motDePasse", "motDePasseConfirmer") ])
+    }, [ this.passwordMatch("motDePasse", "motDePasseConfirmer") ]);
   }
 
   get motDePasse(){
@@ -107,5 +107,5 @@ export class ResetPasswordComponent implements OnInit{
     const motDePasseConfirmerErrors = this.motDePasseConfirmer?.errors;
     return (motDePasseErrors?.['pattern'] || motDePasseConfirmerErrors?.['pattern']);
   }
-  
+
 }

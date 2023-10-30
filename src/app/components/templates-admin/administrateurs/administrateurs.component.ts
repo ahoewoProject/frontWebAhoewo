@@ -47,7 +47,7 @@ export class AdministrateursComponent implements OnInit {
 
   ngOnInit(): void {
     this.listeAdmins();
-    this.initAdminForm()
+    this.initAdminForm();
   }
 
   initAdminForm(): void{
@@ -186,7 +186,7 @@ export class AdministrateursComponent implements OnInit {
     },
     (error) =>{
       console.log(error)
-      if(error.status === 409){
+      if(error.error.status === 409){
         this.erreur = true;
         this.messageErreur = "Un administrateur avec ce nom d'utilisateur existe déjà !";
         this.messageService.add({ severity: 'warn', summary: 'Ajout non réussi', detail: this.messageErreur });
@@ -194,7 +194,7 @@ export class AdministrateursComponent implements OnInit {
     })
   }
 
-  deleteAdmin(id: number): void{
+  supprimerAdmin(id: number): void{
     this.adminService.deleteById(id).subscribe(
       (response) => {
         console.log(response);
@@ -215,7 +215,7 @@ export class AdministrateursComponent implements OnInit {
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été activé avec succès !";
-          this.messageService.add({ severity: 'success', summary: 'Activation de compte confirmé', detail: this.messageSuccess })
+          this.messageService.add({ severity: 'success', summary: 'Activation de compte confirmée', detail: this.messageSuccess })
         });
 
       },
@@ -242,7 +242,7 @@ export class AdministrateursComponent implements OnInit {
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été désactivé avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Désactivaction de compte confirmé', detail: this.messageSuccess })
+          this.messageService.add({ severity: 'success', summary: 'Désactivaction de compte confirmée', detail: this.messageSuccess })
         });
 
       },

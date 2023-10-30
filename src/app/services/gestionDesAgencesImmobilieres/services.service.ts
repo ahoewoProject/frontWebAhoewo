@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ServicesService {
 
-  public services: Services = new Services();
+  public _service: Services = new Services();
   url!: string;
 
   constructor(private httpClient: HttpClient) {

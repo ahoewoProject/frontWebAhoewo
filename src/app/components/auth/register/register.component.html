@@ -63,14 +63,14 @@
                 <div class="col-lg-6">
                   <div class="mb20">
                     <label class="form-label fw600 dark-color">Profil</label>
-                    <div class="bootselect-multiselect">
-                      <select class="selectpicker" [(ngModel)]="selectedRole" [ngModelOptions]="{standalone: true}">
-                        <option value="Proprietaire">Propriétaire</option>
-                        <option value="Agent immobilier">Agent immobilier</option>
-                        <option value="Demarcheur">Démarcheur</option>
-                        <option value="Client">Client</option>
-                      </select>
-                    </div>
+                    <br>
+                    <p-dropdown
+                      class="select" emptyFilterMessage="Aucun résultat trouvé"
+                      [options]="roles" placeholder="Choisir votre profil"
+                      formControlName="role" [filter]="true" filterBy="libelle"
+                      [showClear]="true" (onChange)="profilChoisi($event)" optionLabel="libelle">
+                    </p-dropdown>
+                    <div class="text-danger" [hidden]="!role?.hasError('required') || !role.touched">La selection du profil est obligatoire</div>
                   </div>
                 </div>
 

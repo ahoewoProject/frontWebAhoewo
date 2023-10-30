@@ -60,10 +60,12 @@
     <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
   </div>
   <div class="sidebar_list_item " *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR' || user.role.code == 'ROLE_AGENTIMMOBILIER'">
-    <a class="items-center"><i class="fa-light fa-key mr15"></i>&nbsp;Agences immobilières</a>
+    <a routerLink="/admin/agences-immobilieres" [class.-is-active]="activeLink === '/admin/agences-immobilieres'"
+    (click)="setActiveLink('/admin/agences-immobilieres')" class="items-center"><i class="fa-light fa-key mr15"></i>&nbsp;Agences immobilières</a>
   </div>
   <div class="sidebar_list_item " *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER'">
-    <a class="items-center"><i class="fa-light fa-briefcase mr15"></i>&nbsp;Services</a>
+    <a routerLink="/admin/services" [class.-is-active]="activeLink === '/admin/services'"
+    (click)="setActiveLink('/admin/services')" class="items-center"><i class="fa-light fa-briefcase mr15"></i>&nbsp;Services</a>
   </div>
   <!-- End Menu Gestion des agences immobilières -->
 

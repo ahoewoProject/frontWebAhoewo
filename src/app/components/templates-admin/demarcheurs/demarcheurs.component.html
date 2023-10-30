@@ -46,7 +46,7 @@
                 <tr *ngFor="let demarcheur of demarcheursParPage | genericFilter: recherche;  let i = index">
                   <td class="vam">{{ pageActuelle + i + 1 }}</td>
                   <td class="vam">{{ demarcheur.nom }}</td>
-                  <td class="vam">{{ demarcheur.prenom }} <i *ngIf="demarcheur.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
+                  <td class="vam">{{ demarcheur.prenom }} <i *ngIf="demarcheur.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></td>
                   <td class="vam">{{ demarcheur.username }}</td>
                   <td class="vam">{{ demarcheur.email }}</td>
                   <td class="vam">
@@ -93,42 +93,41 @@
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
           <table class="table-style3 table at-savesearch">
-            <tbody>
-              <tbody class="t-body">
-                <tr>
-                  <td class="vam">Nom & Prénom</td>
-                  <td>{{ demarcheur.nom }} {{ demarcheur.prenom }} <i *ngIf="demarcheur.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
-                </tr>
-                <tr>
-                  <td class="vam">Nom d'utilisateur</td>
-                  <td>{{ demarcheur.username }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Email</td>
-                  <td>{{ demarcheur.email }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Rôle</td>
-                  <td>{{ demarcheur.role.libelle }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Téléphone</td>
-                  <td>{{ demarcheur.telephone }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Etat compte</td>
-                  <td>
-                    <p-tag *ngIf="demarcheur.etatCompte == true" severity="success" value="Activé"></p-tag>
-                    <p-tag *ngIf="demarcheur.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="vam">Est certifié</td>
-                  <td>
-                    <p-tag *ngIf="demarcheur.estCertifie == true" severity="success" value="Oui"></p-tag>
-                    <p-tag *ngIf="demarcheur.estCertifie == false" severity="danger" value="Non"></p-tag>
-                  </td>
-                </tr>
+            <tbody class="t-body">
+              <tr>
+                <td class="vam">Nom & Prénom</td>
+                <td>{{ demarcheur.nom }} {{ demarcheur.prenom }} <i *ngIf="demarcheur.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></td>
+              </tr>
+              <tr>
+                <td class="vam">Nom d'utilisateur</td>
+                <td>{{ demarcheur.username }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Email</td>
+                <td>{{ demarcheur.email }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Rôle</td>
+                <td>{{ demarcheur.role.libelle }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Téléphone</td>
+                <td>{{ demarcheur.telephone }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Etat du compte</td>
+                <td>
+                  <p-tag *ngIf="demarcheur.etatCompte == true" severity="success" value="Activé"></p-tag>
+                  <p-tag *ngIf="demarcheur.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+                </td>
+              </tr>
+              <tr>
+                <td class="vam">Est certifié</td>
+                <td>
+                  <p-tag *ngIf="demarcheur.estCertifie == true" severity="success" value="Oui"></p-tag>
+                  <p-tag *ngIf="demarcheur.estCertifie == false" severity="danger" value="Non"></p-tag>
+                </td>
+              </tr>
             </tbody>
           </table>
           <div class="text-end">

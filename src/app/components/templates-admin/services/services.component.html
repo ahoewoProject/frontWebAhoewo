@@ -1,0 +1,278 @@
+<div class="dashboard__content bgc-f7">
+  <div class="row pb40 d-block d-lg-none">
+    <!-- Menu responsive -->
+    <app-menu-responsive></app-menu-responsive>
+    <!-- End Menu responsive -->
+  </div>
+
+  <!-- Formulaire d'ajout d'un service -->
+  <div *ngIf="visibleAddForm == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-5">
+        <div class="dashboard_title_area">
+          <h4>Ajout d'un service</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30">
+          <form [formGroup]="serviceForm" (ngSubmit)="ajouterService()" class="form-style1">
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Agence immobilière</label>
+                  <br>
+                  <p-dropdown
+                    class="select" emptyFilterMessage="Aucun résultat trouvé"
+                    [options]="agencesImmobilieres" placeholder="Choisir une agence"
+                    formControlName="agenceImmobiliere" [filter]="true" filterBy="nomAgence"
+                    [showClear]="true" (onChange)="agenceSelectionnee($event)" optionLabel="nomAgence">
+                  </p-dropdown>
+                  <div class="text-danger" [hidden]="agenceImmobiliere.valid || agenceImmobiliere.pristine && !agenceImmobiliere.touched ">La selection de l'agence est obligatoire</div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Nom du service</label>
+                  <input type="text" class="form-control" id="nomService" name="nomService" placeholder="Le nom du service" formControlName="nomService" [(ngModel)]="_service.nomService" required>
+                  <div class="text-danger" [hidden]="nomService.valid || nomService.pristine && !nomService.touched ">Le nom du service est obligatoire</div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Description du service</label>
+                  <textarea id="description" name="description" placeholder="La description du service" formControlName="description" [(ngModel)]="_service.description" required></textarea>
+                  <div class="text-danger" [hidden]="description.valid || description.pristine && !description.touched ">La description du service est obligatoire</div>
+                </div>
+              </div>
+
+            </div>
+            <br>
+            <div class="col-md-12">
+              <div class="text-end">
+                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': serviceForm.invalid }" (click)="serviceForm.invalid ? null : ajouterService()" type="submit">Ajouter</a>
+                &nbsp;
+                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Formulaire d'ajout d'un service -->
+
+  <!-- Formulaire de modification d'un service -->
+  <div *ngIf="visibleUpdateForm == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-5">
+        <div class="dashboard_title_area">
+          <h4>Modification d'un service</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30">
+          <form [formGroup]="serviceForm" (ngSubmit)="modifierService(_service.id)" class="form-style1">
+            <div class="row">
+
+              <div class="col-sm-6 col-xl-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Agence immobilière</label>
+                  <br>
+                  <p-dropdown
+                    class="select" emptyFilterMessage="Aucun résultat trouvé"
+                    [options]="agencesImmobilieres" placeholder="Choisir une agence" [(ngModel)]="_service.agenceImmobiliere"
+                    formControlName="agenceImmobiliere" [filter]="true" filterBy="nomAgence"
+                    [showClear]="true" (onChange)="agenceSelectionnee($event)" optionLabel="nomAgence">
+                  </p-dropdown>
+                  <div class="text-danger" [hidden]="agenceImmobiliere.valid || agenceImmobiliere.pristine && !agenceImmobiliere.touched ">La selection de l'agence est obligatoire</div>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-xl-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Nom du service</label>
+                  <input type="text" class="form-control" id="nomService" name="nomService" placeholder="Le nom du service" formControlName="nomService" [(ngModel)]="_service.nomService" required>
+                  <div class="text-danger" [hidden]="nomService.valid || nomService.pristine && !nomService.touched ">Le nom du service est obligatoire</div>
+                </div>
+              </div>
+
+              <div class="col-sm-6 col-xl-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Description du service</label>
+                  <textarea id="description" name="description" placeholder="La description du service" formControlName="description" [(ngModel)]="_service.description" required></textarea>
+                  <div class="text-danger" [hidden]="description.valid || description.pristine && !description.touched ">La description du service est obligatoire</div>
+                </div>
+              </div>
+
+            </div>
+            <br>
+            <div class="col-md-12">
+              <div class="text-end">
+                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': serviceForm.invalid }" (click)="serviceForm.invalid ? null : modifierService(_service.id)" type="submit">Modifier</a>
+                &nbsp;
+                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Formulaire de modification d'un service -->
+
+  <!-- Liste des services -->
+  <div *ngIf="affichage == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-5">
+        <div class="dashboard_title_area">
+          <h4>Liste de vos services</h4>
+          <h6 *ngIf="agencesImmobilieres.length == 0" class="text" style="color: rgb(202, 8, 8);">Pour ajouter des services, veuillez en premier lieu ajouter votre <b>agence immobilière</b>.</h6>
+          <p class="text"></p>
+        </div>
+      </div>
+      <div class="col-xxl-7">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <div class="item1 mb15-sm">
+            <div class="search_area">
+              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
+              <label><span class="flaticon-search"></span></label>
+            </div>
+          </div>
+          &nbsp;
+          <a type="button" *ngIf="agencesImmobilieres.length !== 0"
+            (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
+            Ajouter un de vos services
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <p-toast></p-toast>
+      <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+          <div class="packages_table">
+            <table class="table-style3 table at-savesearch">
+              <thead class="t-head">
+                <tr>
+                  <th scope="col">Agence immobilière</th>
+                  <th scope="col">Nom du service</th>
+                  <th scope="col">Agent immobilier</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="t-body">
+                <tr *ngFor="let _service of servicesParPage | genericFilter: recherche;  let i = index">
+                  <th scope="row">
+                    <div class="listing-style1 dashboard-style d-xxl-flex align-items-center mb-0">
+                      <div class="list-thumb">
+                        <img *ngIf="_service.agenceImmobiliere.logoAgence == ''" class="w-100"
+                        src="assets/images/team/logo_par_defaut.jpg" alt="">
+
+                        <img *ngIf="agenceImmobiliere.logoAgence !== ''" class="w-100"
+                        src="{{this.APIEndpoint+'api/logo/agence-immobiliere/'+_service.agenceImmobiliere.id}}" alt="">
+                      </div>
+                      <div class="list-content py-0 p-0 mt-2 mt-xxl-0 ps-xxl-4">
+                        <div class="h6 list-title">{{ _service.agenceImmobiliere.nomAgence }} <i *ngIf="_service.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></div>
+                        <p class="list-text mb-0">{{ _service.agenceImmobiliere.adresse }}</p>
+                      </div>
+                    </div>
+                  </th>
+                  <td class="vam">{{ _service.nomService }} </td>
+                  <td class="vam">{{ _service.agenceImmobiliere.agentImmobilier.nom }} {{ _service.agenceImmobiliere.agentImmobilier.prenom }} <i *ngIf="_service.agenceImmobiliere.agentImmobilier.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></td>
+                  <td class="vam">
+                    <div class="d-flex">
+                      <a type="button" (click)="afficherPageDetail(_service.id)" class="icon" pTooltip="Détails" tooltipPosition="top"><i class="pi pi-eye" style="font-size: 1rem"></i></a>
+                      <a type="button" (click)="afficherFormulaireModifier(_service.id)" class="icon" pTooltip="Modifier" tooltipPosition="top"><i class="pi pi-pencil" style="font-size: 1rem"></i></a>
+                      <a type="button" (click)="supprimerService(_service.id)" class="icon" pTooltip="Supprimer" tooltipPosition="top"><i class="pi pi-trash" style="font-size: 1rem"></i></a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div *ngIf="services.length !== 0" class="mbp_pagination text-center mt30">
+              <p-paginator
+                (onPageChange)="pagination($event)" [first]="pageActuelle"
+                [rows]="elementsParPage"  [totalRecords]="services.length"
+                [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} services"
+                [showPageLinks]="true" [showFirstLastIcon]="true">
+              </p-paginator>
+            </div>
+            <div *ngIf="services.length == 0" class="mbp_pagination text-center mt30">
+              <p class="mt10 pagination_page_count text-center">Aucun service enregistré pour le moment</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Liste des services -->
+
+  <!-- Details d'un service -->
+  <div *ngIf="affichage == 2">
+    <div  class="row align-items-center pb40">
+      <div class="col-xxl-8">
+        <div class="dashboard_title_area">
+          <h4>Détails d'un service</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <table class="table-style3 table at-savesearch">
+            <tbody>
+              <tbody class="t-body">
+                <tr>
+                  <td class="vam">Logo de l'agence </td>
+                  <th scope="row">
+                    <div class="listing-style1 dashboard-style d-xxl-flex align-items-center mb-0">
+                      <div class="list-thumb">
+                        <img *ngIf="_service.agenceImmobiliere.logoAgence == ''" class="w-100"
+                        src="assets/images/team/logo_par_defaut.jpg" alt="">
+
+                        <img *ngIf="_service.agenceImmobiliere.logoAgence !== ''" class="w-100"
+                        src="{{this.APIEndpoint+'api/logo/agence-immobiliere/'+_service.agenceImmobiliere.id}}" alt="">
+                      </div>
+                    </div>
+                  </th>
+                </tr>
+                <tr>
+                  <td class="vam">Nom du service </td>
+                  <td>{{ _service.nomService }}</td>
+                </tr>
+                <tr>
+                  <td class="vam">Agence immobilière </td>
+                  <td>{{ _service.agenceImmobiliere.nomAgence }}  <i *ngIf="_service.agenceImmobiliere.agentImmobilier.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></td>
+                </tr>
+                <tr>
+                  <td class="vam">Agent immobilier </td>
+                  <td>{{ _service.agenceImmobiliere.agentImmobilier.nom }} {{ _service.agenceImmobiliere.agentImmobilier.prenom }} <i *ngIf="_service.agenceImmobiliere.agentImmobilier.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></td>
+                </tr>
+                <tr>
+                  <td class="vam">Description du service</td>
+                  <td>{{ _service.description}}</td>
+                </tr>
+            </tbody>
+          </table>
+          <div class="text-end">
+            <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Details d'un service -->
+</div>

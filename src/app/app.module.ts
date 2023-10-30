@@ -34,9 +34,12 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TagModule } from 'primeng/tag';
 import { DropdownModule } from 'primeng/dropdown';
-import { TableModule } from 'primeng/table';
 import { GenericFilterPipe } from './helpers/genericFilter';
 import { TokenInterceptorProvider } from './helpers/token.interceptor';
+import { AgencesImmobilieresComponent } from './components/templates-admin/agences-immobilieres/agences-immobilieres.component';
+import { ServicesComponent } from './components/templates-admin/services/services.component';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -62,7 +65,9 @@ import { TokenInterceptorProvider } from './helpers/token.interceptor';
     ForgotPasswordComponent,
     ResetPasswordComponent,
     TemplatesClientComponent,
-    GenericFilterPipe
+    GenericFilterPipe,
+    AgencesImmobilieresComponent,
+    ServicesComponent
   ],
   imports: [
     BrowserModule,
@@ -78,12 +83,13 @@ import { TokenInterceptorProvider } from './helpers/token.interceptor';
     ConfirmDialogModule,
     TagModule,
     DropdownModule,
-    TableModule
+    AutoCompleteModule
   ],
   providers: [
     MessageService,
     ConfirmationService,
-    TokenInterceptorProvider
+    TokenInterceptorProvider,
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent]
 })

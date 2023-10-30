@@ -71,7 +71,7 @@ export class DemarcheursComponent implements OnInit{
     this.affichage = 2;
   }
 
-  deleteDemarcheur(id: number): void{
+  supprimerDemarcheur(id: number): void{
     this.demarcheurService.deleteById(id).subscribe(
       (response) => {
         console.log(response);
@@ -92,7 +92,7 @@ export class DemarcheursComponent implements OnInit{
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été activé avec succès !";
-          this.messageService.add({ severity: 'success', summary: 'Activation de compte confirmé', detail: this.messageSuccess })
+          this.messageService.add({ severity: 'success', summary: 'Activation de compte confirmée', detail: this.messageSuccess })
         });
 
       },
@@ -119,7 +119,7 @@ export class DemarcheursComponent implements OnInit{
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été désactivé avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Désactivaction de compte confirmé', detail: this.messageSuccess })
+          this.messageService.add({ severity: 'success', summary: 'Désactivaction de compte confirmée', detail: this.messageSuccess })
         });
 
       },

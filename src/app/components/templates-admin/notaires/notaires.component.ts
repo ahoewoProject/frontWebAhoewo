@@ -197,7 +197,7 @@ export class NotairesComponent implements OnInit{
     })
   }
 
-  deleteNotaire(id: number): void{
+  supprimerNotaire(id: number): void{
     this.notaireService.deleteById(id).subscribe(
       (response) => {
         console.log(response);
@@ -218,7 +218,7 @@ export class NotairesComponent implements OnInit{
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été activé avec succès !";
-          this.messageService.add({ severity: 'success', summary: 'Activation de compte confirmé', detail: this.messageSuccess })
+          this.messageService.add({ severity: 'success', summary: 'Activation de compte confirmée', detail: this.messageSuccess })
         });
 
       },
@@ -245,7 +245,7 @@ export class NotairesComponent implements OnInit{
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été désactivé avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Désactivaction de compte confirmé', detail: this.messageSuccess })
+          this.messageService.add({ severity: 'success', summary: 'Désactivaction de compte confirmée', detail: this.messageSuccess })
         });
 
       },

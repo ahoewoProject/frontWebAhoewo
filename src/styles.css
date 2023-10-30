@@ -51,16 +51,5 @@
   margin-right: 3.5px;
 } */
 
-.p-fileupload {
-  width: 500px;
-}
 
-.p-fileupload .p-fileupload-buttonbar {
-  display: flex;
-}
-
-.p-button {
-  border-radius: 7px;
-  margin-right: 9px;
-}
 

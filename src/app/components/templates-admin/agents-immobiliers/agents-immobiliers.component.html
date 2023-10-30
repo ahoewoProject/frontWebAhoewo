@@ -46,7 +46,7 @@
                 <tr *ngFor="let agentImmobilier of agentsImmobiliersParPage | genericFilter: recherche;  let i = index">
                   <td class="vam">{{ pageActuelle + i + 1 }}</td>
                   <td class="vam">{{ agentImmobilier.nom }}</td>
-                  <td class="vam">{{ agentImmobilier.prenom }} <i *ngIf="agentImmobilier.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-2xl" style="color: #0f77e6;"></i></td>
+                  <td class="vam">{{ agentImmobilier.prenom }} <i *ngIf="agentImmobilier.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></td>
                   <td class="vam">{{ agentImmobilier.username }}</td>
                   <td class="vam">{{ agentImmobilier.email }}</td>
                   <td class="vam">
@@ -82,7 +82,7 @@
   <!-- Details d'un agent immobilier -->
   <div *ngIf="affichage == 2">
     <div  class="row align-items-center pb40">
-      <div class="col-xxl-5">
+      <div class="col-xxl-3">
         <div class="dashboard_title_area">
           <h4>Détails d'un agent immobilier</h4>
           <p class="text"></p>
@@ -90,45 +90,44 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-xxl-7 d-flex justify-content-end">
+      <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
           <table class="table-style3 table at-savesearch">
-            <tbody>
-              <tbody class="t-body">
-                <tr>
-                  <td class="vam">Nom & Prénom </td>
-                  <td>{{ agentImmobilier.nom }} {{ agentImmobilier.prenom }} <i *ngIf="agentImmobilier.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-2xl" style="color: #0f77e6;"></i></td>
-                </tr>
-                <tr>
-                  <td class="vam">Nom d'utilisateur</td>
-                  <td>{{ agentImmobilier.username }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Email</td>
-                  <td>{{ agentImmobilier.email }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Rôle</td>
-                  <td>{{ agentImmobilier.role.libelle }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Téléphone</td>
-                  <td>{{ agentImmobilier.telephone }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Etat compte</td>
-                  <td>
-                    <p-tag *ngIf="agentImmobilier.etatCompte == true" severity="success" value="Activé"></p-tag>
-                    <p-tag *ngIf="agentImmobilier.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="vam">Est certifié</td>
-                  <td>
-                    <p-tag *ngIf="agentImmobilier.estCertifie == true" severity="success" value="Oui"></p-tag>
-                    <p-tag *ngIf="agentImmobilier.estCertifie == false" severity="danger" value="Non"></p-tag>
-                  </td>
-                </tr>
+            <tbody class="t-body">
+              <tr>
+                <td class="vam">Nom & Prénom </td>
+                <td>{{ agentImmobilier.nom }} {{ agentImmobilier.prenom }} <i *ngIf="agentImmobilier.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></td>
+              </tr>
+              <tr>
+                <td class="vam">Nom d'utilisateur</td>
+                <td>{{ agentImmobilier.username }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Email</td>
+                <td>{{ agentImmobilier.email }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Rôle</td>
+                <td>{{ agentImmobilier.role.libelle }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Téléphone</td>
+                <td>{{ agentImmobilier.telephone }}</td>
+              </tr>
+              <tr>
+                <td class="vam">Etat du compte</td>
+                <td>
+                  <p-tag *ngIf="agentImmobilier.etatCompte == true" severity="success" value="Activé"></p-tag>
+                  <p-tag *ngIf="agentImmobilier.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+                </td>
+              </tr>
+              <tr>
+                <td class="vam">Est certifié</td>
+                <td>
+                  <p-tag *ngIf="agentImmobilier.estCertifie == true" severity="success" value="Oui"></p-tag>
+                  <p-tag *ngIf="agentImmobilier.estCertifie == false" severity="danger" value="Non"></p-tag>
+                </td>
+              </tr>
             </tbody>
           </table>
           <div class="text-end">

@@ -1,46 +1,13 @@
-:host ::ng-deep .choose-label {
-  background-color: #4ebc87;;
-  border-color: #4ebc87;;
-}
-
-:host ::ng-deep .upload-label {
-  background-color: #ee944e;
-  border-color: #ee944e;
-}
-
-:host ::ng-deep .cancel-label {
-  background-color: #f43838;
-  border-color: #f43838;
-}
-
-:host ::ng-deep .remove-label {
-  background-color: #f43838;
-  border-color: #f43838;
-}
-
-:host ::ng-deep .p-fileupload {
-  width: 100%;
-}
-
-:host ::ng-deep .p-fileupload .p-fileupload-buttonbar {
-  display: flex;
-}
-
-:host ::ng-deep .p-button {
-  border-radius: 7px;
-  margin-right: 9px;
-  margin-left: 9px;
-}
-
 .disabled-link {
   pointer-events: none; /* Désactive les événements de pointage, rendant le lien non cliquable */
   opacity: 0.5; /* Réduit l'opacité pour montrer qu'il est désactivé */
   cursor: not-allowed; /* Affiche un curseur "non autorisé" */
 }
 
+
 .ng-valid[required],
 .ng-valid.required {
-    border-left: 5px solid #42A948;
+  border-left: 5px solid #42A948;
 }
 
 .ng-invalid:not(form):not(.select) {
@@ -56,4 +23,3 @@
 :host ::ng-deep .select .p-dropdown-item {
   margin-left: 0; /* Suppression de la marge négative */
 }
-
