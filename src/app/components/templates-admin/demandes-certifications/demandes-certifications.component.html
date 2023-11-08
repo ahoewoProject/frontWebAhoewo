@@ -36,6 +36,11 @@
                     uploadStyleClass="upload-label"
                     cancelStyleClass="cancel-label"
                     removeStyleClass="remove-label">
+                    <ng-template pTemplate="content">
+                      <ul *ngIf="documentJustificatif">
+                          <li>{{ documentJustificatif.name }}</li>
+                      </ul>
+                    </ng-template>
                   </p-fileUpload>
                 </div>
               </div>
@@ -85,6 +90,11 @@
                     uploadStyleClass="upload-label"
                     cancelStyleClass="cancel-label"
                     removeStyleClass="remove-label">
+                    <ng-template pTemplate="content">
+                      <ul *ngIf="documentJustificatif">
+                          <li>{{ documentJustificatif.name }}</li>
+                      </ul>
+                    </ng-template>
                   </p-fileUpload>
                 </div>
               </div>
@@ -154,7 +164,7 @@
       <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
-          <div class="packages_table">
+          <div class="packages_table table-responsive">
             <table class="table-style3 table at-savesearch">
               <thead class="t-head">
                 <tr>
@@ -185,19 +195,19 @@
                 </tr>
               </tbody>
             </table>
+          </div>
 
-            <div *ngIf="demandeCertifications.length !== 0 && user.role.code == 'ROLE_NOTAIRE'" class="mbp_pagination text-center mt30">
-              <p-paginator
-                (onPageChange)="pagination($event)" [first]="pageActuelle"
-                [rows]="elementsParPage"  [totalRecords]="demandeCertifications.length"
-                [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-                currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} demandes de certifications"
-                [showPageLinks]="true" [showFirstLastIcon]="true">
-              </p-paginator>
-            </div>
-            <div *ngIf="demandeCertifications.length == 0" class="mbp_pagination text-center mt30">
-              <p class="mt10 pagination_page_count text-center">Aucune demande de certification enregistrée pour le moment</p>
-            </div>
+          <div *ngIf="demandeCertifications.length !== 0 && user.role.code == 'ROLE_NOTAIRE'" class="mbp_pagination text-center mt30">
+            <p-paginator
+              (onPageChange)="pagination($event)" [first]="pageActuelle"
+              [rows]="elementsParPage"  [totalRecords]="demandeCertifications.length"
+              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} demandes de certifications"
+              [showPageLinks]="true" [showFirstLastIcon]="true">
+            </p-paginator>
+          </div>
+          <div *ngIf="demandeCertifications.length == 0" class="mbp_pagination text-center mt30">
+            <p class="mt10 pagination_page_count text-center">Aucune demande de certification enregistrée pour le moment</p>
           </div>
         </div>
       </div>
@@ -219,61 +229,60 @@
     <div class="row">
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-          <table class="table-style3 table at-savesearch">
-            <tbody class="t-body">
-              <tr *ngIf="demandeCertification.agenceImmobiliere">
-                <td class="vam">Logo de l'agence </td>
-                <th scope="row">
-                  <div class="listing-style1 dashboard-style d-xxl-flex align-items-center mb-0">
-                    <div class="list-thumb">
-                      <img *ngIf="demandeCertification.agenceImmobiliere.logoAgence == ''" class="w-100"
-                      src="assets/images/team/logo_par_defaut.jpg" alt="">
 
-                      <img *ngIf="demandeCertification.agenceImmobiliere.logoAgence !== ''" class="w-100"
-                      src="{{this.APIEndpoint+'api/logo/agence-immobiliere/'+demandeCertification.agenceImmobiliere.id}}" alt="">
-                    </div>
-                  </div>
-                </th>
-              </tr>
-              <tr>
-                <td class="vam">Date de la demande de certification</td>
-                <td>{{ demandeCertification.dateDemande | date: "yyyy-dd-MM" }}</td>
-              </tr>
-              <tr>
-                <td class="vam">Nom & prénom du demandeur</td>
-                <td>{{ demandeCertification.personne.nom }} {{ demandeCertification.personne.prenom }} <i *ngIf="demandeCertification.personne.estCertifie && (demandeCertification.personne.role.code === 'ROLE_AGENTIMMOBILIER' || demandeCertification.personne.role.code === 'ROLE_PROPRIETAIRE' || demandeCertification.personne.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></td>
-              </tr>
-              <tr>
-                <td class="vam">Numéro de téléphone du demandeur</td>
-                <td>{{ demandeCertification.personne.telephone }}</td>
-              </tr>
-              <tr *ngIf="demandeCertification.agenceImmobiliere">
-                <td class="vam">Agence immobilière</td>
-                <td>{{ demandeCertification.agenceImmobiliere.nomAgence }} <i *ngIf="demandeCertification.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></td>
-              </tr>
-              <tr *ngIf="demandeCertification.agenceImmobiliere">
-                <td class="vam">Numéro de téléphone de l'agence</td>
-                <td>{{ demandeCertification.agenceImmobiliere.telephone }}</td>
-              </tr>
-              <tr>
-                <td class="vam">Adresse e-mail du demandeur</td>
-                <td>{{ demandeCertification.personne.email }}</td>
-              </tr>
-              <tr>
-                <td class="vam">Etat du compte du demande</td>
-                <td>
-                  <p-tag *ngIf="demandeCertification.personne.etatCompte == true" severity="success" value="Activé"></p-tag>
-                  <p-tag *ngIf="demandeCertification.personne.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
-              </tr>
-              <tr>
-                <td class="vam">Statut de la demande de certification</td>
-                <td>
-                  <p-tag *ngIf="demandeCertification.statutDemande == 1" severity="success" value="Validé"></p-tag>
-                  <p-tag *ngIf="demandeCertification.statutDemande == 0" severity="warning" value="En attente"></p-tag>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <p class="fw600 mb10 ff-heading dark-color">Nom & prénom du demandeur</p>
+          <p>
+              {{ demandeCertification.personne.nom }} {{ demandeCertification.personne.prenom }} <i *ngIf="demandeCertification.personne.estCertifie && (demandeCertification.personne.role.code === 'ROLE_AGENTIMMOBILIER' || demandeCertification.personne.role.code === 'ROLE_PROPRIETAIRE' || demandeCertification.personne.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i>
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du demandeur</p>
+          <p>
+              {{ demandeCertification.personne.email }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Numero de téléphone du demandeur</p>
+          <p>
+              {{ demandeCertification.personne.telephone }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Etat du compte du demandeur</p>
+          <p>
+            <p-tag *ngIf="demandeCertification.personne.etatCompte == true" severity="success" value="Activé"></p-tag>
+            <p-tag *ngIf="demandeCertification.personne.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+          </p>
+
+          <div *ngIf="demandeCertification.agenceImmobiliere">
+            <p-divider></p-divider>
+            <p class="fw600 mb10 ff-heading dark-color">Agence immobilière</p>
+            <p>
+                {{ demandeCertification.agenceImmobiliere.nomAgence }} <i *ngIf="demandeCertification.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i>
+            </p>
+          </div>
+
+          <div *ngIf="demandeCertification.agenceImmobiliere">
+            <p-divider></p-divider>
+            <p class="fw600 mb10 ff-heading dark-color">Numero de téléphone de l'agence immbilière</p>
+            <p>
+                {{ demandeCertification.agenceImmobiliere.telephone }}
+            </p>
+          </div>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Date de la demande de certification</p>
+          <p>
+            {{ demandeCertification.dateDemande | date: "yyyy-dd-MM" }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Statut de la demande de certification</p>
+          <p>
+            <p-tag *ngIf="demandeCertification.statutDemande == 1" severity="success" value="Validé"></p-tag>
+            <p-tag *ngIf="demandeCertification.statutDemande == 0" severity="warning" value="En attente"></p-tag>
+          </p>
+
           <div class="text-end">
             <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
           </div>

@@ -116,7 +116,7 @@
       <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
-          <div class="packages_table">
+          <div class="packages_table table-responsive">
             <table class="table-style3 table at-savesearch">
               <thead class="t-head">
                 <tr>
@@ -145,19 +145,19 @@
                 </tr>
               </tbody>
             </table>
+          </div>
 
-            <div *ngIf="gerants.length !== 0" class="mbp_pagination text-center mt30">
-              <p-paginator
-                (onPageChange)="pagination($event)" [first]="pageActuelle"
-                [rows]="elementsParPage" [totalRecords]="gerants.length"
-                [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-                currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} gérants"
-                [showPageLinks]="true" [showFirstLastIcon]="true">
-              </p-paginator>
-            </div>
-            <div *ngIf="gerants.length == 0" class="mbp_pagination text-center mt30">
-              <p class="mt10 pagination_page_count text-center">Aucun gérant enregistré pour le moment</p>
-            </div>
+          <div *ngIf="gerants.length !== 0" class="mbp_pagination text-center mt30">
+            <p-paginator
+              (onPageChange)="pagination($event)" [first]="pageActuelle"
+              [rows]="elementsParPage" [totalRecords]="gerants.length"
+              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} gérants"
+              [showPageLinks]="true" [showFirstLastIcon]="true">
+            </p-paginator>
+          </div>
+          <div *ngIf="gerants.length == 0" class="mbp_pagination text-center mt30">
+            <p class="mt10 pagination_page_count text-center">Aucun gérant enregistré pour le moment</p>
           </div>
         </div>
       </div>
@@ -178,41 +178,48 @@
     <div class="row">
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-          <table class="table-style3 table at-savesearch">
-            <tbody class="t-body">
-              <tr>
-                  <td class="vam">Nom</td>
-                  <td>{{ gerant.nom }}</td>
-              </tr>
-              <tr>
-                <td class="vam">Prénom</td>
-                <td>{{ gerant.prenom }}</td>
-              </tr>
-              <tr>
-                <td class="vam">Nom d'utilisateur</td>
-                <td>{{ gerant.username }}</td>
-              </tr>
-              <tr>
-                <td class="vam">Email</td>
-                <td>{{ gerant.email }}</td>
-              </tr>
-              <tr>
-                <td class="vam">Rôle</td>
-                <td>{{ gerant.role.libelle }}</td>
-              </tr>
-              <tr>
-                <td class="vam">Téléphone</td>
-                <td>{{ gerant.telephone }}</td>
-              </tr>
-              <tr>
-                <td class="vam">Etat du compte</td>
-                <td>
-                  <p-tag *ngIf="gerant.etatCompte == true" severity="success" value="Activé"></p-tag>
-                  <p-tag *ngIf="gerant.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+
+          <p class="fw600 mb10 ff-heading dark-color">Nom du gérant</p>
+          <p>
+              {{ gerant.nom }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Prénom du gérant</p>
+          <p>
+              {{ gerant.prenom }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur du gérant</p>
+          <p>
+              {{ gerant.username }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du gérant</p>
+          <p>
+              {{ gerant.email }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone du gérant</p>
+          <p>
+              {{ gerant.telephone }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Rôle du gérant</p>
+          <p>
+              {{ gerant.role.libelle }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
+          <p>
+            <p-tag *ngIf="gerant.etatCompte == true" severity="success" value="Activé"></p-tag>
+            <p-tag *ngIf="gerant.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+          </p>
           <div class="text-end">
             <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
           </div>

@@ -81,7 +81,12 @@ export class AgencesImmobilieresComponent implements OnInit {
   pagination(event: any) {
     this.pageActuelle = event.first;
     this.elementsParPage = event.rows;
-    this.listeAgencesImmobilieres()
+        if(this.user.role.code == 'ROLE_AGENTIMMOBILIER'){
+      this.listeAgenceImmobiliere();
+    }
+    else{
+      this.listeAgencesImmobilieres();
+    }
   }
 
   telecharger(event: any) {

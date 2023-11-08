@@ -1,0 +1,149 @@
+<div class="dashboard__content property-page bgc-f7">
+  <div class="row pb40 d-block d-lg-none">
+    <!-- Menu responsive -->
+    <app-menu-responsive></app-menu-responsive>
+    <!-- End Menu responsive -->
+  </div>
+
+  <!-- Formulaire d'ajout d'un type de bien -->
+  <div *ngIf="visibleAddForm == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-3">
+        <div class="dashboard_title_area">
+          <h4>Ajout d'un type de bien</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <form [formGroup]="typeDeBienForm" (ngSubmit)="ajouterTypeDeBien()" class="form-style1">
+            <div class="row">
+              <div class="form-group">
+                <label class="heading-color ff-heading fw600 mb10">Désignation</label>
+                <input type="text" class="form-control" id="designation" name="designation" placeholder="La désignation du type de bien" formControlName="designation" [(ngModel)]="typeDeBien.designation" required>
+                <div class="text-danger" [hidden]="designation.valid || designation.pristine && !designation.touched ">La désignation du type de bien est obligatoire</div>
+              </div>
+            </div>
+            <br>
+            <div class="col-md-12">
+              <div class="text-end">
+                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': typeDeBienForm.invalid }" (click)="typeDeBienForm.invalid ? null : ajouterTypeDeBien()" type="submit">Ajouter</a>
+                &nbsp;
+                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Formulaire d'ajout d'un type de bien -->
+
+  <!-- Formulaire de modification d'un type de bien -->
+  <div *ngIf="visibleUpdateForm == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-3">
+        <div class="dashboard_title_area">
+          <h4>Modification d'un type de bien</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <form [formGroup]="typeDeBienForm" (ngSubmit)="modifierTypeDeBien()" class="form-style1">
+            <div class="row">
+              <div class="form-group">
+                <label class="heading-color ff-heading fw600 mb10">Désignation</label>
+                <input type="text" class="form-control" id="designation" name="designation" placeholder="La désignation du type de bien" formControlName="designation" [(ngModel)]="typeDeBien.designation" required>
+                <div class="text-danger" [hidden]="designation.valid || designation.pristine && !designation.touched ">La désignation du type de bien est obligatoire</div>
+              </div>
+            </div>
+            <br>
+            <div class="col-md-12">
+              <div class="text-end">
+                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': typeDeBienForm.invalid }" (click)="typeDeBienForm.invalid ? null : modifierTypeDeBien()" type="submit">Modifier</a>
+                &nbsp;
+                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Formulaire de modification d'un type de bien -->
+
+  <!-- Liste des types de bien -->
+  <div *ngIf="affichage == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-3">
+        <div class="dashboard_title_area">
+          <h4>Liste des types de bien</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+      <div class="col-xxl-9">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <div class="item1 mb15-sm">
+            <div class="search_area">
+              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
+              <label><span class="flaticon-search"></span></label>
+            </div>
+          </div>
+          &nbsp;
+          <a type="button" *ngIf="visibleAddForm == 0" (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">Ajouter un type de bien</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <p-toast></p-toast>
+      <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+          <div class="packages_table table-responsive">
+            <table class="table-style3 table at-savesearch">
+              <thead class="t-head">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Désignation</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="t-body">
+                  <tr *ngFor="let typeDeBien of typesDeBienParPage | genericFilter: recherche; let i = index;">
+                    <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                    <td class="vam">{{ typeDeBien.designation }}</td>
+                    <td class="vam">
+                      <div class="d-flex">
+                        <a type="button" (click)="afficherFormulaireModifier(typeDeBien.id)" class="icon" pTooltip="Modifier" tooltipPosition="top"><i class="pi pi-pencil" style="font-size: 1rem"></i></a>
+                        <a type="button" (click)="supprimerTypeDeBien(typeDeBien.id)" class="icon" pTooltip="Supprimer" tooltipPosition="top"><i class="pi pi-trash" style="font-size: 1rem"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div *ngIf="typesDeBien.length !== 0" class="mbp_pagination text-center mt30">
+            <p-paginator
+              (onPageChange)="pagination($event)" [first]="pageActuelle"
+              [rows]="elementsParPage"  [totalRecords]="typesDeBien.length"
+              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} types de bien"
+              [showPageLinks]="true" [showFirstLastIcon]="true">
+            </p-paginator>
+          </div>
+          <div *ngIf="typesDeBien.length == 0" class="mbp_pagination text-center mt30">
+            <p class="mt10 pagination_page_count text-center">Aucun type de bien enregistré pour le moment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- End Liste des types de bien -->
+

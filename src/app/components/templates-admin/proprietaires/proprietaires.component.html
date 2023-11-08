@@ -30,7 +30,7 @@
       <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
-          <div class="packages_table">
+          <div class="packages_table table-responsive">
             <table class="table-style3 table at-savesearch">
               <thead class="t-head">
                 <tr>
@@ -59,19 +59,19 @@
                 </tr>
               </tbody>
             </table>
+          </div>
 
-            <div *ngIf="proprietaires.length !== 0" class="mbp_pagination text-center mt30">
-              <p-paginator
-                (onPageChange)="pagination($event)" [first]="pageActuelle"
-                [rows]="elementsParPage"  [totalRecords]="proprietaires.length"
-                [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-                currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} proprietaires"
-                [showPageLinks]="true" [showFirstLastIcon]="true">
-              </p-paginator>
-            </div>
-            <div *ngIf="proprietaires.length == 0" class="mbp_pagination text-center mt30">
-              <p class="mt10 pagination_page_count text-center">Aucun propriétaire enregistré pour le moment</p>
-            </div>
+          <div *ngIf="proprietaires.length !== 0" class="mbp_pagination text-center mt30">
+            <p-paginator
+              (onPageChange)="pagination($event)" [first]="pageActuelle"
+              [rows]="elementsParPage"  [totalRecords]="proprietaires.length"
+              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} proprietaires"
+              [showPageLinks]="true" [showFirstLastIcon]="true">
+            </p-paginator>
+          </div>
+          <div *ngIf="proprietaires.length == 0" class="mbp_pagination text-center mt30">
+            <p class="mt10 pagination_page_count text-center">Aucun propriétaire enregistré pour le moment</p>
           </div>
         </div>
       </div>
@@ -92,44 +92,49 @@
     <div class="row">
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-          <table class="table-style3 table at-savesearch">
-            <tbody class="t-body">
-              <tr>
-                <td class="vam">Nom & Prénom</td>
-                <td>{{ proprietaire.nom }} {{ proprietaire.prenom }} <i *ngIf="proprietaire.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></td>
-              </tr>
-              <tr>
-                <td class="vam">Nom d'utilisateur</td>
-                <td>{{ proprietaire.username }}</td>
-              </tr>
-              <tr>
-                <td class="vam">Email</td>
-                <td>{{ proprietaire.email }}</td>
-              </tr>
-              <tr>
-                <td class="vam">Téléphone</td>
-                <td>{{ proprietaire.telephone }}</td>
-              </tr>
-              <tr>
-                <td class="vam">Rôle</td>
-                <td>{{ proprietaire.role.libelle }}</td>
-              </tr>
-              <tr>
-                <td class="vam">Etat du compte</td>
-                <td>
-                  <p-tag *ngIf="proprietaire.etatCompte == true" severity="success" value="Activé"></p-tag>
-                  <p-tag *ngIf="proprietaire.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
-                </td>
-              </tr>
-              <tr>
-                <td class="vam">Est certifié</td>
-                <td>
-                  <p-tag *ngIf="proprietaire.estCertifie == true" severity="success" value="Oui"></p-tag>
-                  <p-tag *ngIf="proprietaire.estCertifie == false" severity="danger" value="Non"></p-tag>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+
+          <p class="fw600 mb10 ff-heading dark-color">Nom & prénom du propriétaire</p>
+          <p>
+              {{ proprietaire.nom }} {{ proprietaire.prenom }} <i *ngIf="proprietaire.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i>
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur du propriétaire</p>
+          <p>
+              {{ proprietaire.username }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du propriétaire</p>
+          <p>
+              {{ proprietaire.email }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone du propriétaire</p>
+          <p>
+              {{ proprietaire.telephone }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Rôle du propriétaire</p>
+          <p>
+              {{ proprietaire.role.libelle }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Est certifié</p>
+          <p>
+            <p-tag *ngIf="proprietaire.estCertifie == true" severity="success" value="Oui"></p-tag>
+            <p-tag *ngIf="proprietaire.estCertifie == false" severity="danger" value="Non"></p-tag>
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
+          <p>
+            <p-tag *ngIf="proprietaire.etatCompte == true" severity="success" value="Activé"></p-tag>
+            <p-tag *ngIf="proprietaire.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+          </p>
           <div class="text-end">
             <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
           </div>

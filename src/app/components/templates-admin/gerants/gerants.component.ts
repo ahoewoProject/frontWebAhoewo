@@ -204,7 +204,7 @@ export class GerantsComponent implements OnInit{
           this.gerant.username = response.username;
           this.gerant.email = response.email;
           this.gerant.telephone = response.telephone;
-          this.messageService.add({ severity: 'error', summary: 'Erreur de modification', detail: this.messageErreur });
+          this.messageService.add({ severity: 'error', summary: 'Erreur d\'ajout', detail: this.messageErreur });
         }
     },
     (error) =>{

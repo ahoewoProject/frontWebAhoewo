@@ -20,6 +20,9 @@ import { TemplatesClientComponent } from './components/templates-client/template
 import { AuthGuard } from './guards/auth.guard';
 import { AgencesImmobilieresComponent } from './components/templates-admin/agences-immobilieres/agences-immobilieres.component';
 import { ServicesComponent } from './components/templates-admin/services/services.component';
+import { TypesDeBienComponent } from './components/templates-admin/types-de-bien/types-de-bien.component';
+import { BiensImmobiliersComponent } from './components/templates-admin/biens-immobiliers/biens-immobiliers.component';
+import { DelegationsGestionsComponent } from './components/templates-admin/delegations-gestions/delegations-gestions.component';
 
 const routes: Routes = [
   { path: '', redirectTo:'', pathMatch: 'full'},
@@ -45,7 +48,10 @@ const routes: Routes = [
       { path: 'profil', component: ProfilComponent, canActivate: [AuthGuard] },
       { path: 'demandes-certifications', component: DemandesCertificationsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres', component: AgencesImmobilieresComponent, canActivate: [AuthGuard] },
-      { path: 'services', component: ServicesComponent, canActivate: [AuthGuard] }
+      { path: 'services', component: ServicesComponent, canActivate: [AuthGuard] },
+      { path: 'types-de-bien', component: TypesDeBienComponent, canActivate: [AuthGuard] },
+      { path: 'biens-immobiliers', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
+      { path: 'delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] }
     ]
   },
 ];

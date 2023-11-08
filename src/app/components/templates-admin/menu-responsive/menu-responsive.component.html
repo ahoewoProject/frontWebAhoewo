@@ -63,14 +63,20 @@
           <a routerLink="/admin/services" [class.-is-active]="activeLink === '/admin/services'"
           (click)="setActiveLink('/admin/services')" class="items-center"><i class="fa-light fa-briefcase mr15"></i>&nbsp;Services</a>
         </li>
-        <li *ngIf="user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT'">
+        <li *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR' || user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT'">
           <p class="fz15 fw400 ff-heading mt30 pl30">BIENS IMMOBILIERS</p>
         </li>
-        <li *ngIf="user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT'">
-          <a class="items-center"><i class="fa-light fa-house-building mr15"></i>Biens immobiliers</a>
+        <li *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
+          <a class="items-center" routerLink="/admin/types-de-bien" [class.-is-active]="activeLink === '/admin/types-de-bien'"
+          (click)="setActiveLink('/admin/types-de-bien')"><i class="fa-light fa-house-building mr15"></i>Types de bien</a>
         </li>
         <li *ngIf="user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT'">
-          <a class="items-center"><i class="fa-light fa-handshake mr15"></i>Biens délégués</a>
+          <a class="items-center" routerLink="/admin/biens-immobiliers" [class.-is-active]="activeLink === '/admin/biens-immobiliers'"
+          (click)="setActiveLink('/admin/biens-immobiliers')"><i class="fa-light fa-house-building mr15"></i>Biens immobiliers</a>
+        </li>
+        <li *ngIf="user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT'">
+          <a class="items-center" routerLink="/admin/delegations-gestions" [class.-is-active]="activeLink === '/admin/delegations-gestions'"
+          (click)="setActiveLink('/admin/delegations-gestions')"><i class="fa-light fa-handshake mr15"></i>Biens délégués</a>
         </li>
         <li *ngIf="user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT'">
           <p class="fz15 fw400 ff-heading mt30 pl30">PUBLICATION DES BIENS</p>

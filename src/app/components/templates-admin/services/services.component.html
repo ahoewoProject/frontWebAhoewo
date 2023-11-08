@@ -29,7 +29,11 @@
                     class="select" emptyFilterMessage="Aucun résultat trouvé"
                     [options]="agencesImmobilieres" placeholder="Choisir une agence"
                     formControlName="agenceImmobiliere" [filter]="true" filterBy="nomAgence"
+                    filterPlaceholder="Rechercher en fonction du nom"
                     [showClear]="true" (onChange)="agenceSelectionnee($event)" optionLabel="nomAgence">
+                    <ng-template let-agenceImmobiliere pTemplate="item">
+                      {{ agenceImmobiliere.nomAgence }}, {{ agenceImmobiliere.adresse }}
+                    </ng-template>
                   </p-dropdown>
                   <div class="text-danger" [hidden]="agenceImmobiliere.valid || agenceImmobiliere.pristine && !agenceImmobiliere.touched ">La selection de l'agence est obligatoire</div>
                 </div>
@@ -91,6 +95,7 @@
                     class="select" emptyFilterMessage="Aucun résultat trouvé"
                     [options]="agencesImmobilieres" placeholder="Choisir une agence" [(ngModel)]="_service.agenceImmobiliere"
                     formControlName="agenceImmobiliere" [filter]="true" filterBy="nomAgence"
+                    filterPlaceholder="Rechercher en fonction du nom"
                     [showClear]="true" (onChange)="agenceSelectionnee($event)" optionLabel="nomAgence">
                   </p-dropdown>
                   <div class="text-danger" [hidden]="agenceImmobiliere.valid || agenceImmobiliere.pristine && !agenceImmobiliere.touched ">La selection de l'agence est obligatoire</div>
@@ -160,7 +165,7 @@
       <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
-          <div class="packages_table">
+          <div class="packages_table table-responsive">
             <table class="table-style3 table at-savesearch">
               <thead class="t-head">
                 <tr>
@@ -199,19 +204,19 @@
                 </tr>
               </tbody>
             </table>
+          </div>
 
-            <div *ngIf="services.length !== 0" class="mbp_pagination text-center mt30">
-              <p-paginator
-                (onPageChange)="pagination($event)" [first]="pageActuelle"
-                [rows]="elementsParPage"  [totalRecords]="services.length"
-                [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-                currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} services"
-                [showPageLinks]="true" [showFirstLastIcon]="true">
-              </p-paginator>
-            </div>
-            <div *ngIf="services.length == 0" class="mbp_pagination text-center mt30">
-              <p class="mt10 pagination_page_count text-center">Aucun service enregistré pour le moment</p>
-            </div>
+          <div *ngIf="services.length !== 0" class="mbp_pagination text-center mt30">
+            <p-paginator
+              (onPageChange)="pagination($event)" [first]="pageActuelle"
+              [rows]="elementsParPage"  [totalRecords]="services.length"
+              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} services"
+              [showPageLinks]="true" [showFirstLastIcon]="true">
+            </p-paginator>
+          </div>
+          <div *ngIf="services.length == 0" class="mbp_pagination text-center mt30">
+            <p class="mt10 pagination_page_count text-center">Aucun service enregistré pour le moment</p>
           </div>
         </div>
       </div>
@@ -232,41 +237,25 @@
     <div class="row">
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-          <table class="table-style3 table at-savesearch">
-            <tbody>
-              <tbody class="t-body">
-                <tr>
-                  <td class="vam">Logo de l'agence </td>
-                  <th scope="row">
-                    <div class="listing-style1 dashboard-style d-xxl-flex align-items-center mb-0">
-                      <div class="list-thumb">
-                        <img *ngIf="_service.agenceImmobiliere.logoAgence == ''" class="w-100"
-                        src="assets/images/team/logo_par_defaut.jpg" alt="">
 
-                        <img *ngIf="_service.agenceImmobiliere.logoAgence !== ''" class="w-100"
-                        src="{{this.APIEndpoint+'api/logo/agence-immobiliere/'+_service.agenceImmobiliere.id}}" alt="">
-                      </div>
-                    </div>
-                  </th>
-                </tr>
-                <tr>
-                  <td class="vam">Nom du service </td>
-                  <td>{{ _service.nomService }}</td>
-                </tr>
-                <tr>
-                  <td class="vam">Agence immobilière </td>
-                  <td>{{ _service.agenceImmobiliere.nomAgence }}  <i *ngIf="_service.agenceImmobiliere.agentImmobilier.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></td>
-                </tr>
-                <tr>
-                  <td class="vam">Agent immobilier </td>
-                  <td>{{ _service.agenceImmobiliere.agentImmobilier.nom }} {{ _service.agenceImmobiliere.agentImmobilier.prenom }} <i *ngIf="_service.agenceImmobiliere.agentImmobilier.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></td>
-                </tr>
-                <tr>
-                  <td class="vam">Description du service</td>
-                  <td>{{ _service.description}}</td>
-                </tr>
-            </tbody>
-          </table>
+          <p class="fw600 mb10 ff-heading dark-color">Agence immobilière</p>
+          <p>
+              {{ _service.agenceImmobiliere.nomAgence }}  <i *ngIf="_service.agenceImmobiliere.agentImmobilier.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i>
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Nom du service</p>
+          <p>
+              {{ _service.nomService }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Description du service</p>
+          <p>
+              {{ _service.description}}
+          </p>
+          <p-divider></p-divider>
+
           <div class="text-end">
             <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
           </div>

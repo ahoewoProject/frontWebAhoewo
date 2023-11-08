@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DemandeCertification } from 'src/app/models/gestionDesComptes/DemandeCertification';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/services.service';
+import { BienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/bien-immobilier.service';
+import { DelegationGestionService } from 'src/app/services/gestionDesBiensImmobiliers/delegation-gestion.service';
 import { AdministrateurService } from 'src/app/services/gestionDesComptes/administrateur.service';
 import { AgentImmobilierService } from 'src/app/services/gestionDesComptes/agent-immobilier.service';
 import { ClientService } from 'src/app/services/gestionDesComptes/client.service';
@@ -36,6 +38,10 @@ export class DashboardComponent implements OnInit{
   _nombreAgencesImmobilieres: number = 0;
   _nombreAgencesImmobilieresAgentImmobilier: number = 0;
   _nombreServices: number = 0;
+  _nombreBiensImmobiliers: number = 0;
+  _nombreBiensImmobiliersGerant: number = 0;
+  _nombreBiensDeleguesProprietaire: number = 0;
+  _nombreBiensDeleguesGestionnaire: number = 0;
   demandeCertifications : DemandeCertification[] = [];
   user: any;
 
@@ -51,7 +57,9 @@ export class DashboardComponent implements OnInit{
     private notaireService: NotaireService,
     private demandeCertificationService: DemandeCertificationService,
     private agenceImmobiliereService: AgenceImmobiliereService,
-    private _serviceService: ServicesService
+    private _serviceService: ServicesService,
+    private bienImmobilierService: BienImmobilierService,
+    private delegationGestionService: DelegationGestionService
   )
   {
     this.demandeCertificationService.findByUser().subscribe(
@@ -78,6 +86,10 @@ export class DashboardComponent implements OnInit{
     this.nombreDemandeCertificationValidee();
     this.nombreGerantsParProprietaire();
     this.nombreAgencesImmobilieres();
+    this.nombreBiensDeleguesGestionnaire();
+    this.nombreBiensDeleguesProprietaire();
+    this.nombreBiensImmobiliersGerant();
+    this.nombreBiensImmobiliers();
     if (this.user.role.code == 'ROLE_AGENTIMMOBILIER'){
       this.nombreAgencesImmobilieresAgentImmobilier();
       this.nombreServices();
@@ -212,6 +224,38 @@ export class DashboardComponent implements OnInit{
         this._nombreServices = response;
       }
     );
+  }
+
+  nombreBiensImmobiliers(): void {
+    this.bienImmobilierService.countBienImmobilierParProprietaire().subscribe(
+      (response) => {
+        this._nombreBiensImmobiliers = response;
+      }
+    )
+  }
+
+  nombreBiensImmobiliersGerant(): void {
+    this.bienImmobilierService.countBienImmobilierParProprietaire().subscribe(
+      (response) => {
+        this._nombreBiensImmobiliers = response;
+      }
+    )
+  }
+
+  nombreBiensDeleguesProprietaire(): void {
+    this.delegationGestionService.countDelegationGestionProprietaire().subscribe(
+      (response) => {
+        this._nombreBiensDeleguesProprietaire = response;
+      }
+    )
+  }
+
+  nombreBiensDeleguesGestionnaire(): void {
+    this.delegationGestionService.countDelegationGestionGestionnaire().subscribe(
+      (response) => {
+        this._nombreBiensDeleguesGestionnaire = response;
+      }
+    )
   }
 
   detailUser(): void {

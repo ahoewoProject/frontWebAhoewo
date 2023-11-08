@@ -33,13 +33,20 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TagModule } from 'primeng/tag';
+import { ImageModule } from 'primeng/image';
+import { AccordionModule } from 'primeng/accordion';
 import { DropdownModule } from 'primeng/dropdown';
+import { DividerModule } from 'primeng/divider';
+import { GalleriaModule } from 'primeng/galleria';
 import { GenericFilterPipe } from './helpers/genericFilter';
 import { TokenInterceptorProvider } from './helpers/token.interceptor';
 import { AgencesImmobilieresComponent } from './components/templates-admin/agences-immobilieres/agences-immobilieres.component';
 import { ServicesComponent } from './components/templates-admin/services/services.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { TypesDeBienComponent } from './components/templates-admin/types-de-bien/types-de-bien.component';
+import { BiensImmobiliersComponent } from './components/templates-admin/biens-immobiliers/biens-immobiliers.component';
+import { DelegationsGestionsComponent } from './components/templates-admin/delegations-gestions/delegations-gestions.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +74,10 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     TemplatesClientComponent,
     GenericFilterPipe,
     AgencesImmobilieresComponent,
-    ServicesComponent
+    ServicesComponent,
+    TypesDeBienComponent,
+    BiensImmobiliersComponent,
+    DelegationsGestionsComponent
   ],
   imports: [
     BrowserModule,
@@ -83,7 +93,11 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     ConfirmDialogModule,
     TagModule,
     DropdownModule,
-    AutoCompleteModule
+    AutoCompleteModule,
+    ImageModule,
+    AccordionModule,
+    DividerModule,
+    GalleriaModule
   ],
   providers: [
     MessageService,

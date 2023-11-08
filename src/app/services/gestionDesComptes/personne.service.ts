@@ -54,6 +54,11 @@ export class PersonneService {
     return this.httpClient.get<Personne>(this.url + 'desactiver/compte/' + id);
   }
 
+  // url: http://localhost:4040/api/agents-immobiliers/demarcheurs
+  listeAgentImmobilierEtDemarcheur(): Observable<Personne[]> {
+    return this.httpClient.get<Personne[]>(this.url + 'agents-immobiliers/demarcheurs');
+  }
+
   // url: http://localhost:4040/api/request-reset-password
   requestResetPassword(emailData: FormData): Observable<any>{
     return this.httpClient.post<any>(this.url + 'request-reset-password', emailData);

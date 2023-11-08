@@ -14,7 +14,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ServicesComponent implements OnInit {
 
-  agenceSelectionne!: AgenceImmobiliere;
+  agenceChoisie!: AgenceImmobiliere;
   recherche: string = '';
   affichage = 1;
   visibleAddForm = 0;
@@ -128,11 +128,11 @@ export class ServicesComponent implements OnInit {
   }
 
   agenceSelectionnee(event: any) {
-    this.agenceSelectionne = event.value;
+    this.agenceChoisie = event.value;
   }
 
   ajouterService(): void {
-    this._service.agenceImmobiliere = this.agenceSelectionne;
+    this._service.agenceImmobiliere = this.agenceChoisie;
     this._servicesService.addServices(this._service).subscribe(
 
       (response) =>{
@@ -173,7 +173,7 @@ export class ServicesComponent implements OnInit {
   }
 
   modifierService(id: number): void {
-    this._service.agenceImmobiliere = this.agenceSelectionne;
+    this._service.agenceImmobiliere = this.agenceChoisie;
     this._servicesService.updateServices(id, this._service).subscribe(
       (response) =>{
         if(response.id > 0) {

@@ -41,8 +41,6 @@
   display: flex;
 }
 
-:host ::ng-deep .p-button {
-  border-radius: 7px;
-  margin-right: 9px;
-  margin-left: 9px;
+:host ::ng-deep .imageDetail {
+  width: 60%;
 }
