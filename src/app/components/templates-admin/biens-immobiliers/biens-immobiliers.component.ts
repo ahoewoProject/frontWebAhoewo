@@ -27,7 +27,6 @@ export class BiensImmobiliersComponent implements OnInit {
   elementsParPage = 5; // Nombre d'éléments par page
   pageActuelle = 0; // Page actuelle
 
-  erreur: boolean = false;
   bienImmobilier = this.bienImmobilierService.bienImmobilier;
   biensImmobiliers : BienImmobilier[] = [];
   images: ImagesBienImmobilier[] = [];
@@ -136,7 +135,6 @@ export class BiensImmobiliersComponent implements OnInit {
     }
     this.bienImmobilierForm.reset();
     this.affichage = 1;
-    this.erreur = false;
   }
 
   detailBienImmobilier(id: number): void {
@@ -243,7 +241,6 @@ export class BiensImmobiliersComponent implements OnInit {
           this.bienImmobilierData.delete('imagePrincipale');
           this.bienImmobilierData.delete('imagesBienImmobilier');
           this.bienImmobilierData.delete('bienImmobilierJson');
-          this.erreur = true;
           this.messageErreur = "Erreur lors de l'ajout du bien immobilier !"
           this.afficherFormulaireAjouter();
           this.bienImmobilier.typeDeBien = response.typeDeBien;
@@ -260,7 +257,6 @@ export class BiensImmobiliersComponent implements OnInit {
       this.bienImmobilierData.delete('bienImmobilierJson');
       console.log(error)
       if(error.status === 409) {
-        this.erreur = true;
         this.messageErreur = "Un bien immobilier avec ce nom existe déjà !";
         this.messageService.add({ severity: 'warn', summary: "Erreur d'ajout", detail: this.messageErreur });
       }
@@ -289,7 +285,6 @@ export class BiensImmobiliersComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
         }
         else {
-          this.erreur = true;
           this.messageErreur = "Erreur lors de l'ajout du bien immobilier !"
           this.afficherFormulaireAjouter();
           this.bienImmobilier.typeDeBien = response.typeDeBien;
@@ -303,7 +298,6 @@ export class BiensImmobiliersComponent implements OnInit {
     (error) => {
       console.log(error)
       if(error.status === 409) {
-        this.erreur = true;
         this.messageErreur = "Un bien immobilier avec ce nom existe déjà !";
         this.messageService.add({ severity: 'warn', summary: "Erreur d'ajout", detail: this.messageErreur });
       }

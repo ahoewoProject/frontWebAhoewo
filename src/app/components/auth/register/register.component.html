@@ -66,7 +66,7 @@
                     <br>
                     <p-dropdown
                       class="select" emptyFilterMessage="Aucun résultat trouvé"
-                      [options]="roles" placeholder="Choisir votre profil"
+                      [options]="roles" placeholder="Choisissez votre profil"
                       formControlName="role" [filter]="true" filterBy="libelle"
                       [showClear]="true" (onChange)="profilChoisi($event)" optionLabel="libelle">
                     </p-dropdown>
@@ -77,7 +77,7 @@
                 <div class="col-lg-6">
                   <div class="mb20">
                     <label class="form-label fw600 dark-color">Mot de passe</label>
-                    <input type="password" class="form-control" placeholder="Entrer votre mot de passe" id="motDePasse" name="motDePasse" formControlName="motDePasse" [(ngModel)]="registerForm.motDePasse" required>
+                    <input type="password" class="form-control" id="motDePasse" name="motDePasse" formControlName="motDePasse" [(ngModel)]="registerForm.motDePasse" required>
                     <div class="text-danger" *ngIf="motDePasse?.hasError('required') && motDePasse.touched">Le mot de passe est obligatoire</div>
                   </div>
                 </div>
@@ -85,7 +85,15 @@
                 <div class="col-lg-6">
                   <div class="mb20">
                     <label class="form-label fw600 dark-color">Confirmer le mot de passe</label>
-                    <input type="password" class="form-control" placeholder="Entrer votre mot de passe" id="motDePasseConfirmer" name="motDePasseConfirmer" formControlName="motDePasseConfirmer" required>
+                    <input type="{{ voirMotDePasseConfirmer ? 'text' : 'password' }}" class="form-control" id="motDePasseConfirmer" name="motDePasseConfirmer" formControlName="motDePasseConfirmer" required>
+                    <i alt="show" class="pi pi-eye icon-voir-mot-passe"
+                      (click)="voirMotDePasseConfirmer = !voirMotDePasseConfirmer"
+                      [class.hide]="voirMotDePasseConfirmer">
+                    </i>
+                    <i alt="hide" class="pi pi-eye-slash icon-voir-mot-passe"
+                      (click)="voirMotDePasseConfirmer = !voirMotDePasseConfirmer"
+                      [class.hide]="!voirMotDePasseConfirmer">
+                    </i>
                     <div class="text-danger" *ngIf="motDePasseConfirmer?.hasError('required') && motDePasseConfirmer.touched">La confirmation du mot de passe est obligatoire</div>
                     <div class="text-danger" *ngIf="RegisterForm.errors?.['passwordMismatchError'] && motDePasseConfirmer.touched">
                       Les mots de passe ne sont pas conformes

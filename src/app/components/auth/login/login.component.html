@@ -25,8 +25,16 @@
               </div>
               <div class="mb15">
                 <label class="form-label fw600 dark-color">Mot de passe</label>
-                <input type="password" class="form-control" placeholder="Entrer votre mot de passe" id="password" name="password" formControlName="password" [(ngModel)]="loginForm.password" required>
-                <div class="text-danger" [hidden]="password.valid || password.pristine && !password.touched ">Le mot de passe est obligatoire</div>
+                <input [type]="voirMotDePasse ? 'text' : 'password'" class="form-control" id="password" name="password" formControlName="password" [(ngModel)]="loginForm.password" required>
+                <i alt="show" class="pi pi-eye icon-voir-mot-passe"
+                  (click)="voirMotDePasse = !voirMotDePasse"
+                  [class.hide]="voirMotDePasse">
+                </i>
+                <i alt="hide" class="pi pi-eye-slash icon-voir-mot-passe"
+                  (click)="voirMotDePasse = !voirMotDePasse"
+                  [class.hide]="!voirMotDePasse">
+                </i>
+                <div class="text-danger" [hidden]="password.valid || password.pristine && !password.touched">Le mot de passe est obligatoire</div>
               </div>
               <div class="checkbox-style1 d-block d-sm-flex align-items-center justify-content-between mb10">
                 <label class="custom_checkbox fz14 ff-heading">Se souvenir de moi
@@ -47,3 +55,4 @@
     </div>
   </section>
 </div>
+

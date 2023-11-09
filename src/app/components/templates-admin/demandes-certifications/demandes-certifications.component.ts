@@ -23,7 +23,6 @@ export class DemandesCertificationsComponent implements OnInit {
   elementsParPage = 5; // Nombre d'éléments par page
   pageActuelle = 0; // Page actuelle
 
-  erreur: boolean = false;
   demandeCertification = this.demandeCertifService.demandeCertification;
   demandeCertifications : DemandeCertification[] = [];
   agencesImmobilieres : AgenceImmobiliere[] = [];
@@ -112,7 +111,6 @@ export class DemandesCertificationsComponent implements OnInit {
     }
     this.affichage = 1;
     this.visibleAddForm = 0;
-    this.erreur = false;
   }
 
   afficherFormulaireAjouter(): void {
@@ -147,7 +145,6 @@ export class DemandesCertificationsComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Demande de certification réussie', detail: this.messageSuccess })
         }
         else {
-          this.erreur = true;
           this.messageErreur = "Erreur lors de l'ajout de votre demande de certification!"
           this.messageService.add({ severity: 'error', summary: "Erreur d'ajout de la demande de certification", detail: this.messageErreur });
           this.afficherFormulaireAjouter();
@@ -179,7 +176,6 @@ export class DemandesCertificationsComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Demande de certification réussie', detail: this.messageSuccess })
         }
         else {
-          this.erreur = true;
           this.messageErreur = "Erreur lors de l'ajout de votre demande de certification!"
           this.messageService.add({ severity: 'error', summary: "Erreur d'ajout de la demande de certification", detail: this.messageErreur });
           this.afficherFormulaireAjouter();

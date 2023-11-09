@@ -44,4 +44,15 @@
   margin-left: -20px;
 }
 
+.icon-voir-mot-passe {
+  left: 88%;
+  margin-top: -34px;
+  position: absolute; /* Modifiez cette ligne pour utiliser 'absolute' */
+  z-index: 100;
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+}
 

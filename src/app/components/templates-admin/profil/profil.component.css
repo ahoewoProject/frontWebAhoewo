@@ -4,7 +4,6 @@
   cursor: not-allowed; /* Affiche un curseur "non autorisé" */
 }
 
-
 .ng-valid[required],
 .ng-valid.required {
     border-left: 5px solid #42A948;
@@ -12,4 +11,16 @@
 
 .ng-invalid:not(form) {
     border-left: 5px solid #a94442;
+}
+
+.icon-voir-mot-passe {
+  left: 63%;
+  margin-top: -34px;
+  position: absolute; /* Modifiez cette ligne pour utiliser 'absolute' */
+  z-index: 100;
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
 }

@@ -15,12 +15,11 @@ export class AdministrateursComponent implements OnInit {
 
   affichage = 1;
   visibleAddForm = 0;
-  visibleUpdateForm = 0;
+  voirMotDePasse: boolean = false;
 
   elementsParPage = 5; // Nombre d'éléments par page
   pageActuelle = 0; // Page actuelle
 
-  erreur: boolean = false;
   admin = this.adminService.administrateur;
   administrateurs : Administrateur[] = [];
   messageErreur: string = "";
@@ -87,14 +86,11 @@ export class AdministrateursComponent implements OnInit {
     this.adminForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
-    this.visibleUpdateForm = 0;
-    this.erreur = false;
   }
 
 
   afficherFormulaireAjouter(): void {
     this.visibleAddForm = 1;
-    this.visibleUpdateForm = 0;
     this.admin = new Administrateur();
   }
 
@@ -109,13 +105,6 @@ export class AdministrateursComponent implements OnInit {
   afficherPageDetail(id: number): void {
     this.detailAdmin(id);
     this.affichage = 3;
-    this.visibleAddForm = 0;
-    this.visibleUpdateForm = 0;
-  }
-
-  afficherFormulaireModifier(id: number): void {
-    this.detailAdmin(id);
-    this.visibleUpdateForm = 1;
     this.visibleAddForm = 0;
   }
 
@@ -173,7 +162,6 @@ export class AdministrateursComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
         }
         else{
-          this.erreur = true;
           this.messageErreur = "Erreur lors de l'ajout de l'administrateur !"
           this.afficherFormulaireAjouter();
           this.admin.nom = response.nom;
@@ -187,7 +175,6 @@ export class AdministrateursComponent implements OnInit {
     (error) =>{
       console.log(error)
       if(error.error.status === 409){
-        this.erreur = true;
         this.messageErreur = "Un administrateur avec ce nom d'utilisateur existe déjà !";
         this.messageService.add({ severity: 'warn', summary: 'Ajout non réussi', detail: this.messageErreur });
       }

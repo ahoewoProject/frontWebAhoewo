@@ -16,12 +16,11 @@ export class NotairesComponent implements OnInit{
   recherche: string = '';
   affichage = 1;
   visibleAddForm = 0;
-  visibleUpdateForm = 0;
+  voirMotDePasse: boolean = false;
 
   elementsParPage = 5; // Nombre d'éléments par page
   pageActuelle = 0; // Page actuelle
 
-  erreur: boolean = false;
   notaire = this.notaireService.notaire;
   notaires : Notaire[] = [];
   messageErreur: string = "";
@@ -91,13 +90,10 @@ export class NotairesComponent implements OnInit{
     this.notaireForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
-    this.visibleUpdateForm = 0;
-    this.erreur = false;
   }
 
   afficherFormulaireAjouter(): void {
     this.visibleAddForm = 1;
-    this.visibleUpdateForm = 0;
     this.notaire = new Notaire();
   }
 
@@ -112,13 +108,6 @@ export class NotairesComponent implements OnInit{
   afficherPageDetail(id: number): void {
     this.detailNotaire(id);
     this.affichage = 3;
-    this.visibleAddForm = 0;
-    this.visibleUpdateForm = 0;
-  }
-
-  afficherFormulaireModifier(id: number): void {
-    this.detailNotaire(id);
-    this.visibleUpdateForm = 1;
     this.visibleAddForm = 0;
   }
 
@@ -176,7 +165,6 @@ export class NotairesComponent implements OnInit{
           this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
         }
         else{
-          this.erreur = true;
           this.messageErreur = "Erreur lors de l'ajout du notaire !"
           this.afficherFormulaireAjouter();
           this.notaire.nom = response.nom;
@@ -190,7 +178,6 @@ export class NotairesComponent implements OnInit{
     (error) =>{
       console.log(error)
       if(error.status === 409){
-        this.erreur = true;
         this.messageErreur = "Un notaire avec ce nom d'utilisateur existe déjà !";
         this.messageService.add({ severity: 'warn', summary: 'Ajout non réussi', detail: this.messageErreur });
       }

@@ -56,7 +56,15 @@
               <div class="col-sm-6 col-xl-4">
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Mot de passe</label>
-                  <input type="password" class="form-control" id="motDePasse" name="motDePasse" placeholder="Le mot de passe du notaire" formControlName="motDePasse" [(ngModel)]="notaire.motDePasse" required>
+                  <input type="{{ voirMotDePasse ? 'text' : 'password' }}" class="form-control" id="motDePasse" name="motDePasse" formControlName="motDePasse" [(ngModel)]="notaire.motDePasse" required>
+                  <i alt="show" class="pi pi-eye icon-voir-mot-passe"
+                    (click)="voirMotDePasse = !voirMotDePasse"
+                    [class.hide]="voirMotDePasse">
+                  </i>
+                  <i alt="hide" class="pi pi-eye-slash icon-voir-mot-passe"
+                    (click)="voirMotDePasse = !voirMotDePasse"
+                    [class.hide]="!voirMotDePasse">
+                  </i>
                   <div class="text-danger" *ngIf="motDePasse?.hasError('required') && motDePasse.touched">Le mot de passe du notaire est obligatoire</div>
                   <div class="text-danger" *ngIf="motDePasse?.errors?.['minlength'] || motDePasse.errors?.['maxlength'] && motDePasse?.hasError('pattern') && motDePasse.touched">
                     Règles de saisie du mot de passe :

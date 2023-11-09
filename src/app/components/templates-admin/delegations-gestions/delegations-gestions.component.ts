@@ -29,7 +29,6 @@ export class DelegationsGestionsComponent implements OnInit {
   elementsParPage = 5; // Nombre d'éléments par page
   pageActuelle = 0; // Page actuelle
 
-  erreur: boolean = false;
   delegationGestion = this.delegationGestionService.delegationGestion;
   delegationGestions : DelegationGestion[] = [];
   biensImmobiliers : BienImmobilier[] = [];
@@ -154,7 +153,6 @@ export class DelegationsGestionsComponent implements OnInit {
     this.delegationGestionForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
-    this.erreur = false;
   }
 
   afficherFormulaireAjouter(): void {
@@ -220,7 +218,6 @@ export class DelegationsGestionsComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
         }
         else {
-          this.erreur = true;
           this.messageErreur = "Erreur lors de l'ajout du gérant !"
           this.afficherFormulaireAjouter();
           this.delegationGestion.gestionnaire = response.gestionnaire;
@@ -231,7 +228,6 @@ export class DelegationsGestionsComponent implements OnInit {
     (error) =>{
       console.log(error)
       if(error.status === 409) {
-        this.erreur = true;
         this.messageErreur = "Un gérant avec ce nom d'utilisateur existe déjà !";
         this.messageService.add({ severity: 'warn', summary: 'Ajout non réussi', detail: this.messageErreur });
       }

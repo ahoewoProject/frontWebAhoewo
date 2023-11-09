@@ -24,7 +24,6 @@ export class ServicesComponent implements OnInit {
   elementsParPage = 5; // Nombre d'éléments par page
   pageActuelle = 0; // Page actuelle
 
-  erreur: boolean = false;
   _service = this._servicesService._service;
   services : Services[] = [];
   agencesImmobilieres : AgenceImmobiliere[] = [];
@@ -59,7 +58,6 @@ export class ServicesComponent implements OnInit {
     this.affichage = 1;
     this.visibleAddForm = 0;
     this.visibleUpdateForm = 0;
-    this.erreur = false;
   }
 
   listeServices(){
@@ -154,7 +152,6 @@ export class ServicesComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
         }
         else{
-          this.erreur = true;
           this.messageErreur = "Erreur lors de l'ajout du service !"
           this.afficherFormulaireAjouter();
           this._service.nomService = response.nomService;
@@ -165,7 +162,6 @@ export class ServicesComponent implements OnInit {
     (error) =>{
       console.log(error)
       if(error.status === 409){
-        this.erreur = true;
         this.messageErreur = "Un service avec ce nom existe déjà !";
         this.messageService.add({ severity: 'warn', summary: "Erreur d'ajout", detail: this.messageErreur });
       }
@@ -182,7 +178,6 @@ export class ServicesComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Modification réussie', detail: this.messageSuccess })
         }
         else{
-          this.erreur = true;
           this.messageErreur = "Erreur lors de la modification du service !";
           this.messageService.add({ severity: 'error', summary: 'Erreur modification', detail: this.messageErreur });
           this.afficherFormulaireModifier(id);
@@ -191,7 +186,6 @@ export class ServicesComponent implements OnInit {
     (error) =>{
       console.log(error)
       if(error.status === 409){
-        this.erreur = true;
         this.messageErreur = "Le service avec ce nom existe déjà !";
         this.messageService.add({ severity: 'warn', summary: 'Modification non réussie', detail: this.messageErreur });
         this.afficherFormulaireModifier(id);

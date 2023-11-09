@@ -20,3 +20,15 @@
   opacity: 0.5; /* Réduit l'opacité pour montrer qu'il est désactivé */
   cursor: not-allowed; /* Affiche un curseur "non autorisé" */
 }
+
+.icon-voir-mot-passe {
+  left: 88%;
+  margin-top: -34px;
+  position: absolute; /* Modifiez cette ligne pour utiliser 'absolute' */
+  z-index: 100;
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+}

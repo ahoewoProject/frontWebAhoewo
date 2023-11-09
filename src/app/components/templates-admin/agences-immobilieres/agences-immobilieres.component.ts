@@ -22,7 +22,6 @@ export class AgencesImmobilieresComponent implements OnInit {
   elementsParPage = 5; // Nombre d'éléments par page
   pageActuelle = 0; // Page actuelle
 
-  erreur: boolean = false;
   agenceImmobiliere = this.agenceImmobiliereService.agenceImmobiliere;
   agencesImmobilieres : AgenceImmobiliere[] = [];
   messageErreur: string = "";
@@ -108,7 +107,6 @@ export class AgencesImmobilieresComponent implements OnInit {
     this.affichage = 1;
     this.visibleAddForm = 0;
     this.visibleUpdateForm = 0;
-    this.erreur = false;
   }
 
   detailAgenceImmobiliere(id: number): void {
@@ -340,7 +338,6 @@ export class AgencesImmobilieresComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
         }
         else {
-          this.erreur = true;
           this.messageErreur = "Erreur lors de l'ajout de votre agence immobilière !"
           this.afficherFormulaireAjouter();
           this.agenceImmobiliere.nomAgence = response.nomAgence;
@@ -355,7 +352,6 @@ export class AgencesImmobilieresComponent implements OnInit {
     (error) => {
       console.log(error)
       if(error.status === 409) {
-        this.erreur = true;
         this.messageErreur = "Une agence immobilière avec ce nom existe déjà !";
         this.messageService.add({ severity: 'warn', summary: "Erreur d'ajout", detail: this.messageErreur });
       }
@@ -375,7 +371,6 @@ export class AgencesImmobilieresComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Modification réussie', detail: this.messageSuccess })
         }
         else {
-          this.erreur = true;
           this.messageErreur = "Erreur lors de la modification de votre agence immobilière !";
           this.messageService.add({ severity: 'error', summary: 'Erreur modification', detail: this.messageErreur });
           this.afficherFormulaireModifier(id);
@@ -384,7 +379,6 @@ export class AgencesImmobilieresComponent implements OnInit {
     (error) => {
       console.log(error)
       if(error.status === 409){
-        this.erreur = true;
         this.messageErreur = "Une agence immobilière avec ce nom existe déjà !";
         this.messageService.add({ severity: 'warn', summary: 'Modification non réussie', detail: this.messageErreur });
         this.afficherFormulaireModifier(id);

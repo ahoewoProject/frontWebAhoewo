@@ -381,50 +381,71 @@
               {{ bienImmobilier.description }}
           </p>
 
-          <p-divider></p-divider>
-          <div class="row">
-            <div class="col-md-6 col-xl-4">
-              <div class="d-flex justify-content-between">
-                <div class="pd-list">
-                  <p *ngIf="user.role.code == 'ROLE_GERANT'" class="fw600 mb10 ff-heading dark-color">Propriétaire du bien immobilier</p>
-                  <p *ngIf="user.role.code == 'ROLE_GERANT'" class="fw600 mb10 ff-heading dark-color">Adresse e-mail du propriétaire</p>
-                  <p class="fw600 mb10 ff-heading dark-color">Numero identifiant du bien</p>
-                  <p class="fw600 mb10 ff-heading dark-color">Type de bien</p>
-                  <p class="fw600 mb10 ff-heading dark-color">Statut du bien immobilier</p>
-                  <p class="fw600 mb10 ff-heading dark-color">Etat du bien immobilier</p>
-                </div>
-                <div class="pd-list">
-                  <p *ngIf="user.role.code == 'ROLE_GERANT'" class="text mb10">{{ bienImmobilier.personne.nom }} {{ bienImmobilier.personne.prenom }}</p>
-                  <p *ngIf="user.role.code == 'ROLE_GERANT'" class="text mb10">{{ bienImmobilier.personne.email }}</p>
-                  <p class="text mb10">{{ bienImmobilier.numeroIdentifiant }}</p>
-                  <p class="text mb10">{{ bienImmobilier.typeDeBien.designation }}</p>
-                  <p class="text mb10">
-                    <p-tag *ngIf="bienImmobilier.statutBien == 'Disponible'" severity="success" value="Disponible"></p-tag>
-                  </p>
-                  <p class="text mb10">
-                    <p-tag *ngIf="bienImmobilier.etatBien == true" severity="success" value="Activé"></p-tag>
-                    <p-tag *ngIf="bienImmobilier.etatBien == false" severity="danger" value="Désactivé"></p-tag>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-xl-4 offset-xl-2">
-              <div class="d-flex justify-content-between">
-                <div class="pd-list">
-                  <p *ngIf="user.role.code == 'ROLE_GERANT'" class="fw600 mb10 ff-heading dark-color">Numéro de téléphone du propriétaire</p>
-                  <p class="fw600 mb10 ff-heading dark-color">Adresse du bien immobilier</p>
-                  <p class="fw600 mb10 ff-heading dark-color">Ville du bien immobilier</p>
-                  <p class="fw600 mb10 ff-heading dark-color">Surface en m2 du bien immobilier</p>
-                </div>
-                <div class="pd-list">
-                  <p *ngIf="user.role.code == 'ROLE_GERANT'" class="text mb10">{{ bienImmobilier.personne.telephone }}</p>
-                  <p class="text mb10">{{ bienImmobilier.adresse }}</p>
-                  <p class="text mb10">{{ bienImmobilier.ville }}</p>
-                  <p class="text mb10">{{ bienImmobilier.surface }}</p>
-                </div>
-              </div>
-            </div>
+          <div *ngIf="user.role.code == 'ROLE_GERANT'">
+            <p-divider></p-divider>
+            <p class="fw600 mb10 ff-heading dark-color">Propriétaire du bien immobilier</p>
+            <p>
+                {{ bienImmobilier.personne.nom }} {{ bienImmobilier.personne.prenom }}
+            </p>
           </div>
+
+          <div *ngIf="user.role.code == 'ROLE_GERANT'">
+            <p-divider></p-divider>
+            <p class="fw600 mb10 ff-heading dark-color">Numero de téléphone du propriétaire</p>
+            <p>
+                {{ bienImmobilier.personne.telephone }}
+            </p>
+          </div>
+
+          <div *ngIf="user.role.code == 'ROLE_GERANT'">
+            <p-divider></p-divider>
+            <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du propriétaire</p>
+            <p>
+                {{ bienImmobilier.personne.email }}
+            </p>
+          </div>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Numero identifiant du bien immobilier</p>
+          <p>
+              {{ bienImmobilier.numeroIdentifiant }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Type de bien</p>
+          <p>
+            {{ bienImmobilier.typeDeBien.designation }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Adresse du bien immobilier</p>
+          <p>
+            {{ bienImmobilier.adresse }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Ville du bien immobilier</p>
+          <p>
+            {{ bienImmobilier.ville }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Surface en m2 du bien immobilier</p>
+          <p>
+            {{ bienImmobilier.surface }}
+          </p>
+
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Statut du bien immobilier</p>
+          <p>
+            <p-tag *ngIf="bienImmobilier.statutBien == 'Disponible'" severity="success" value="Disponible"></p-tag>
+          </p>
+          <p-divider></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color">Etat du bien immobilier</p>
+          <p>
+            <p-tag *ngIf="bienImmobilier.etatBien == true" severity="success" value="Activé"></p-tag>
+            <p-tag *ngIf="bienImmobilier.etatBien == false" severity="danger" value="Désactivé"></p-tag>
+          </p>
           <div class="text-end">
             <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
           </div>

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { DemandeCertification } from 'src/app/models/gestionDesComptes/DemandeCertification';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/services.service';
@@ -44,6 +46,7 @@ export class DashboardComponent implements OnInit{
   _nombreBiensDeleguesGestionnaire: number = 0;
   demandeCertifications : DemandeCertification[] = [];
   user: any;
+  connexionReussie: any;
 
   constructor(
     private personneService: PersonneService,
@@ -59,7 +62,9 @@ export class DashboardComponent implements OnInit{
     private agenceImmobiliereService: AgenceImmobiliereService,
     private _serviceService: ServicesService,
     private bienImmobilierService: BienImmobilierService,
-    private delegationGestionService: DelegationGestionService
+    private delegationGestionService: DelegationGestionService,
+    private activatedRoute: ActivatedRoute,
+    private messageService: MessageService,
   )
   {
     this.demandeCertificationService.findByUser().subscribe(
@@ -72,6 +77,8 @@ export class DashboardComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.connexionReussie = this.activatedRoute.snapshot.queryParamMap.get('connexionReussie') || '';
+
     this.nombreRoles();
     this.nombreAdministrateurs();
     this.nombreAgentImmobiliers();
@@ -262,6 +269,7 @@ export class DashboardComponent implements OnInit{
     this.personneService.findById(this.user.id).subscribe(
       (response) => {
         this.user = response;
+        this.messageService.add({ severity: 'success', summary: 'Authentification réussie', detail: 'Vous êtes bel et bien connecté(e).' });
       }
     );
   }

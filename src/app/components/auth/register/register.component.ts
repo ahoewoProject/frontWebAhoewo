@@ -15,6 +15,8 @@ export class RegisterComponent implements OnInit {
   inscriptionNonReussie: boolean = false;
   registerForm = this.personneService.registerForm;
   message: string = '';
+  
+  voirMotDePasseConfirmer: boolean = false;
 
   roles: Role[] = [
     {

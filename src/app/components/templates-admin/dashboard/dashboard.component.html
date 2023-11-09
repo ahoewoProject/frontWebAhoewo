@@ -4,6 +4,7 @@
     <app-menu-responsive></app-menu-responsive>
     <!-- End Menu responsive -->
   </div>
+
   <div class="dashboard_title_area">
     <h3>Bienvenue, M/Mlle {{ user.nom }} {{ user.prenom }}! <i *ngIf="user.estCertifie && (user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6;"></i></h3>
     <h6 *ngIf="!user.estCertifie && (user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_DEMARCHEUR')" class="text">
@@ -16,6 +17,10 @@
     </h6>
     <h6 class="text">Nous sommes heureux de vous revoir !</h6>
     <br>
+  </div>
+
+  <div *ngIf="connexionReussie" >
+    <p-toast [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'1000ms'" [hideTransitionOptions]="'3000ms'" [showTransformOptions]="'translateX(100%)'"></p-toast>
   </div>
 
   <!-- Start Vue Administrateur -->

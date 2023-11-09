@@ -11,6 +11,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 export class ResetPasswordComponent implements OnInit{
 
   erreur: boolean = false;
+  voirMotDePasseConfirmer: boolean = false;
   message: string = '';
   recupererMotDePasseForm: any;
 

@@ -12,6 +12,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 export class LoginComponent implements OnInit{
 
   connexionNonReussie: boolean = false;
+  voirMotDePasse: boolean = false;
   user: any;
   message: string = "";
   loginForm: LoginForm = new LoginForm();
@@ -106,7 +107,7 @@ export class LoginComponent implements OnInit{
 
       this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
-      this.router.navigate(['/admin/dashboard'])
+      this.router.navigate(['/admin/dashboard'], { queryParams: { connexionReussie: true } })
     } else {
       this.connexionNonReussie = true;
       this.message = "Votre compte est désactivé. Veuillez contacter l'équipe support technique ahoewo pour obtenir de l'aide supplémentaire";

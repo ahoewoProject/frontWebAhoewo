@@ -20,7 +20,6 @@ export class RolesComponent implements OnInit{
   pageActuelle = 0;
   elementsParPage = 5;
 
-  erreur: boolean = false;
   role = this.roleService.role;
   roles : Role[] = [];
   messageErreur: string = "";
@@ -69,7 +68,6 @@ export class RolesComponent implements OnInit{
     this.affichage = 1;
     this.visibleAddForm = 0;
     this.visibleUpdateForm = 0;
-    this.erreur = false;
   }
 
   afficherFormulaireAjouter(): void {
@@ -127,7 +125,6 @@ export class RolesComponent implements OnInit{
           this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
         }
         else{
-          this.erreur = true;
           this.messageErreur = "Erreur lors de l'ajout du rôle !"
           this.afficherFormulaireAjouter();
           this.role.code = response.code;
@@ -138,7 +135,6 @@ export class RolesComponent implements OnInit{
     (error) =>{
       console.log(error)
       if(error.status === 409){
-        this.erreur = true;
         this.messageErreur = "Un rôle avec ce code existe déjà !";
         this.messageService.add({ severity: 'warn', summary: "Erreur d'ajout", detail: this.messageErreur });
       }
@@ -154,7 +150,6 @@ export class RolesComponent implements OnInit{
           this.messageService.add({ severity: 'success', summary: 'Modification réussie', detail: this.messageSuccess })
         }
         else{
-          this.erreur = true;
           this.messageErreur = "Erreur lors de la modification du rôle !";
           this.messageService.add({ severity: 'error', summary: 'Erreur modification', detail: this.messageErreur });
           this.afficherFormulaireModifier(this.role.id);
@@ -163,7 +158,6 @@ export class RolesComponent implements OnInit{
     (error) =>{
       console.log(error)
       if(error.status === 409){
-        this.erreur = true;
         this.messageErreur = "Un rôle avec ce code existe déjà !";
         this.messageService.add({ severity: 'warn', summary: 'Modification non réussie', detail: this.messageErreur });
         this.afficherFormulaireModifier(this.role.id);

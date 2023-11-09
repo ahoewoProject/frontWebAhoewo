@@ -14,8 +14,8 @@ export class ProfilComponent implements OnInit{
 
   user: any;
   affichage = 1;
+  voirMotDePasse: boolean = false;
 
-  erreur: boolean = false;
   personne = this.personneService.personne;
   messageErreur: string | null = null;
   messageSuccess: string | null = null;
@@ -61,7 +61,6 @@ export class ProfilComponent implements OnInit{
     this.detailUser();
     this.userForm.reset();
     this.affichage = 1;
-    this.erreur = false;
   }
 
   get nom(){
@@ -119,7 +118,6 @@ export class ProfilComponent implements OnInit{
           this.messageService.add({ severity: 'success', summary: 'Mise à jour réussie', detail: this.messageSuccess })
         }
         else{
-          this.erreur = true;
           this.messageErreur = "Erreur lors de la modification de vos informations !";
           this.messageService.add({ severity: 'error', summary: 'Erreur de modification', detail: this.messageErreur })
           this.afficherFormulaireModifier();
@@ -128,7 +126,6 @@ export class ProfilComponent implements OnInit{
     (error) =>{
       console.log(error)
       if(error.status === 409){
-        this.erreur = true;
         this.messageErreur = "Ce nom d'utilisateur a été déjà utilisé!";
         this.messageService.add({ severity: 'warn', summary: 'Mise à jour non réussie', detail: this.messageErreur })
         this.afficherFormulaireModifier();
