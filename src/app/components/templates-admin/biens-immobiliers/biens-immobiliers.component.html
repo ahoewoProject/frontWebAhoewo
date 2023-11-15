@@ -33,7 +33,7 @@
                   filterPlaceholder="Rechercher en fonction de la désignation"
                   [showClear]="true" (onChange)="typeDeBienChoisi($event)" optionLabel="designation">
                 </p-dropdown>
-                <div class="text-danger" [hidden]="!typeDeBien?.hasError('required') || !typeDeBien.touched">La selection du type de bien est obligatoire</div>
+                <div class="error" [hidden]="!typeDeBien?.hasError('required') || !typeDeBien.touched">La selection du type de bien est obligatoire</div>
                 </div>
               </div>
 
@@ -41,35 +41,35 @@
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Adresse du bien</label>
                   <input type="text" class="form-control" id="adresse" name="adresse" placeholder="L'adresse du bien immobilier" formControlName="adresse" [(ngModel)]="bienImmobilier.adresse" required>
-                  <div class="text-danger" [hidden]="adresse.valid || adresse.pristine && !adresse.touched ">L'adresse du bien immobilier est obligatoire</div>
+                  <div class="error" [hidden]="adresse.valid || adresse.pristine && !adresse.touched ">L'adresse du bien immobilier est obligatoire</div>
                 </div>
               </div>
 
               <div class="col-sm-6 col-xl-6">
-
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Ville du bien</label>
                   <input type="text" class="form-control" id="ville" name="ville" placeholder="La ville du bien immobilier" formControlName="ville" [(ngModel)]="bienImmobilier.ville" required>
-                  <div class="text-danger" [hidden]="ville.valid || ville.pristine && !ville.touched ">La ville du bien immobilier est obligatoire</div>
+                  <div class="error" [hidden]="ville.valid || ville.pristine && !ville.touched ">La ville du bien immobilier est obligatoire</div>
                 </div>
+              </div>
 
+              <div class="col-sm-6 col-xl-6">
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Surface du bien en m2</label>
                   <input type="number" class="form-control" id="surface" name="surface" formControlName="surface" [(ngModel)]="bienImmobilier.surface" required>
-                  <div class="text-danger" [hidden]="surface.valid || surface.pristine && !surface.touched ">La surface du bien immobilier est obligatoire</div>
+                  <div class="error" [hidden]="surface.valid || surface.pristine && !surface.touched ">La surface du bien immobilier est obligatoire</div>
                 </div>
-
               </div>
 
               <div class="col-sm-6 col-xl-6">
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Description du bien</label>
-                  <textarea id="description" name="description" style="height: 166px;" placeholder="La description du bien immobilier" formControlName="description" [(ngModel)]="bienImmobilier.description" required></textarea>
-                  <div class="text-danger" [hidden]="description.valid || description.pristine && !description.touched ">La description du bien immobilier est obligatoire</div>
+                  <textarea id="description" name="description" style="height: 160px;" placeholder="La description du bien immobilier" formControlName="description" [(ngModel)]="bienImmobilier.description" required></textarea>
+                  <div class="error" [hidden]="description.valid || description.pristine && !description.touched ">La description du bien immobilier est obligatoire</div>
                 </div>
               </div>
 
-              <div class="col-sm-6 col-xl-6">
+              <!-- <div class="col-sm-6 col-xl-6">
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Image principale du bien immobilier</label>
                   <p-fileUpload
@@ -89,20 +89,18 @@
                     </ng-template>
                   </p-fileUpload>
                 </div>
-              </div>
+              </div> -->
 
               <div class="col-sm-6 col-xl-6">
                 <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Les images du bien immobilier</label>
+                  <label class="heading-color ff-heading fw600 mb10">Images</label>
                   <p-fileUpload
-                    chooseLabel="Sélectionner"
-                    uploadLabel="Télécharger"
-                    cancelLabel="Annuler"
+                    chooseLabel="Sélectionner les images"
+                    [auto]="true"
                     url="https://www.primefaces.org/cdn/api/upload.php"
-                    [multiple]="true" (onUpload)="telechargerImagesBienImmobilier($event)"  accept="image/*"
+                    [multiple]="true" (onUpload)="telechargerImagesBienImmobilier($event)"
+                    accept="image/*"
                     chooseStyleClass="choose-label"
-                    uploadStyleClass="upload-label"
-                    cancelStyleClass="cancel-label"
                     removeStyleClass="remove-label">
                     <ng-template pTemplate="content">
                       <ul *ngIf="imagesBienImmobilier.length">
@@ -155,7 +153,7 @@
                   filterPlaceholder="Rechercher en fonction de la désignation"
                   [showClear]="true" (onChange)="typeDeBienChoisi($event)" optionLabel="designation">
                 </p-dropdown>
-                <div class="text-danger" [hidden]="!typeDeBien?.hasError('required') || !typeDeBien.touched">La selection du type de bien est obligatoire</div>
+                <div class="error" [hidden]="!typeDeBien?.hasError('required') || !typeDeBien.touched">La selection du type de bien est obligatoire</div>
                 </div>
               </div>
 
@@ -163,35 +161,35 @@
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Adresse du bien</label>
                   <input type="text" class="form-control" id="adresse" name="adresse" placeholder="L'adresse du bien immobilier" formControlName="adresse" [(ngModel)]="bienImmobilier.adresse" required>
-                  <div class="text-danger" [hidden]="adresse.valid || adresse.pristine && !adresse.touched ">L'adresse du bien immobilier est obligatoire</div>
+                  <div class="error" [hidden]="adresse.valid || adresse.pristine && !adresse.touched ">L'adresse du bien immobilier est obligatoire</div>
                 </div>
               </div>
 
               <div class="col-sm-6 col-xl-6">
-
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Ville du bien</label>
                   <input type="text" class="form-control" id="ville" name="ville" placeholder="La ville du bien immobilier" formControlName="ville" [(ngModel)]="bienImmobilier.ville" required>
-                  <div class="text-danger" [hidden]="ville.valid || ville.pristine && !ville.touched ">La ville du bien immobilier est obligatoire</div>
+                  <div class="error" [hidden]="ville.valid || ville.pristine && !ville.touched ">La ville du bien immobilier est obligatoire</div>
                 </div>
+              </div>
 
+              <div class="col-sm-6 col-xl-6">
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Surface du bien en m2</label>
                   <input type="number" class="form-control" id="surface" name="surface" formControlName="surface" [(ngModel)]="bienImmobilier.surface" required>
-                  <div class="text-danger" [hidden]="surface.valid || surface.pristine && !surface.touched ">La surface du bien immobilier est obligatoire</div>
+                  <div class="error" [hidden]="surface.valid || surface.pristine && !surface.touched ">La surface du bien immobilier est obligatoire</div>
                 </div>
-
               </div>
 
               <div class="col-sm-6 col-xl-6">
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Description du bien</label>
-                  <textarea id="description" name="description" style="height: 166px;" placeholder="La description du bien immobilier" formControlName="description" [(ngModel)]="bienImmobilier.description" required></textarea>
-                  <div class="text-danger" [hidden]="description.valid || description.pristine && !description.touched ">La description du bien immobilier est obligatoire</div>
+                  <textarea id="description" name="description" style="height: 160px;" placeholder="La description du bien immobilier" formControlName="description" [(ngModel)]="bienImmobilier.description" required></textarea>
+                  <div class="error" [hidden]="description.valid || description.pristine && !description.touched ">La description du bien immobilier est obligatoire</div>
                 </div>
               </div>
 
-              <div class="col-sm-6 col-xl-6">
+              <!-- <div class="col-sm-6 col-xl-6">
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Image principale du bien immobilier</label>
                   <p-fileUpload
@@ -211,20 +209,18 @@
                     </ng-template>
                   </p-fileUpload>
                 </div>
-              </div>
+              </div> -->
 
               <div class="col-sm-6 col-xl-6">
                 <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Les images du bien immobilier</label>
+                  <label class="heading-color ff-heading fw600 mb10">Images</label>
                   <p-fileUpload
                     chooseLabel="Sélectionner"
-                    uploadLabel="Télécharger"
-                    cancelLabel="Annuler"
+                    [auto]="true"
                     url="https://www.primefaces.org/cdn/api/upload.php"
-                    [multiple]="true" (onUpload)="telechargerImagesBienImmobilier($event)"  accept="image/*"
+                    [multiple]="true" (onUpload)="telechargerImagesBienImmobilier($event)"
+                    accept="image/*"
                     chooseStyleClass="choose-label"
-                    uploadStyleClass="upload-label"
-                    cancelStyleClass="cancel-label"
                     removeStyleClass="remove-label">
                     <ng-template pTemplate="content">
                       <ul *ngIf="imagesBienImmobilier.length">
@@ -268,7 +264,7 @@
             </div>
           </div>
           &nbsp;
-          <a type="button" *ngIf="user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR'"
+          <a type="button" *ngIf="user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code === 'ROLE_DEMARCHEUR'"
             (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
             Ajouter un bien immobilier
           </a>
@@ -284,35 +280,46 @@
             <table class="table-style3 table at-savesearch">
               <thead class="t-head">
                 <tr>
-                  <th scope="col">Image du bien</th>
+                  <th scope="col">Image</th>
                   <th scope="col">Numero identifiant</th>
-                  <th scope="col" *ngIf="user.role.code == 'ROLE_GERANT'">Propriétaire</th>
-                  <th scope="col">Adresse du bien</th>
-                  <th scope="col">Ville du bien</th>
-                  <th scope="col">Statut du bien</th>
+                  <th scope="col" *ngIf="user.role.code == 'ROLE_GERANT' || user.role.code == 'ROLE_AGENTIMMOBILIER'">Propriétaire</th>
+                  <th scope="col" *ngIf="user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code == 'ROLE_DEMARCHEUR'">Ville</th>
+                  <th scope="col">Statut</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
               <tbody class="t-body">
                 <tr *ngFor="let bienImmobilier of biensImmobiliersParPage | genericFilter: recherche;  let i = index">
                   <th scope="row">
-                    <p-image *ngIf="bienImmobilier.imagePrincipale == ''" class="w-100" src="assets/images/home/house.jpg" alt="" width="150" imageClass="image"></p-image>
-                    <p-image *ngIf="bienImmobilier.imagePrincipale !== ''" class="w-100"
-                    src="{{this.APIEndpoint+'api/image-principale/bien-immobilier/'+bienImmobilier.id}}" alt="" width="150" imageClass="image"></p-image>
+                    <p-image *ngIf="bienImmobilier.images.length === 0" class="w-100" src="assets/images/home/house.jpg" alt="" width="150" imageClass="image"></p-image>
+                    <p-image *ngIf="bienImmobilier.images && bienImmobilier.images.length > 0" class="w-100" src="{{this.APIEndpoint+'api/premiere-image/bien-immobilier/'+bienImmobilier.id}}" alt="" width="150" imageClass="image"></p-image>
                   </th>
                   <td class="vam">{{ bienImmobilier.numeroIdentifiant }} </td>
-                  <td class="vam" *ngIf="user.role.code == 'ROLE_GERANT'">{{ bienImmobilier.personne.nom }} {{ bienImmobilier.personne.prenom }}</td>
-                  <td class="vam">{{ bienImmobilier.adresse }} </td>
-                  <td class="vam">{{ bienImmobilier.ville }} </td>
+                  <td class="vam" *ngIf="user.role.code == 'ROLE_GERANT' || user.role.code == 'ROLE_AGENTIMMOBILIER'">{{ bienImmobilier.personne.nom }} {{ bienImmobilier.personne.prenom }}</td>
+                  <td class="vam" *ngIf="user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code == 'ROLE_DEMARCHEUR'">{{ bienImmobilier.ville }} </td>
                   <td class="vam">
                     <p-tag *ngIf="bienImmobilier.statutBien == 'Disponible'" severity="success" value="Disponible"></p-tag>
                   </td>
                   <td class="vam">
                     <div class="d-flex">
-                      <a type="button" (click)="afficherPageDetail(bienImmobilier.id)" class="icon" pTooltip="Détails" tooltipPosition="top"><i class="pi pi-eye" style="font-size: 1rem"></i></a>
-                      <a type="button" *ngIf="user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR'" (click)="afficherFormulaireModifier(bienImmobilier.id)" class="icon" pTooltip="Modifier" tooltipPosition="top"><i class="pi pi-pencil" style="font-size: 1rem"></i></a>
-                      <a *ngIf="bienImmobilier.etatBien === true && (user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR')" type="button" class="icon" (click)="desactiverBienImmobilier(bienImmobilier.id)" pTooltip="Désactiver ce bien immobilier" tooltipPosition="right"><i class="pi pi-lock" style="font-size: 1rem"></i></a>
-                      <a *ngIf="bienImmobilier.etatBien === false && (user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR')" type="button" class="icon" (click)="activerBienImmobilier(bienImmobilier.id)" pTooltip="Activer ce bien immobilier" tooltipPosition="right"><i class="pi pi-lock-open" style="font-size: 1rem"></i></a>
+                      <button pButton type="button" icon="pi pi-eye"
+                        pTooltip="Détails" (click)="afficherPageDetail(bienImmobilier.id)" tooltipPosition="top" class="p-button-text p-button-info">
+                      </button>
+
+                      <button *ngIf="user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR'"
+                        (click)="afficherFormulaireModifier(bienImmobilier.id)" pButton type="button" icon="pi pi-pencil"
+                        pTooltip="Modifier" tooltipPosition="top" class="p-button-text p-button-warning">
+                      </button>
+
+                      <button *ngIf="bienImmobilier.etatBien === true && (user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR')"
+                        (click)="desactiverBienImmobilier(bienImmobilier.id)" pButton type="button" icon="pi pi-lock"
+                        pTooltip="Désactiver ce bien immobilier" tooltipPosition="right" class="p-button-text p-button-danger">
+                      </button>
+
+                      <button *ngIf="bienImmobilier.etatBien === false && (user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR')"
+                        (click)="activerBienImmobilier(bienImmobilier.id)" pButton type="button" icon="pi pi-lock-open"
+                        pTooltip="Activer ce bien immobilier" tooltipPosition="right" class="p-button-text p-button-success">
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -354,9 +361,7 @@
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
 
           <div class="text-center" *ngIf="images.length == 0">
-            <p-image *ngIf="bienImmobilier.imagePrincipale == ''" class="w-100" src="assets/images/home/house.jpg" alt="" width="700"></p-image>
-            <p-image *ngIf="bienImmobilier.imagePrincipale !== ''" class="w-100"
-            src="{{this.APIEndpoint+'api/image-principale/bien-immobilier/'+bienImmobilier.id}}" alt="" width="700"></p-image>
+            <p-image class="w-100" src="assets/images/home/house.jpg" alt="" width="700"></p-image>
           </div>
 
           <div *ngIf="images.length !== 0">
@@ -376,76 +381,119 @@
           </div>
 
           <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Description du bien immobilier</p>
+          <p class="fw600 mb10 ff-heading dark-color">Description</p>
           <p>
               {{ bienImmobilier.description }}
           </p>
 
-          <div *ngIf="user.role.code == 'ROLE_GERANT'">
+        <!-- Vue Gérant, Agent immobilier -->
+          <div class="row" *ngIf="user.role.code === 'ROLE_GERANT' || user.role.code === 'ROLE_AGENTIMMOBILIER'">
+
             <p-divider></p-divider>
-            <p class="fw600 mb10 ff-heading dark-color">Propriétaire du bien immobilier</p>
-            <p>
-                {{ bienImmobilier.personne.nom }} {{ bienImmobilier.personne.prenom }}
-            </p>
-          </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Propriétaire</p>
+              <p>{{ bienImmobilier.personne.nom }} {{ bienImmobilier.personne.prenom }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Numero de téléphone du propriétaire</p>
+              <p>{{ bienImmobilier.personne.telephone }}</p>
+            </div>
 
-          <div *ngIf="user.role.code == 'ROLE_GERANT'">
             <p-divider></p-divider>
-            <p class="fw600 mb10 ff-heading dark-color">Numero de téléphone du propriétaire</p>
-            <p>
-                {{ bienImmobilier.personne.telephone }}
-            </p>
-          </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du propriétaire</p>
+              <p>{{ bienImmobilier.personne.email }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Numero identifiant</p>
+              <p>{{ bienImmobilier.numeroIdentifiant }}</p>
+            </div>
 
-          <div *ngIf="user.role.code == 'ROLE_GERANT'">
             <p-divider></p-divider>
-            <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du propriétaire</p>
-            <p>
-                {{ bienImmobilier.personne.email }}
-            </p>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Type de bien</p>
+              <p>{{ bienImmobilier.typeDeBien.designation }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
+              <p>{{ bienImmobilier.adresse }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Ville</p>
+              <p>{{ bienImmobilier.ville }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Surface en m2</p>
+              <p>{{ bienImmobilier.surface }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Statut</p>
+              <p>
+                <p-tag *ngIf="bienImmobilier.statutBien == 'Disponible'" severity="success" value="Disponible"></p-tag>
+              </p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+              <p>
+                <p-tag *ngIf="bienImmobilier.etatBien == true" severity="success" value="Activé"></p-tag>
+                <p-tag *ngIf="bienImmobilier.etatBien == false" severity="danger" value="Désactivé"></p-tag>
+              </p>
+            </div>
+            <p-divider></p-divider>
           </div>
+        <!-- Vue Gérant, Agent immobilier -->
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Numero identifiant du bien immobilier</p>
-          <p>
-              {{ bienImmobilier.numeroIdentifiant }}
-          </p>
+        <!-- Vue Propriétaire, Responsable Agence Immobilière, Démarcheur -->
+          <div class="row" *ngIf="user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code == 'ROLE_DEMARCHEUR'">
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Type de bien</p>
-          <p>
-            {{ bienImmobilier.typeDeBien.designation }}
-          </p>
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Numero identifiant</p>
+              <p>{{ bienImmobilier.numeroIdentifiant }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Type de bien</p>
+              <p>{{ bienImmobilier.typeDeBien.designation }}</p>
+            </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Adresse du bien immobilier</p>
-          <p>
-            {{ bienImmobilier.adresse }}
-          </p>
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
+              <p>{{ bienImmobilier.adresse }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Ville</p>
+              <p>{{ bienImmobilier.ville }}</p>
+            </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Ville du bien immobilier</p>
-          <p>
-            {{ bienImmobilier.ville }}
-          </p>
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Surface en m2</p>
+              <p>{{ bienImmobilier.surface }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Statut</p>
+              <p>
+                <p-tag *ngIf="bienImmobilier.statutBien == 'Disponible'" severity="success" value="Disponible"></p-tag>
+              </p>
+            </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Surface en m2 du bien immobilier</p>
-          <p>
-            {{ bienImmobilier.surface }}
-          </p>
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+              <p>
+                <p-tag *ngIf="bienImmobilier.etatBien == true" severity="success" value="Activé"></p-tag>
+                <p-tag *ngIf="bienImmobilier.etatBien == false" severity="danger" value="Désactivé"></p-tag>
+              </p>
+            </div>
+            <p-divider></p-divider>
+          </div>
+        <!-- End Vue Propriétaire, Responsable Agence Immobilière, Démarcheur -->
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Statut du bien immobilier</p>
-          <p>
-            <p-tag *ngIf="bienImmobilier.statutBien == 'Disponible'" severity="success" value="Disponible"></p-tag>
-          </p>
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Etat du bien immobilier</p>
-          <p>
-            <p-tag *ngIf="bienImmobilier.etatBien == true" severity="success" value="Activé"></p-tag>
-            <p-tag *ngIf="bienImmobilier.etatBien == false" severity="danger" value="Désactivé"></p-tag>
-          </p>
           <div class="text-end">
             <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
           </div>

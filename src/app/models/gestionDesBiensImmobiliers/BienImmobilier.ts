@@ -1,5 +1,6 @@
 import { EntiteDeBase } from "../EntiteDeBase";
 import { Personne } from "../gestionDesComptes/Personne";
+import { ImagesBienImmobilier } from "./ImagesBienImmobilier";
 import { TypeDeBien } from "./TypeDeBien";
 
 export class BienImmobilier extends EntiteDeBase {
@@ -12,9 +13,9 @@ export class BienImmobilier extends EntiteDeBase {
   surface: number;
   typeDeBien: TypeDeBien;
   personne: Personne;
-  imagePrincipale: string;
   statutBien: string;
   etatBien: boolean;
+  images!: ImagesBienImmobilier[];
 
   constructor() {
     super();
@@ -25,7 +26,6 @@ export class BienImmobilier extends EntiteDeBase {
     this.surface = 0;
     this.typeDeBien = new TypeDeBien();
     this.personne = new Personne();
-    this.imagePrincipale = '';
     this.statutBien = '';
     this.etatBien = true;
   }

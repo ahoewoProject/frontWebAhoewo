@@ -23,7 +23,7 @@
               <div class="form-group">
                 <label class="heading-color ff-heading fw600 mb10">Désignation</label>
                 <input type="text" class="form-control" id="designation" name="designation" placeholder="La désignation du type de bien" formControlName="designation" [(ngModel)]="typeDeBien.designation" required>
-                <div class="text-danger" [hidden]="designation.valid || designation.pristine && !designation.touched ">La désignation du type de bien est obligatoire</div>
+                <div class="error" [hidden]="designation.valid || designation.pristine && !designation.touched ">La désignation du type de bien est obligatoire</div>
               </div>
             </div>
             <br>
@@ -59,7 +59,7 @@
               <div class="form-group">
                 <label class="heading-color ff-heading fw600 mb10">Désignation</label>
                 <input type="text" class="form-control" id="designation" name="designation" placeholder="La désignation du type de bien" formControlName="designation" [(ngModel)]="typeDeBien.designation" required>
-                <div class="text-danger" [hidden]="designation.valid || designation.pristine && !designation.touched ">La désignation du type de bien est obligatoire</div>
+                <div class="error" [hidden]="designation.valid || designation.pristine && !designation.touched ">La désignation du type de bien est obligatoire</div>
               </div>
             </div>
             <br>
@@ -119,8 +119,30 @@
                     <td class="vam">{{ typeDeBien.designation }}</td>
                     <td class="vam">
                       <div class="d-flex">
-                        <a type="button" (click)="afficherFormulaireModifier(typeDeBien.id)" class="icon" pTooltip="Modifier" tooltipPosition="top"><i class="pi pi-pencil" style="font-size: 1rem"></i></a>
-                        <a type="button" (click)="supprimerTypeDeBien(typeDeBien.id)" class="icon" pTooltip="Supprimer" tooltipPosition="top"><i class="pi pi-trash" style="font-size: 1rem"></i></a>
+
+                        <button pButton type="button" icon="pi pi-pencil"
+                          (click)="afficherFormulaireModifier(typeDeBien.id)"
+                          pTooltip="Modifier" tooltipPosition="top"
+                          class="p-button-text p-button-warning">
+                        </button>
+
+                        <button *ngIf="typeDeBien.etat === true" pButton type="button" icon="pi pi-lock"
+                          (click)="desactiverTypeDeBien(typeDeBien.id)"
+                          pTooltip="Désactiver" tooltipPosition="top"
+                          class="p-button-text p-button-danger">
+                        </button>
+
+                        <button *ngIf="typeDeBien.etat === false" pButton type="button" icon="pi pi-lock-open"
+                          (click)="activerTypeDeBien(typeDeBien.id)"
+                          pTooltip="Activer" tooltipPosition="top"
+                          class="p-button-text p-button-success">
+                        </button>
+
+                        <button pButton type="button" icon="pi pi-trash"
+                          (click)="supprimerTypeDeBien(typeDeBien.id)"
+                          pTooltip="Supprimer" tooltipPosition="top"
+                          class="p-button-text p-button-danger">
+                        </button>
                       </div>
                     </td>
                   </tr>

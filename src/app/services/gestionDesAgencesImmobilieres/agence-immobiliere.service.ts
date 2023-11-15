@@ -36,13 +36,13 @@ export class AgenceImmobiliereService {
   }
 
   // url: http://localhost:4040/api/activer/agence-immobiliere/{id}
-  activerAgence(id: number) {
-    return this.httpClient.get<AgenceImmobiliere>(this.url + 'activer/agence-immobiliere/' + id);
+  activerAgence(id: number): Observable<any> {
+    return this.httpClient.get<any>(this.url + 'activer/agence-immobiliere/' + id);
   }
 
   // url: http://localhost:4040/api/desactiver/agence-immobiliere/{id}
-  desactiverAgence(id: number) {
-    return this.httpClient.get<AgenceImmobiliere>(this.url + 'desactiver/agence-immobiliere/' + id);
+  desactiverAgence(id: number): Observable<any> {
+    return this.httpClient.get<any>(this.url + 'desactiver/agence-immobiliere/' + id);
   }
 
   // Affichage de toutes les occurrences d'agence immobilière;
@@ -51,10 +51,16 @@ export class AgenceImmobiliereService {
     return this.httpClient.get<Array<AgenceImmobiliere>>(this.url + 'agences-immobilieres');
   }
 
+  // Affichage des occurrences d'agence immobilière par responsable d'agence immobiliere;
+  // url: http://localhost:4040/api/agence-immobiliere/responsable-agence-immobiliere
+  getAllByResponsableAgenceImmobiliere(): Observable<Array<AgenceImmobiliere>>{
+    return this.httpClient.get<Array<AgenceImmobiliere>>(this.url + 'agence-immobiliere/responsable-agence-immobiliere');
+  }
+
   // Affichage des occurrences d'agence immobilière par agent immobilier;
   // url: http://localhost:4040/api/agence-immobiliere/agent-immobilier
-  getAllByAgentImmobilier(): Observable<Array<AgenceImmobiliere>>{
-    return this.httpClient.get<Array<AgenceImmobiliere>>(this.url + 'agences-immobilieres/agent-immobilier');
+  getAgenceImmobiliereParAgentImmobilier(): Observable<Array<AgenceImmobiliere>>{
+    return this.httpClient.get<Array<AgenceImmobiliere>>(this.url + 'agence-immobiliere/agent-immobilier');
   }
 
   // Recherche d'une occurrence d'agence immobiliere par la clé primaire ;
@@ -69,8 +75,14 @@ export class AgenceImmobiliereService {
     return this.httpClient.get<number>(this.url + 'count/agences-immobilieres');
   };
 
-  // Affichage du nombre d'occurrences d'agence immobiliere par agent immobilier.
-  // url: http://localhost:4040/api/count/agence-immobiliere
+  // Affichage du nombre d'occurrences d'agence immobiliere par responsable d'agence immobilière.
+  // url: http://localhost:4040/api/count/agences-immobilieres/responsable-agence-immobiliere
+  countAgencesImmobilieresResponsable(): Observable<number>{
+    return this.httpClient.get<number>(this.url + 'count/agences-immobilieres/responsable-agence-immobiliere');
+  };
+
+  // Affichage du nombre d'occurrences d'agence immobiliere d'un responsable par agent immobilier.
+  // url: http://localhost:4040/api/count/agences-immobilieres/agent-immobilier
   countAgencesImmobilieresAgentImmobilier(): Observable<number>{
     return this.httpClient.get<number>(this.url + 'count/agences-immobilieres/agent-immobilier');
   };

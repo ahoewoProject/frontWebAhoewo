@@ -29,6 +29,12 @@ export class DelegationGestionService {
     return this.httpClient.get<DelegationGestion[]>(this.url + 'delegations-gestions/gestionnaire');
   }
 
+  // Liste des delegations de gestion d'une agence par ses agents immobiliers
+  // url: http://localhost:4040/api/delegations-gestions/gestionnaire/agent-immobilier
+  getDelegationsGestionsByAgentImmobilier(): Observable<DelegationGestion[]> {
+    return this.httpClient.get<DelegationGestion[]>(this.url + 'delegations-gestions/gestionnaire/agent-immobilier');
+  }
+
   // Affichage des détails d'une delegation de gestion par sa clé primaire
   // url: http://localhost:4040/api/delegation-gestion/{id}
   findById(id: number): Observable<DelegationGestion> {
@@ -63,5 +69,11 @@ export class DelegationGestionService {
   // url: http://localhost:4040/api/count/delegations-gestions/gestionnaire
   countDelegationGestionGestionnaire(): Observable<number>{
     return this.httpClient.get<number>(this.url + 'count/delegations-gestions/gestionnaire');
+  };
+
+  // Affichage du nombre d'occurrences de delegation de gestion d'une agence par agent immobilier.
+  // url: http://localhost:4040/api/count/delegations-gestions/gestionnaire/agent-immobilier
+  countDelegationGestionAgentImmobilier(): Observable<number>{
+    return this.httpClient.get<number>(this.url + 'count/delegations-gestions/gestionnaire/agent-immobilier');
   };
 }

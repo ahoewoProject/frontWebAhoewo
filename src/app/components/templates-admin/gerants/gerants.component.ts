@@ -31,7 +31,7 @@ export class GerantsComponent implements OnInit{
   roleGerant: Role = {
     id: 7,
     code: 'ROLE_GERANT',
-    libelle: 'Gerant',
+    libelle: 'Gérant',
     creerPar: 0,
     creerLe: new Date(),
     modifierPar: 0,
@@ -50,9 +50,9 @@ export class GerantsComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    if(this.user.role.code == 'ROLE_ADMINISTRATEUR'){
+    if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
       this.listeGerants();
-    }else{
+    } else {
       this.listeGerantsParProprietaire();
     }
     this.initGerantForm()
@@ -71,7 +71,7 @@ export class GerantsComponent implements OnInit{
     })
   }
 
-  listeGerants(): void{
+  listeGerants(): void {
     this.gerantService.getAll().subscribe(
       (response) => {
         this.gerants = response;
@@ -79,7 +79,7 @@ export class GerantsComponent implements OnInit{
     );
   }
 
-  listeGerantsParProprietaire(): void{
+  listeGerantsParProprietaire(): void {
     this.gerantService.findGerantsByProprietaire().subscribe(
       (response) => {
         this.gerants = response;
@@ -100,10 +100,10 @@ export class GerantsComponent implements OnInit{
     this.listeGerants()
   }
 
-  voirListe(): void{
-    if(this.user.role.code == 'ROLE_ADMINISTRATEUR'){
+  voirListe(): void {
+    if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
       this.listeGerants();
-    }else{
+    } else{
       this.listeGerantsParProprietaire();
     }
     this.gerantForm.reset();
@@ -131,27 +131,27 @@ export class GerantsComponent implements OnInit{
     this.visibleAddForm = 0;
   }
 
-  get nom(){
+  get nom() {
     return this.gerantForm.get('nom');
   }
 
-  get prenom(){
+  get prenom() {
     return this.gerantForm.get('prenom');
   }
 
-  get username(){
+  get username() {
     return this.gerantForm.get('username');
   }
 
-  get email(){
+  get email() {
     return this.gerantForm.get('email');
   }
 
-  get motDePasse(){
+  get motDePasse() {
     return this.gerantForm.get('motDePasse');
   }
 
-  get telephone(){
+  get telephone() {
     return this.gerantForm.get('telephone');
   }
 
@@ -182,7 +182,11 @@ export class GerantsComponent implements OnInit{
           });
           this.voirListe();
           this.messageSuccess = "Le gérant a été ajouté avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Ajout réussi',
+            detail: this.messageSuccess
+          });
         }
         else {
           this.messageErreur = "Erreur lors de l'ajout du gérant !"
@@ -192,14 +196,22 @@ export class GerantsComponent implements OnInit{
           this.gerant.username = response.username;
           this.gerant.email = response.email;
           this.gerant.telephone = response.telephone;
-          this.messageService.add({ severity: 'error', summary: 'Erreur d\'ajout', detail: this.messageErreur });
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur d\'ajout',
+            detail: this.messageErreur
+          });
         }
     },
     (error) =>{
       console.log(error)
       if(error.status === 409) {
         this.messageErreur = "Un gérant avec ce nom d'utilisateur existe déjà !";
-        this.messageService.add({ severity: 'warn', summary: 'Ajout non réussi', detail: this.messageErreur });
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Ajout non réussi',
+          detail: this.messageErreur
+        });
       }
     })
   }
@@ -209,7 +221,11 @@ export class GerantsComponent implements OnInit{
       console.log(response);
       this.voirListe();
       this.messageSuccess = "Le gérant a été supprimé avec succès.";
-      this.messageService.add({ severity: 'success', summary: 'Suppression réussie', detail: this.messageSuccess })
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Suppression réussie',
+        detail: this.messageSuccess
+      });
     })
   }
 
@@ -223,17 +239,29 @@ export class GerantsComponent implements OnInit{
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été activé avec succès !";
-          this.messageService.add({ severity: 'success', summary: 'Activation de compte confirmée', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Activation de compte confirmée',
+            detail: this.messageSuccess
+          });
         });
 
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Activation de compte rejetée', detail: "Vous avez rejeté l'activation de ce compte !" });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Activation de compte rejetée',
+              detail: "Vous avez rejeté l'activation de ce compte !"
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Activation de compte annulée', detail: "Vous avez annulé l'activation de ce compte !" });
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Activation de compte annulée',
+              detail: "Vous avez annulé l'activation de ce compte !"
+            });
             break;
         }
       }
@@ -250,17 +278,29 @@ export class GerantsComponent implements OnInit{
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été désactivé avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Désactivaction de compte confirmée', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Désactivaction de compte confirmée',
+            detail: this.messageSuccess
+          });
         });
 
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Désactivation de compte rejetée', detail: 'Vous avez rejeté la désactivation de ce compte !' });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Désactivation de compte rejetée',
+              detail: 'Vous avez rejeté la désactivation de ce compte !'
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Désactivation de compte annulée', detail: 'Vous avez annulé la désactivation de ce compte !' });
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Désactivation de compte annulée',
+              detail: 'Vous avez annulé la désactivation de ce compte !'
+            });
             break;
         }
       }

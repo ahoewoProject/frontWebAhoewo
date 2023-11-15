@@ -47,15 +47,17 @@ export class AgencesImmobilieresComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.user.role.code == 'ROLE_AGENTIMMOBILIER'){
+    if (this.user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE') {
       this.listeAgenceImmobiliere();
-    }
-    else{
+    } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
+      this.listeAgenceImmobiliereParAgentImmobilier();
+    } else {
       this.listeAgencesImmobilieres();
     }
     this.initAgenceImmobiliereForm();
   }
 
+  //Fonction pour recupérer la liste des agences immobilières
   listeAgencesImmobilieres(){
     this.agenceImmobiliereService.getAll().subscribe(
       (response) => {
@@ -64,8 +66,18 @@ export class AgencesImmobilieresComponent implements OnInit {
     );
   }
 
+  //Fonction pour recupérer une agence immobilière par responsable d'agence immobilière
   listeAgenceImmobiliere(){
-    this.agenceImmobiliereService.getAllByAgentImmobilier().subscribe(
+    this.agenceImmobiliereService.getAllByResponsableAgenceImmobiliere().subscribe(
+      (response) => {
+        this.agencesImmobilieres = response;
+      }
+    );
+  }
+
+  //Fonction pour recupérer une agence immobilière par agent immobilier
+  listeAgenceImmobiliereParAgentImmobilier(){
+    this.agenceImmobiliereService.getAgenceImmobiliereParAgentImmobilier().subscribe(
       (response) => {
         this.agencesImmobilieres = response;
       }
@@ -80,10 +92,11 @@ export class AgencesImmobilieresComponent implements OnInit {
   pagination(event: any) {
     this.pageActuelle = event.first;
     this.elementsParPage = event.rows;
-        if(this.user.role.code == 'ROLE_AGENTIMMOBILIER'){
+    if (this.user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE') {
       this.listeAgenceImmobiliere();
-    }
-    else{
+    } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
+      this.listeAgenceImmobiliereParAgentImmobilier();
+    } else {
       this.listeAgencesImmobilieres();
     }
   }
@@ -93,14 +106,19 @@ export class AgencesImmobilieresComponent implements OnInit {
     console.log(uploadedFile)
     this.logoAgence = uploadedFile;
     this.messageSuccess = "Le logo de l'agence immobilière a été téléchargé avec succès.";
-    this.messageService.add({ severity: 'info', summary: 'Téléchargement réussi', detail: this.messageSuccess })
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Téléchargement réussi',
+      detail: this.messageSuccess
+    });
   }
 
   voirListe(): void{
-    if(this.user.role.code == 'ROLE_AGENTIMMOBILIER'){
+    if (this.user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE') {
       this.listeAgenceImmobiliere();
-    }
-    else{
+    } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
+      this.listeAgenceImmobiliereParAgentImmobilier();
+    } else {
       this.listeAgencesImmobilieres();
     }
     this.agenceImmobiliereForm.reset();
@@ -139,28 +157,28 @@ export class AgencesImmobilieresComponent implements OnInit {
       ]);
   }
 
-  get nomAgence(){
+  get nomAgence() {
     return this.agenceImmobiliereForm.get('nomAgence');
   }
 
-  get adresse(){
+  get adresse() {
     return this.agenceImmobiliereForm.get('adresse');
   }
 
-  get telephone(){
+  get telephone() {
     return this.agenceImmobiliereForm.get('telephone');
   }
 
-  get adresseEmail(){
+  get adresseEmail() {
     return this.agenceImmobiliereForm.get('adresseEmail')
   }
 
 
-  get heureOuverture(){
+  get heureOuverture() {
     return this.agenceImmobiliereForm.get('heureOuverture');
   }
 
-  get heureFermeture(){
+  get heureFermeture() {
     return this.agenceImmobiliereForm.get('heureFermeture');
   }
 
@@ -332,12 +350,15 @@ export class AgencesImmobilieresComponent implements OnInit {
 
     this.agenceImmobiliereService.addAgenceImmobiliere(this.agenceImmobiliereData).subscribe(
       (response) => {
-        if(response.id > 0) {
+        if (response.id > 0) {
           this.voirListe();
           this.messageSuccess = "Votre agence immobilière a été ajouté avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
-        }
-        else {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Ajout réussi',
+            detail: this.messageSuccess
+          });
+        } else {
           this.messageErreur = "Erreur lors de l'ajout de votre agence immobilière !"
           this.afficherFormulaireAjouter();
           this.agenceImmobiliere.nomAgence = response.nomAgence;
@@ -346,14 +367,22 @@ export class AgencesImmobilieresComponent implements OnInit {
           this.agenceImmobiliere.adresseEmail = response.adresseEmail;
           this.agenceImmobiliere.heureOuverture = response.heureOuverture;
           this.agenceImmobiliere.heureFermeture = response.heureFermeture;
-          this.messageService.add({ severity: 'error', summary: "Erreur d'ajout", detail: this.messageErreur });
+          this.messageService.add({
+            severity: 'error',
+            summary: "Erreur d'ajout",
+            detail: this.messageErreur
+          });
         }
     },
     (error) => {
       console.log(error)
-      if(error.status === 409) {
+      if (error.status === 409) {
         this.messageErreur = "Une agence immobilière avec ce nom existe déjà !";
-        this.messageService.add({ severity: 'warn', summary: "Erreur d'ajout", detail: this.messageErreur });
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'ajout",
+          detail: this.messageErreur
+        });
       }
     })
   }
@@ -365,22 +394,33 @@ export class AgencesImmobilieresComponent implements OnInit {
 
     this.agenceImmobiliereService.updateAgenceImmobiliere(id, this.agenceImmobiliereData).subscribe(
       (response) => {
-        if(response.id > 0) {
+        if (response.id > 0) {
           this.voirListe();
           this.messageSuccess = "Votre agence immobilière a été modifié avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Modification réussie', detail: this.messageSuccess })
-        }
-        else {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Modification réussie',
+            detail: this.messageSuccess
+          });
+        } else {
           this.messageErreur = "Erreur lors de la modification de votre agence immobilière !";
-          this.messageService.add({ severity: 'error', summary: 'Erreur modification', detail: this.messageErreur });
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur modification',
+            detail: this.messageErreur
+          });
           this.afficherFormulaireModifier(id);
         }
     },
     (error) => {
       console.log(error)
-      if(error.status === 409){
+      if (error.status === 409) {
         this.messageErreur = "Une agence immobilière avec ce nom existe déjà !";
-        this.messageService.add({ severity: 'warn', summary: 'Modification non réussie', detail: this.messageErreur });
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Modification non réussie',
+          detail: this.messageErreur
+        });
         this.afficherFormulaireModifier(id);
       }
     })
@@ -396,17 +436,29 @@ export class AgencesImmobilieresComponent implements OnInit {
           console.log(response);
           this.voirListe();
           this.messageSuccess = "L'agence immobilière a été activé avec succès !";
-          this.messageService.add({ severity: 'success', summary: "Activation de l'agence immobilière confirmée", detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: "Activation de l'agence immobilière confirmée",
+            detail: this.messageSuccess
+          });
         });
 
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: "Activation de l'agence immobilière rejetée", detail: "Vous avez rejeté l'activation de cette agence immobilière !" });
+            this.messageService.add({
+              severity: 'error',
+              summary: "Activation de l'agence immobilière rejetée",
+              detail: "Vous avez rejeté l'activation de cette agence immobilière !"
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: "Activation de l'agence immobilière annulée", detail: "Vous avez annulé l'activation de cette agence immobilière !" });
+            this.messageService.add({
+              severity: 'warn',
+              summary: "Activation de l'agence immobilière annulée",
+              detail: "Vous avez annulé l'activation de cette agence immobilière !"
+            });
             break;
         }
       }
@@ -423,17 +475,29 @@ export class AgencesImmobilieresComponent implements OnInit {
           console.log(response);
           this.voirListe();
           this.messageSuccess = "L'agence immobilière a été désactivé avec succès.";
-          this.messageService.add({ severity: 'success', summary: "Désactivaction de l'agence immobilière confirmée", detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: "Désactivaction de l'agence immobilière confirmée",
+            detail: this.messageSuccess
+          });
         });
 
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: "Désactivation de l'agence immobilière rejetée", detail: 'Vous avez rejeté la désactivation de cette agence immobilière !' });
+            this.messageService.add({
+              severity: 'error',
+              summary: "Désactivation de l'agence immobilière rejetée",
+              detail: 'Vous avez rejeté la désactivation de cette agence immobilière !'
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: "Désactivation de l'agence immobilière annulée", detail: 'Vous avez annulé la désactivation de cette agence immobilière !' });
+            this.messageService.add({
+              severity: 'warn',
+              summary: "Désactivation de l'agence immobilière annulée",
+              detail: 'Vous avez annulé la désactivation de cette agence immobilière !'
+            });
             break;
         }
       }

@@ -35,7 +35,7 @@
                       {{ agenceImmobiliere.nomAgence }}, {{ agenceImmobiliere.adresse }}
                     </ng-template>
                   </p-dropdown>
-                  <div class="text-danger" [hidden]="agenceImmobiliere.valid || agenceImmobiliere.pristine && !agenceImmobiliere.touched ">La selection de l'agence est obligatoire</div>
+                  <div class="error" [hidden]="agenceImmobiliere.valid || agenceImmobiliere.pristine && !agenceImmobiliere.touched ">La selection de l'agence est obligatoire</div>
                 </div>
               </div>
 
@@ -43,7 +43,7 @@
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Nom du service</label>
                   <input type="text" class="form-control" id="nomService" name="nomService" placeholder="Le nom du service" formControlName="nomService" [(ngModel)]="_service.nomService" required>
-                  <div class="text-danger" [hidden]="nomService.valid || nomService.pristine && !nomService.touched ">Le nom du service est obligatoire</div>
+                  <div class="error" [hidden]="nomService.valid || nomService.pristine && !nomService.touched ">Le nom du service est obligatoire</div>
                 </div>
               </div>
 
@@ -51,7 +51,7 @@
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Description du service</label>
                   <textarea id="description" name="description" placeholder="La description du service" formControlName="description" [(ngModel)]="_service.description" required></textarea>
-                  <div class="text-danger" [hidden]="description.valid || description.pristine && !description.touched ">La description du service est obligatoire</div>
+                  <div class="error" [hidden]="description.valid || description.pristine && !description.touched ">La description du service est obligatoire</div>
                 </div>
               </div>
 
@@ -98,7 +98,7 @@
                     filterPlaceholder="Rechercher en fonction du nom"
                     [showClear]="true" (onChange)="agenceSelectionnee($event)" optionLabel="nomAgence">
                   </p-dropdown>
-                  <div class="text-danger" [hidden]="agenceImmobiliere.valid || agenceImmobiliere.pristine && !agenceImmobiliere.touched ">La selection de l'agence est obligatoire</div>
+                  <div class="error" [hidden]="agenceImmobiliere.valid || agenceImmobiliere.pristine && !agenceImmobiliere.touched ">La selection de l'agence est obligatoire</div>
                 </div>
               </div>
 
@@ -106,7 +106,7 @@
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Nom du service</label>
                   <input type="text" class="form-control" id="nomService" name="nomService" placeholder="Le nom du service" formControlName="nomService" [(ngModel)]="_service.nomService" required>
-                  <div class="text-danger" [hidden]="nomService.valid || nomService.pristine && !nomService.touched ">Le nom du service est obligatoire</div>
+                  <div class="error" [hidden]="nomService.valid || nomService.pristine && !nomService.touched ">Le nom du service est obligatoire</div>
                 </div>
               </div>
 
@@ -114,7 +114,7 @@
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Description du service</label>
                   <textarea id="description" name="description" placeholder="La description du service" formControlName="description" [(ngModel)]="_service.description" required></textarea>
-                  <div class="text-danger" [hidden]="description.valid || description.pristine && !description.touched ">La description du service est obligatoire</div>
+                  <div class="error" [hidden]="description.valid || description.pristine && !description.touched ">La description du service est obligatoire</div>
                 </div>
               </div>
 
@@ -169,14 +169,16 @@
             <table class="table-style3 table at-savesearch">
               <thead class="t-head">
                 <tr>
+                  <th scope="col">ID</th>
                   <th scope="col">Agence immobilière</th>
-                  <th scope="col">Nom du service</th>
-                  <th scope="col">Agent immobilier</th>
+                  <th scope="col">Nom</th>
+                  <th scope="col">Etat</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
               <tbody class="t-body">
                 <tr *ngFor="let _service of servicesParPage | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
                   <th scope="row">
                     <div class="listing-style1 dashboard-style d-xxl-flex align-items-center mb-0">
                       <div class="list-thumb">
@@ -193,12 +195,42 @@
                     </div>
                   </th>
                   <td class="vam">{{ _service.nomService }} </td>
-                  <td class="vam">{{ _service.agenceImmobiliere.agentImmobilier.nom }} {{ _service.agenceImmobiliere.agentImmobilier.prenom }} <i *ngIf="_service.agenceImmobiliere.agentImmobilier.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></td>
+                  <td class="vam">
+                    <p-tag *ngIf="_service.etat === true" severity="success" value="Activé"></p-tag>
+                    <p-tag *ngIf="_service.etat === false" severity="danger" value="Désactivé"></p-tag>
+                  </td>
                   <td class="vam">
                     <div class="d-flex">
-                      <a type="button" (click)="afficherPageDetail(_service.id)" class="icon" pTooltip="Détails" tooltipPosition="top"><i class="pi pi-eye" style="font-size: 1rem"></i></a>
-                      <a type="button" (click)="afficherFormulaireModifier(_service.id)" class="icon" pTooltip="Modifier" tooltipPosition="top"><i class="pi pi-pencil" style="font-size: 1rem"></i></a>
-                      <a type="button" (click)="supprimerService(_service.id)" class="icon" pTooltip="Supprimer" tooltipPosition="top"><i class="pi pi-trash" style="font-size: 1rem"></i></a>
+
+                      <button pButton type="button" icon="pi pi-eye"
+                        (click)="afficherPageDetail(_service.id)"
+                        pTooltip="Détails" tooltipPosition="top"
+                        class="p-button-text p-button-info">
+                      </button>
+
+                      <button pButton type="button" icon="pi pi-pencil"
+                        (click)="afficherFormulaireModifier(_service.id)"
+                        pTooltip="Modifier" tooltipPosition="top"
+                        class="p-button-text p-button-warning">
+                      </button>
+
+                      <button pButton type="button"
+                        *ngIf="_service.etat === true"
+                        (click)="desactiverService(_service.id)" icon="pi pi-lock"
+                        pTooltip="Désactiver ce service" tooltipPosition="right" class="p-button-text p-button-danger">
+                      </button>
+
+                      <button pButton type="button"
+                        *ngIf="_service.etat === false"
+                        (click)="activerService(_service.id)" icon="pi pi-lock-open"
+                        pTooltip="Activer ce service" tooltipPosition="right" class="p-button-text p-button-success">
+                      </button>
+
+                      <button pButton type="button" icon="pi pi-trash"
+                        (click)="supprimerService(_service.id)"
+                        pTooltip="Modifier" tooltipPosition="top"
+                        class="p-button-text p-button-danger">
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -240,7 +272,7 @@
 
           <p class="fw600 mb10 ff-heading dark-color">Agence immobilière</p>
           <p>
-              {{ _service.agenceImmobiliere.nomAgence }}  <i *ngIf="_service.agenceImmobiliere.agentImmobilier.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i>
+              {{ _service.agenceImmobiliere.nomAgence }}  <i *ngIf="_service.agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i>
           </p>
 
           <p-divider></p-divider>

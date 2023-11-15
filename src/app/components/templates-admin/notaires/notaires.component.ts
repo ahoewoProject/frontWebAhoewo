@@ -51,7 +51,7 @@ export class NotairesComponent implements OnInit{
     this.initNotaireForm()
   }
 
-  initNotaireForm(): void{
+  initNotaireForm(): void {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
     this.notaireForm = new FormGroup({
@@ -85,7 +85,7 @@ export class NotairesComponent implements OnInit{
     this.listeNotaires()
   }
 
-  voirListe(): void{
+  voirListe(): void {
     this.listeNotaires();
     this.notaireForm.reset();
     this.affichage = 1;
@@ -111,23 +111,23 @@ export class NotairesComponent implements OnInit{
     this.visibleAddForm = 0;
   }
 
-  get nom(){
+  get nom() {
     return this.notaireForm.get('nom');
   }
 
-  get prenom(){
+  get prenom() {
     return this.notaireForm.get('prenom');
   }
 
-  get username(){
+  get username() {
     return this.notaireForm.get('username');
   }
 
-  get email(){
+  get email() {
     return this.notaireForm.get('email');
   }
 
-  get motDePasse(){
+  get motDePasse() {
     return this.notaireForm.get('motDePasse');
   }
 
@@ -162,7 +162,11 @@ export class NotairesComponent implements OnInit{
           });
           this.voirListe();
           this.messageSuccess = "Le notaire a été ajouté avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Ajout réussi',
+            detail: this.messageSuccess
+          });
         }
         else{
           this.messageErreur = "Erreur lors de l'ajout du notaire !"
@@ -172,30 +176,42 @@ export class NotairesComponent implements OnInit{
           this.notaire.username = response.username;
           this.notaire.email = response.email;
           this.notaire.telephone = response.telephone;
-          this.messageService.add({ severity: 'error', summary: "Erreur d'ajout", detail: this.messageErreur });
+          this.messageService.add({
+            severity: 'error',
+            summary: "Erreur d'ajout",
+            detail: this.messageErreur
+          });
         }
     },
     (error) =>{
       console.log(error)
       if(error.status === 409){
         this.messageErreur = "Un notaire avec ce nom d'utilisateur existe déjà !";
-        this.messageService.add({ severity: 'warn', summary: 'Ajout non réussi', detail: this.messageErreur });
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Ajout non réussi',
+          detail: this.messageErreur
+        });
       }
     })
   }
 
-  supprimerNotaire(id: number): void{
+  supprimerNotaire(id: number): void {
     this.notaireService.deleteById(id).subscribe(
       (response) => {
         console.log(response);
         this.voirListe();
         this.messageSuccess = "Le notaire a été supprimé avec succès.";
-        this.messageService.add({ severity: 'success', summary: 'Suppression réussie', detail: this.messageSuccess })
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Suppression réussie',
+          detail: this.messageSuccess
+        });
       }
     );
   }
 
-  activerCompte(id: number): void{
+  activerCompte(id: number): void {
     this.confirmationService.confirm({
       message: 'Vous êtes sûr de vouloir activer ce compte ?',
       header: "Activation de compte",
@@ -205,24 +221,36 @@ export class NotairesComponent implements OnInit{
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été activé avec succès !";
-          this.messageService.add({ severity: 'success', summary: 'Activation de compte confirmée', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Activation de compte confirmée',
+            detail: this.messageSuccess
+          });
         });
 
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Activation de compte rejetée', detail: "Vous avez rejeté l'activation de ce compte !" });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Activation de compte rejetée',
+              detail: "Vous avez rejeté l'activation de ce compte !"
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Activation de compte annulée', detail: "Vous avez annulé l'activation de ce compte !" });
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Activation de compte annulée',
+              detail: "Vous avez annulé l'activation de ce compte !"
+            });
             break;
         }
       }
     });
   }
 
-  desactiverCompte(id: number): void{
+  desactiverCompte(id: number): void {
     this.confirmationService.confirm({
       message: 'Vous êtes sûr de vouloir désactiver ce compte ?',
       header: "Désactivation de compte",
@@ -232,17 +260,29 @@ export class NotairesComponent implements OnInit{
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été désactivé avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Désactivaction de compte confirmée', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Désactivaction de compte confirmée',
+            detail: this.messageSuccess
+          });
         });
 
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Désactivation de compte rejetée', detail: 'Vous avez rejeté la désactivation de ce compte !' });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Désactivation de compte rejetée',
+              detail: 'Vous avez rejeté la désactivation de ce compte !'
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Désactivation de compte annulée', detail: 'Vous avez annulé la désactivation de ce compte !' });
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Désactivation de compte annulée',
+              detail: 'Vous avez annulé la désactivation de ce compte !'
+            });
             break;
         }
       }

@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { AgentImmobilier } from 'src/app/models/gestionDesComptes/AgentImmobilier';
 import { environment } from 'src/environments/environment';
@@ -38,6 +37,11 @@ export class AgentImmobilierService {
     return this.httpClient.get<Array<AgentImmobilier>>(this.url + 'agents-immobiliers');
   }
 
+  // url: http://localhost:4040/api/agents-immobiliers/responsable-agence-immobiliere
+  findAgentsImmobiliersByResponsable(): Observable<Array<AgentImmobilier>>{
+    return this.httpClient.get<Array<AgentImmobilier>>(this.url + 'agents-immobiliers/responsable-agence-immobiliere');
+  }
+
   // url: http://localhost:4040/api/agent-immobilier/{id}
   findById(id: number): Observable<AgentImmobilier>{
     return this.httpClient.get<AgentImmobilier>(this.url + 'agent-immobilier/' + id);
@@ -46,5 +50,10 @@ export class AgentImmobilierService {
   // url: http://localhost:4040/api/count/agents-immobiliers
   countAgentImmobiliers(): Observable<number>{
     return this.httpClient.get<number>(this.url + 'count/agents-immobiliers');
+  };
+
+  // url: http://localhost:4040/api/count/agents-immobiliers
+  countAgentsImmobiliersParResponsable(): Observable<number>{
+    return this.httpClient.get<number>(this.url + 'count/agents-immobiliers/responsable');
   };
 }

@@ -23,6 +23,7 @@ import { ServicesComponent } from './components/templates-admin/services/service
 import { TypesDeBienComponent } from './components/templates-admin/types-de-bien/types-de-bien.component';
 import { BiensImmobiliersComponent } from './components/templates-admin/biens-immobiliers/biens-immobiliers.component';
 import { DelegationsGestionsComponent } from './components/templates-admin/delegations-gestions/delegations-gestions.component';
+import { ResponsablesAgenceImmobiliereComponent } from './components/templates-admin/responsables-agence-immobiliere/responsables-agence-immobiliere.component';
 
 const routes: Routes = [
   { path: '', redirectTo:'', pathMatch: 'full'},
@@ -41,6 +42,7 @@ const routes: Routes = [
       { path: 'admins', component: AdministrateursComponent, canActivate: [AuthGuard] },
       { path: 'notaires', component: NotairesComponent, canActivate: [AuthGuard] },
       { path: 'proprietaires', component: ProprietairesComponent, canActivate: [AuthGuard] },
+      { path: 'responsables-agence-immobiliere', component: ResponsablesAgenceImmobiliereComponent, canActivate: [AuthGuard] },
       { path: 'agents-immobiliers', component: AgentsImmobiliersComponent, canActivate: [AuthGuard] },
       { path: 'demarcheurs', component: DemarcheursComponent, canActivate: [AuthGuard] },
       { path: 'gerants', component: GerantsComponent, canActivate: [AuthGuard] },

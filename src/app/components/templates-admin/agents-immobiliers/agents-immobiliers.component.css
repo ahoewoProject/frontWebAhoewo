@@ -1,0 +1,34 @@
+.disabled-link {
+  pointer-events: none; /* Désactive les événements de pointage, rendant le lien non cliquable */
+  opacity: 0.5; /* Réduit l'opacité pour montrer qu'il est désactivé */
+  cursor: not-allowed; /* Affiche un curseur "non autorisé" */
+}
+
+.ng-valid[required],
+.ng-valid.required {
+    border-left: 5px solid #42A948;
+}
+
+.ng-invalid:not(form) {
+    border-left: 5px solid #a94442;
+}
+
+.puce-visible {
+  list-style-type: disc;
+}
+
+.icon-voir-mot-passe {
+  left: 63%;
+  margin-top: -34px;
+  position: absolute; /* Modifiez cette ligne pour utiliser 'absolute' */
+  z-index: 100;
+  cursor: pointer;
+}
+
+.hide {
+  display: none;
+}
+
+.error {
+  color: #a94442;
+}

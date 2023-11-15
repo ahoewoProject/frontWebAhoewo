@@ -31,13 +31,13 @@ export class LoginComponent implements OnInit{
   ngOnInit(): void {
     this.reinitialisationMotDePasseReussie = this.activatedRoute.snapshot.queryParamMap.get('passwordResetSuccess') || '';
     this.inscriptionReussie = this.activatedRoute.snapshot.queryParamMap.get('inscriptionSuccess') || '';
-    if(this.reinitialisationMotDePasseReussie){
+    if (this.reinitialisationMotDePasseReussie) {
       this.message = 'Mot de passe réinitialisé avec succès !';
       setTimeout(() => {
         this.message = '';
         this.reinitialisationMotDePasseReussie = null
       }, 3000);
-    }else if(this.inscriptionReussie){
+    } else if (this.inscriptionReussie) {
       this.message = 'Compte crée avec succès !';
       setTimeout(() => {
         this.message = '';
@@ -47,18 +47,18 @@ export class LoginComponent implements OnInit{
     this.initLoginForm();
   }
 
-  initLoginForm(): void{
+  initLoginForm(): void {
     this.LoginForm = new FormGroup({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
     })
   }
 
-  get username(){
+  get username() {
     return this.LoginForm.get('username');
   }
 
-  get password(){
+  get password() {
     return this.LoginForm.get('password');
   }
 

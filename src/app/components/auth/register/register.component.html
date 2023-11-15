@@ -4,7 +4,7 @@
     <a routerLink="/" class="logo"><img src="assets/images/icon/property.jpg" alt="" class="login-bg-icon wow fadeInLeft" data-wow-delay="300ms"></a>
     <div class="container">
       <div class="row wow fadeInRight" data-wow-delay="300ms">
-        <div class="col-lg-7">
+        <div class="col-lg-8">
 
           <div class="log-reg-form signup-modal form-style1 bgc-white p50 p30-sm default-box-shadow2 bdrs12">
 
@@ -18,32 +18,28 @@
 
             <form [formGroup]="RegisterForm" (ngSubmit)="register()" style="margin-top: -1%;">
               <div class="row">
+
                 <div class="col-lg-6">
                   <div class="mb20">
                     <label class="form-label fw600 dark-color">Nom</label>
                     <input type="text" class="form-control" placeholder="Entrer votre nom" id="nom" name="nom" formControlName="nom" [(ngModel)]="registerForm.nom" required>
-                    <div class="text-danger" [hidden]="nom.valid || nom.pristine && !nom.touched ">Le nom est obligatoire</div>
+                    <div class="error" [hidden]="nom.valid || nom.pristine && !nom.touched ">Le nom est obligatoire</div>
                   </div>
                 </div>
+
                 <div class="col-lg-6">
                   <div class="mb20">
                     <label class="form-label fw600 dark-color">Prénom</label>
                     <input type="text" class="form-control" placeholder="Entrer votre prénom" id="prenom" name="prenom" formControlName="prenom" [(ngModel)]="registerForm.prenom" required>
-                    <div class="text-danger" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le prénom est obligatoire</div>
+                    <div class="error" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le prénom est obligatoire</div>
                   </div>
                 </div>
+
                 <div class="col-lg-6">
                   <div class="mb20">
                     <label class="form-label fw600 dark-color">Nom d'utilisateur</label>
                     <input type="text" autocomplete="additional-name" class="form-control" placeholder="Entrer votre nom d'utilisateur" id="username" name="username" formControlName="username" [(ngModel)]="registerForm.username" required>
-                    <div class="text-danger" [hidden]="username.valid || username.pristine && !username.touched ">Le nom d'utilisateur est obligatoire</div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="mb20">
-                    <label class="form-label fw600 dark-color">Téléphone</label>
-                    <input type="tel" class="form-control" placeholder="Entrer votre numero de téléphone" id="telephone" name="telephone" formControlName="telephone" [(ngModel)]="registerForm.telephone" required>
-                    <div class="text-danger" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numero de téléphone est obligatoire</div>
+                    <div class="error" [hidden]="username.valid || username.pristine && !username.touched ">Le nom d'utilisateur est obligatoire</div>
                   </div>
                 </div>
 
@@ -51,12 +47,20 @@
                   <div class="mb20">
                     <label class="form-label fw600 dark-color">Email</label>
                     <input type="email" class="form-control" placeholder="Entrer votre adresse e-mail" id="email" name="email" formControlName="email" [(ngModel)]="registerForm.email" required>
-                    <div class="text-danger" [hidden]="!email?.hasError('required') || !email.touched">
+                    <div class="error" [hidden]="!email?.hasError('required') || !email.touched">
                       L'adresse e-mail est obligatoire
                     </div>
-                    <div class="text-danger" [hidden]="!email?.hasError('email') || !email.touched">
+                    <div class="error" [hidden]="!email?.hasError('email') || !email.touched">
                       L'adresse e-mail saisie n'est pas valide.
                     </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="mb20">
+                    <label class="form-label fw600 dark-color">Téléphone</label>
+                    <input type="tel" class="form-control" placeholder="Entrer votre numero de téléphone" id="telephone" name="telephone" formControlName="telephone" [(ngModel)]="registerForm.telephone" required>
+                    <div class="error" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numero de téléphone est obligatoire</div>
                   </div>
                 </div>
 
@@ -70,22 +74,22 @@
                       formControlName="role" [filter]="true" filterBy="libelle"
                       [showClear]="true" (onChange)="profilChoisi($event)" optionLabel="libelle">
                     </p-dropdown>
-                    <div class="text-danger" [hidden]="!role?.hasError('required') || !role.touched">La selection du profil est obligatoire</div>
+                    <div class="error" [hidden]="!role?.hasError('required') || !role.touched">La selection du profil est obligatoire</div>
                   </div>
                 </div>
 
                 <div class="col-lg-6">
                   <div class="mb20">
                     <label class="form-label fw600 dark-color">Mot de passe</label>
-                    <input type="password" class="form-control" id="motDePasse" name="motDePasse" formControlName="motDePasse" [(ngModel)]="registerForm.motDePasse" required>
-                    <div class="text-danger" *ngIf="motDePasse?.hasError('required') && motDePasse.touched">Le mot de passe est obligatoire</div>
+                    <input placeholder="Entrer votre mot de passe" type="password" class="form-control" id="motDePasse" name="motDePasse" formControlName="motDePasse" [(ngModel)]="registerForm.motDePasse" required>
+                    <div class="error" *ngIf="motDePasse?.hasError('required') && motDePasse.touched">Le mot de passe est obligatoire</div>
                   </div>
                 </div>
 
                 <div class="col-lg-6">
                   <div class="mb20">
                     <label class="form-label fw600 dark-color">Confirmer le mot de passe</label>
-                    <input type="{{ voirMotDePasseConfirmer ? 'text' : 'password' }}" class="form-control" id="motDePasseConfirmer" name="motDePasseConfirmer" formControlName="motDePasseConfirmer" required>
+                    <input placeholder="Confirmer votre mot de passe" type="{{ voirMotDePasseConfirmer ? 'text' : 'password' }}" class="form-control" id="motDePasseConfirmer" name="motDePasseConfirmer" formControlName="motDePasseConfirmer" required>
                     <i alt="show" class="pi pi-eye icon-voir-mot-passe"
                       (click)="voirMotDePasseConfirmer = !voirMotDePasseConfirmer"
                       [class.hide]="voirMotDePasseConfirmer">
@@ -94,8 +98,8 @@
                       (click)="voirMotDePasseConfirmer = !voirMotDePasseConfirmer"
                       [class.hide]="!voirMotDePasseConfirmer">
                     </i>
-                    <div class="text-danger" *ngIf="motDePasseConfirmer?.hasError('required') && motDePasseConfirmer.touched">La confirmation du mot de passe est obligatoire</div>
-                    <div class="text-danger" *ngIf="RegisterForm.errors?.['passwordMismatchError'] && motDePasseConfirmer.touched">
+                    <div class="error" *ngIf="motDePasseConfirmer?.hasError('required') && motDePasseConfirmer.touched">La confirmation du mot de passe est obligatoire</div>
+                    <div class="error" *ngIf="RegisterForm.errors?.['passwordMismatchError'] && motDePasseConfirmer.touched">
                       Les mots de passe ne sont pas conformes
                     </div>
                   </div>
@@ -103,7 +107,7 @@
 
                 <div class="col-lg-12">
                   <div class="mb5">
-                    <div class="text-danger" *ngIf="showPasswordErrors()">
+                    <div class="error" *ngIf="showPasswordErrors()">
                       <div>Règles de saisie du mot de passe :</div>
                       <ul>
                         <li class="puce-visible" *ngIf="showMinLengthError()">Le mot de passe doit comporter au minimum 8 caractères.</li>

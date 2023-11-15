@@ -27,7 +27,7 @@
               <li class=" user_setting">
                 <div class="dropdown">
                   <a class="btn" href="#" data-bs-toggle="dropdown">
-                    <span style="font-family: Arial, sans-serif; font-size: 14px;" class="text text-center mr10 notif">{{ user.nom }} {{ user.prenom }} | <b>{{ user.role.libelle }}</b> <i *ngIf="user.estCertifie && (user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6;"></i></span><img src="assets/images/user.jpg" style="width: 40px; height:40px" alt="user.png">
+                    <span style="font-family: Arial, sans-serif; font-size: 14px;" class="text text-center mr10 notif">{{ user.nom }} {{ user.prenom }} | <b>{{ user.role.libelle }}</b>&nbsp; <i *ngIf="user.estCertifie && (user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6;"></i></span><img src="assets/images/user.jpg" style="width: 40px; height:40px" alt="user.png">
                   </a>
                   <div class="dropdown-menu">
                     <div class="user_setting_content">

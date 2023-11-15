@@ -1,4 +1,4 @@
-:host ::ng-deep .choose-label {
+/* :host ::ng-deep .choose-label {
   background-color: #4ebc87;;
   border-color: #4ebc87;;
 }
@@ -16,21 +16,29 @@
 :host ::ng-deep .remove-label {
   background-color: #f43838;
   border-color: #f43838;
-}
+} */
 
 :host ::ng-deep .p-fileupload {
   width: 100%;
-}
-
-:host ::ng-deep .p-fileupload .p-fileupload-buttonbar {
-  display: flex;
 }
 
 :host ::ng-deep .p-button {
   border-radius: 7px;
   margin-right: 9px;
   margin-left: 9px;
+  background-color: #4ebc87;;
+  border-color: #4ebc87;;
 }
+
+/* :host ::ng-deep .p-fileupload .p-fileupload-buttonbar {
+  display: flex;
+} */
+
+/* :host ::ng-deep .p-button {
+  border-radius: 7px;
+  margin-right: 9px;
+  margin-left: 9px;
+} */
 
 .disabled-link {
   pointer-events: none; /* Désactive les événements de pointage, rendant le lien non cliquable */
@@ -57,3 +65,6 @@
   margin-left: 0; /* Suppression de la marge négative */
 }
 
+.error {
+  color: #a94442;
+}

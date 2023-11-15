@@ -1,5 +1,5 @@
 import { EntiteDeBase } from "../EntiteDeBase";
-import { AgentImmobilier } from "../gestionDesComptes/AgentImmobilier";
+import { ResponsableAgenceImmobiliere } from "../gestionDesComptes/ResponsableAgenceImmobiliere";
 
 export class AgenceImmobiliere extends EntiteDeBase {
 
@@ -13,7 +13,7 @@ export class AgenceImmobiliere extends EntiteDeBase {
   heureFermeture!: string;
   estCertifie: boolean;
   etatAgence: boolean;
-  agentImmobilier!: AgentImmobilier;
+  responsableAgenceImmobiliere!: ResponsableAgenceImmobiliere;
 
   constructor(){
     super();

@@ -38,6 +38,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { DropdownModule } from 'primeng/dropdown';
 import { DividerModule } from 'primeng/divider';
 import { GalleriaModule } from 'primeng/galleria';
+import { ButtonModule } from 'primeng/button';
 import { GenericFilterPipe } from './helpers/genericFilter';
 import { TokenInterceptorProvider } from './helpers/token.interceptor';
 import { AgencesImmobilieresComponent } from './components/templates-admin/agences-immobilieres/agences-immobilieres.component';
@@ -47,6 +48,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { TypesDeBienComponent } from './components/templates-admin/types-de-bien/types-de-bien.component';
 import { BiensImmobiliersComponent } from './components/templates-admin/biens-immobiliers/biens-immobiliers.component';
 import { DelegationsGestionsComponent } from './components/templates-admin/delegations-gestions/delegations-gestions.component';
+import { ResponsablesAgenceImmobiliereComponent } from './components/templates-admin/responsables-agence-immobiliere/responsables-agence-immobiliere.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +79,8 @@ import { DelegationsGestionsComponent } from './components/templates-admin/deleg
     ServicesComponent,
     TypesDeBienComponent,
     BiensImmobiliersComponent,
-    DelegationsGestionsComponent
+    DelegationsGestionsComponent,
+    ResponsablesAgenceImmobiliereComponent
   ],
   imports: [
     BrowserModule,
@@ -86,6 +89,7 @@ import { DelegationsGestionsComponent } from './components/templates-admin/deleg
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    ButtonModule,
     PaginatorModule,
     FileUploadModule,
     ToastModule,

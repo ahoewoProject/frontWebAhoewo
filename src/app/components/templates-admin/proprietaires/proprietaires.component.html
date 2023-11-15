@@ -51,9 +51,17 @@
                   <td class="vam">{{ proprietaire.email }}</td>
                   <td class="vam">
                     <div class="d-flex">
-                      <a type="button" (click)="afficherPageDetail(proprietaire.id)" class="icon" pTooltip="Détails" tooltipPosition="top"><i class="pi pi-eye" style="font-size: 1rem"></i></a>
-                      <a *ngIf="proprietaire.etatCompte === true" type="button" class="icon" (click)="desactiverCompte(proprietaire.id)" pTooltip="Désactiver ce compte" tooltipPosition="left"><i class="pi pi-lock" style="font-size: 1rem"></i></a>
-                      <a *ngIf="proprietaire.etatCompte === false" type="button" class="icon" (click)="activerCompte(proprietaire.id)" pTooltip="Activer compte" tooltipPosition="right"><i class="pi pi-lock-open" style="font-size: 1rem"></i></a>
+                      <button pButton type="button" (click)="afficherPageDetail(proprietaire.id)" icon="pi pi-eye"
+                        pTooltip="Détails" tooltipPosition="right" class="p-button-text p-button-info">
+                      </button>
+
+                      <button pButton type="button" *ngIf="proprietaire.etatCompte === true"(click)="desactiverCompte(proprietaire.id)" icon="pi pi-lock"
+                        pTooltip="Désactiver ce compte" tooltipPosition="top" class="p-button-text p-button-danger">
+                      </button>
+
+                      <button pButton type="button" *ngIf="proprietaire.etatCompte === false" (click)="activerCompte(proprietaire.id)" icon="pi pi-lock-open"
+                        pTooltip="Activer ce compte" tooltipPosition="left" class="p-button-text p-button-success">
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -93,48 +101,52 @@
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
 
-          <p class="fw600 mb10 ff-heading dark-color">Nom & prénom du propriétaire</p>
-          <p>
-              {{ proprietaire.nom }} {{ proprietaire.prenom }} <i *ngIf="proprietaire.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i>
-          </p>
+          <div class="row">
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur du propriétaire</p>
-          <p>
-              {{ proprietaire.username }}
-          </p>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Nom & prénom</p>
+              <p>{{ proprietaire.nom }} {{ proprietaire.prenom }} <i *ngIf="proprietaire.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur</p>
+              <p>{{ proprietaire.username }}</p>
+            </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du propriétaire</p>
-          <p>
-              {{ proprietaire.email }}
-          </p>
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+              <p>{{ proprietaire.email }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
+              <p>{{ proprietaire.telephone }}</p>
+            </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone du propriétaire</p>
-          <p>
-              {{ proprietaire.telephone }}
-          </p>
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Rôle</p>
+              <p>{{ proprietaire.role.libelle }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
+              <p>
+                <p-tag *ngIf="proprietaire.etatCompte == true" severity="success" value="Activé"></p-tag>
+                <p-tag *ngIf="proprietaire.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+              </p>
+            </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Rôle du propriétaire</p>
-          <p>
-              {{ proprietaire.role.libelle }}
-          </p>
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Est certifié</p>
+              <p>
+                <p-tag *ngIf="proprietaire.estCertifie == true" severity="success" value="Oui"></p-tag>
+                <p-tag *ngIf="proprietaire.estCertifie == false" severity="danger" value="Non"></p-tag>
+              </p>
+            </div>
+            <p-divider></p-divider>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Est certifié</p>
-          <p>
-            <p-tag *ngIf="proprietaire.estCertifie == true" severity="success" value="Oui"></p-tag>
-            <p-tag *ngIf="proprietaire.estCertifie == false" severity="danger" value="Non"></p-tag>
-          </p>
+          </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
-          <p>
-            <p-tag *ngIf="proprietaire.etatCompte == true" severity="success" value="Activé"></p-tag>
-            <p-tag *ngIf="proprietaire.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
-          </p>
           <div class="text-end">
             <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
           </div>

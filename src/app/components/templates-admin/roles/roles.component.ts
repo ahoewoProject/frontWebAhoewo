@@ -37,14 +37,14 @@ export class RolesComponent implements OnInit{
     this.initRoleForm();
   }
 
-  initRoleForm(): void{
+  initRoleForm(): void {
     this.roleForm = new FormGroup({
       code: new FormControl(this.role.code, [Validators.required]),
       libelle: new FormControl(this.role.libelle, [Validators.required]),
     })
   }
 
-  listeRoles():void{
+  listeRoles(): void {
     this.roleService.getAll().subscribe(
       (response) => {
         this.roles = response;
@@ -52,7 +52,7 @@ export class RolesComponent implements OnInit{
     );
   }
 
-  get rolesParPage(): any[]{
+  get rolesParPage(): any[] {
     return this.roles.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
   }
 
@@ -98,18 +98,18 @@ export class RolesComponent implements OnInit{
     this.visibleAddForm = 0;
   }
 
-  get code(){
+  get code() {
     return this.roleForm.get('code');
   }
 
-  get libelle(){
+  get libelle() {
     return this.roleForm.get('libelle');
   }
 
   ajouterRole(): void {
     this.roleService.addRole(this.role).subscribe(
-      (response) =>{
-        if(response.id > 0) {
+      (response) => {
+        if (response.id > 0) {
           this.roles.push({
             id: response.id,
             code: response.code,
@@ -122,21 +122,32 @@ export class RolesComponent implements OnInit{
           });
           this.voirListe();
           this.messageSuccess = "Le rôle a été ajouté avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
-        }
-        else{
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Ajout réussi',
+            detail: this.messageSuccess
+          });
+        } else {
           this.messageErreur = "Erreur lors de l'ajout du rôle !"
           this.afficherFormulaireAjouter();
           this.role.code = response.code;
           this.role.libelle = response.libelle;
-          this.messageService.add({ severity: 'error', summary: "Erreur d'ajout", detail: this.messageErreur });
+          this.messageService.add({
+            severity: 'error',
+            summary: "Erreur d'ajout",
+            detail: this.messageErreur
+          });
         }
     },
     (error) =>{
       console.log(error)
-      if(error.status === 409){
-        this.messageErreur = "Un rôle avec ce code existe déjà !";
-        this.messageService.add({ severity: 'warn', summary: "Erreur d'ajout", detail: this.messageErreur });
+      if (error.status === 409) {
+          this.messageErreur = "Un rôle avec ce code existe déjà !";
+          this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'ajout",
+          detail: this.messageErreur
+        });
       }
     })
   }
@@ -147,19 +158,30 @@ export class RolesComponent implements OnInit{
         if(response.id > 0) {
           this.voirListe();
           this.messageSuccess = "Le rôle a été modifié avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Modification réussie', detail: this.messageSuccess })
-        }
-        else{
-          this.messageErreur = "Erreur lors de la modification du rôle !";
-          this.messageService.add({ severity: 'error', summary: 'Erreur modification', detail: this.messageErreur });
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Modification réussie',
+            detail: this.messageSuccess
+          });
+        } else {
+            this.messageErreur = "Erreur lors de la modification du rôle !";
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur modification',
+              detail: this.messageErreur
+            });
           this.afficherFormulaireModifier(this.role.id);
         }
     },
     (error) =>{
       console.log(error)
-      if(error.status === 409){
+      if (error.status === 409) {
         this.messageErreur = "Un rôle avec ce code existe déjà !";
-        this.messageService.add({ severity: 'warn', summary: 'Modification non réussie', detail: this.messageErreur });
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Modification non réussie',
+          detail: this.messageErreur
+        });
         this.afficherFormulaireModifier(this.role.id);
       }
     })
@@ -171,7 +193,11 @@ export class RolesComponent implements OnInit{
         console.log(response);
         this.voirListe();
         this.messageSuccess = "Le rôle a été supprimé avec succès.";
-        this.messageService.add({ severity: 'success', summary: 'Ahoewo', detail: this.messageSuccess })
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Ahoewo',
+          detail: this.messageSuccess
+        });
       }
     );
   }

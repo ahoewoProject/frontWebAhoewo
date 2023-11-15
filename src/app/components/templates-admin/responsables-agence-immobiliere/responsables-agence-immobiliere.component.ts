@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
-import { Client } from 'src/app/models/gestionDesComptes/Client';
-import { ClientService } from 'src/app/services/gestionDesComptes/client.service';
+import { ResponsableAgenceImmobiliere } from 'src/app/models/gestionDesComptes/ResponsableAgenceImmobiliere';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
+import { ResponsableAgenceImmobiliereService } from 'src/app/services/gestionDesComptes/responsable-agence-immobiliere.service';
 
 @Component({
-  selector: 'app-clients',
-  templateUrl: './clients.component.html',
-  styleUrls: ['./clients.component.css']
+  selector: 'app-responsables-agence-immobiliere',
+  templateUrl: './responsables-agence-immobiliere.component.html',
+  styleUrls: ['./responsables-agence-immobiliere.component.css']
 })
-export class ClientsComponent implements OnInit{
+export class ResponsablesAgenceImmobiliereComponent implements OnInit {
 
   recherche: string = '';
   affichage = 1;
@@ -17,61 +17,61 @@ export class ClientsComponent implements OnInit{
   elementsParPage = 5; // Nombre d'éléments par page
   pageActuelle = 0; // Page actuelle
 
-  client = new Client();
-  clients : Client[] = [];
+  responsableAgenceImmobiliere = new ResponsableAgenceImmobiliere();
+  responsablesAgenceImmobiliere : ResponsableAgenceImmobiliere[] = [];
   messageSuccess: string | null = null;
 
   constructor(
-    private clientService: ClientService,
+    private responsableAgenceImmobiliereService: ResponsableAgenceImmobiliereService,
     private personneService: PersonneService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
-    this.listeClients();
+    this.listeResponsablesAgenceImmobiliere();
   }
 
-  listeClients(): void {
-    this.clientService.getAll().subscribe(
+  listeResponsablesAgenceImmobiliere(): void {
+    this.responsableAgenceImmobiliereService.getAll().subscribe(
       (response) => {
-        this.clients = response;
+        this.responsablesAgenceImmobiliere = response;
       }
     );
   }
 
-  // Récupération des clients de la page courante
-  get clientsParPage(): any[] {
-    return this.clients.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
+  // Récupération des responsables d'agence immobilière de la page courante
+  get responsablesAgenceImmobiliereParPage(): any[] {
+    return this.responsablesAgenceImmobiliere.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
   }
 
   pagination(event: any) {
     this.pageActuelle = event.first;
     this.elementsParPage = event.rows;
-    this.listeClients()
+    this.listeResponsablesAgenceImmobiliere()
   }
 
   voirListe(): void {
-    this.listeClients();
+    this.listeResponsablesAgenceImmobiliere();
     this.affichage = 1;
   }
 
-  detailClient(id: number): void {
-    this.clientService.findById(id).subscribe(
+  detailResponsableAgenceImmobiliere(id: number): void {
+    this.responsableAgenceImmobiliereService.findById(id).subscribe(
       (response) => {
-        this.client = response;
+        this.responsableAgenceImmobiliere = response;
         console.log(response);
       }
     );
   }
 
   afficherPageDetail(id: number): void {
-    this.detailClient(id);
+    this.detailResponsableAgenceImmobiliere(id);
     this.affichage = 2;
   }
 
-  supprimerClient(id: number): void {
-    this.clientService.deleteById(id).subscribe(
+  supprimerResponsableAgenceImmobiliere(id: number): void {
+    this.responsableAgenceImmobiliereService.deleteById(id).subscribe(
       (response) => {
         console.log(response);
         this.voirListe();
@@ -124,7 +124,7 @@ export class ClientsComponent implements OnInit{
     });
   }
 
-  desactiverCompte(id: number): void{
+  desactiverCompte(id: number): void {
     this.confirmationService.confirm({
       message: 'Vous êtes sûr de vouloir désactiver ce compte ?',
       header: "Désactivation de compte",

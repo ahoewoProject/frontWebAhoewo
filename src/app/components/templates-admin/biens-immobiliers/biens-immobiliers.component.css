@@ -32,7 +32,7 @@
   border-radius: 10px;
 }
 
-:host ::ng-deep .upload-label {
+/* :host ::ng-deep .upload-label {
   background-color: #ee944e;
   border-color: #ee944e;
 }
@@ -40,9 +40,13 @@
 :host ::ng-deep .cancel-label {
   background-color: #f43838;
   border-color: #f43838;
-}
+} */
 
 :host ::ng-deep .remove-label {
   background-color: #f43838;
   border-color: #f43838;
+}
+
+.error {
+  color: #a94442;
 }

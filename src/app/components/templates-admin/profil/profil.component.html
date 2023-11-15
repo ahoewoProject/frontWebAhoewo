@@ -31,7 +31,7 @@
             <h4 class="title fz17 mb30">Mes informations</h4>
 
               <p-divider></p-divider>
-              <div class="d-flex justify-content-between"> <!-- Utilisez des classes Bootstrap pour la mise en page -->
+              <div class="d-flex justify-content-between">
                 <div>
                   <p class="fw600 mb10 ff-heading dark-color">Nom & Prénom</p>
                   <p>
@@ -59,14 +59,14 @@
               </div>
 
               <p-divider></p-divider>
-              <div class="d-flex justify-content-between"> <!-- Utilisez des classes Bootstrap pour la mise en page -->
+              <div class="d-flex justify-content-between">
                 <div>
                   <p class="fw600 mb10 ff-heading dark-color">Rôle</p>
                   <p>
                       {{ personne.role.libelle }}
                   </p>
                 </div>
-                <div *ngIf="personne.role.code == 'ROLE_AGENTIMMOBILIER' || personne.role.code == 'ROLE_DEMARCHEUR' || personne.role.code == 'ROLE_PROPRIETAIRE'">
+                <div *ngIf="personne.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || personne.role.code == 'ROLE_AGENTIMMOBILIER' || personne.role.code == 'ROLE_DEMARCHEUR' || personne.role.code == 'ROLE_PROPRIETAIRE'">
                   <p class="fw600 mb10 ff-heading dark-color">Est certifiée</p>
                   <p>
                     <p-tag *ngIf="personne.estCertifie == true" severity="success" value="Oui"></p-tag>

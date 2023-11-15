@@ -44,7 +44,7 @@ export class DemandesCertificationsComponent implements OnInit {
     this.APIEndpoint = environment.APIEndpoint;
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
     this.user = JSON.parse(utilisateurConnecte);
-    this.agenceImmobiliereService.getAllByAgentImmobilier().subscribe(
+    this.agenceImmobiliereService.getAllByResponsableAgenceImmobiliere().subscribe(
       (response) => {
         this.agencesImmobilieres = response;
       }
@@ -52,9 +52,9 @@ export class DemandesCertificationsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.user.role.code == 'ROLE_NOTAIRE'){
+    if (this.user.role.code == 'ROLE_NOTAIRE') {
       this.listeDemandeCertifications();
-    }else{
+    } else {
       this.listeDemandeCertificationParUtilisateur();
     }
     this.initDemandeCertificationForm();
@@ -66,7 +66,7 @@ export class DemandesCertificationsComponent implements OnInit {
     })
   }
 
-  get agenceImmobiliere(){
+  get agenceImmobiliere() {
     return this.demandeCertificationForm.get('agenceImmobiliere');
   }
 
@@ -74,7 +74,7 @@ export class DemandesCertificationsComponent implements OnInit {
     this.agenceSelectionne = event.value;
   }
 
-  listeDemandeCertifications(){
+  listeDemandeCertifications() {
     this.demandeCertifService.getAll().subscribe(
       (response) => {
         this.demandeCertifications = response;
@@ -82,7 +82,7 @@ export class DemandesCertificationsComponent implements OnInit {
     );
   }
 
-  listeDemandeCertificationParUtilisateur(){
+  listeDemandeCertificationParUtilisateur() {
     this.demandeCertifService.findByUser().subscribe(
       (response) => {
         this.demandeCertifications = response;
@@ -104,9 +104,9 @@ export class DemandesCertificationsComponent implements OnInit {
   }
 
   voirListe(): void{
-    if(this.user.role.code == 'ROLE_NOTAIRE'){
+    if (this.user.role.code == 'ROLE_NOTAIRE') {
       this.listeDemandeCertifications();
-    }else{
+    } else {
       this.listeDemandeCertificationParUtilisateur();
     }
     this.affichage = 1;
@@ -123,10 +123,14 @@ export class DemandesCertificationsComponent implements OnInit {
     console.log(uploadedFile)
     this.documentJustificatif = uploadedFile;
     this.messageSuccess = "Le document justificatif a été téléchargé avec succès.";
-    this.messageService.add({ severity: 'info', summary: 'Téléchargement réussi', detail: this.messageSuccess })
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Téléchargement réussi',
+      detail: this.messageSuccess
+    });
   }
 
-  ajouterDemandeCertificationCompte(): void{
+  ajouterDemandeCertificationCompte(): void {
 
     const formValues = {
       personne: this.user
@@ -139,14 +143,21 @@ export class DemandesCertificationsComponent implements OnInit {
     .subscribe(
       (response) => {
 
-        if(response.id > 0) {
+        if (response.id > 0) {
           this.voirListe();
           this.messageSuccess = "La demande de certification a été ajouté avec succès!";
-          this.messageService.add({ severity: 'success', summary: 'Demande de certification réussie', detail: this.messageSuccess })
-        }
-        else {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Demande de certification réussie',
+            detail: this.messageSuccess
+          });
+        } else {
           this.messageErreur = "Erreur lors de l'ajout de votre demande de certification!"
-          this.messageService.add({ severity: 'error', summary: "Erreur d'ajout de la demande de certification", detail: this.messageErreur });
+          this.messageService.add({
+            severity: 'error',
+            summary: "Erreur d'ajout de la demande de certification",
+            detail: this.messageErreur
+          });
           this.afficherFormulaireAjouter();
         }
       },
@@ -173,11 +184,18 @@ export class DemandesCertificationsComponent implements OnInit {
         if(response.id > 0) {
           this.voirListe();
           this.messageSuccess = "La demande de certification a été ajouté avec succès!";
-          this.messageService.add({ severity: 'success', summary: 'Demande de certification réussie', detail: this.messageSuccess })
-        }
-        else {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Demande de certification réussie',
+            detail: this.messageSuccess
+          });
+        } else {
           this.messageErreur = "Erreur lors de l'ajout de votre demande de certification!"
-          this.messageService.add({ severity: 'error', summary: "Erreur d'ajout de la demande de certification", detail: this.messageErreur });
+          this.messageService.add({
+            severity: 'error',
+            summary: "Erreur d'ajout de la demande de certification",
+            detail: this.messageErreur
+          });
           this.afficherFormulaireAjouter();
         }
       },
@@ -201,7 +219,7 @@ export class DemandesCertificationsComponent implements OnInit {
     this.visibleAddForm = 0;
   }
 
-  certifierCompte(idPersonne: number, idDemandeCertif: number): void{
+  certifierCompte(idPersonne: number, idDemandeCertif: number): void {
     this.confirmationService.confirm({
       message: 'Vous êtes sûr de vouloir certifier ce compte ?',
       header: "Certification de compte",
@@ -212,17 +230,29 @@ export class DemandesCertificationsComponent implements OnInit {
             console.log(response);
             this.voirListe();
             this.messageSuccess = "Le compte du demandeur a été certifié avec succès!";
-            this.messageService.add({ severity: 'success', summary: 'Certification de compte confirmé', detail: this.messageSuccess })
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Certification de compte confirmé',
+              detail: this.messageSuccess
+            });
           }
         );
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Certification de compte rejetée', detail: 'Vous avez rejeté la certification de ce compte !' });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Certification de compte rejetée',
+              detail: 'Vous avez rejeté la certification de ce compte !'
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Certification de compte annulée', detail: 'Vous avez annulé la la certification de ce compte !' });
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Certification de compte annulée',
+              detail: 'Vous avez annulé la la certification de ce compte !'
+            });
             break;
         }
       }
@@ -240,17 +270,29 @@ export class DemandesCertificationsComponent implements OnInit {
             console.log(response);
             this.voirListe();
             this.messageSuccess = "L'agence immobilière a été certifiée avec succès!";
-            this.messageService.add({ severity: 'success', summary: 'Certification de l\'agence confirmé', detail: this.messageSuccess })
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Certification de l\'agence confirmé',
+              detail: this.messageSuccess
+            });
           }
         );
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Certification de l\'agence rejetée', detail: 'Vous avez rejeté la certification de cette agence !' });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Certification de l\'agence rejetée',
+              detail: 'Vous avez rejeté la certification de cette agence !'
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Certification de l\'agence annulée', detail: 'Vous avez annulé la la certification de cette agence !' });
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Certification de l\'agence annulée',
+              detail: 'Vous avez annulé la la certification de cette agence !'
+            });
             break;
         }
       }

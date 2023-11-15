@@ -5,6 +5,7 @@ import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/
 import { Services } from 'src/app/models/gestionDesAgencesImmobilieres/Services';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/services.service';
+import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -36,32 +37,59 @@ export class ServicesComponent implements OnInit {
     private _servicesService: ServicesService,
     private agenceImmobiliereService: AgenceImmobiliereService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private personneService: PersonneService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
-    this.agenceImmobiliereService.getAllByAgentImmobilier().subscribe(
-      (response) => {
-        this.agencesImmobilieres = response;
-      }
-    )
+
+    const utilisateurConnecte = this.personneService.utilisateurConnecte();
+    this.user = JSON.parse(utilisateurConnecte);
   }
 
   ngOnInit(): void {
-    this.listeServices();
+    if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
+      this.listeServicesAgenceAgentImmobilier();
+      this.agenceImmobiliereService.getAgenceImmobiliereParAgentImmobilier().subscribe(
+        (response) => {
+          this.agencesImmobilieres = response
+        }
+      )
+    } else {
+      this.agenceImmobiliereService.getAllByResponsableAgenceImmobiliere().subscribe(
+        (response) => {
+          this.agencesImmobilieres = response;
+        }
+      );
+      this.listeServices();
+    }
     this.initServiceForm()
   }
 
-  voirListe(): void{
-    this.listeServices();
+  voirListe(): void {
+    if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
+      this.listeServicesAgenceAgentImmobilier();
+    } else {
+      this.listeServices();
+    }
     this.serviceForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
     this.visibleUpdateForm = 0;
   }
 
-  listeServices(){
+  // Fonction pour recupérer les services par agence immobilière
+  listeServices() {
     this._servicesService.getAllByAgenceImmobiliere().subscribe(
+      (response) => {
+        this.services = response;
+      }
+    );
+  }
+
+  // Fonction pour recupérer les services d'une agence immobilière par agent immobilier
+  listeServicesAgenceAgentImmobilier() {
+    this._servicesService.getServicesAgenceAgentImmobilier().subscribe(
       (response) => {
         this.services = response;
       }
@@ -101,15 +129,15 @@ export class ServicesComponent implements OnInit {
     });
   }
 
-  get nomService(){
+  get nomService() {
     return this.serviceForm.get('nomService');
   }
 
-  get description(){
+  get description() {
     return this.serviceForm.get('description');
   }
 
-  get agenceImmobiliere(){
+  get agenceImmobiliere() {
     return this.serviceForm.get('agenceImmobiliere');
   }
 
@@ -133,14 +161,15 @@ export class ServicesComponent implements OnInit {
     this._service.agenceImmobiliere = this.agenceChoisie;
     this._servicesService.addServices(this._service).subscribe(
 
-      (response) =>{
+      (response) => {
         console.log(response)
-        if(response.id > 0) {
+        if (response.id > 0) {
           this.services.push({
             id: response.id,
             nomService: response.nomService,
             description: response.description,
             agenceImmobiliere: response.agenceImmobiliere,
+            etat: response.etat,
             creerPar: 0,
             creerLe: new Date(),
             modifierPar: 0,
@@ -149,21 +178,32 @@ export class ServicesComponent implements OnInit {
           });
           this.voirListe();
           this.messageSuccess = "Le service a été ajouté avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
-        }
-        else{
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Ajout réussi',
+            detail: this.messageSuccess
+          });
+        } else {
           this.messageErreur = "Erreur lors de l'ajout du service !"
           this.afficherFormulaireAjouter();
           this._service.nomService = response.nomService;
           this._service.description = response.description;
-          this.messageService.add({ severity: 'error', summary: "Erreur d'ajout", detail: this.messageErreur });
+          this.messageService.add({
+            severity: 'error',
+            summary: "Erreur d'ajout",
+            detail: this.messageErreur
+          });
         }
     },
     (error) =>{
       console.log(error)
-      if(error.status === 409){
+      if (error.status === 409) {
         this.messageErreur = "Un service avec ce nom existe déjà !";
-        this.messageService.add({ severity: 'warn', summary: "Erreur d'ajout", detail: this.messageErreur });
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'ajout",
+          detail: this.messageErreur
+        });
       }
     })
   }
@@ -175,25 +215,114 @@ export class ServicesComponent implements OnInit {
         if(response.id > 0) {
           this.voirListe();
           this.messageSuccess = "Le service a été modifié avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Modification réussie', detail: this.messageSuccess })
-        }
-        else{
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Modification réussie',
+            detail: this.messageSuccess
+          });
+        } else {
           this.messageErreur = "Erreur lors de la modification du service !";
-          this.messageService.add({ severity: 'error', summary: 'Erreur modification', detail: this.messageErreur });
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur modification',
+            detail: this.messageErreur
+          });
           this.afficherFormulaireModifier(id);
         }
     },
     (error) =>{
       console.log(error)
-      if(error.status === 409){
+      if (error.status === 409) {
         this.messageErreur = "Le service avec ce nom existe déjà !";
-        this.messageService.add({ severity: 'warn', summary: 'Modification non réussie', detail: this.messageErreur });
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Modification non réussie',
+          detail: this.messageErreur
+        });
         this.afficherFormulaireModifier(id);
       }
     })
   }
 
-  supprimerService(id: number): void{
+  activerService(id: number): void {
+    this.confirmationService.confirm({
+      message: 'Vous êtes sûr de vouloir activer ce service ?',
+      header: "Activation d'un service",
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this._servicesService.activerService(id).subscribe(response=>{
+          console.log(response);
+          this.voirListe();
+          this.messageSuccess = "Le service a été activé avec succès !";
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Activation du service confirmée',
+            detail: this.messageSuccess
+          });
+        });
+
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Activation du service rejetée',
+              detail: "Vous avez rejeté l'activation de ce service !"
+            });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Activation du service annulée',
+              detail: "Vous avez annulé l'activation de ce service !"
+            });
+            break;
+        }
+      }
+    });
+  }
+
+  desactiverService(id: number): void {
+    this.confirmationService.confirm({
+      message: 'Vous êtes sûr de vouloir désactiver ce service ?',
+      header: "Désactivaction d'un service",
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this._servicesService.desactiverService(id).subscribe(response=>{
+          console.log(response);
+          this.voirListe();
+          this.messageSuccess = "Le service a été désactivé avec succès !";
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Désactivation du service confirmée',
+            detail: this.messageSuccess
+          });
+        });
+
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Désactivation du service rejetée',
+              detail: "Vous avez rejeté la désactivation de ce service !"
+            });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Désactivation du service annulée',
+              detail: "Vous avez annulé la désactivation de ce service !"
+            });
+            break;
+        }
+      }
+    });
+  }
+
+  supprimerService(id: number): void {
     this.confirmationService.confirm({
       message: 'Vous êtes sûr de vouloir supprimer ce service ?',
       header: "Suppression d'un service",
@@ -203,17 +332,29 @@ export class ServicesComponent implements OnInit {
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le service a été supprimé avec succès !";
-          this.messageService.add({ severity: 'success', summary: 'Suppression du service confirmée', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Suppression du service confirmée',
+            detail: this.messageSuccess
+          });
         });
 
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Suppression du service rejetée', detail: "Vous avez rejeté la suppression de ce service !" });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Suppression du service rejetée',
+              detail: "Vous avez rejeté la suppression de ce service !"
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Suppression du service annulée', detail: "Vous avez annulé la suppression de ce service !" });
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Suppression du service annulée',
+              detail: "Vous avez annulé la suppression de ce service !"
+            });
             break;
         }
       }

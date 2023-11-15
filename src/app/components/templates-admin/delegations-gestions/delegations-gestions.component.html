@@ -35,7 +35,7 @@
                       {{ bienImmobilier.numeroIdentifiant }}, {{ bienImmobilier.ville }} - {{ bienImmobilier.adresse }}
                     </ng-template>
                   </p-dropdown>
-                  <div class="text-danger" [hidden]="!bienImmobilier?.hasError('required') || !bienImmobilier.touched">La selection d'un bien immobilier est obligatoire</div>
+                  <div class="error" [hidden]="!bienImmobilier?.hasError('required') || !bienImmobilier.touched">La selection d'un bien immobilier est obligatoire</div>
                 </div>
               </div>
 
@@ -53,7 +53,7 @@
                       {{ gestionnaire.nom }} {{ gestionnaire.prenom }}
                     </ng-template>
                   </p-dropdown>
-                  <div class="text-danger" [hidden]="!gestionnaire?.hasError('required') || !gestionnaire.touched">La selection d'un gestionnaire est obligatoire est obligatoire</div>
+                  <div class="error" [hidden]="!gestionnaire?.hasError('required') || !gestionnaire.touched">La selection d'un gestionnaire est obligatoire est obligatoire</div>
                 </div>
               </div>
 
@@ -107,10 +107,10 @@
             <table class="table-style3 table at-savesearch">
               <thead class="t-head">
                 <tr>
-                  <th scope="col">Image du bien</th>
-                  <th scope="col" *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR'">Propriétaire</th>
+                  <th scope="col">ID</th>
+                  <th scope="col">Image</th>
+                  <th scope="col" *ngIf="user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR'">Propriétaire</th>
                   <th scope="col" *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'">Gestionnaire</th>
-                  <th scope="col">Adresse du bien</th>
                   <th scope="col">Date délégation</th>
                   <th scope="col">Statut de la délégation</th>
                   <th scope="col">Actions</th>
@@ -118,14 +118,13 @@
               </thead>
               <tbody class="t-body">
                 <tr *ngFor="let delegationGestion of delegationGestionsParPage | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
                   <th scope="row">
-                    <p-image *ngIf="delegationGestion.bienImmobilier.imagePrincipale == ''" class="w-100" src="assets/images/home/house.jpg" alt="" width="150" imageClass="image"></p-image>
-                    <p-image *ngIf="delegationGestion.bienImmobilier.imagePrincipale !== ''" class="w-100"
-                    src="{{this.APIEndpoint+'api/image-principale/bien-immobilier/'+delegationGestion.bienImmobilier.id}}" alt="" width="150" imageClass="image"></p-image>
+                    <p-image *ngIf="delegationGestion.bienImmobilier.images.length === 0" class="w-100" src="assets/images/home/house.jpg" alt="" width="150" imageClass="image"></p-image>
+                    <p-image *ngIf="delegationGestion.bienImmobilier.images && delegationGestion.bienImmobilier.images.length > 0" class="w-100" src="{{this.APIEndpoint+'api/premiere-image/bien-immobilier/'+delegationGestion.bienImmobilier.id}}" alt="" width="150" imageClass="image"></p-image>
                   </th>
-                  <td class="vam" *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR'">{{ delegationGestion.bienImmobilier.personne.nom }} {{ delegationGestion.bienImmobilier.personne.prenom }}</td>
+                  <td class="vam" *ngIf="user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR'">{{ delegationGestion.bienImmobilier.personne.nom }} {{ delegationGestion.bienImmobilier.personne.prenom }}</td>
                   <td class="vam" *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'">{{ delegationGestion.gestionnaire.nom }} {{ delegationGestion.gestionnaire.prenom }}</td>
-                  <td class="vam">{{ delegationGestion.bienImmobilier.adresse }} </td>
                   <td class="vam">{{ delegationGestion.dateDelegation | date: "dd-MM-yyyy" }} </td>
                   <td class="vam">
                     <p-tag *ngIf="delegationGestion.statutDelegation == true" severity="success" value="Acceptée"></p-tag>
@@ -133,9 +132,23 @@
                   </td>
                   <td class="vam">
                     <div class="d-flex">
-                      <a type="button" (click)="afficherPageDetail(delegationGestion.id, delegationGestion.bienImmobilier.id)" class="icon" pTooltip="Détails" tooltipPosition="top"><i class="pi pi-eye" style="font-size: 1rem"></i></a>
-                      <a *ngIf="delegationGestion.statutDelegation == false && (user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR')" type="button" class="icon" (click)="accepterDelegationGestion(delegationGestion.id)" pTooltip="Accepter" tooltipPosition="top"><i class="pi pi-check" style="font-size: 1rem"></i></a>
-                      <a *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'" type="button" class="icon" (click)="supprimerDelegationGestion(delegationGestion.id)" pTooltip="Supprimer" tooltipPosition="right"><i class="pi pi-trash" style="font-size: 1rem"></i></a>
+
+                      <button (click)="afficherPageDetail(delegationGestion.id, delegationGestion.bienImmobilier.id)"
+                        pTooltip="Détails" tooltipPosition="top" pButton type="button" icon="pi pi-eye"
+                        class="p-button-text p-button-info">
+                      </button>
+
+                      <button *ngIf="delegationGestion.statutDelegation == false && (user.role.code === 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR')"
+                        pButton type="button" icon="pi pi-check" (click)="accepterDelegationGestion(delegationGestion.id)"
+                        pTooltip="Accepter" tooltipPosition="top" class="p-button-text p-button-success">
+                      </button>
+
+                      <button *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'" pButton type="button" icon="pi pi-trash"
+                        (click)="supprimerDelegationGestion(delegationGestion.id)"
+                        pTooltip="Supprimer" tooltipPosition="right"
+                        class="p-button-text p-button-danger">
+                      </button>
+
                     </div>
                   </td>
                 </tr>
@@ -176,9 +189,7 @@
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
 
           <div class="text-center" *ngIf="images.length == 0">
-            <p-image *ngIf="delegationGestion.bienImmobilier.imagePrincipale == ''" class="w-100" src="assets/images/home/house.jpg" alt="" imageClass="imageDetail"></p-image>
-            <p-image *ngIf="delegationGestion.bienImmobilier.imagePrincipale !== ''" class="w-100"
-            src="{{this.APIEndpoint+'api/image-principale/bien-immobilier/'+delegationGestion.bienImmobilier.id}}" alt="" imageClass="imageDetail"></p-image>
+            <p-image class="w-100" src="assets/images/home/house.jpg" alt="" imageClass="imageDetail"></p-image>
           </div>
 
           <div *ngIf="images.length !== 0">
@@ -203,109 +214,156 @@
               {{ delegationGestion.bienImmobilier.description }}
           </p>
 
-          <div *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR'">
+        <!-- Vue Responsable agence immobilière, Agent Immobilier & Démarcheur -->
+          <div class="row" *ngIf="user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR'">
+
             <p-divider></p-divider>
-            <p class="fw600 mb10 ff-heading dark-color">Propriétaire du bien immobilier</p>
-            <p>
-                {{ delegationGestion.bienImmobilier.personne.nom }} {{ delegationGestion.bienImmobilier.personne.prenom }}
-            </p>
-          </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Propriétaire</p>
+              <p>{{ delegationGestion.bienImmobilier.personne.nom }} {{ delegationGestion.bienImmobilier.personne.prenom }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Numero de téléphone du propriétaire</p>
+              <p>{{ delegationGestion.bienImmobilier.personne.email }}</p>
+            </div>
 
-          <div *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR'">
             <p-divider></p-divider>
-            <p class="fw600 mb10 ff-heading dark-color">Numero de téléphone du propriétaire</p>
-            <p>
-                {{ delegationGestion.bienImmobilier.personne.email }}
-            </p>
-          </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du propriétaire</p>
+              <p>{{ delegationGestion.bienImmobilier.personne.email }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Numéro identifiant</p>
+              <p>{{ delegationGestion.bienImmobilier.numeroIdentifiant }}</p>
+            </div>
 
-          <div *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR'">
             <p-divider></p-divider>
-            <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du propriétaire</p>
-            <p>
-                {{ delegationGestion.bienImmobilier.personne.email }}
-            </p>
-          </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Type de bien</p>
+              <p>{{ delegationGestion.bienImmobilier.typeDeBien.designation }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
+              <p>{{ delegationGestion.bienImmobilier.adresse }}</p>
+            </div>
 
-          <div *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'">
             <p-divider></p-divider>
-            <p class="fw600 mb10 ff-heading dark-color">Gestionnaire du bien immobilier</p>
-            <p>
-                {{ delegationGestion.gestionnaire.nom }} {{ delegationGestion.gestionnaire.prenom }}
-            </p>
-          </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Ville</p>
+              <p>{{ delegationGestion.bienImmobilier.ville }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Surface en m2</p>
+              <p>{{ delegationGestion.bienImmobilier.surface }}</p>
+            </div>
 
-          <div *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'">
             <p-divider></p-divider>
-            <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du gestionnaire</p>
-            <p>
-                {{ delegationGestion.gestionnaire.email }}
-            </p>
-          </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Statut</p>
+              <p>
+                <p-tag *ngIf="delegationGestion.bienImmobilier.statutBien == 'Disponible'" severity="success" value="Disponible"></p-tag>
+              </p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+              <p>
+                <p-tag *ngIf="delegationGestion.bienImmobilier.etatBien == true" severity="success" value="Activé"></p-tag>
+                <p-tag *ngIf="delegationGestion.bienImmobilier.etatBien == false" severity="danger" value="Désactivé"></p-tag>
+              </p>
+            </div>
 
-          <div *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'">
             <p-divider></p-divider>
-            <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone du gestionnaire</p>
-            <p>
-                {{ delegationGestion.gestionnaire.telephone }}
-            </p>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Date de la délégation</p>
+              <p>
+                {{ delegationGestion.dateDelegation | date: "dd-MM-yyyy" }}
+              </p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Statut de la délégation</p>
+              <p>
+                <p-tag *ngIf="delegationGestion.statutDelegation == true" severity="success" value="Acceptée"></p-tag>
+                <p-tag *ngIf="delegationGestion.statutDelegation == false" severity="warning" value="En attente"></p-tag>
+              </p>
+            </div>
+            <p-divider></p-divider>
           </div>
+        <!-- End Responsable agence immobilière, Vue Agent Immobilier & Démarcheur -->
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Numéro identifiant du bien</p>
-          <p>
-              {{ delegationGestion.bienImmobilier.numeroIdentifiant }}
-          </p>
+        <!-- Vue Propriétaire -->
+          <div class="row" *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'">
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Type de bien</p>
-          <p>
-              {{ delegationGestion.bienImmobilier.surface }}
-          </p>
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Gestionnaire</p>
+              <p>{{ delegationGestion.gestionnaire.nom }} {{ delegationGestion.gestionnaire.prenom }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du gestionnaire</p>
+              <p>{{ delegationGestion.gestionnaire.email }}</p>
+            </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Adresse du bien</p>
-          <p>
-              {{ delegationGestion.bienImmobilier.adresse }}
-          </p>
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone du gestionnaire</p>
+              <p>{{ delegationGestion.gestionnaire.telephone }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Numéro identifiant</p>
+              <p>{{ delegationGestion.bienImmobilier.numeroIdentifiant }}</p>
+            </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Ville du bien</p>
-          <p>
-              {{ delegationGestion.bienImmobilier.ville }}
-          </p>
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Type de bien</p>
+              <p>{{ delegationGestion.bienImmobilier.typeDeBien.designation }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
+              <p>{{ delegationGestion.bienImmobilier.adresse }}</p>
+            </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Surface en m2 du bien</p>
-          <p>
-              {{ delegationGestion.bienImmobilier.surface }}
-          </p>
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Ville</p>
+              <p>{{ delegationGestion.bienImmobilier.ville }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Surface en m2</p>
+              <p>{{ delegationGestion.bienImmobilier.surface }}</p>
+            </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Statut du bien immobilier</p>
-          <p>
-            <p-tag *ngIf="delegationGestion.bienImmobilier.statutBien == 'Disponible'" severity="success" value="Disponible"></p-tag>
-          </p>
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Statut</p>
+              <p>
+                <p-tag *ngIf="delegationGestion.bienImmobilier.statutBien == 'Disponible'" severity="success" value="Disponible"></p-tag>
+              </p>
+            </div>
+            <div class="form-group col-md-6">
+              <p>
+                <p-tag *ngIf="delegationGestion.bienImmobilier.etatBien == true" severity="success" value="Activé"></p-tag>
+                <p-tag *ngIf="delegationGestion.bienImmobilier.etatBien == false" severity="danger" value="Désactivé"></p-tag>
+              </p>
+            </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Etat du bien immobilier</p>
-          <p>
-            <p-tag *ngIf="delegationGestion.bienImmobilier.etatBien == true" severity="success" value="Activé"></p-tag>
-            <p-tag *ngIf="delegationGestion.bienImmobilier.etatBien == false" severity="danger" value="Désactivé"></p-tag>
-          </p>
-
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Date délégation du bien</p>
-          <p>
-            {{ delegationGestion.dateDelegation | date: "dd-MM-yyyy" }}
-          </p>
-
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Statut de la délégation du bien</p>
-          <p>
-            <p-tag *ngIf="delegationGestion.statutDelegation == true" severity="success" value="Acceptée"></p-tag>
-            <p-tag *ngIf="delegationGestion.statutDelegation == false" severity="warning" value="En attente"></p-tag>
-          </p>
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Date de la délégation</p>
+              <p>
+                {{ delegationGestion.dateDelegation | date: "dd-MM-yyyy" }}
+              </p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Statut de la délégation</p>
+              <p>
+                <p-tag *ngIf="delegationGestion.statutDelegation == true" severity="success" value="Acceptée"></p-tag>
+                <p-tag *ngIf="delegationGestion.statutDelegation == false" severity="warning" value="En attente"></p-tag>
+              </p>
+            </div>
+            <p-divider></p-divider>
+          </div>
+        <!-- Vue Propriétaire -->
 
           <div class="text-end">
             <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>

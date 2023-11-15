@@ -24,18 +24,18 @@ export class ForgotPasswordComponent implements OnInit{
     this.initRechercheCompte()
   }
 
-  initRechercheCompte(): void{
+  initRechercheCompte(): void {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     this.rechercheCompteForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
     })
   }
 
-  get email(){
+  get email() {
     return this.rechercheCompteForm.get('email');
   }
 
-  rechercherEmail(){
+  rechercherEmail() {
     const emailData = new FormData();
     emailData.append('email', this.rechercheCompteForm.get('email')?.value)
 
@@ -53,7 +53,7 @@ export class ForgotPasswordComponent implements OnInit{
       },
       (error) => {
         console.log(error)
-        if(error.status === 400){
+        if (error.status === 400) {
           emailData.delete('email');
           this.loading = false;
           this.messageLoading = null;

@@ -36,15 +36,15 @@ export class ResetPasswordComponent implements OnInit{
     }, [ this.passwordMatch("motDePasse", "motDePasseConfirmer") ]);
   }
 
-  get motDePasse(){
+  get motDePasse() {
     return this.recupererMotDePasseForm.get('motDePasse')
   }
 
-  get motDePasseConfirmer(){
+  get motDePasseConfirmer() {
     return this.recupererMotDePasseForm.get('motDePasseConfirmer')
   }
 
-  reinitialiserMotDePasse(): void{
+  reinitialiserMotDePasse(): void {
     const motDePasse = this.recupererMotDePasseForm.get('motDePasse')?.value;
     // const motDePasseConfirmer = this.recupererMotDePasseForm.get('motDePasseConfirmer')?.value;
 

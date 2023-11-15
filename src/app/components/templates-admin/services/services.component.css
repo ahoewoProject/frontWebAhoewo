@@ -22,3 +22,7 @@
 :host ::ng-deep .select .p-dropdown-item {
   margin-left: 0; /* Suppression de la marge négative */
 }
+
+.error {
+  color: #a94442;
+}

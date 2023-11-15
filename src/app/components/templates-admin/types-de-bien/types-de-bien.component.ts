@@ -38,13 +38,13 @@ export class TypesDeBienComponent implements OnInit {
     this.initTypeDeBienForm();
   }
 
-  initTypeDeBienForm(): void{
+  initTypeDeBienForm(): void {
     this.typeDeBienForm = new FormGroup({
       designation: new FormControl(this.typeDeBien.designation, [Validators.required]),
     })
   }
 
-  listeTypesDeBien():void{
+  listeTypesDeBien():void {
     this.typeDeBienService.getAll().subscribe(
       (response) => {
         this.typesDeBien = response;
@@ -52,7 +52,7 @@ export class TypesDeBienComponent implements OnInit {
     );
   }
 
-  get typesDeBienParPage(): any[]{
+  get typesDeBienParPage(): any[] {
     return this.typesDeBien.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
   }
 
@@ -91,17 +91,18 @@ export class TypesDeBienComponent implements OnInit {
     this.visibleAddForm = 0;
   }
 
-  get designation(){
+  get designation() {
     return this.typeDeBienForm.get('designation');
   }
 
   ajouterTypeDeBien(): void {
     this.typeDeBienService.addTypeDeBien(this.typeDeBien).subscribe(
-      (response) =>{
-        if(response.id > 0) {
+      (response) => {
+        if (response.id > 0) {
           this.typesDeBien.push({
             id: response.id,
             designation: response.designation,
+            etat: response.etat,
             creerPar: 0,
             creerLe: new Date(),
             modifierPar: 0,
@@ -111,8 +112,7 @@ export class TypesDeBienComponent implements OnInit {
           this.voirListe();
           this.messageSuccess = "Le type de bien a été ajouté avec succès.";
           this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
-        }
-        else{
+        } else {
           this.messageErreur = "Erreur lors de l'ajout du type de bien !"
           this.afficherFormulaireAjouter();
           this.typeDeBien.designation = response.designation;
@@ -121,7 +121,7 @@ export class TypesDeBienComponent implements OnInit {
     },
     (error) =>{
       console.log(error)
-      if(error.status === 409){
+      if (error.status === 409) {
         this.messageErreur = "Un type de bien avec cette désignation existe déjà !";
         this.messageService.add({ severity: 'warn', summary: "Erreur d'ajout", detail: this.messageErreur });
       }
@@ -130,13 +130,12 @@ export class TypesDeBienComponent implements OnInit {
 
   modifierTypeDeBien(): void {
     this.typeDeBienService.updateTypeDeBien(this.typeDeBien.id, this.typeDeBien).subscribe(
-      (response) =>{
+      (response) => {
         if(response.id > 0) {
           this.voirListe();
           this.messageSuccess = "Le type de bien a été modifié avec succès.";
           this.messageService.add({ severity: 'success', summary: 'Modification réussie', detail: this.messageSuccess })
-        }
-        else{
+        } else {
           this.messageErreur = "Erreur lors de la modification du type de bien !";
           this.messageService.add({ severity: 'error', summary: 'Erreur modification', detail: this.messageErreur });
           this.afficherFormulaireModifier(this.typeDeBien.id);
@@ -144,7 +143,7 @@ export class TypesDeBienComponent implements OnInit {
     },
     (error) =>{
       console.log(error)
-      if(error.status === 409){
+      if (error.status === 409) {
         this.messageErreur = "Un type de bien avec cette désignation existe déjà !";
         this.messageService.add({ severity: 'warn', summary: 'Modification non réussie', detail: this.messageErreur });
         this.afficherFormulaireModifier(this.typeDeBien.id);
@@ -152,18 +151,84 @@ export class TypesDeBienComponent implements OnInit {
     })
   }
 
-  supprimerTypeDeBien(id: number): void{
+  activerTypeDeBien(id: number): void {
+    this.confirmationService.confirm({
+      message: 'Vous êtes sûr de vouloir activer ce type de bien ?',
+      header: "Activation d'un type de bien",
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.typeDeBienService.activerTypeDeBien(id).subscribe(response=>{
+          console.log(response);
+          this.voirListe();
+          this.messageSuccess = "Le type de bien a été activé avec succès !";
+          this.messageService.add({ severity: 'success', summary: 'Activation du type de bien confirmée', detail: this.messageSuccess })
+        });
+
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Activation du type de bien rejetée', detail: "Vous avez rejeté l'activation de ce type de bien !" });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({ severity: 'warn', summary: 'Activation du type de bien annulée', detail: "Vous avez annulé l'activation de ce type de bien !" });
+            break;
+        }
+      }
+    });
+  }
+
+  desactiverTypeDeBien(id: number): void {
+    this.confirmationService.confirm({
+      message: 'Vous êtes sûr de vouloir désactiver ce type de bien ?',
+      header: "Désactivaction d'un type de bien",
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.typeDeBienService.desactiverTypeDeBien(id).subscribe(response=>{
+          console.log(response);
+          this.voirListe();
+          this.messageSuccess = "Le type de bien a été désactivé avec succès !";
+          this.messageService.add({ severity: 'success', summary: 'Désactivation du type de bien confirmée', detail: this.messageSuccess })
+        });
+
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Désactivation du type de bien rejetée', detail: "Vous avez rejeté la désactivation de ce type de bien !" });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({ severity: 'warn', summary: 'Désactivation du type de bien annulée', detail: "Vous avez annulé la désactivation de ce type de bien !" });
+            break;
+        }
+      }
+    });
+  }
+
+  supprimerTypeDeBien(id: number): void {
     this.confirmationService.confirm({
       message: 'Vous êtes sûr de vouloir supprimer ce type de bien ?',
       header: "Suppression d'un type de bien",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.typeDeBienService.deleteById(id).subscribe(response=>{
-          console.log(response);
-          this.voirListe();
-          this.messageSuccess = "Le type de bien a été supprimé avec succès !";
-          this.messageService.add({ severity: 'success', summary: 'Suppression du type de bien confirmée', detail: this.messageSuccess })
-        });
+        this.typeDeBienService.deleteById(id).subscribe(
+          (response) => {
+            console.log(response);
+            this.voirListe();
+
+            this.messageSuccess = "Le type de bien a été supprimé avec succès !";
+            this.messageService.add({ severity: 'success', summary: 'Suppression du type de bien confirmée', detail: this.messageSuccess })
+          },
+          error => {
+            if (error.status == 400) {
+              this.messageErreur = "Impossible de supprimer ce type de bien car des biens immobiliers sont liés à ce dernier !"
+              this.messageService.add({ severity: 'warn', summary: 'Suppression impossible', detail: this.messageErreur })
+            } else {
+              this.messageErreur = "Une erreur s'est produite lors de la suppression de ce type de bien !"
+              this.messageService.add({ severity: 'error', summary: 'Erreur lors de la suppression', detail: this.messageErreur })
+            }
+          }
+        );
 
       },
       reject: (type: ConfirmEventType) => {

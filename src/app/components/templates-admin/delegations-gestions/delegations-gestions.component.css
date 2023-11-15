@@ -50,3 +50,7 @@
 :host ::ng-deep .imageDetail {
   width: 60%;
 }
+
+.error {
+  color: #a94442;
+}

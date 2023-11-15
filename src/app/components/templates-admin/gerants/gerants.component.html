@@ -24,31 +24,31 @@
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Nom</label>
                   <input type="text" class="form-control" id="nom" name="nom" placeholder="Le nom du gérant" formControlName="nom" [(ngModel)]="gerant.nom" required>
-                  <div class="text-danger" [hidden]="nom.valid || nom.pristine && !nom.touched ">Le nom du gérant est obligatoire</div>
+                  <div class="error" [hidden]="nom.valid || nom.pristine && !nom.touched ">Le nom du gérant est obligatoire</div>
                 </div>
               </div>
               <div class="col-sm-6 col-xl-4">
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Prénom</label>
                   <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Le prénom du gérant" formControlName="prenom" [(ngModel)]="gerant.prenom" required>
-                  <div class="text-danger" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le prénom du gérant est obligatoire</div>
+                  <div class="error" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le prénom du gérant est obligatoire</div>
                 </div>
               </div>
               <div class="col-sm-6 col-xl-4">
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Username</label>
                   <input type="text" class="form-control" id="username" name="username" placeholder="Le nom d'utilisateur du gérant" formControlName="username" [(ngModel)]="gerant.username" required>
-                  <div class="text-danger" [hidden]="username.valid || username.pristine && !username.touched ">Le nom d'utilisateur du gérant est obligatoire</div>
+                  <div class="error" [hidden]="username.valid || username.pristine && !username.touched ">Le nom d'utilisateur du gérant est obligatoire</div>
                 </div>
               </div>
               <div class="col-sm-6 col-xl-4">
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Email</label>
                   <input type="email" class="form-control" id="email" name="email" placeholder="L'email du gérant" formControlName="email" [(ngModel)]="gerant.email" required>
-                  <div class="text-danger" [hidden]="!email?.hasError('required') || !email.touched">
+                  <div class="error" [hidden]="!email?.hasError('required') || !email.touched">
                     L'adresse e-mail du gérant est obligatoire
                   </div>
-                  <div class="text-danger" [hidden]="!email?.hasError('email') || !email.touched">
+                  <div class="error" [hidden]="!email?.hasError('email') || !email.touched">
                     L'adresse e-mail saisie n'est pas valide.
                   </div>
                 </div>
@@ -65,8 +65,8 @@
                     (click)="voirMotDePasse = !voirMotDePasse"
                     [class.hide]="!voirMotDePasse">
                   </i>
-                  <div class="text-danger" *ngIf="motDePasse?.hasError('required') && motDePasse.touched">Le mot de passe du gérant est obligatoire</div>
-                  <div class="text-danger" *ngIf="motDePasse?.errors?.['minlength'] || motDePasse.errors?.['maxlength'] && motDePasse?.hasError('pattern') && motDePasse.touched">
+                  <div class="error" *ngIf="motDePasse?.hasError('required') && motDePasse.touched">Le mot de passe du gérant est obligatoire</div>
+                  <div class="error" *ngIf="motDePasse?.errors?.['minlength'] || motDePasse.errors?.['maxlength'] && motDePasse?.hasError('pattern') && motDePasse.touched">
                     Règles de saisie du mot de passe :
                     <ul>
                       <li class="puce-visible" *ngIf="motDePasse?.errors?.['minlength'] || motDePasse.errors?.['maxlength'] && motDePasse.touched">Le mot de passe doit comporter au minimum 8 caractères.</li>
@@ -79,7 +79,7 @@
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Téléphone</label>
                   <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Le numéro de téléphone du gérant" formControlName="telephone" [(ngModel)]="gerant.telephone" required>
-                  <div class="text-danger" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numéro de téléphone du gérant obligatoire</div>
+                  <div class="error" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numéro de téléphone du gérant obligatoire</div>
                 </div>
               </div>
             </div>
@@ -145,9 +145,17 @@
                   <td class="vam">{{ gerant.email }}</td>
                   <td class="vam">
                     <div class="d-flex">
-                      <a type="button" (click)="afficherPageDetail(gerant.id)" class="icon" pTooltip="Détails" tooltipPosition="top"><i class="pi pi-eye" style="font-size: 1rem"></i></a>
-                      <a *ngIf="gerant.etatCompte === true" type="button" class="icon" (click)="desactiverCompte(gerant.id)" pTooltip="Désactiver ce compte" tooltipPosition="top"><i class="pi pi-lock" style="font-size: 1rem"></i></a>
-                      <a *ngIf="gerant.etatCompte === false" type="button" class="icon" (click)="activerCompte(gerant.id)" pTooltip="Activer ce compte" tooltipPosition="left"><i class="pi pi-lock-open" style="font-size: 1rem"></i></a>
+                      <button pButton type="button" (click)="afficherPageDetail(gerant.id)" icon="pi pi-eye"
+                        pTooltip="Détails" tooltipPosition="right" class="p-button-text p-button-info">
+                      </button>
+
+                      <button pButton type="button" *ngIf="gerant.etatCompte === true"(click)="desactiverCompte(gerant.id)" icon="pi pi-lock"
+                        pTooltip="Désactiver ce compte" tooltipPosition="top" class="p-button-text p-button-danger">
+                      </button>
+
+                      <button pButton type="button" *ngIf="gerant.etatCompte === false" (click)="activerCompte(gerant.id)" icon="pi pi-lock-open"
+                        pTooltip="Activer ce compte" tooltipPosition="left" class="p-button-text p-button-success">
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -187,47 +195,51 @@
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
 
-          <p class="fw600 mb10 ff-heading dark-color">Nom du gérant</p>
-          <p>
-              {{ gerant.nom }}
-          </p>
+          <div class="row">
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Prénom du gérant</p>
-          <p>
-              {{ gerant.prenom }}
-          </p>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Nom</p>
+              <p>{{ gerant.nom }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Prénom</p>
+              <p>{{ gerant.prenom }}</p>
+            </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur du gérant</p>
-          <p>
-              {{ gerant.username }}
-          </p>
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur</p>
+              <p>
+                  {{ gerant.username }}
+              </p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+              <p>{{ gerant.email }}</p>
+            </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du gérant</p>
-          <p>
-              {{ gerant.email }}
-          </p>
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
+              <p>{{ gerant.telephone }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Rôle</p>
+              <p>{{ gerant.role.libelle }}</p>
+            </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone du gérant</p>
-          <p>
-              {{ gerant.telephone }}
-          </p>
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
+              <p>
+                <p-tag *ngIf="gerant.etatCompte == true" severity="success" value="Activé"></p-tag>
+                <p-tag *ngIf="gerant.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+              </p>
+            </div>
+            <p-divider></p-divider>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Rôle du gérant</p>
-          <p>
-              {{ gerant.role.libelle }}
-          </p>
+          </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
-          <p>
-            <p-tag *ngIf="gerant.etatCompte == true" severity="success" value="Activé"></p-tag>
-            <p-tag *ngIf="gerant.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
-          </p>
           <div class="text-end">
             <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
           </div>

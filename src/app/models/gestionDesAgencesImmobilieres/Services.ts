@@ -7,11 +7,13 @@ export class Services extends EntiteDeBase {
   nomService: string;
   description!: Text;
   agenceImmobiliere: AgenceImmobiliere;
+  etat: boolean;
 
   constructor(){
     super();
     this.id = 0;
     this.nomService = ''
-    this.agenceImmobiliere = new AgenceImmobiliere()
+    this.agenceImmobiliere = new AgenceImmobiliere();
+    this.etat = true;
   }
 }

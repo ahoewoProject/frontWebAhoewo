@@ -5,12 +5,12 @@
     <!-- End Menu responsive -->
   </div>
 
-  <!-- Liste des clients -->
+  <!-- Liste des responsables d'agences immobilières -->
   <div *ngIf="affichage == 1">
     <div class="row align-items-center pb40">
       <div class="col-xxl-3">
         <div class="dashboard_title_area">
-          <h4>Liste des clients</h4>
+          <h4>Liste des responsables</h4>
           <p class="text"></p>
         </div>
       </div>
@@ -43,23 +43,23 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr *ngFor="let client of clientsParPage | genericFilter: recherche;  let i = index">
+                <tr *ngFor="let responsable of responsablesAgenceImmobiliereParPage | genericFilter: recherche;  let i = index">
                   <td class="vam">{{ pageActuelle + i + 1 }}</td>
-                  <td class="vam">{{ client.nom }}</td>
-                  <td class="vam">{{ client.prenom }}</td>
-                  <td class="vam">{{ client.username }}</td>
-                  <td class="vam">{{ client.email }}</td>
+                  <td class="vam">{{ responsable.nom }}</td>
+                  <td class="vam">{{ responsable.prenom }}</td>
+                  <td class="vam">{{ responsable.username }}</td>
+                  <td class="vam">{{ responsable.email }}</td>
                   <td class="vam">
                     <div class="d-flex">
-                      <button pButton type="button" (click)="afficherPageDetail(client.id)" icon="pi pi-eye"
+                      <button pButton type="button" (click)="afficherPageDetail(responsable.id)" icon="pi pi-eye"
                         pTooltip="Détails" tooltipPosition="right" class="p-button-text p-button-info">
                       </button>
 
-                      <button pButton type="button" *ngIf="client.etatCompte === true"(click)="desactiverCompte(client.id)" icon="pi pi-lock"
+                      <button pButton type="button" *ngIf="responsable.etatCompte === true"(click)="desactiverCompte(responsable.id)" icon="pi pi-lock"
                         pTooltip="Désactiver ce compte" tooltipPosition="top"class="p-button-text p-button-danger">
                       </button>
 
-                      <button pButton type="button" *ngIf="client.etatCompte === false" (click)="activerCompte(client.id)" icon="pi pi-lock-open"
+                      <button pButton type="button" *ngIf="responsable.etatCompte === false" (click)="activerCompte(responsable.id)" icon="pi pi-lock-open"
                         pTooltip="Activer ce compte" tooltipPosition="left"class="p-button-text p-button-success">
                       </button>
                     </div>
@@ -69,30 +69,30 @@
             </table>
           </div>
 
-          <div *ngIf="clients.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="responsablesAgenceImmobiliere.length !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
               (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="clients.length"
+              [rows]="elementsParPage"  [totalRecords]="responsablesAgenceImmobiliere.length"
               [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} clients"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} responsables d'agence immbilière"
               [showPageLinks]="true" [showFirstLastIcon]="true">
             </p-paginator>
           </div>
-          <div *ngIf="clients.length == 0" class="mbp_pagination text-center mt30">
-            <p class="mt10 pagination_page_count text-center">Aucun compte client crée pour le moment</p>
+          <div *ngIf="responsablesAgenceImmobiliere.length == 0" class="mbp_pagination text-center mt30">
+            <p class="mt10 pagination_page_count text-center">Aucun compte responsable d'agence immobilière crée pour le moment</p>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- End Liste des clients -->
+  <!-- End Liste des responsables d'agences immobilières -->
 
-  <!-- Details d'un client -->
+  <!-- Details d'un responsable d'agence immobilière -->
   <div *ngIf="affichage == 2">
     <div  class="row align-items-center pb40">
       <div class="col-xxl-3">
         <div class="dashboard_title_area">
-          <h4>Détails d'un client</h4>
+          <h4>Détails d'un responsable</h4>
           <p class="text"></p>
         </div>
       </div>
@@ -105,39 +105,39 @@
 
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Nom</p>
-              <p>{{ client.nom }}</p>
+              <p>{{ responsableAgenceImmobiliere.nom }}</p>
             </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Prénom</p>
-              <p>{{ client.prenom }}</p>
+              <p>{{ responsableAgenceImmobiliere.prenom }}</p>
             </div>
 
             <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur</p>
-              <p>{{ client.username }}</p>
+              <p>{{ responsableAgenceImmobiliere.username }}</p>
             </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
-              <p>{{ client.email }}</p>
+              <p>{{ responsableAgenceImmobiliere.email }}</p>
             </div>
 
             <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
-              <p>{{ client.telephone }}</p>
+              <p>{{ responsableAgenceImmobiliere.telephone }}</p>
             </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Rôle</p>
-              <p>{{ client.role.libelle }}</p>
+              <p>{{ responsableAgenceImmobiliere.role.libelle }}</p>
             </div>
 
             <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
               <p>
-                <p-tag *ngIf="client.etatCompte == true" severity="success" value="Activé"></p-tag>
-                <p-tag *ngIf="client.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+                <p-tag *ngIf="responsableAgenceImmobiliere.etatCompte == true" severity="success" value="Activé"></p-tag>
+                <p-tag *ngIf="responsableAgenceImmobiliere.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
               </p>
             </div>
             <p-divider></p-divider>
@@ -151,5 +151,5 @@
       </div>
     </div>
   </div>
-  <!-- End Details d'un client -->
+  <!-- End Details d'un responsable d'agence immobilière -->
 </div>

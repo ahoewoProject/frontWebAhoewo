@@ -63,27 +63,27 @@ export class ProfilComponent implements OnInit{
     this.affichage = 1;
   }
 
-  get nom(){
+  get nom() {
     return this.userForm.get('nom');
   }
 
-  get prenom(){
+  get prenom() {
     return this.userForm.get('prenom');
   }
 
-  get username(){
+  get username() {
     return this.userForm.get('username');
   }
 
-  get email(){
+  get email() {
     return this.userForm.get('email');
   }
 
-  get motDePasse(){
+  get motDePasse() {
     return this.userForm.get('motDePasse');
   }
 
-  get telephone(){
+  get telephone() {
     return this.userForm.get('telephone');
   }
 
@@ -115,11 +115,19 @@ export class ProfilComponent implements OnInit{
         if(response.id > 0) {
           this.retour();
           this.messageSuccess = "Votre profil a été modifié avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Mise à jour réussie', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Mise à jour réussie',
+            detail: this.messageSuccess
+          });
         }
         else{
           this.messageErreur = "Erreur lors de la modification de vos informations !";
-          this.messageService.add({ severity: 'error', summary: 'Erreur de modification', detail: this.messageErreur })
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur de modification',
+            detail: this.messageErreur
+          });
           this.afficherFormulaireModifier();
         }
     },
@@ -127,7 +135,11 @@ export class ProfilComponent implements OnInit{
       console.log(error)
       if(error.status === 409){
         this.messageErreur = "Ce nom d'utilisateur a été déjà utilisé!";
-        this.messageService.add({ severity: 'warn', summary: 'Mise à jour non réussie', detail: this.messageErreur })
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Mise à jour non réussie',
+          detail: this.messageErreur
+        });
         this.afficherFormulaireModifier();
       }
     })
