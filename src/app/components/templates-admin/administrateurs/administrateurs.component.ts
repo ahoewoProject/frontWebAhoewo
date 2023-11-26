@@ -51,13 +51,10 @@ export class AdministrateursComponent implements OnInit {
 
   initAdminForm(): void {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
     this.adminForm = new FormGroup({
       nom: new FormControl(this.admin.nom, [Validators.required]),
       prenom: new FormControl(this.admin.prenom, [Validators.required]),
-      username: new FormControl(this.admin.username, [Validators.required]),
       email: new FormControl(this.admin.email, [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
-      motDePasse: new FormControl(this.admin.motDePasse, [Validators.required, Validators.maxLength(14), Validators.minLength(8), Validators.pattern(passwordRegex)]),
       telephone: new FormControl(this.admin.telephone, [Validators.required]),
     })
   }
@@ -88,8 +85,8 @@ export class AdministrateursComponent implements OnInit {
     this.visibleAddForm = 0;
   }
 
-
   afficherFormulaireAjouter(): void {
+    this.affichage = 0;
     this.visibleAddForm = 1;
     this.admin = new Administrateur();
   }
@@ -116,16 +113,8 @@ export class AdministrateursComponent implements OnInit {
     return this.adminForm.get('prenom');
   }
 
-  get username(){
-    return this.adminForm.get('username');
-  }
-
   get email() {
     return this.adminForm.get('email');
-  }
-
-  get motDePasse() {
-    return this.adminForm.get('motDePasse');
   }
 
   get telephone() {
@@ -143,6 +132,7 @@ export class AdministrateursComponent implements OnInit {
             id: response.id,
             nom: response.nom,
             prenom: response.prenom,
+            matricule: response.matricule,
             username: response.username,
             email: response.email,
             motDePasse: response.motDePasse,
@@ -181,8 +171,8 @@ export class AdministrateursComponent implements OnInit {
     },
     (error) =>{
       console.log(error)
-      if (error.error.status === 409) {
-        this.messageErreur = "Un administrateur avec ce nom d'utilisateur existe déjà !";
+      if (error.status === 409) {
+        this.messageErreur = "Un administrateur avec cette adresse e-mail existe déjà !";
         this.messageService.add({
           severity: 'warn',
           summary: 'Ajout non réussi',
@@ -190,21 +180,6 @@ export class AdministrateursComponent implements OnInit {
         });
       }
     })
-  }
-
-  supprimerAdmin(id: number): void{
-    this.adminService.deleteById(id).subscribe(
-      (response) => {
-        console.log(response);
-        this.voirListe();
-        this.messageSuccess = "L'administrateur a été supprimé avec succès.";
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Suppression réussie',
-          detail: this.messageSuccess
-        });
-      }
-    );
   }
 
   activerCompte(id: number): void {

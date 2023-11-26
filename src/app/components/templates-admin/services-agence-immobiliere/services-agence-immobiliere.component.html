@@ -1,0 +1,321 @@
+<div class="dashboard__content bgc-f7">
+  <div class="row pb40 d-block d-lg-none">
+    <!-- Menu responsive -->
+    <app-menu-responsive></app-menu-responsive>
+    <!-- End Menu responsive -->
+  </div>
+
+  <p-toast></p-toast>
+
+  <!-- Formulaire d'ajout d'un service à une agence immobilière -->
+  <div *ngIf="visibleAddForm == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-5">
+        <div class="dashboard_title_area">
+          <h4>Ajout d'un service</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30">
+          <form [formGroup]="serviceAgenceImmobiliereForm" (ngSubmit)="ajouterServiceAgenceImmobiliere()" class="form-style1">
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Agence immobilière</label>
+                  <br>
+                  <p-dropdown
+                    class="select" emptyFilterMessage="Aucun résultat trouvé"
+                    [options]="agencesImmobilieres" placeholder="Choisir une agence"
+                    formControlName="agenceImmobiliere" [filter]="true" filterBy="codeAgence,nomAgence"
+                    filterPlaceholder="Rechercher"
+                    [showClear]="true" (onChange)="agenceChoisie($event)" optionLabel="nomAgence">
+                    <ng-template let-agenceImmobiliere pTemplate="item">
+                      {{ agenceImmobiliere.codeAgence }}/ {{ agenceImmobiliere.nomAgence }}
+                    </ng-template>
+                  </p-dropdown>
+                  <div class="error" [hidden]="!agenceImmobiliere?.hasError('required') || !agenceImmobiliere.touched">La selection de l'agence est obligatoire</div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Service</label>
+                  <br>
+                  <p-dropdown
+                    class="select" emptyFilterMessage="Aucun résultat trouvé"
+                    [options]="services" placeholder="Choisir un service"
+                    formControlName="service" [filter]="true" filterBy="codeService,nomService"
+                    filterPlaceholder="Rechercher"
+                    [showClear]="true" (onChange)="serviceChoisi($event)" optionLabel="nomService">
+                    <ng-template let-service pTemplate="item">
+                      {{ service.codeService }} / {{ service.nomService }}
+                    </ng-template>
+                  </p-dropdown>
+                  <div class="error" [hidden]="!service?.hasError('required') || !service.touched">La selection d'un service est obligatoire</div>
+                </div>
+              </div>
+
+            </div>
+            <br>
+            <div class="col-md-12">
+              <div class="text-end">
+                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': serviceAgenceImmobiliereForm.invalid }" (click)="serviceAgenceImmobiliereForm.invalid ? null : ajouterServiceAgenceImmobiliere()" type="submit">Ajouter</a>
+                &nbsp;
+                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Formulaire d'ajout d'un service à une agence immobilière -->
+
+  <!-- Formulaire de modification d'un service d'une agence immobilière -->
+  <div *ngIf="visibleUpdateForm == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-5">
+        <div class="dashboard_title_area">
+          <h4>Ajout d'un service</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30">
+          <form [formGroup]="serviceAgenceImmobiliereForm" (ngSubmit)="modifierServiceAgenceImmobiliere(serviceAgenceImmobiliere.id)" class="form-style1">
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Agence immobilière</label>
+                  <br>
+                  <p-dropdown
+                    class="select" emptyFilterMessage="Aucun résultat trouvé" [(ngModel)]="serviceAgenceImmobiliere.agenceImmobiliere"
+                    [options]="agencesImmobilieres" placeholder="Choisir une agence"
+                    formControlName="agenceImmobiliere" [filter]="true" filterBy="codeAgence,nomAgence"
+                    filterPlaceholder="Rechercher"
+                    [showClear]="true" (onChange)="agenceChoisie($event)" optionLabel="nomAgence">
+                    <ng-template let-agenceImmobiliere pTemplate="item">
+                      {{ agenceImmobiliere.codeAgence }}/ {{ agenceImmobiliere.nomAgence }}
+                    </ng-template>
+                  </p-dropdown>
+                  <div class="error" [hidden]="!agenceImmobiliere?.hasError('required') || !agenceImmobiliere.touched">La selection de l'agence est obligatoire</div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Service</label>
+                  <br>
+                  <p-dropdown
+                    class="select" emptyFilterMessage="Aucun résultat trouvé" [(ngModel)]="serviceAgenceImmobiliere.services"
+                    [options]="services" placeholder="Choisir un service"
+                    formControlName="service" [filter]="true" filterBy="codeService,nomService"
+                    filterPlaceholder="Rechercher"
+                    [showClear]="true" (onChange)="serviceChoisi($event)" optionLabel="nomService">
+                    <ng-template let-service pTemplate="item">
+                      {{ service.codeService }} / {{ service.nomService }}
+                    </ng-template>
+                  </p-dropdown>
+                  <div class="error" [hidden]="!service?.hasError('required') || !service.touched">La selection d'un service est obligatoire</div>
+                </div>
+              </div>
+
+            </div>
+            <br>
+            <div class="col-md-12">
+              <div class="text-end">
+                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': serviceAgenceImmobiliereForm.invalid }" (click)="serviceAgenceImmobiliereForm.invalid ? null : modifierServiceAgenceImmobiliere(serviceAgenceImmobiliere.id)" type="submit">Ajouter</a>
+                &nbsp;
+                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Formulaire de modification d'un service d'une agence immobilière -->
+
+  <!-- Liste des services des agences immobilières -->
+  <div *ngIf="affichage == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-5">
+        <div class="dashboard_title_area">
+          <h4>Vos services</h4>
+        </div>
+      </div>
+      <div class="col-xxl-7">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <div class="item1 mb15-sm">
+            <div class="search_area">
+              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
+              <label><span class="flaticon-search"></span></label>
+            </div>
+          </div>
+          &nbsp;
+          <a type="button" (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
+            Ajouter un service
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+          <div class="packages_table table-responsive">
+            <table class="table-style3 table at-savesearch">
+              <thead class="t-head">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Agence immobiliere</th>
+                  <th scope="col">Nom</th>
+                  <th scope="col">Etat</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="t-body">
+                <tr *ngFor="let serviceAgenceImmobiliere of servicesAgenceImmobiliereParPage | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                  <th scope="row">
+                    <div class="listing-style1 dashboard-style d-xxl-flex align-items-center mb-0">
+                      <div class="list-thumb">
+                        <img *ngIf="serviceAgenceImmobiliere.agenceImmobiliere.logoAgence == ''" class="w-100"
+                        src="assets/images/team/logo_par_defaut.jpg" alt="">
+
+                        <img *ngIf="serviceAgenceImmobiliere.agenceImmobiliere.logoAgence !== ''" class="w-100"
+                        src="{{this.APIEndpoint+'api/logo/agence-immobiliere/'+ serviceAgenceImmobiliere.agenceImmobiliere.id}}" alt="">
+                      </div>
+                      <div class="list-content flex-shrink-1">
+                        <h6 class="list-title"><a href="{{this.APIEndpoint+'api/logo/agence-immobiliere/'+ serviceAgenceImmobiliere.agenceImmobiliere.id}}">{{ serviceAgenceImmobiliere.agenceImmobiliere.adresse }}</a></h6>
+                        <p class="list-text">{{ serviceAgenceImmobiliere.agenceImmobiliere.nomAgence }}</p>
+                      </div>
+                    </div>
+                  </th>
+                  <td class="vam">{{ serviceAgenceImmobiliere.services.nomService }} </td>
+                  <td class="vam">
+                    <p-tag *ngIf="serviceAgenceImmobiliere.etat === true" severity="success" value="Activé"></p-tag>
+                    <p-tag *ngIf="serviceAgenceImmobiliere.etat === false" severity="danger" value="Désactivé"></p-tag>
+                  </td>
+                  <td class="vam">
+                    <div class="d-flex">
+
+                      <button pButton type="button" icon="pi pi-eye"
+                        (click)="afficherPageDetail(serviceAgenceImmobiliere.id)"
+                        pTooltip="Détails" tooltipPosition="top"
+                        class="p-button-text p-button-info">
+                      </button>
+
+                      <button pButton type="button" icon="pi pi-pencil"
+                        (click)="afficherFormulaireModifier(serviceAgenceImmobiliere.id)"
+                        pTooltip="Modifier" tooltipPosition="top"
+                        class="p-button-text p-button-warning">
+                      </button>
+
+                      <button pButton type="button"
+                        *ngIf="serviceAgenceImmobiliere.etat === true"
+                        (click)="desactiverServiceAgenceImmobiliere(serviceAgenceImmobiliere.id)" icon="pi pi-lock"
+                        pTooltip="Désactiver ce service" tooltipPosition="right" class="p-button-text p-button-danger">
+                      </button>
+
+                      <button pButton type="button"
+                        *ngIf="serviceAgenceImmobiliere.etat === false"
+                        (click)="activerServiceAgenceImmobiliere(serviceAgenceImmobiliere.id)" icon="pi pi-lock-open"
+                        pTooltip="Activer ce service" tooltipPosition="right" class="p-button-text p-button-success">
+                      </button>
+
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div *ngIf="servicesAgenceImmobiliere.length !== 0" class="mbp_pagination text-center mt30">
+            <p-paginator
+              (onPageChange)="pagination($event)" [first]="pageActuelle"
+              [rows]="elementsParPage"  [totalRecords]="servicesAgenceImmobiliere.length"
+              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} services"
+              [showPageLinks]="true" [showFirstLastIcon]="true">
+            </p-paginator>
+          </div>
+          <div *ngIf="servicesAgenceImmobiliere.length == 0" class="mbp_pagination text-center mt30">
+            <p class="mt10 pagination_page_count text-center">Aucun service enregistré pour le moment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Liste des services des agences immobilières -->
+
+  <!-- Details d'un service d'une agence immobilière -->
+  <div *ngIf="affichage == 2">
+    <div  class="row align-items-center pb40">
+      <div class="col-xxl-8">
+        <div class="dashboard_title_area">
+          <h4>Détails d'un service</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Code</p>
+              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.services.codeService }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Nom</p>
+              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.services.nomService }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div>
+              <p class="fw600 mb10 ff-heading dark-color">Description</p>
+              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.services.description }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+              <p>
+                <p-tag *ngIf="serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.etat === true" severity="success" value="Activé"></p-tag>
+                <p-tag *ngIf="serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.etat === false" severity="danger" value="Désactivé"></p-tag>
+              </p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Agence immobilière</p>
+              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.nomAgence }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">E-mail de l'agence</p>
+              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.adresseEmail }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Téléphone de l'agence</p>
+              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.telephone }}</p>
+            </div>
+          </div>
+
+          <div class="text-end">
+            <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Details d'un service d'une agence immobilière -->
+</div>

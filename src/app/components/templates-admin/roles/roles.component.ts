@@ -62,7 +62,7 @@ export class RolesComponent implements OnInit{
     this.listeRoles()
   }
 
-  voirListe(): void{
+  voirListe(): void {
     this.listeRoles();
     this.roleForm.reset();
     this.affichage = 1;
@@ -71,6 +71,7 @@ export class RolesComponent implements OnInit{
   }
 
   afficherFormulaireAjouter(): void {
+    this.affichage = 0;
     this.visibleAddForm = 1;
     this.visibleUpdateForm = 0;
     this.role = new Role();
@@ -94,6 +95,7 @@ export class RolesComponent implements OnInit{
 
   afficherFormulaireModifier(id: number): void {
     this.detailRole(id);
+    this.affichage = 0;
     this.visibleUpdateForm = 1;
     this.visibleAddForm = 0;
   }

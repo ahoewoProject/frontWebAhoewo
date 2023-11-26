@@ -3,12 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { DemandeCertification } from 'src/app/models/gestionDesComptes/DemandeCertification';
-import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
-import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/services.service';
-import { BienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/bien-immobilier.service';
-import { DelegationGestionService } from 'src/app/services/gestionDesBiensImmobiliers/delegation-gestion.service';
 import { AdministrateurService } from 'src/app/services/gestionDesComptes/administrateur.service';
-import { AgentImmobilierService } from 'src/app/services/gestionDesComptes/agent-immobilier.service';
 import { ClientService } from 'src/app/services/gestionDesComptes/client.service';
 import { DemandeCertificationService } from 'src/app/services/gestionDesComptes/demande-certification.service';
 import { DemarcheurService } from 'src/app/services/gestionDesComptes/demarcheur.service';
@@ -32,25 +27,13 @@ export class DashboardComponent implements OnInit {
   _nombreDemarcheurs: number = 0;
   _nombreProprietaires: number = 0;
   _nombreResponsablesAgenceImmobiliere: number = 0;
-  _nombreAgentsImmobiliersResponsable: number = 0;
-  _nombreAgentImmobiliers: number = 0;
   _nombreNotaires: number = 0;
   _nombreAdministrateurs: number = 0;
   _nombreDemandeCertification: number = 0;
   _nombreDemandeCertificationEnAttente: number = 0;
   _nombreDemandeCertificationValidee: number = 0;
   _nombreGerantsParProprietaire: number = 0;
-  _nombreAgencesImmobilieres: number = 0;
-  _nombreAgencesImmobilieresResponsable: number = 0;
-  _nombreAgencesAgentImmobilier: number = 0;
-  _nombreServices: number = 0;
-  _nombreServicesAgentImmobilier: number = 0;
-  _nombreBiensImmobiliers: number = 0;
-  _nombreBiensImmobiliersGerant: number = 0;
-  _nombreBiensImmobiliersAgentImmobilier: number = 0;
-  _nombreBiensDeleguesProprietaire: number = 0;
-  _nombreBiensDeleguesGestionnaire: number = 0;
-  _nombreBiensDeleguesAgentImmobilier: number = 0;
+
   demandeCertifications : DemandeCertification[] = [];
   user: any;
   connexionReussie: any;
@@ -63,14 +46,9 @@ export class DashboardComponent implements OnInit {
     private proprietaireService: ProprietaireService,
     private responsableAgenceImmobiliereService: ResponsableAgenceImmobiliereService,
     private clientService: ClientService,
-    private agentImmobilierService: AgentImmobilierService,
     private administrateurService: AdministrateurService,
     private notaireService: NotaireService,
     private demandeCertificationService: DemandeCertificationService,
-    private agenceImmobiliereService: AgenceImmobiliereService,
-    private _serviceService: ServicesService,
-    private bienImmobilierService: BienImmobilierService,
-    private delegationGestionService: DelegationGestionService,
     private activatedRoute: ActivatedRoute,
     private messageService: MessageService,
   )
@@ -87,36 +65,20 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.connexionReussie = this.activatedRoute.snapshot.queryParamMap.get('connexionReussie') || '';
 
-    if (this.user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE'){
-      this.nombreAgencesImmobilieresResponsable();
-      this.nombreAgentsImmobiliersResponsable();
-      this.nombreServices();
-    } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER'){
-      this.nombreAgencesAgentImmobilier();
-      this.nombreServicesAgentImmobilier();
-      this.nombreBiensImmobiliersAgentImmobilier();
-      this.nombreBiensDeleguesAgentImmobilier()
-    } else {
-      this.nombreRoles();
-      this.nombreAdministrateurs();
-      this.nombreAgentImmobiliers();
-      this.nombreNotaires();
-      this.nombreClients();
-      this.nombreProprietaires();
-      this.nombreResponsablesAgenceImmobiliere();
-      this.nombreUtilisateurs();
-      this.nombreGerants();
-      this.nombreDemarcheurs();
-      this.nombreDemandeCertification();
-      this.nombreDemandeCertificationEnAttente();
-      this.nombreDemandeCertificationValidee();
-      this.nombreGerantsParProprietaire();
-      this.nombreAgencesImmobilieres();
-      this.nombreBiensDeleguesGestionnaire();
-      this.nombreBiensDeleguesProprietaire();
-      this.nombreBiensImmobiliersGerant();
-      this.nombreBiensImmobiliers();
-    }
+    this.nombreRoles();
+    this.nombreAdministrateurs();
+    this.nombreNotaires();
+    this.nombreClients();
+    this.nombreProprietaires();
+    this.nombreResponsablesAgenceImmobiliere();
+    this.nombreUtilisateurs();
+    this.nombreGerants();
+    this.nombreDemarcheurs();
+    this.nombreDemandeCertification();
+    this.nombreDemandeCertificationEnAttente();
+    this.nombreDemandeCertificationValidee();
+    this.nombreGerantsParProprietaire();
+
     this.detailUser();
   }
 
@@ -184,22 +146,6 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  nombreAgentImmobiliers(): void {
-    this.agentImmobilierService.countAgentImmobiliers().subscribe(
-      (response) => {
-        this._nombreAgentImmobiliers = response;
-      }
-    );
-  }
-
-  nombreAgentsImmobiliersResponsable(): void {
-    this.agentImmobilierService.countAgentsImmobiliersParResponsable().subscribe(
-      (response) => {
-        this._nombreAgentsImmobiliersResponsable = response;
-      }
-    );
-  }
-
   nombreProprietaires(): void {
     this.proprietaireService.countProprietaires().subscribe(
       (response) => {
@@ -238,95 +184,6 @@ export class DashboardComponent implements OnInit {
         this._nombreUtilisateurs = response;
       }
     );
-  }
-
-  nombreAgencesImmobilieres(): void {
-    this.agenceImmobiliereService.countAgencesImmobilieres().subscribe(
-      (response) => {
-        this._nombreAgencesImmobilieres = response;
-      }
-    );
-  }
-
-
-  nombreAgencesImmobilieresResponsable(): void {
-    this.agenceImmobiliereService.countAgencesImmobilieresResponsable().subscribe(
-      (response) => {
-        this._nombreAgencesImmobilieresResponsable = response;
-      }
-    );
-  }
-
-  nombreAgencesAgentImmobilier(): void {
-    this.agenceImmobiliereService.countAgencesImmobilieresAgentImmobilier().subscribe(
-      (response) => {
-        this._nombreAgencesAgentImmobilier = response;
-      }
-    );
-  }
-
-  nombreServices(): void {
-    this._serviceService.countServices().subscribe(
-      (response) => {
-        this._nombreServices = response;
-      }
-    );
-  }
-
-  nombreServicesAgentImmobilier(): void {
-    this._serviceService.countServicesAgentImmobilier().subscribe(
-      (response) => {
-        this._nombreServicesAgentImmobilier = response;
-      }
-    );
-  }
-
-  nombreBiensImmobiliers(): void {
-    this.bienImmobilierService.countBienImmobilierParProprietaire().subscribe(
-      (response) => {
-        this._nombreBiensImmobiliers = response;
-      }
-    )
-  }
-
-  nombreBiensImmobiliersAgentImmobilier(): void {
-    this.bienImmobilierService.countBienImmobilierParAgentImmobilier().subscribe(
-      (response) => {
-        this._nombreBiensImmobiliersAgentImmobilier = response;
-      }
-    )
-  }
-
-  nombreBiensImmobiliersGerant(): void {
-    this.bienImmobilierService.countBienImmobilierParProprietaire().subscribe(
-      (response) => {
-        this._nombreBiensImmobiliers = response;
-      }
-    )
-  }
-
-  nombreBiensDeleguesProprietaire(): void {
-    this.delegationGestionService.countDelegationGestionProprietaire().subscribe(
-      (response) => {
-        this._nombreBiensDeleguesProprietaire = response;
-      }
-    )
-  }
-
-  nombreBiensDeleguesGestionnaire(): void {
-    this.delegationGestionService.countDelegationGestionGestionnaire().subscribe(
-      (response) => {
-        this._nombreBiensDeleguesGestionnaire = response;
-      }
-    )
-  }
-
-  nombreBiensDeleguesAgentImmobilier(): void {
-    this.delegationGestionService.countDelegationGestionAgentImmobilier().subscribe(
-      (response) => {
-        this._nombreBiensDeleguesAgentImmobilier = response;
-      }
-    )
   }
 
   detailUser(): void {

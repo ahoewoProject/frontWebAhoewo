@@ -102,21 +102,41 @@ export class LoginComponent implements OnInit{
     console.log(user);
     this.user = user;
 
-    if (this.user.etatCompte === true) {
-      localStorage.setItem('activeLink', '/admin/dashboard');
+    // if (this.user.etatCompte === true) {
+    //   localStorage.setItem('activeLink', '/admin/dashboard');
 
-      this.personneService.enregistrerInfoUser(JSON.stringify(user));
+    //   this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
-      this.router.navigate(['/admin/dashboard'], { queryParams: { connexionReussie: true } })
-    } else {
+    //   this.router.navigate(['/admin/dashboard'], { queryParams: { connexionReussie: true } })
+    // } else {
+    //   this.connexionNonReussie = true;
+    //   this.message = "Votre compte est désactivé. Veuillez contacter l'équipe support technique ahoewo pour obtenir de l'aide supplémentaire.";
+    //   this.loginData.delete('username');
+    //   this.loginData.delete('password');
+    //   this.router.navigate(['/connexion']);
+    //   setTimeout(() => {
+    //     this.connexionNonReussie = false;
+    //     this.message = '';
+    //   }, 3000);
+    //   console.log(this.message);
+    // }
+    if (this.user.autorisation === false) {
       this.connexionNonReussie = true;
-      this.message = "Votre compte est désactivé. Veuillez contacter l'équipe support technique ahoewo pour obtenir de l'aide supplémentaire";
+      this.message = "Vous vous connectez pour la première fois. Veuillez modifier votre mot de passe et vous reconnecter !";
+      this.loginData.delete('username');
+      this.loginData.delete('password');
       this.router.navigate(['/connexion']);
       setTimeout(() => {
         this.connexionNonReussie = false;
         this.message = '';
       }, 3000);
       console.log(this.message);
+    } else {
+    localStorage.setItem('activeLink', '/admin/dashboard');
+
+    this.personneService.enregistrerInfoUser(JSON.stringify(user));
+
+    this.router.navigate(['/admin/dashboard'], { queryParams: { connexionReussie: true } })
     }
   }
 
@@ -124,7 +144,7 @@ export class LoginComponent implements OnInit{
     console.log(error);
     this.connexionNonReussie = true;
     this.loginData.delete('username');
-    this.loginData.delete('password')
+    this.loginData.delete('password');
 
     if (error.status === 401) {
       this.message = "Username ou mot de passe incorrect. Veuillez réessayer.";

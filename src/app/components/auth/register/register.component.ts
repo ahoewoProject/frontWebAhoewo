@@ -31,7 +31,7 @@ export class RegisterComponent implements OnInit {
     },
     {
       id: 8,
-      code: 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE',
+      code: 'ROLE_RESPONSABLE',
       libelle: 'Responsable d\'agence immobilière',
       creerPar: 0,
       creerLe: new Date(),
@@ -74,7 +74,7 @@ export class RegisterComponent implements OnInit {
 
   roleRespnsableAgenceImmobiliere: Role = {
     id: 8,
-    code: 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE',
+    code: 'ROLE_RESPONSABLE',
     libelle: 'Responsable d\'agence immobilière',
     creerPar: 0,
     creerLe: new Date(),
@@ -172,6 +172,7 @@ export class RegisterComponent implements OnInit {
       console.log(this.registerForm)
       this.personneService.inscription(this.registerForm).subscribe(
         (response) => {
+          this.RegisterForm.reset();
           console.log(response);
           this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
         },
@@ -200,6 +201,7 @@ export class RegisterComponent implements OnInit {
       this.registerForm.role = this.roleRespnsableAgenceImmobiliere;
       this.personneService.inscription(this.registerForm).subscribe(
         (response) => {
+          this.RegisterForm.reset();
           console.log(response);
           this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
         },
@@ -228,6 +230,7 @@ export class RegisterComponent implements OnInit {
       this.registerForm.role = this.roleDemarcheur;
       this.personneService.inscription(this.registerForm).subscribe(
         (response) => {
+          this.RegisterForm.reset();
           console.log(response);
           this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
         },
@@ -255,6 +258,7 @@ export class RegisterComponent implements OnInit {
       this.registerForm.role = this.roleClient;
       this.personneService.inscription(this.registerForm).subscribe(
         (response) => {
+          this.RegisterForm.reset();
           console.log(response);
           this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
         },

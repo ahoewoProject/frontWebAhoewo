@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { AffectationResponsableAgence } from 'src/app/models/gestionDesAgencesImmobilieres/AffectationResponsableAgence';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
+import { ServicesAgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/ServicesAgenceImmobiliere';
+import { AffectationAgentAgenceService } from 'src/app/services/gestionDesAgencesImmobilieres/affectation-agent-agence.service';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
+import { ServicesAgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/services-agence-immobiliere.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { environment } from 'src/environments/environment';
 
@@ -17,13 +21,18 @@ export class AgencesImmobilieresComponent implements OnInit {
   affichage = 1;
   visibleAddForm = 0;
   visibleUpdateForm = 0;
-  user : any;
+  user: any;
 
   elementsParPage = 5; // Nombre d'éléments par page
   pageActuelle = 0; // Page actuelle
 
   agenceImmobiliere = this.agenceImmobiliereService.agenceImmobiliere;
-  agencesImmobilieres : AgenceImmobiliere[] = [];
+  serviceAgenceImmobiliere = this.servicesAgenceImmobiliereService.serviceAgenceImmobiliere;
+  agencesImmobilieres: AgenceImmobiliere[] = [];
+  affectationsResponsableAgences: AffectationResponsableAgence[] = [];
+  agencesOfAgent: AffectationResponsableAgence[] = [];
+  servicesAgenceImmobiliere: ServicesAgenceImmobiliere[] = [];
+  affectationResponsableAgence: AffectationResponsableAgence = new AffectationResponsableAgence();
   messageErreur: string = "";
   messageSuccess: string | null = null;
   agenceImmobiliereForm: any;
@@ -36,6 +45,8 @@ export class AgencesImmobilieresComponent implements OnInit {
 
   constructor(
     private agenceImmobiliereService: AgenceImmobiliereService,
+    private affectationAgentAgenceService: AffectationAgentAgenceService,
+    private servicesAgenceImmobiliereService: ServicesAgenceImmobiliereService,
     private personneService: PersonneService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
@@ -47,10 +58,10 @@ export class AgencesImmobilieresComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE') {
-      this.listeAgenceImmobiliere();
+    if (this.user.role.code == 'ROLE_RESPONSABLE') {
+      this.listeAgenceImmobilieresResponsable();
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.listeAgenceImmobiliereParAgentImmobilier();
+      this.listerAgencesImmobilieresParAgentImmobilier();
     } else {
       this.listeAgencesImmobilieres();
     }
@@ -61,44 +72,62 @@ export class AgencesImmobilieresComponent implements OnInit {
   listeAgencesImmobilieres(){
     this.agenceImmobiliereService.getAll().subscribe(
       (response) => {
-        this.agencesImmobilieres = response;
+        this.affectationsResponsableAgences = response;
       }
     );
   }
 
-  //Fonction pour recupérer une agence immobilière par responsable d'agence immobilière
-  listeAgenceImmobiliere(){
-    this.agenceImmobiliereService.getAllByResponsableAgenceImmobiliere().subscribe(
+  //Fonction pour recupérer les agences immobilières par responsable
+  listeAgenceImmobilieresResponsable() {
+    this.agenceImmobiliereService.findAgenceByResponsable().subscribe(
       (response) => {
         this.agencesImmobilieres = response;
       }
     );
   }
 
-  //Fonction pour recupérer une agence immobilière par agent immobilier
-  listeAgenceImmobiliereParAgentImmobilier(){
-    this.agenceImmobiliereService.getAgenceImmobiliereParAgentImmobilier().subscribe(
+  //Lister les agences immobilières par agent immobilier
+  listerAgencesImmobilieresParAgentImmobilier() {
+    this.affectationAgentAgenceService.getAgencesOfAgent().subscribe(
       (response) => {
-        this.agencesImmobilieres = response;
+        this.agencesOfAgent = response;
       }
     );
   }
 
-  // Récupération des agences immobilières de la page courante
+  //Récupération des agences immobilières de la page courante
   get agencesImmobilieresParPage(): any[] {
-    return this.agencesImmobilieres.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
+    if (this.user.role.code == 'ROLE_RESPONSABLE') {
+      return this.agencesImmobilieres.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
+    } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
+      return this.agencesOfAgent.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
+    } else {
+      return this.affectationsResponsableAgences.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
+    }
   }
 
   pagination(event: any) {
     this.pageActuelle = event.first;
     this.elementsParPage = event.rows;
-    if (this.user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE') {
-      this.listeAgenceImmobiliere();
+    if (this.user.role.code == 'ROLE_RESPONSABLE') {
+      this.listeAgenceImmobilieresResponsable();
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.listeAgenceImmobiliereParAgentImmobilier();
+      this.listerAgencesImmobilieresParAgentImmobilier();
     } else {
       this.listeAgencesImmobilieres();
     }
+  }
+
+  // Récupération des services de la page courante
+  get servicesAgenceImmobiliereParPage(): any[] {
+    return this.servicesAgenceImmobiliere.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
+  }
+
+  paginationListeServices(event: any) {
+    const idAgence = localStorage.getItem('idAgence');
+    this.pageActuelle = event.first;
+    this.elementsParPage = event.rows;
+    this.listeServices(parseInt(idAgence!));
   }
 
   telecharger(event: any) {
@@ -114,10 +143,10 @@ export class AgencesImmobilieresComponent implements OnInit {
   }
 
   voirListe(): void{
-    if (this.user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE') {
-      this.listeAgenceImmobiliere();
+    if (this.user.role.code == 'ROLE_RESPONSABLE') {
+      this.listeAgenceImmobilieresResponsable();
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.listeAgenceImmobiliereParAgentImmobilier();
+      this.listerAgencesImmobilieresParAgentImmobilier();
     } else {
       this.listeAgencesImmobilieres();
     }
@@ -127,13 +156,55 @@ export class AgencesImmobilieresComponent implements OnInit {
     this.visibleUpdateForm = 0;
   }
 
-  detailAgenceImmobiliere(id: number): void {
-    console.log(id)
-    this.agenceImmobiliereService.findById(id).subscribe(
+  listeServices(id: number): void {
+    this.servicesAgenceImmobiliereService.findServicesOfAgence(id).subscribe(
       (response) => {
-        this.agenceImmobiliere = response;
+        console.log(response)
+        this.servicesAgenceImmobiliere = response;
       }
     );
+  }
+
+  afficherListeServices(id: number): void {
+    this.listeServices(id);
+    localStorage.setItem('idAgence', id.toString());
+    this.affichage = 3;
+  }
+
+  detailService(id: number): void {
+    this.servicesAgenceImmobiliereService.findById(id).subscribe(
+      (response) => {
+        this.serviceAgenceImmobiliere = response;
+      }
+    );
+  }
+
+  voirListeServices(): void {
+    this.affichage = 3;
+    const idAgence = localStorage.getItem('idAgence');
+    this.listeServices(parseInt(idAgence!));
+  }
+
+  afficherPageDetailService(id: number): void {
+    this.detailService(id);
+    this.affichage = 4;
+  }
+
+  detailAgenceImmobiliere(id: number): void {
+    console.log(id)
+    if (this.user.role.code == 'ROLE_RESPONSABLE') {
+      this.agenceImmobiliereService.findById(id).subscribe(
+        (response) => {
+          this.agenceImmobiliere = response;
+        }
+      );
+    } else {
+      this.agenceImmobiliereService.detailAffectation(id).subscribe(
+        (response) => {
+          this.affectationResponsableAgence = response;
+        }
+      )
+    }
   }
 
   afficherPageDetail(id: number): void {
@@ -304,34 +375,8 @@ export class AgencesImmobilieresComponent implements OnInit {
     };
   }
 
-  // plageHeureOuverture(): boolean {
-  //   if (!this.heureOuverture.value || !/^\d{2}:\d{2}$/.test(this.heureOuverture.value)) {
-  //     return true; // Valeur invalide
-  //   }
-  //   const dateOuverture = new Date('1970-01-02T' + this.heureOuverture.value);
-  //   console.log(dateOuverture);
-  //   // Les heures doivent être comprises entre 6h (06:00) et minuit (00:00)
-  //   const heureMin = new Date('1970-01-02T06:00:00');
-  //   const heureMax = new Date('1970-01-02T23:59:59');
-
-  //   // Convertissez l'heure d'ouverture et de fermeture en millisecondes depuis l'époque
-  //   const dateOuvertureMs = dateOuverture.getTime();
-
-  //   // Convertissez les heures minimales et maximales en millisecondes
-  //   const heureMinMs = heureMin.getTime();
-  //   const heureMaxMs = heureMax.getTime();
-  //   console.log(heureMinMs)
-  //   console.log(heureMaxMs)
-  //   console.log(dateOuvertureMs)
-  //   // Vérifiez si l'heure d'ouverture et de fermeture se trouve entre 6h et minuit
-  //   if (dateOuvertureMs >= heureMinMs && dateOuvertureMs <= heureMaxMs) {
-  //       return true;
-  //   }
-  //   return false;
-  // }
-
-
   afficherFormulaireAjouter(): void {
+    this.affichage = 0;
     this.visibleAddForm = 1;
     this.visibleUpdateForm = 0;
     this.agenceImmobiliere = new AgenceImmobiliere();
@@ -339,6 +384,7 @@ export class AgencesImmobilieresComponent implements OnInit {
 
   afficherFormulaireModifier(id: number): void {
     this.detailAgenceImmobiliere(id);
+    this.affichage = 0;
     this.visibleAddForm = 0;
     this.visibleUpdateForm = 1;
   }

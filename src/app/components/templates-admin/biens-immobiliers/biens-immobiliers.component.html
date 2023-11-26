@@ -11,7 +11,6 @@
       <div class="col-xxl-5">
         <div class="dashboard_title_area">
           <h4>Ajout d'un bien immobilier</h4>
-          <p class="text"></p>
         </div>
       </div>
     </div>
@@ -132,7 +131,6 @@
       <div class="col-xxl-5">
         <div class="dashboard_title_area">
           <h4>Modification d'un bien immobilier</h4>
-          <p class="text"></p>
         </div>
       </div>
     </div>
@@ -252,7 +250,6 @@
       <div class="col-xxl-5">
         <div class="dashboard_title_area">
           <h4>Liste des biens immobiliers</h4>
-          <p class="text"></p>
         </div>
       </div>
       <div class="col-xxl-7">
@@ -264,7 +261,7 @@
             </div>
           </div>
           &nbsp;
-          <a type="button" *ngIf="user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code === 'ROLE_DEMARCHEUR'"
+          <a type="button" *ngIf="(user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code === 'ROLE_DEMARCHEUR') && user.etatCompte == true"
             (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
             Ajouter un bien immobilier
           </a>
@@ -280,6 +277,7 @@
             <table class="table-style3 table at-savesearch">
               <thead class="t-head">
                 <tr>
+                  <th scope="col">ID</th>
                   <th scope="col">Image</th>
                   <th scope="col">Numero identifiant</th>
                   <th scope="col" *ngIf="user.role.code == 'ROLE_GERANT' || user.role.code == 'ROLE_AGENTIMMOBILIER'">Propriétaire</th>
@@ -290,9 +288,11 @@
               </thead>
               <tbody class="t-body">
                 <tr *ngFor="let bienImmobilier of biensImmobiliersParPage | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
                   <th scope="row">
-                    <p-image *ngIf="bienImmobilier.images.length === 0" class="w-100" src="assets/images/home/house.jpg" alt="" width="150" imageClass="image"></p-image>
-                    <p-image *ngIf="bienImmobilier.images && bienImmobilier.images.length > 0" class="w-100" src="{{this.APIEndpoint+'api/premiere-image/bien-immobilier/'+bienImmobilier.id}}" alt="" width="150" imageClass="image"></p-image>
+                    <!-- <p-image *ngIf="bienImmobilier.images.length === 0" class="w-100" src="assets/images/home/house.jpg" alt="" width="150" imageClass="image"></p-image>
+                    <p-image *ngIf="bienImmobilier.images && bienImmobilier.images.length > 0" class="w-100" src="{{this.APIEndpoint+'api/premiere-image/bien-immobilier/'+bienImmobilier.id}}" alt="" width="150" imageClass="image"></p-image> -->
+                    <p-image class="w-100" src="{{this.APIEndpoint+'api/premiere-image/bien-immobilier/'+bienImmobilier.id}}" alt="" width="150" imageClass="image"></p-image>
                   </th>
                   <td class="vam">{{ bienImmobilier.numeroIdentifiant }} </td>
                   <td class="vam" *ngIf="user.role.code == 'ROLE_GERANT' || user.role.code == 'ROLE_AGENTIMMOBILIER'">{{ bienImmobilier.personne.nom }} {{ bienImmobilier.personne.prenom }}</td>
@@ -306,17 +306,17 @@
                         pTooltip="Détails" (click)="afficherPageDetail(bienImmobilier.id)" tooltipPosition="top" class="p-button-text p-button-info">
                       </button>
 
-                      <button *ngIf="user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR'"
+                      <button *ngIf="user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code === 'ROLE_DEMARCHEUR'"
                         (click)="afficherFormulaireModifier(bienImmobilier.id)" pButton type="button" icon="pi pi-pencil"
                         pTooltip="Modifier" tooltipPosition="top" class="p-button-text p-button-warning">
                       </button>
 
-                      <button *ngIf="bienImmobilier.etatBien === true && (user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR')"
+                      <button *ngIf="bienImmobilier.etatBien === true && (user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code === 'ROLE_DEMARCHEUR')"
                         (click)="desactiverBienImmobilier(bienImmobilier.id)" pButton type="button" icon="pi pi-lock"
                         pTooltip="Désactiver ce bien immobilier" tooltipPosition="right" class="p-button-text p-button-danger">
                       </button>
 
-                      <button *ngIf="bienImmobilier.etatBien === false && (user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR')"
+                      <button *ngIf="bienImmobilier.etatBien === false && (user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code === 'ROLE_DEMARCHEUR')"
                         (click)="activerBienImmobilier(bienImmobilier.id)" pButton type="button" icon="pi pi-lock-open"
                         pTooltip="Activer ce bien immobilier" tooltipPosition="right" class="p-button-text p-button-success">
                       </button>
@@ -351,7 +351,6 @@
       <div class="col-xxl-3">
         <div class="dashboard_title_area">
           <h4>Détails d'un bien immobilier</h4>
-          <p class="text"></p>
         </div>
       </div>
     </div>

@@ -17,6 +17,24 @@ export class ServicesService {
     this.url = APIEndpoint + 'api/';
   }
 
+  // Affichage de toutes les occurrences des services;
+  // url: http://localhost:4040/api/services
+  getAll(): Observable<Array<Services>>{
+    return this.httpClient.get<Array<Services>>(this.url + 'services');
+  }
+
+  // Affichage de toutes les occurrences des services;
+  // url: http://localhost:4040/api/types-de-bien
+  getServicesActifs(): Observable<Array<Services>>{
+    return this.httpClient.get<Array<Services>>(this.url + 'services/actifs');
+  }
+
+  // Recherche d'une occurrence de services par la clé primaire ;
+  // url: http://localhost:4040/api/services/{id}
+  findById(id: number): Observable<Services>{
+    return this.httpClient.get<Services>(this.url + 'services/' + id);
+  }
+
   // Ajout d'une occurrence de services;
   // url: http://localhost:4040/api/services/ajouter
   addServices(s: Services): Observable<Services>{
@@ -29,51 +47,15 @@ export class ServicesService {
     return this.httpClient.put<Services>(this.url + 'services/modifier/'+ id, s);
   }
 
-  // Suppression d'une occurrence de role par la clé primaire ;
-  // url: http://localhost:4040/api/services/supprimer/{id}
-  deleteById(id: number){
-    return this.httpClient.delete(this.url + 'services/supprimer/' + id);
-  }
-
-  // Affichage de toutes les occurrences de services pour une agence immobilière;
-  // url: http://localhost:4040/api/services/agence-immobiliere
-  getAllByAgenceImmobiliere(): Observable<Array<Services>>{
-    return this.httpClient.get<Array<Services>>(this.url + 'services/agence-immobiliere');
-  }
-
-  // Affichage de toutes les occurrences de services par agent immobilier;
-  // url: http://localhost:4040/api/services/agence/agent-immobilier
-  getServicesAgenceAgentImmobilier(): Observable<Array<Services>>{
-    return this.httpClient.get<Array<Services>>(this.url + 'services/agence/agent-immobilier');
-  }
-
-  // Recherche d'une occurrence de services par la clé primaire ;
-  // url: http://localhost:4040/api/services/{id}
-  findById(id: number): Observable<Services>{
-    return this.httpClient.get<Services>(this.url + 'services/' + id);
-  }
-
   // Activation d'un service;
   // url: http://localhost:4040/api/activer/service/{id}
   activerService(id: number): Observable<any>{
-    return this.httpClient.get<any>(this.url + 'activer/service/' + id);
+    return this.httpClient.get<any>(this.url + 'activer/services/' + id);
   }
 
   // Désactivation d'un service;
   // url: http://localhost:4040/api/desactiver/service/{id}
   desactiverService(id: number): Observable<any>{
-    return this.httpClient.get<any>(this.url + 'desactiver/service/' + id);
+    return this.httpClient.get<any>(this.url + 'desactiver/services/' + id);
   }
-
-  // Affichage du nombre d'occurrences de services d'une agence immobilière.
-  // url: http://localhost:4040/api/count/services
-  countServices(): Observable<number>{
-    return this.httpClient.get<number>(this.url + 'count/services');
-  };
-
-  // Affichage du nombre d'occurrences de services d'une agence immobilière par agent immobilier.
-  // url: http://localhost:4040/api/count/services/agent-immobilier
-  countServicesAgentImmobilier(): Observable<number>{
-    return this.httpClient.get<number>(this.url + 'count/services/agent-immobilier');
-  };
 }

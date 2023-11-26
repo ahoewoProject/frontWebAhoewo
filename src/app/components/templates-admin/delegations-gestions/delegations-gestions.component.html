@@ -11,7 +11,6 @@
       <div class="col-xxl-5">
         <div class="dashboard_title_area">
           <h4>Ajout d'une délégation de gestion</h4>
-          <p class="text"></p>
         </div>
       </div>
     </div>
@@ -79,7 +78,6 @@
       <div class="col-xxl-5">
         <div class="dashboard_title_area">
           <h4>Délégation de gestion de biens</h4>
-          <p class="text"></p>
         </div>
       </div>
       <div class="col-xxl-7">
@@ -91,7 +89,7 @@
             </div>
           </div>
           &nbsp;
-          <a type="button" *ngIf="user.role.code === 'ROLE_PROPRIETAIRE'"
+          <a type="button" *ngIf="user.role.code === 'ROLE_PROPRIETAIRE' && user.etatCompte == true"
             (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
             Déléguer la gestion d'un bien
           </a>
@@ -120,8 +118,9 @@
                 <tr *ngFor="let delegationGestion of delegationGestionsParPage | genericFilter: recherche;  let i = index">
                   <td class="vam">{{ pageActuelle + i + 1 }}</td>
                   <th scope="row">
-                    <p-image *ngIf="delegationGestion.bienImmobilier.images.length === 0" class="w-100" src="assets/images/home/house.jpg" alt="" width="150" imageClass="image"></p-image>
-                    <p-image *ngIf="delegationGestion.bienImmobilier.images && delegationGestion.bienImmobilier.images.length > 0" class="w-100" src="{{this.APIEndpoint+'api/premiere-image/bien-immobilier/'+delegationGestion.bienImmobilier.id}}" alt="" width="150" imageClass="image"></p-image>
+                    <!-- <p-image *ngIf="delegationGestion.bienImmobilier.images.length === 0" class="w-100" src="assets/images/home/house.jpg" alt="" width="150" imageClass="image"></p-image>
+                    <p-image *ngIf="delegationGestion.bienImmobilier.images && delegationGestion.bienImmobilier.images.length > 0" class="w-100" src="{{this.APIEndpoint+'api/premiere-image/bien-immobilier/'+delegationGestion.bienImmobilier.id}}" alt="" width="150" imageClass="image"></p-image> -->
+                    <p-image class="w-100" src="{{this.APIEndpoint+'api/premiere-image/bien-immobilier/'+delegationGestion.bienImmobilier.id}}" alt="" width="150" imageClass="image"></p-image> -->
                   </th>
                   <td class="vam" *ngIf="user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR'">{{ delegationGestion.bienImmobilier.personne.nom }} {{ delegationGestion.bienImmobilier.personne.prenom }}</td>
                   <td class="vam" *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'">{{ delegationGestion.gestionnaire.nom }} {{ delegationGestion.gestionnaire.prenom }}</td>
@@ -138,7 +137,9 @@
                         class="p-button-text p-button-info">
                       </button>
 
-                      <button *ngIf="delegationGestion.statutDelegation == false && (user.role.code === 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR')"
+                      <button *ngIf="delegationGestion.statutDelegation == false &&
+                        (user.role.code === 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code === 'ROLE_DEMARCHEUR')
+                        && user.etatCompte == true"
                         pButton type="button" icon="pi pi-check" (click)="accepterDelegationGestion(delegationGestion.id)"
                         pTooltip="Accepter" tooltipPosition="top" class="p-button-text p-button-success">
                       </button>
@@ -180,7 +181,6 @@
       <div class="col-xxl-6">
         <div class="dashboard_title_area">
           <h4>Détails d'une délégation de gestion de bien</h4>
-          <p class="text"></p>
         </div>
       </div>
     </div>

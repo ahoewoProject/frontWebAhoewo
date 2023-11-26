@@ -22,13 +22,18 @@
   width: 100%;
 }
 
-:host ::ng-deep .p-button {
+:host ::ng-deep .p-fileupload-choose {
+  background-color: #4ebc87;
+  border-color: #4ebc87;
+}
+
+/* :host ::ng-deep .p-button {
   border-radius: 7px;
   margin-right: 9px;
   margin-left: 9px;
   background-color: #4ebc87;;
   border-color: #4ebc87;;
-}
+} */
 
 /* :host ::ng-deep .p-fileupload .p-fileupload-buttonbar {
   display: flex;

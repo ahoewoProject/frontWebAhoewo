@@ -7,6 +7,7 @@ export class DemandeCertification extends EntiteDeBase {
   id: number;
   dateDemande!: Date;
   documentJustificatif: string;
+  carteCfe: string;
   statutDemande: number;
   personne: Personne;
   agenceImmobiliere: AgenceImmobiliere;
@@ -15,6 +16,7 @@ export class DemandeCertification extends EntiteDeBase {
     super();
     this.id = 0;
     this.documentJustificatif = '';
+    this.carteCfe = '';
     this.statutDemande = 0;
     this.personne = new Personne();
     this.agenceImmobiliere = new AgenceImmobiliere();

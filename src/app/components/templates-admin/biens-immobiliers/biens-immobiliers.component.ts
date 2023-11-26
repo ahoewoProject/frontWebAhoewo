@@ -92,6 +92,7 @@ export class BiensImmobiliersComponent implements OnInit {
   listeBiensImmobiliersParProprietaire() {
     this.bienImmobilierService.getAllByProprietaire().subscribe(
       (response) => {
+        console.log(response);
         this.biensImmobiliers = response;
       }
     );
@@ -151,6 +152,7 @@ export class BiensImmobiliersComponent implements OnInit {
     } else {
       this.listeBiensImmobiliersParProprietaire();
     }
+    this.imagesBienImmobilier = [];
     this.bienImmobilierForm.reset();
     this.affichage = 1;
   }
@@ -208,6 +210,7 @@ export class BiensImmobiliersComponent implements OnInit {
     for(let file of event.files) {
       this.imagesBienImmobilier.push(file);
     }
+    console.log(this.imagesBienImmobilier)
     this.messageSuccess = "Les images du bien immobilier ont été téléchargé avec succès.";
     this.messageService.add({
       severity: 'info',

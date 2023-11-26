@@ -5,7 +5,9 @@
     <!-- End Menu responsive -->
   </div>
 
-  <!-- Formulaire d'ajout d'une agence immobilière -->
+  <p-toast></p-toast>
+
+  <!-- Formulaire d'ajout d'une agence immobilière - Vue Responsable -->
   <div *ngIf="visibleAddForm == 1">
     <div class="row align-items-center pb40">
       <div class="col-xxl-5">
@@ -21,25 +23,25 @@
           <form [formGroup]="agenceImmobiliereForm" (ngSubmit)="ajouterAgenceImmobiliere()" class="form-style1">
             <div class="row">
 
-              <div class="col-sm-6 col-xl-4">
+              <div class="col-lg-6">
                 <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Nom de l'agence</label>
+                  <label class="heading-color ff-heading fw600 mb10">Nom</label>
                   <input type="text" class="form-control" id="nomAgence" name="nomAgence" placeholder="Le nom de l'agence immbilière" formControlName="nomAgence" [(ngModel)]="agenceImmobiliere.nomAgence" required>
                   <div class="error" [hidden]="nomAgence.valid || nomAgence.pristine && !nomAgence.touched ">Le nom de l'agence immobilière est obligatoire</div>
                 </div>
               </div>
 
-              <div class="col-sm-6 col-xl-4">
+              <div class="col-lg-6">
                 <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Adresse de l'agence</label>
+                  <label class="heading-color ff-heading fw600 mb10">Adresse</label>
                   <input type="text" class="form-control" id="adresse" name="adresse" placeholder="L'adresse de l'agence immobilière" formControlName="adresse" [(ngModel)]="agenceImmobiliere.adresse" required>
                   <div class="error" [hidden]="adresse.valid || adresse.pristine && !adresse.touched ">L'adresse de l'agence immobilière est obligatoire</div>
                 </div>
               </div>
 
-              <div class="col-sm-6 col-xl-4">
+              <div class="col-lg-6">
                 <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Adresse e-mail de l'agence</label>
+                  <label class="heading-color ff-heading fw600 mb10">E-mail</label>
                   <input type="email" class="form-control" id="adresseEmail" name="adresseEmail" placeholder="L'adresse e-mail de l'agence" formControlName="adresseEmail" [(ngModel)]="agenceImmobiliere.adresseEmail" required>
                   <div class="error" [hidden]="!adresseEmail?.hasError('required') || !adresseEmail.touched">
                     L'adresse e-mail de l'agence est obligatoire
@@ -50,17 +52,17 @@
                 </div>
               </div>
 
-              <div class="col-sm-6 col-xl-4">
+              <div class="col-lg-6">
                 <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Numéro de téléphone de l'agence</label>
+                  <label class="heading-color ff-heading fw600 mb10">Numéro de téléphone</label>
                   <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Le numero de téléphone de l'agence" formControlName="telephone" [(ngModel)]="agenceImmobiliere.telephone" required>
                   <div class="error" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le nom de téléphone de l'agence immobilière est obligatoire</div>
                 </div>
               </div>
 
-              <div class="col-sm-6 col-xl-4">
+              <div class="col-lg-6">
                 <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Heure ouverture de l'agence</label>
+                  <label class="heading-color ff-heading fw600 mb10">Heure ouverture</label>
                   <input type="time" class="form-control" id="heureOuverture" name="heureOuverture" formControlName="heureOuverture" [(ngModel)]="agenceImmobiliere.heureOuverture" required>
                   <div class="error" [hidden]="!heureOuverture?.hasError('required') || !heureOuverture.touched">L'heure d'ouverture de l'agence est obligatoire</div>
                   <div class="error" *ngIf="agenceImmobiliereForm.errors?.['heureOuvertureHorsPlage']">L'heure d'ouverture doit être comprise entre 6 heures et 0 heures.</div>
@@ -69,9 +71,9 @@
                 </div>
               </div>
 
-              <div class="col-sm-6 col-xl-4">
+              <div class="col-lg-6">
                 <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Heure fermeture de l'agence</label>
+                  <label class="heading-color ff-heading fw600 mb10">Heure fermeture</label>
                   <input type="time" class="form-control" id="heureFermeture" name="heureFermeture" formControlName="heureFermeture" [(ngModel)]="agenceImmobiliere.heureFermeture" required>
                   <div class="error" [hidden]="!heureOuverture?.hasError('required') || !heureOuverture.touched">L'heure de fermeture de l'agence est obligatoire</div>
                   <div class="error" *ngIf="agenceImmobiliereForm.errors?.['heureFermetureHorsPlage']">L'heure de fermeture doit être comprise entre 6 heures et 0 heures.</div>
@@ -80,11 +82,11 @@
                 </div>
               </div>
 
-              <div class="col-sm-6 col-xl-6">
+              <div>
                 <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Logo de l'agence immobilière</label>
+                  <label class="heading-color ff-heading fw600 mb10">Logo</label>
                   <p-fileUpload
-                    chooseLabel="Choisir le logo"
+                    chooseLabel="Sélectionner le logo"
                     [auto]="true"
                     url="https://www.primefaces.org/cdn/api/upload.php"
                     (onUpload)="telecharger($event)" accept="image/*">
@@ -110,9 +112,9 @@
       </div>
     </div>
   </div>
-  <!-- End Formulaire d'ajout d'une agence immobilière -->
+  <!-- End Formulaire d'ajout d'une agence immobilière - Vue Responsable -->
 
-  <!-- Formulaire de modification d'une agence immobilière -->
+  <!-- Formulaire de modification d'une agence immobilière - Vue Responsable -->
   <div *ngIf="visibleUpdateForm == 1">
     <div class="row align-items-center pb40">
       <div class="col-xxl-5">
@@ -128,25 +130,25 @@
           <form [formGroup]="agenceImmobiliereForm" (ngSubmit)="modifierAgenceImmobiliere(agenceImmobiliere.id)" class="form-style1">
             <div class="row">
 
-              <div class="col-sm-6 col-xl-4">
+              <div class="col-lg-6">
                 <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Nom de l'agence</label>
+                  <label class="heading-color ff-heading fw600 mb10">Nom</label>
                   <input type="text" class="form-control" id="nomAgence" name="nomAgence" placeholder="Le nom de l'agence immbilière" formControlName="nomAgence" [(ngModel)]="agenceImmobiliere.nomAgence" required>
                   <div class="error" [hidden]="nomAgence.valid || nomAgence.pristine && !nomAgence.touched ">Le nom de l'agence immobilière est obligatoire</div>
                 </div>
               </div>
 
-              <div class="col-sm-6 col-xl-4">
+              <div class="col-lg-6">
                 <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Adresse de l'agence</label>
+                  <label class="heading-color ff-heading fw600 mb10">Adresse</label>
                   <input type="text" class="form-control" id="adresse" name="adresse" placeholder="L'adresse de l'agence immobilière" formControlName="adresse" [(ngModel)]="agenceImmobiliere.adresse" required>
                   <div class="error" [hidden]="adresse.valid || adresse.pristine && !adresse.touched ">L'adresse de l'agence immobilière est obligatoire</div>
                 </div>
               </div>
 
-              <div class="col-sm-6 col-xl-4">
+              <div class="col-lg-6">
                 <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Adresse e-mail de l'agence</label>
+                  <label class="heading-color ff-heading fw600 mb10">E-mail</label>
                   <input type="email" class="form-control" id="adresseEmail" name="adresseEmail" placeholder="L'adresse e-mail de l'agence" formControlName="adresseEmail" [(ngModel)]="agenceImmobiliere.adresseEmail" required>
                   <div class="error" [hidden]="!adresseEmail?.hasError('required') || !adresseEmail.touched">
                     L'adresse e-mail de l'agence est obligatoire
@@ -157,17 +159,17 @@
                 </div>
               </div>
 
-              <div class="col-sm-6 col-xl-4">
+              <div class="col-lg-6">
                 <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Numéro de téléphone de l'agence</label>
+                  <label class="heading-color ff-heading fw600 mb10">Numéro de téléphone</label>
                   <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Le numero de téléphone de l'agence" formControlName="telephone" [(ngModel)]="agenceImmobiliere.telephone" required>
                   <div class="error" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le nom de téléphone de l'agence immobilière est obligatoire</div>
                 </div>
               </div>
 
-              <div class="col-sm-6 col-xl-4">
+              <div class="col-lg-6">
                 <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Heure ouverture de l'agence</label>
+                  <label class="heading-color ff-heading fw600 mb10">Heure ouverture</label>
                   <input type="time" class="form-control" id="heureOuverture" name="heureOuverture" formControlName="heureOuverture" [(ngModel)]="agenceImmobiliere.heureOuverture" required>
                   <div class="error" [hidden]="!heureOuverture?.hasError('required') || !heureOuverture.touched">L'heure d'ouverture de l'agence est obligatoire</div>
                   <div class="error" *ngIf="agenceImmobiliereForm.errors?.['heureOuvertureHorsPlage']">L'heure d'ouverture doit être comprise entre 6 heures et 0 heures.</div>
@@ -176,9 +178,9 @@
                 </div>
               </div>
 
-              <div class="col-sm-6 col-xl-4">
+              <div class="col-lg-6">
                 <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Heure fermeture de l'agence</label>
+                  <label class="heading-color ff-heading fw600 mb10">Heure fermeture</label>
                   <input type="time" class="form-control" id="heureFermeture" name="heureFermeture" formControlName="heureFermeture" [(ngModel)]="agenceImmobiliere.heureFermeture" required>
                   <div class="error" [hidden]="!heureOuverture?.hasError('required') || !heureOuverture.touched">L'heure de fermeture de l'agence est obligatoire</div>
                   <div class="error" *ngIf="agenceImmobiliereForm.errors?.['heureFermetureHorsPlage']">L'heure de fermeture doit être comprise entre 6 heures et 0 heures.</div>
@@ -187,19 +189,21 @@
                 </div>
               </div>
 
-              <div class="mb20">
-                <label class="heading-color ff-heading fw600 mb10">Logo de l'agence immobilière</label>
-                <p-fileUpload
-                  chooseLabel="Choisir le logo"
-                  [auto]="true"
-                  url="https://www.primefaces.org/cdn/api/upload.php"
-                  (onUpload)="telecharger($event)" accept="image/*">
-                  <ng-template pTemplate="content">
-                    <ul *ngIf="logoAgence">
-                        <li>{{ logoAgence.name }}</li>
-                    </ul>
-                  </ng-template>
-                </p-fileUpload>
+              <div>
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Logo</label>
+                  <p-fileUpload
+                    chooseLabel="Choisir le logo"
+                    [auto]="true"
+                    url="https://www.primefaces.org/cdn/api/upload.php"
+                    (onUpload)="telecharger($event)" accept="image/*">
+                    <ng-template pTemplate="content">
+                      <ul *ngIf="logoAgence">
+                          <li>{{ logoAgence.name }}</li>
+                      </ul>
+                    </ng-template>
+                  </p-fileUpload>
+                </div>
               </div>
             </div>
             <div class="col-md-12">
@@ -214,18 +218,15 @@
       </div>
     </div>
   </div>
-  <!-- End Formulaire de modification d'une agence immobilière -->
+  <!-- End Formulaire de modification d'une agence immobilière - Vue Responsable -->
 
-  <!-- Liste des agences immobilières -->
-  <div *ngIf="affichage == 1">
+  <!-- Liste des agences immobilières - Vue Responsable -->
+  <div *ngIf="affichage == 1 && user.role.code == 'ROLE_RESPONSABLE'">
     <div class="row align-items-center pb40">
       <div class="col-xxl-5">
         <div class="dashboard_title_area">
-          <h4 *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">Liste des agences immobilières</h4>
-          <h4 *ngIf="user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE'">Agence immobilière</h4>
-          <h4 *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER'">Agence immobilière</h4>
-          <h6 *ngIf="!user.estCertifie && user.role.code === 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE'" class="text" style="color: rgb(202, 8, 8);">Votre agence immobilière n'est pas certifiée, veuillez demander la certification de cette dernière en cliquant sur le menu <b>certifications</b> !</h6>
-          <p class="text"></p>
+          <h4>Agences immobilières</h4>
+          <h6 *ngIf="!user.estCertifie" class="text error"><i class="pi pi-exclamation-triangle"></i> Votre agence immobilière n'est pas certifiée, veuillez demander la certification de cette dernière en cliquant sur le menu <b>certifications</b> !</h6>
         </div>
       </div>
       <div class="col-xxl-7">
@@ -237,7 +238,7 @@
             </div>
           </div>
           &nbsp;
-          <a type="button" *ngIf="visibleAddForm == 0 && agencesImmobilieres.length == 0 && user.role.code === 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE'"
+          <a type="button" *ngIf="visibleAddForm == 0"
             (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
             Ajouter votre agence immobilière
           </a>
@@ -245,7 +246,6 @@
       </div>
     </div>
     <div class="row">
-      <p-toast></p-toast>
       <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
@@ -256,8 +256,6 @@
                   <th scope="col">ID</th>
                   <th scope="col">Logo</th>
                   <th scope="col">Nom</th>
-                  <th scope="col" *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">Responsable</th>
-                  <th scope="col" *ngIf="user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code == 'ROLE_AGENTIMMOBILIER'">Adresse</th>
                   <th scope="col">Etat</th>
                   <th scope="col">Actions</th>
                 </tr>
@@ -276,9 +274,7 @@
                       </div>
                     </div>
                   </th>
-                  <td class="vam">{{ agenceImmobiliere.nomAgence }} <i *ngIf="agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></td>
-                  <td class="vam" *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">{{ agenceImmobiliere.responsableAgenceImmobiliere.nom }} {{ agenceImmobiliere.responsableAgenceImmobiliere.prenom }} <i *ngIf="agenceImmobiliere.responsableAgenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></td>
-                  <td class="vam" *ngIf="user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || user.role.code === 'ROLE_AGENTIMMOBILIER'">{{ agenceImmobiliere.adresse }}</td>
+                  <td class="vam">{{ agenceImmobiliere.nomAgence }} <i *ngIf="agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
                   <td class="vam">
                     <p-tag *ngIf="agenceImmobiliere.etatAgence == true" severity="success" value="Activé"></p-tag>
                     <p-tag *ngIf="agenceImmobiliere.etatAgence == false" severity="danger" value="Désactivé"></p-tag>
@@ -292,23 +288,9 @@
                       </button>
 
                       <button pButton type="button"
-                        *ngIf="user.role.code === 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE'"
                         (click)="afficherFormulaireModifier(agenceImmobiliere.id)" icon="pi pi-pencil"
                         pTooltip="Modifier" tooltipPosition="right" class="p-button-text p-button-warning">
                       </button>
-
-                      <button pButton type="button"
-                        *ngIf="agenceImmobiliere.etatAgence === true && user.role.code === 'ROLE_ADMINISTRATEUR'"
-                        (click)="desactiverAgence(agenceImmobiliere.id)" icon="pi pi-lock"
-                        pTooltip="Désactiver cette agence immobilière" tooltipPosition="right" class="p-button-text p-button-danger">
-                      </button>
-
-                      <button pButton type="button"
-                        *ngIf="agenceImmobiliere.etatAgence === false && user.role.code === 'ROLE_ADMINISTRATEUR'"
-                        (click)="activerAgence(agenceImmobiliere.id)" icon="pi pi-lock-open"
-                        pTooltip="Activer cette agence immobilière" tooltipPosition="right" class="p-button-text p-button-success">
-                      </button>
-
                     </div>
                   </td>
                 </tr>
@@ -332,15 +314,15 @@
       </div>
     </div>
   </div>
-  <!-- End Liste des agences immobilières -->
+  <!-- End Liste des agences immobilières - Vue Responsable -->
 
-  <!-- Details d'une agence immobilière -->
-  <div *ngIf="affichage == 2">
+  <!-- Details d'une agence immobilière - Vue Responsable -->
+  <div *ngIf="affichage == 2 && user.role.code == 'ROLE_RESPONSABLE'">
     <div  class="row align-items-center pb40">
       <div class="col-xxl-8">
         <div class="dashboard_title_area">
           <h4>Détails d'une agence immobilière</h4>
-          <h6 *ngIf="!user.estCertifie && user.role.code === 'ROLE_AGENTIMMOBILIER'" class="text" style="color: rgb(202, 8, 8);">Votre agence immobilière n'est pas certifié, veuillez demander la certification de cette dernière <br>en cliquant sur le menu <b>certifications</b> !</h6>
+          <h6 *ngIf="!user.estCertifie" class="text" style="color: rgb(202, 8, 8);">Votre agence immobilière n'est pas certifié, veuillez demander la certification de cette dernière <br>en cliquant sur le menu <b>certifications</b> !</h6>
           <p class="text"></p>
         </div>
       </div>
@@ -361,32 +343,22 @@
             <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Nom</p>
-              <p>{{ agenceImmobiliere.nomAgence }} <i *ngIf="agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></p>
+              <p>{{ agenceImmobiliere.nomAgence }} <i *ngIf="agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
             </div>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Responsable agence immobilière</p>
-              <p>{{ agenceImmobiliere.responsableAgenceImmobiliere.nom }} {{ agenceImmobiliere.responsableAgenceImmobiliere.prenom }} <i *ngIf="agenceImmobiliere.responsableAgenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></p>
-            </div>
-
-            <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
               <p>{{ agenceImmobiliere.adresse }}</p>
             </div>
+
+            <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
               <p>{{ agenceImmobiliere.adresseEmail }}</p>
             </div>
-
-            <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
               <p>{{ agenceImmobiliere.telephone }}</p>
             </div>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
-              <p>{{ agenceImmobiliere.heureOuverture }}</p>
-            </div>
 
             <p-divider></p-divider>
             <div class="form-group col-md-6">
@@ -396,16 +368,6 @@
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
               <p>{{ agenceImmobiliere.heureOuverture }}</p>
-            </div>
-
-            <p-divider></p-divider>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
-              <p>{{ agenceImmobiliere.heureOuverture }}</p>
-            </div>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Heure fermeture</p>
-              <p>{{ agenceImmobiliere.heureFermeture }}</p>
             </div>
 
             <p-divider></p-divider>
@@ -431,5 +393,547 @@
       </div>
     </div>
   </div>
-  <!-- End Details d'une agence immobilière -->
+  <!-- End Details d'une agence immobilière - Vue Responsable -->
+
+  <!-- Liste des agences immobilières - Vue Agent immobilier -->
+  <div *ngIf="affichage == 1 && user.role.code == 'ROLE_AGENTIMMOBILIER'">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-5">
+        <div class="dashboard_title_area">
+          <h4>Agences immobilières</h4>
+        </div>
+      </div>
+      <div class="col-xxl-7">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <div class="item1 mb15-sm">
+            <div class="search_area">
+              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
+              <label><span class="flaticon-search"></span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+          <div class="packages_table table-responsive">
+            <table class="table-style3 table at-savesearch">
+              <thead class="t-head">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Logo</th>
+                  <th scope="col">Nom</th>
+                  <th scope="col">Responsable</th>
+                  <th scope="col">Etat</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="t-body">
+                <tr *ngFor="let affectationResponsableAgence of agencesImmobilieresParPage | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                  <th scope="row">
+                    <div class="listing-style1 dashboard-style d-xxl-flex align-items-center mb-0">
+                      <div class="list-thumb">
+                        <img *ngIf="affectationResponsableAgence.agenceImmobiliere.logoAgence == ''" class="w-100"
+                        src="assets/images/team/logo_par_defaut.jpg" alt="">
+
+                        <img *ngIf="affectationResponsableAgence.agenceImmobiliere.logoAgence !== ''" class="w-100"
+                        src="{{this.APIEndpoint+'api/logo/agence-immobiliere/'+affectationResponsableAgence.agenceImmobiliere.id}}" alt="">
+                      </div>
+                    </div>
+                  </th>
+                  <td class="vam">{{ affectationResponsableAgence.agenceImmobiliere.nomAgence }} <i *ngIf="affectationResponsableAgence.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
+                  <td class="vam">{{ affectationResponsableAgence.responsableAgenceImmobiliere.nom }} {{ affectationResponsableAgence.responsableAgenceImmobiliere.prenom }} <i *ngIf="affectationResponsableAgence.responsableAgenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
+                  <td class="vam">
+                    <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == true" severity="success" value="Activé"></p-tag>
+                    <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == false" severity="danger" value="Désactivé"></p-tag>
+                  </td>
+                  <td class="vam">
+                    <div class="d-flex">
+                      <button pButton type="button"
+                        (click)="afficherPageDetail(affectationResponsableAgence.id)" icon="pi pi-eye"
+                        pTooltip="Détails" tooltipPosition="top"
+                        class="p-button-text p-button-info">
+                      </button>
+
+                      <button pButton type="button"
+                        *ngIf="user.role.code === 'ROLE_AGENTIMMOBILIER'"
+                        (click)="afficherListeServices(affectationResponsableAgence.agenceImmobiliere.id)"
+                        icon="pi pi-briefcase"
+                        pTooltip="Services" tooltipPosition="top"
+                        class="p-button-text p-button-secondary">
+                      </button>
+
+                      <button pButton type="button"
+                        *ngIf="agenceImmobiliere.etatAgence === true && user.role.code === 'ROLE_ADMINISTRATEUR'"
+                        (click)="desactiverAgence(affectationResponsableAgence.agenceImmobiliere.id)" icon="pi pi-lock"
+                        pTooltip="Désactiver cette agence immobilière" tooltipPosition="right" class="p-button-text p-button-danger">
+                      </button>
+
+                      <button pButton type="button"
+                        *ngIf="agenceImmobiliere.etatAgence === false && user.role.code === 'ROLE_ADMINISTRATEUR'"
+                        (click)="activerAgence(affectationResponsableAgence.agenceImmobiliere.id)" icon="pi pi-lock-open"
+                        pTooltip="Activer cette agence immobilière" tooltipPosition="right" class="p-button-text p-button-success">
+                      </button>
+
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div *ngIf="affectationsResponsableAgences.length !== 0" class="mbp_pagination text-center mt30">
+            <p-paginator
+              (onPageChange)="pagination($event)" [first]="pageActuelle"
+              [rows]="elementsParPage"  [totalRecords]="affectationsResponsableAgences.length"
+              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} agences immobilières"
+              [showPageLinks]="true" [showFirstLastIcon]="true">
+            </p-paginator>
+          </div>
+          <div *ngIf="affectationsResponsableAgences.length == 0" class="mbp_pagination text-center mt30">
+            <p class="mt10 pagination_page_count text-center">Aucune agence immobilière enregistrée pour le moment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Liste des agences immobilières - Vue Agent immobilier -->
+
+  <!-- Details d'une agence immobilière - Vue Agent immobilier -->
+  <div *ngIf="affichage == 2 && user.role.code == 'ROLE_AGENTIMMOBILIER'">
+    <div  class="row align-items-center pb40">
+      <div class="col-xxl-8">
+        <div class="dashboard_title_area">
+          <h4>Détails d'une agence immobilière</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+
+          <div class="text-center">
+            <p-image *ngIf="affectationResponsableAgence.agenceImmobiliere.logoAgence == ''" class="w-100"
+                src="assets/images/team/logo_par_defaut.jpg" width="390"></p-image>
+            <p-image *ngIf="affectationResponsableAgence.agenceImmobiliere.logoAgence !== ''" class="w-100"
+                src="{{this.APIEndpoint+'api/logo/agence-immobiliere/'+agenceImmobiliere.id}}" width="390" alt=""></p-image>
+          </div>
+
+          <div class="row">
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Nom</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.nomAgence }} <i *ngIf="affectationResponsableAgence.agenceImmobiliere && affectationResponsableAgence.agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.adresse }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Responsable</p>
+              <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.nom }} {{ affectationResponsableAgence.responsableAgenceImmobiliere.prenom }} <i *ngIf="affectationResponsableAgence.responsableAgenceImmobiliere && affectationResponsableAgence.responsableAgenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du responsable</p>
+              <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.email }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.adresseEmail }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.telephone }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.heureOuverture }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.heureOuverture }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+              <p>
+                <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == true" severity="success" value="Activé"></p-tag>
+                <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == false" severity="danger" value="Désactivé"></p-tag>
+              </p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Est certifiée</p>
+              <p>
+                <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.estCertifie == true" severity="success" value="Oui"></p-tag>
+                <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.estCertifie == false" severity="danger" value="Non"></p-tag>
+              </p>
+            </div>
+          </div>
+          <div class="text-end">
+            <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Details d'une agence immobilière - Vue Agent immobilier -->
+
+  <!-- Liste des agences immobilières - Vue Administrateur -->
+  <div *ngIf="affichage == 1 && user.role.code == 'ROLE_ADMINISTRATEUR'">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-5">
+        <div class="dashboard_title_area">
+          <h4>Liste des agences immobilières</h4>
+        </div>
+      </div>
+      <div class="col-xxl-7">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <div class="item1 mb15-sm">
+            <div class="search_area">
+              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
+              <label><span class="flaticon-search"></span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+          <div class="packages_table table-responsive">
+            <table class="table-style3 table at-savesearch">
+              <thead class="t-head">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Logo</th>
+                  <th scope="col">Nom</th>
+                  <th scope="col">Responsable</th>
+                  <th scope="col">Etat</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="t-body">
+                <tr *ngFor="let affectationResponsableAgence of agencesImmobilieresParPage | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                  <th scope="row">
+                    <div class="listing-style1 dashboard-style d-xxl-flex align-items-center mb-0">
+                      <div class="list-thumb">
+                        <img *ngIf="affectationResponsableAgence.agenceImmobiliere.logoAgence == ''" class="w-100"
+                        src="assets/images/team/logo_par_defaut.jpg" alt="">
+
+                        <img *ngIf="affectationResponsableAgence.agenceImmobiliere.logoAgence !== ''" class="w-100"
+                        src="{{this.APIEndpoint+'api/logo/agence-immobiliere/'+affectationResponsableAgence.agenceImmobiliere.id}}" alt="">
+                      </div>
+                    </div>
+                  </th>
+                  <td class="vam">{{ affectationResponsableAgence.agenceImmobiliere.nomAgence }} <i *ngIf="affectationResponsableAgence.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
+                  <td class="vam">{{ affectationResponsableAgence.responsableAgenceImmobiliere.nom }} {{ affectationResponsableAgence.responsableAgenceImmobiliere.prenom }} <i *ngIf="affectationResponsableAgence.responsableAgenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
+                  <td class="vam">
+                    <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == true" severity="success" value="Activé"></p-tag>
+                    <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == false" severity="danger" value="Désactivé"></p-tag>
+                  </td>
+                  <td class="vam">
+                    <div class="d-flex">
+                      <button pButton type="button"
+                        (click)="afficherPageDetail(affectationResponsableAgence.id)" icon="pi pi-eye"
+                        pTooltip="Détails" tooltipPosition="top"
+                        class="p-button-text p-button-info">
+                      </button>
+
+                      <button pButton type="button"
+                        *ngIf="agenceImmobiliere.etatAgence === true && user.role.code === 'ROLE_ADMINISTRATEUR'"
+                        (click)="desactiverAgence(affectationResponsableAgence.agenceImmobiliere.id)" icon="pi pi-lock"
+                        pTooltip="Désactiver cette agence immobilière" tooltipPosition="right" class="p-button-text p-button-danger">
+                      </button>
+
+                      <button pButton type="button"
+                        *ngIf="agenceImmobiliere.etatAgence === false && user.role.code === 'ROLE_ADMINISTRATEUR'"
+                        (click)="activerAgence(affectationResponsableAgence.agenceImmobiliere.id)" icon="pi pi-lock-open"
+                        pTooltip="Activer cette agence immobilière" tooltipPosition="right" class="p-button-text p-button-success">
+                      </button>
+
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div *ngIf="affectationsResponsableAgences.length !== 0" class="mbp_pagination text-center mt30">
+            <p-paginator
+              (onPageChange)="pagination($event)" [first]="pageActuelle"
+              [rows]="elementsParPage"  [totalRecords]="affectationsResponsableAgences.length"
+              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} agences immobilières"
+              [showPageLinks]="true" [showFirstLastIcon]="true">
+            </p-paginator>
+          </div>
+          <div *ngIf="affectationsResponsableAgences.length == 0" class="mbp_pagination text-center mt30">
+            <p class="mt10 pagination_page_count text-center">Aucune agence immobilière enregistrée pour le moment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Liste des agences immobilières - Vue Administrateur -->
+
+  <!-- Details d'une agence immobilière - Vue Administrateur -->
+  <div *ngIf="affichage == 2 && user.role.code == 'ROLE_ADMINISTRATEUR'">
+    <div  class="row align-items-center pb40">
+      <div class="col-xxl-8">
+        <div class="dashboard_title_area">
+          <h4>Détails d'une agence immobilière</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+
+          <div class="text-center">
+            <p-image *ngIf="affectationResponsableAgence.agenceImmobiliere.logoAgence == ''" class="w-100"
+                src="assets/images/team/logo_par_defaut.jpg" width="390"></p-image>
+            <p-image *ngIf="affectationResponsableAgence.agenceImmobiliere.logoAgence !== ''" class="w-100"
+                src="{{this.APIEndpoint+'api/logo/agence-immobiliere/'+agenceImmobiliere.id}}" width="390" alt=""></p-image>
+          </div>
+
+          <div class="row">
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Nom</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.nomAgence }} <i *ngIf="affectationResponsableAgence.agenceImmobiliere && affectationResponsableAgence.agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.adresse }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Responsable</p>
+              <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.nom }} {{ affectationResponsableAgence.responsableAgenceImmobiliere.prenom }} <i *ngIf="affectationResponsableAgence.responsableAgenceImmobiliere && affectationResponsableAgence.responsableAgenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du responsable</p>
+              <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.email }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.adresseEmail }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.telephone }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.heureOuverture }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.heureOuverture }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+              <p>
+                <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == true" severity="success" value="Activé"></p-tag>
+                <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == false" severity="danger" value="Désactivé"></p-tag>
+              </p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Est certifiée</p>
+              <p>
+                <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.estCertifie == true" severity="success" value="Oui"></p-tag>
+                <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.estCertifie == false" severity="danger" value="Non"></p-tag>
+              </p>
+            </div>
+          </div>
+          <div class="text-end">
+            <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Details d'une agence immobilière - Vue Administrateur -->
+
+  <!-- Liste des services des agences immobilières -->
+  <div *ngIf="affichage == 3">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-5">
+        <div class="dashboard_title_area">
+          <h4>Vos services</h4>
+        </div>
+      </div>
+      <div class="col-xxl-7">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <div class="item1 mb15-sm">
+            <div class="search_area">
+              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
+              <label><span class="flaticon-search"></span></label>
+            </div>
+          </div>
+          &nbsp;
+          <a type="button" (click)="voirListe()" class="ud-btn btn-thm">
+            Agences immobilières
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+          <div class="packages_table table-responsive">
+            <table class="table-style3 table at-savesearch">
+              <thead class="t-head">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Agence immobiliere</th>
+                  <th scope="col">Nom</th>
+                  <th scope="col">Etat</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="t-body">
+                <tr *ngFor="let serviceAgenceImmobiliere of servicesAgenceImmobiliereParPage | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                  <th scope="row">
+                    <div class="listing-style1 dashboard-style d-xxl-flex align-items-center mb-0">
+                      <div class="list-thumb">
+                        <img *ngIf="serviceAgenceImmobiliere.agenceImmobiliere.logoAgence == ''" class="w-100"
+                        src="assets/images/team/logo_par_defaut.jpg" alt="">
+
+                        <img *ngIf="serviceAgenceImmobiliere.agenceImmobiliere.logoAgence !== ''" class="w-100"
+                        src="{{this.APIEndpoint+'api/logo/agence-immobiliere/'+ serviceAgenceImmobiliere.agenceImmobiliere.id}}" alt="">
+                      </div>
+                      <div class="list-content flex-shrink-1">
+                        <h6 class="list-title"><a href="{{this.APIEndpoint+'api/logo/agence-immobiliere/'+ serviceAgenceImmobiliere.agenceImmobiliere.id}}">{{ serviceAgenceImmobiliere.agenceImmobiliere.adresse }}</a></h6>
+                        <p class="list-text">{{ serviceAgenceImmobiliere.agenceImmobiliere.nomAgence }} <i *ngIf="serviceAgenceImmobiliere.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+                      </div>
+                    </div>
+                  </th>
+                  <td class="vam">{{ serviceAgenceImmobiliere.services.nomService }} </td>
+                  <td class="vam">
+                    <p-tag *ngIf="serviceAgenceImmobiliere.etat === true" severity="success" value="Activé"></p-tag>
+                    <p-tag *ngIf="serviceAgenceImmobiliere.etat === false" severity="danger" value="Désactivé"></p-tag>
+                  </td>
+                  <td class="vam">
+                    <div class="d-flex">
+
+                      <button pButton type="button" icon="pi pi-eye"
+                        (click)="afficherPageDetailService(serviceAgenceImmobiliere.id)"
+                        pTooltip="Détails" tooltipPosition="top"
+                        class="p-button-text p-button-info">
+                      </button>
+
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div *ngIf="servicesAgenceImmobiliere.length !== 0" class="mbp_pagination text-center mt30">
+            <p-paginator
+              (onPageChange)="paginationListeServices($event)" [first]="pageActuelle"
+              [rows]="elementsParPage"  [totalRecords]="servicesAgenceImmobiliere.length"
+              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} services"
+              [showPageLinks]="true" [showFirstLastIcon]="true">
+            </p-paginator>
+          </div>
+          <div *ngIf="servicesAgenceImmobiliere.length == 0" class="mbp_pagination text-center mt30">
+            <p class="mt10 pagination_page_count text-center">Aucun service enregistré pour le moment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Liste des services des agences immobilières -->
+
+  <!-- Details d'un service d'une agence immobilière -->
+  <div *ngIf="affichage == 4">
+    <div  class="row align-items-center pb40">
+      <div class="col-xxl-8">
+        <div class="dashboard_title_area">
+          <h4>Détails d'un service</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Code</p>
+              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.services.codeService }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Nom</p>
+              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.services.nomService }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div>
+              <p class="fw600 mb10 ff-heading dark-color">Description</p>
+              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.services.description }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+              <p>
+                <p-tag *ngIf="serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.etat === true" severity="success" value="Activé"></p-tag>
+                <p-tag *ngIf="serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.etat === false" severity="danger" value="Désactivé"></p-tag>
+              </p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Agence immobilière</p>
+              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.nomAgence }} <i *ngIf="serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">E-mail de l'agence</p>
+              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.adresseEmail }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Téléphone de l'agence</p>
+              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.telephone }}</p>
+            </div>
+          </div>
+
+          <div class="text-end">
+            <a class="ud-btn btn-thm" (click)="voirListeServices()"  type="button">Services</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Details d'un service d'une agence immobilière -->
 </div>

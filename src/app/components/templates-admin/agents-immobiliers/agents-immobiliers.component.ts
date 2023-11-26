@@ -1,10 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { AffectationAgentAgence } from 'src/app/models/gestionDesAgencesImmobilieres/AffectationAgentAgence';
+import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
 import { AgentImmobilier } from 'src/app/models/gestionDesComptes/AgentImmobilier';
 import { Role } from 'src/app/models/gestionDesComptes/Role';
+import { AffectationAgentAgenceService } from 'src/app/services/gestionDesAgencesImmobilieres/affectation-agent-agence.service';
+import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { AgentImmobilierService } from 'src/app/services/gestionDesComptes/agent-immobilier.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
+
+interface AutoCompleteCompleteEvent {
+  originalEvent: Event;
+  query: string;
+}
 
 @Component({
   selector: 'app-agents-immobiliers',
@@ -13,22 +22,29 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 })
 export class AgentsImmobiliersComponent implements OnInit{
 
+  agenceSelectionnee!: AgenceImmobiliere;
+  listeDesChoix: any[] | undefined;
+  checked: string | undefined;
   recherche: string = '';
   affichage = 1;
   visibleAddForm = 0;
-  voirMotDePasse: boolean = false;
-
 
   elementsParPage = 5; // Nombre d'éléments par page
   pageActuelle = 0; // Page actuelle
 
   agentImmobilier = new AgentImmobilier();
-  agentImmobiliers : AgentImmobilier[] = [];
+  affectationsAgentAgenceAdmin: AffectationAgentAgence[] = [];
+  affectationsAgentAgenceResponsable: AffectationAgentAgence[] = [];
+  agentsImmobiliers: AgentImmobilier[] = [];
+  agentsImmobiliersFiltres: AgentImmobilier[] = [];
+  affecationAgentAgence: AffectationAgentAgence = new AffectationAgentAgence();
+  affectationAgentAgenceRequest = this.affectationAgentAgenceService.affectationAgentAgenceRequest
   messageErreur: string = "";
   messageSuccess: string | null = null;
+  agencesImmobilieres : AgenceImmobiliere[] = [];
 
   user: any;
-  agentImmobilierForm: any;
+  affectationAgentAgenceForm: any;
   roleAgentImmobilier: Role = {
     id: 3,
     code: 'ROLE_AGENTIMMOBILIER',
@@ -41,7 +57,9 @@ export class AgentsImmobiliersComponent implements OnInit{
   }
 
   constructor(
+    private affectationAgentAgenceService: AffectationAgentAgenceService,
     private agentImmobilierService: AgentImmobilierService,
+    private agenceImmobiliereService: AgenceImmobiliereService,
     private personneService: PersonneService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
@@ -52,177 +70,284 @@ export class AgentsImmobiliersComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    if(this.user.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' ) {
-      this.listeAgentImmobiliersParResponsableAgenceImmobiliere();
-      this.initAgentImmobilierForm();
+    if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
+      this.listerAffectationsAgentsImmobiliers();
     } else {
-      this.listeAgentImmobiliers();
+      this.listerAffectationsAgentsParAgence();
+      this.listeAgenceImmobilieresResponsable();
+      this.listerAgentsImmobiliers();
     }
+    this.initAffectationAgentAgenceForm();
   }
 
-  listeAgentImmobiliersParResponsableAgenceImmobiliere(): void {
-    this.agentImmobilierService.findAgentsImmobiliersByResponsable().subscribe(
-      (response) => {
-        this.agentImmobiliers = response;
-      }
-    );
+  filtrerAgentImmobilier(event: AutoCompleteCompleteEvent) {
+    let filtres: any[] = [];
+    let query = event.query;
+    for (let i = 0; i < (this.agentsImmobiliers as any[]).length; i++) {
+        let affectation = (this.agentsImmobiliers as any[])[i];
+        if (affectation.matricule.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+          filtres.push(affectation);
+        }
+    }
+    this.agentsImmobiliersFiltres = filtres;
   }
 
-  listeAgentImmobiliers(): void {
-    this.agentImmobilierService.getAll().subscribe(
-      (response) => {
-        this.agentImmobiliers = response;
-      }
-    );
-  }
-
-  initAgentImmobilierForm(): void {
+  initAffectationAgentAgenceForm(): void {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
-    this.agentImmobilierForm = new FormGroup({
+    this.affectationAgentAgenceForm = new FormGroup({
+      matricule: new FormControl('', [Validators.required]),
       nom: new FormControl(this.agentImmobilier.nom, [Validators.required]),
       prenom: new FormControl(this.agentImmobilier.prenom, [Validators.required]),
-      username: new FormControl(this.agentImmobilier.username, [Validators.required]),
       email: new FormControl(this.agentImmobilier.email, [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
-      motDePasse: new FormControl(this.agentImmobilier.motDePasse, [Validators.required, Validators.maxLength(14), Validators.minLength(8), Validators.pattern(passwordRegex)]),
       telephone: new FormControl(this.agentImmobilier.telephone, [Validators.required]),
+      agenceImmobiliere: new FormControl('', [Validators.required])
     })
   }
 
+  get nom() {
+    return this.affectationAgentAgenceForm.get('nom');
+  }
+
+  get prenom() {
+    return this.affectationAgentAgenceForm.get('prenom');
+  }
+
+  get email() {
+    return this.affectationAgentAgenceForm.get('email');
+  }
+
+  get telephone() {
+    return this.affectationAgentAgenceForm.get('telephone');
+  }
+
+  get agenceImmobiliere() {
+    return this.affectationAgentAgenceForm.get('agenceImmobiliere');
+  }
+
+  get matricule() {
+    return this.affectationAgentAgenceForm.get('matricule');
+  }
+
+  onChoixChange(event: any): void {
+    this.affectationAgentAgenceForm.reset();
+    this.checked = event.value;
+    if (this.checked == 'Agent immobilier existant') {
+      this.nom.clearValidators();
+      this.prenom.clearValidators();
+      this.email.clearValidators();
+      this.telephone.clearValidators();
+      this.agenceImmobiliere.setValidators([Validators.required]);
+      this.matricule.setValidators([Validators.required]);
+    } else if (this.checked == 'Nouvel agent immobilier') {
+      this.nom.setValidators([Validators.required]);
+      this.prenom.setValidators([Validators.required]);
+      this.email.setValidators([Validators.required, Validators.email]);
+      this.telephone.setValidators([Validators.required]);
+      this.agenceImmobiliere.setValidators([Validators.required]);
+      this.matricule.clearValidators();
+    }
+    this.matricule.updateValueAndValidity();
+    this.nom.updateValueAndValidity();
+    this.prenom.updateValueAndValidity();
+    this.email.updateValueAndValidity();
+    this.telephone.updateValueAndValidity();
+    this.agenceImmobiliere.updateValueAndValidity();
+  }
+
+  agenceChoisie(event: any) {
+    this.agenceSelectionnee = event.value;
+  }
+
+  //Fonction pour recupérer une agence immobilière par responsable d'agence immobilière
+  listeAgenceImmobilieresResponsable(){
+    this.agenceImmobiliereService.findAgenceByResponsable().subscribe(
+      (response) => {
+        this.agencesImmobilieres = response;
+      }
+    );
+  }
+
+  //Liste des agents immobiliers
+  listerAgentsImmobiliers(): void {
+    this.agentImmobilierService.getAll().subscribe(
+      (response) => {
+        this.agentsImmobiliers = response;
+      }
+    )
+  }
+
+  //Liste des agents immobiliers des agencies immobilières
+  listerAffectationsAgentsImmobiliers(): void {
+    this.affectationAgentAgenceService.getAll().subscribe(
+      (response) => {
+        this.affectationsAgentAgenceAdmin = response;
+      }
+    )
+  }
+
+  //Liste des agents immobiliers par responsable d'agence immobilière
+  listerAffectationsAgentsParAgence(): void {
+    this.affectationAgentAgenceService.getAgentsOfAgence().subscribe(
+      (response) => {
+        this.affectationsAgentAgenceResponsable = response;
+      }
+    )
+  }
+
   // Récupération des agents immobiliers de la page courante
-  get agentsImmobiliersParPage(): any[] {
-    return this.agentImmobiliers.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
+  get affectationsAgentAgenceParPage(): any[] {
+    if (this.user.role.code == 'ROLE_RESPONSABLE') {
+      return this.affectationsAgentAgenceResponsable.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
+    } else {
+      return this.affectationsAgentAgenceAdmin.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
+    }
   }
 
   pagination(event: any) {
     this.pageActuelle = event.first;
     this.elementsParPage = event.rows;
-    this.listeAgentImmobiliers()
+    if (this.user.role.code == 'ROLE_RESPONSABLE') {
+      this.listerAffectationsAgentsParAgence();
+    } else {
+      this.listerAffectationsAgentsImmobiliers();
+    }
   }
 
-  voirListe(): void {
-    this.listeAgentImmobiliers();
-    this.agentImmobilierForm.reset();
+  voirListe(): void{
+    if (this.user.role.code == 'ROLE_RESPONSABLE') {
+      this.listerAffectationsAgentsParAgence();
+    } else {
+      this.listerAffectationsAgentsImmobiliers();
+    }
+    this.affectationAgentAgenceForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
   }
 
   detailAgentImmobilier(id: number): void {
-    console.log(id)
-    this.agentImmobilierService.findById(id).subscribe(
+    this.affectationAgentAgenceService.findById(id).subscribe(
       (response) => {
-        this.agentImmobilier = response;
+        this.affecationAgentAgence = response;
       }
     );
   }
 
   afficherPageDetail(id: number): void {
     this.detailAgentImmobilier(id);
-    this.affichage = 2;
+    this.affichage = 3;
+    this.visibleAddForm = 0;
   }
 
   afficherFormulaireAjouter(): void {
+    this.listeDesChoix = [ 'Nouvel agent immobilier', 'Agent immobilier existant'];
+    this.checked = this.listeDesChoix[0];
+    const event = {value: this.checked};
+    this.onChoixChange(event);
+    this.affichage = 0;
     this.visibleAddForm = 1;
-    this.agentImmobilier = new AgentImmobilier();
   }
 
-  get nom() {
-    return this.agentImmobilierForm.get('nom');
-  }
-
-  get prenom() {
-    return this.agentImmobilierForm.get('prenom');
-  }
-
-  get username() {
-    return this.agentImmobilierForm.get('username');
-  }
-
-  get email() {
-    return this.agentImmobilierForm.get('email');
-  }
-
-  get motDePasse() {
-    return this.agentImmobilierForm.get('motDePasse');
-  }
-
-  get telephone() {
-    return this.agentImmobilierForm.get('telephone');
-  }
-
-  ajouterAgentImmobilier(): void {
-    this.agentImmobilier.role = this.roleAgentImmobilier;
-
-    this.agentImmobilierService.addAgentImmobilier(this.agentImmobilier).subscribe(
-      (response) => {
-        console.log(response);
-        if (response.id > 0) {
-          this.agentImmobiliers.push({
-            id: response.id,
-            nom: response.nom,
-            prenom: response.prenom,
-            username: response.username,
-            email: response.email,
-            motDePasse: response.motDePasse,
-            telephone: response.telephone,
-            etatCompte: response.etatCompte,
-            role: response.role,
-            creerLe: response.creerLe,
-            creerPar: response.creerPar,
-            modifierLe: response.modifierLe,
-            modifierPar: response.modifierPar,
-            statut: response.statut,
-            estCertifie: false,
-            resetToken: ''
-          });
-          this.voirListe();
-          this.messageSuccess = "L'agent immobilier a été ajouté avec succès.";
+  ajouterAffectationAgentAgence(): void {
+    if (this.checked == 'Nouvel agent immobilier') {
+      this.agentImmobilier.nom = this.affectationAgentAgenceForm.value.nom;
+      this.agentImmobilier.prenom = this.affectationAgentAgenceForm.value.prenom;
+      this.agentImmobilier.email = this.affectationAgentAgenceForm.value.email;
+      this.agentImmobilier.telephone = this.affectationAgentAgenceForm.value.telephone;
+      this.agentImmobilier.role = this.roleAgentImmobilier;
+      this.affectationAgentAgenceRequest.agentImmobilier = this.agentImmobilier;
+      this.affectationAgentAgenceRequest.agenceImmobiliere = this.agenceSelectionnee;
+      console.log(this.affectationAgentAgenceRequest)
+      this.affectationAgentAgenceService.ajouterAgentAgence(this.affectationAgentAgenceRequest).subscribe(
+        (response) => {
+          console.log(response);
+          if (response.id > 0) {
+            this.voirListe();
+            this.messageSuccess = "L'agent immobilier a été ajouté avec succès.";
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Ajout réussi',
+              detail: this.messageSuccess
+            });
+          } else {
+            this.messageErreur = "Erreur lors de l'ajout de l'agent immobilier !"
+            this.afficherFormulaireAjouter();
+            this.agentImmobilier.nom = response.agentImmobilier.nom;
+            this.agentImmobilier.prenom = response.agentImmobilier.prenom;
+            this.agentImmobilier.email = response.agentImmobilier.email;
+            this.agentImmobilier.telephone = response.agentImmobilier.telephone;
+            this.agentImmobilier.matricule = response.agentImmobilier.matricule;
+            this.agenceSelectionnee = response.agenceImmobiliere;
+            this.messageService.add({
+              severity: 'error',
+              summary: "Erreur d'ajout",
+              detail: this.messageErreur
+            });
+          }
+      },
+      (error) =>{
+        console.log(error)
+        if (error.message == "Cet agent immobilier à été déjà ajouté dans cette agence.") {
+          this.messageErreur = "Cet agent immobilier à été déjà ajouté dans cette agence !";
           this.messageService.add({
-            severity: 'success',
-            summary: 'Ajout réussi',
-            detail: this.messageSuccess
+            severity: 'warn',
+            summary: 'Ajout non réussi',
+            detail: this.messageErreur
           });
-        } else {
-          this.messageErreur = "Erreur lors de l'ajout de l'agent immobilier !"
-          this.afficherFormulaireAjouter();
-          this.agentImmobilier.nom = response.nom;
-          this.agentImmobilier.prenom = response.prenom;
-          this.agentImmobilier.username = response.username;
-          this.agentImmobilier.email = response.email;
-          this.agentImmobilier.telephone = response.telephone;
+        } else if (error.message == "Un agent immobilier avec cette adresse e-mail existe déjà." ) {
+          this.messageErreur = "Un agent immobilier avec cette adresse e-mail existe déjà !";
           this.messageService.add({
-            severity: 'error',
-            summary: "Erreur d'ajout",
+            severity: 'warn',
+            summary: 'Ajout non réussi',
             detail: this.messageErreur
           });
         }
-    },
-    (error) =>{
-      console.log(error)
-      if (error.error.status === 409) {
-        this.messageErreur = "Un agent immobilier avec ce nom d'utilisateur existe déjà !";
-        this.messageService.add({
-          severity: 'warn',
-          summary: 'Ajout non réussi',
-          detail: this.messageErreur
-        });
-      }
-    })
-  }
-
-  supprimerAgentImmobilier(id: number): void{
-    this.agentImmobilierService.deleteById(id).subscribe(
-      (response) => {
-        console.log(response);
-        this.voirListe();
-        this.messageSuccess = "L'agent immobilier a été supprimé avec succès.";
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Suppression réussie',
-          detail: this.messageSuccess
-        });
-      }
-    );
+      })
+    } else if (this.checked == 'Agent immobilier existant') {
+      this.affectationAgentAgenceRequest.matricule = this.agentImmobilier.matricule;
+      this.affectationAgentAgenceRequest.agenceImmobiliere = this.agenceSelectionnee;
+      console.log(this.affectationAgentAgenceRequest)
+      this.affectationAgentAgenceService.ajoutParMatriculeAgent(this.affectationAgentAgenceRequest).subscribe(
+        (response) => {
+          console.log(response);
+          if (response.id > 0) {
+            this.voirListe();
+            this.messageSuccess = "L'agent immobilier a été ajouté avec succès.";
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Ajout réussi',
+              detail: this.messageSuccess
+            });
+          } else {
+            this.messageErreur = "Erreur lors de l'ajout de l'agent immobilier !"
+            this.afficherFormulaireAjouter();
+            this.agentImmobilier.matricule = response.agentImmobilier.matricule;
+            this.agenceSelectionnee = response.agenceImmobiliere;
+            this.messageService.add({
+              severity: 'error',
+              summary: "Erreur d'ajout",
+              detail: this.messageErreur
+            });
+          }
+      },
+      (error) =>{
+        console.log(error)
+        if (error.status === 409) {
+          this.messageErreur = "Cet agent immobilier à été déjà ajouté dans cette agence !";
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Ajout non réussi',
+            detail: this.messageErreur
+          });
+        } else if (error.status === 404) {
+          this.messageErreur = "Cet agent immobilier est introuvable !";
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Ajout non réussi',
+            detail: this.messageErreur
+          });
+        }
+      })
+    }
   }
 
   activerCompte(id: number): void {
@@ -238,8 +363,7 @@ export class AgentsImmobiliersComponent implements OnInit{
           this.messageService.add({
             severity: 'success',
             summary: 'Activation de compte confirmée',
-            detail: this.messageSuccess
-          });
+            detail: this.messageSuccess })
         });
 
       },
@@ -293,8 +417,7 @@ export class AgentsImmobiliersComponent implements OnInit{
             break;
           case ConfirmEventType.CANCEL:
             this.messageService.add({
-              severity: 'warn',
-              summary: 'Désactivation de compte annulée',
+              severity: 'warn', summary: 'Désactivation de compte annulée',
               detail: 'Vous avez annulé la désactivation de ce compte !'
             });
             break;

@@ -13,13 +13,26 @@
         <div class="col-xxl-8">
           <div class="dashboard_title_area">
             <h4>Mon profil</h4>
-            <h6 *ngIf="!user.estCertifie && (user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_DEMARCHEUR')" class="text">
-              <p *ngIf="demandeCertifications.length == 0" style="color: rgb(202, 8, 8);">Votre compte n'est pas certifié, veuillez demander la certification de compte <br>en cliquant sur le menu <b>certifications</b> !</p>
-              <p *ngIf="demandeCertifications.length !== 0" style="color: rgb(202, 8, 8);">Votre compte est en attente de <b>certifications</b> !</p>
+            <h6 *ngIf="user.etatCompte == false" class="text">
+              <span class="error">
+                <i class="pi pi-exclamation-triangle"></i> Votre compte est désactivé. Veuillez contacter l'équipe support technique ahoewo pour obtenir de l'aide supplémentaire.
+              </span>
             </h6>
-            <h6 *ngIf="!personne.estCertifie && personne.role.code === 'ROLE_AGENTIMMOBILIER'" class="text">
-              <p *ngIf="demandeCertifications.length == 0" style="color: rgb(202, 8, 8);">Votre compte n'est pas certifié, si vous n'avez pas encore d'agence immobilière, veuillez ajouter votre <b>agence immobilière</b> en cliquant sur le menu <b>agences immobilières</b> et demander la certification de cette dernière en cliquant sur le menu <b>certifications</b> !</p>
-              <p *ngIf="demandeCertifications.length !== 0" style="color: rgb(202, 8, 8);">Votre compte est en attente de <b>certifications</b> !</p>
+            <h6 *ngIf="!user.estCertifie && (user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_DEMARCHEUR')" class="text">
+              <span *ngIf="demandeCertifications.length == 0" class="error">
+                <i class="pi pi-exclamation-triangle"></i> Votre compte n'est pas certifié, veuillez demander la certification de compte <br>en cliquant sur le menu <b>certifications</b> !
+              </span>
+              <span *ngIf="demandeCertifications.length !== 0" class="error">
+                <i class="pi pi-exclamation-triangle"></i> Votre compte est en attente de <b>certifications</b> !
+              </span>
+            </h6>
+            <h6 *ngIf="!personne.estCertifie && personne.role.code === 'ROLE_RESPONSABLE'" class="text">
+              <span *ngIf="demandeCertifications.length == 0" class="error">
+                <i class="pi pi-exclamation-triangle"></i> Votre compte n'est pas certifié, si vous n'avez pas encore d'agence immobilière, veuillez ajouter votre <b>agence immobilière</b> en cliquant sur le menu <b>agences immobilières</b> et demander la certification de cette dernière en cliquant sur le menu <b>certifications</b> !
+              </span>
+              <span *ngIf="demandeCertifications.length !== 0" class="error">
+                <i class="pi pi-exclamation-triangle"></i> Votre compte est en attente de <b>certifications</b> !
+              </span>
             </h6>
           </div>
         </div>
@@ -30,57 +43,54 @@
           <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
             <h4 class="title fz17 mb30">Mes informations</h4>
 
+            <div class="row">
               <p-divider></p-divider>
-              <div class="d-flex justify-content-between">
-                <div>
-                  <p class="fw600 mb10 ff-heading dark-color">Nom & Prénom</p>
-                  <p>
-                      {{ personne.nom }} {{ personne.prenom }} <i *ngIf="personne.estCertifie && (personne.role.code === 'ROLE_AGENTIMMOBILIER' || personne.role.code === 'ROLE_PROPRIETAIRE' || personne.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i>
-                  </p>
-                </div>
-                <div>
-                  <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur</p>
-                  <p>
-                    {{ personne.username }}
-                  </p>
-                </div>
-                <div>
-                  <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
-                  <p>
-                      {{ personne.email }}
-                  </p>
-                </div>
-                <div>
-                  <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
-                  <p>
-                      {{ personne.telephone }}
-                  </p>
-                </div>
+              <div class="form-group col-md-6">
+                <p class="fw600 mb10 ff-heading dark-color">Nom & Pénom(s)</p>
+                <p>{{ personne.nom }} {{ personne.prenom }} <i *ngIf="personne.estCertifie && (personne.role.code === 'ROLE_AGENTIMMOBILIER' || personne.role.code === 'ROLE_PROPRIETAIRE' || personne.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+              </div>
+              <div class="form-group col-md-6">
+                <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur</p>
+                <p>{{ personne.username }}</p>
               </div>
 
               <p-divider></p-divider>
-              <div class="d-flex justify-content-between">
-                <div>
-                  <p class="fw600 mb10 ff-heading dark-color">Rôle</p>
-                  <p>
-                      {{ personne.role.libelle }}
-                  </p>
-                </div>
-                <div *ngIf="personne.role.code == 'ROLE_RESPONSABLE_AGENCEIMMOBILIERE' || personne.role.code == 'ROLE_AGENTIMMOBILIER' || personne.role.code == 'ROLE_DEMARCHEUR' || personne.role.code == 'ROLE_PROPRIETAIRE'">
-                  <p class="fw600 mb10 ff-heading dark-color">Est certifiée</p>
-                  <p>
-                    <p-tag *ngIf="personne.estCertifie == true" severity="success" value="Oui"></p-tag>
-                    <p-tag *ngIf="personne.estCertifie == false" severity="danger" value="Non"></p-tag>
-                  </p>
-                </div>
-                <div>
-                  <p class="fw600 mb10 ff-heading dark-color">Etat de votre compte</p>
-                  <p>
-                    <p-tag *ngIf="personne.etatCompte == true" severity="success" value="Activé"></p-tag>
-                    <p-tag *ngIf="personne.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
-                  </p>
-                </div>
+              <div class="form-group col-md-6">
+                <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+                <p>{{ personne.email }}</p>
               </div>
+              <div class="form-group col-md-6">
+                <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
+                <p>{{ personne.telephone }}</p>
+              </div>
+
+              <p-divider></p-divider>
+              <div class="form-group col-md-6">
+                <p class="fw600 mb10 ff-heading dark-color">Profil</p>
+                <p>{{ personne.role.libelle }}</p>
+              </div>
+              <div class="form-group col-md-6">
+                <p class="fw600 mb10 ff-heading dark-color">Matricule</p>
+                <p>{{ personne.matricule }}</p>
+              </div>
+
+              <p-divider></p-divider>
+              <div class="form-group col-md-6">
+                <p class="fw600 mb10 ff-heading dark-color">État compte</p>
+                <p>
+                  <p-tag *ngIf="personne.etatCompte == true" severity="success" value="Activé"></p-tag>
+                  <p-tag *ngIf="personne.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+                </p>
+              </div>
+              <div *ngIf="personne.role.code == 'ROLE_RESPONSABLE' || personne.role.code == 'ROLE_AGENTIMMOBILIER' || personne.role.code == 'ROLE_DEMARCHEUR' || personne.role.code == 'ROLE_PROPRIETAIRE'" class="form-group col-md-6">
+                <p class="fw600 mb10 ff-heading dark-color">Est Certifié</p>
+                <p>
+                  <p-tag *ngIf="personne.estCertifie == true" severity="success" value="Oui"></p-tag>
+                  <p-tag *ngIf="personne.estCertifie == false" severity="danger" value="Non"></p-tag>
+                </p>
+              </div>
+            </div>
+
             <div class="text-end">
               <a class="ud-btn btn-thm" (click)="afficherFormulaireModifier()" type="button">Modifier</a>
             </div>

@@ -5,13 +5,14 @@
     <!-- End Menu responsive -->
   </div>
 
+  <p-toast></p-toast>
+
   <!-- Formulaire d'ajout d'un type de bien -->
   <div *ngIf="visibleAddForm == 1">
     <div class="row align-items-center pb40">
       <div class="col-xxl-3">
         <div class="dashboard_title_area">
           <h4>Ajout d'un type de bien</h4>
-          <p class="text"></p>
         </div>
       </div>
     </div>
@@ -47,7 +48,6 @@
       <div class="col-xxl-3">
         <div class="dashboard_title_area">
           <h4>Modification d'un type de bien</h4>
-          <p class="text"></p>
         </div>
       </div>
     </div>
@@ -83,7 +83,6 @@
       <div class="col-xxl-3">
         <div class="dashboard_title_area">
           <h4>Liste des types de bien</h4>
-          <p class="text"></p>
         </div>
       </div>
       <div class="col-xxl-9">
@@ -100,7 +99,6 @@
       </div>
     </div>
     <div class="row">
-      <p-toast></p-toast>
       <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
@@ -110,6 +108,7 @@
                 <tr>
                   <th scope="col">ID</th>
                   <th scope="col">Désignation</th>
+                  <th scope="col">Etat</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
@@ -117,6 +116,10 @@
                   <tr *ngFor="let typeDeBien of typesDeBienParPage | genericFilter: recherche; let i = index;">
                     <td class="vam">{{ pageActuelle + i + 1 }}</td>
                     <td class="vam">{{ typeDeBien.designation }}</td>
+                    <td class="vam">
+                      <p-tag *ngIf="typeDeBien.etat === true" severity="success" value="Activé"></p-tag>
+                      <p-tag *ngIf="typeDeBien.etat === false" severity="danger" value="Désactivé"></p-tag>
+                    </td>
                     <td class="vam">
                       <div class="d-flex">
 

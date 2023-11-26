@@ -24,6 +24,7 @@ import { TypesDeBienComponent } from './components/templates-admin/types-de-bien
 import { BiensImmobiliersComponent } from './components/templates-admin/biens-immobiliers/biens-immobiliers.component';
 import { DelegationsGestionsComponent } from './components/templates-admin/delegations-gestions/delegations-gestions.component';
 import { ResponsablesAgenceImmobiliereComponent } from './components/templates-admin/responsables-agence-immobiliere/responsables-agence-immobiliere.component';
+import { ServicesAgenceImmobiliereComponent } from './components/templates-admin/services-agence-immobiliere/services-agence-immobiliere.component';
 
 const routes: Routes = [
   { path: '', redirectTo:'', pathMatch: 'full'},
@@ -51,11 +52,12 @@ const routes: Routes = [
       { path: 'demandes-certifications', component: DemandesCertificationsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres', component: AgencesImmobilieresComponent, canActivate: [AuthGuard] },
       { path: 'services', component: ServicesComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/services', component: ServicesAgenceImmobiliereComponent, canActivate: [AuthGuard] },
       { path: 'types-de-bien', component: TypesDeBienComponent, canActivate: [AuthGuard] },
       { path: 'biens-immobiliers', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
       { path: 'delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] }
     ]
-  },
+  }
 ];
 
 @NgModule({

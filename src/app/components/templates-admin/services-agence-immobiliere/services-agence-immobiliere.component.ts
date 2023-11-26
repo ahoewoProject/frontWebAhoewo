@@ -1,18 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
 import { Services } from 'src/app/models/gestionDesAgencesImmobilieres/Services';
+import { ServicesAgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/ServicesAgenceImmobiliere';
+import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
+import { ServicesAgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/services-agence-immobiliere.service';
 import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/services.service';
-import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-services',
-  templateUrl: './services.component.html',
-  styleUrls: ['./services.component.css']
+  selector: 'app-services-agence-immobiliere',
+  templateUrl: './services-agence-immobiliere.component.html',
+  styleUrls: ['./services-agence-immobiliere.component.css']
 })
-export class ServicesComponent implements OnInit {
+export class ServicesAgenceImmobiliereComponent implements OnInit {
 
+  serviceSelectionne!: Services;
+  agenceSelectionnee!: AgenceImmobiliere;
   recherche: string = '';
   affichage = 1;
   visibleAddForm = 0;
@@ -22,32 +27,61 @@ export class ServicesComponent implements OnInit {
   elementsParPage = 5; // Nombre d'éléments par page
   pageActuelle = 0; // Page actuelle
 
-  _service = this._servicesService._service;
+
+  serviceAgenceImmobiliere = this.servicesAgenceImmobiliereService.serviceAgenceImmobiliere;
   services : Services[] = [];
+  agencesImmobilieres: AgenceImmobiliere[] = [];
+  servicesAgenceImmobiliere: ServicesAgenceImmobiliere[] = [];
   messageErreur: string = "";
   messageSuccess: string | null = null;
   serviceForm: any;
   APIEndpoint: string;
+  serviceAgenceImmobiliereForm: any;
 
   constructor(
     private _servicesService: ServicesService,
+    private agenceImmobiliereService: AgenceImmobiliereService,
+    private servicesAgenceImmobiliereService: ServicesAgenceImmobiliereService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private personneService: PersonneService
+    private confirmationService: ConfirmationService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
-    const utilisateurConnecte = this.personneService.utilisateurConnecte();
-    this.user = JSON.parse(utilisateurConnecte);
   }
 
   ngOnInit(): void {
-    this.listeServices();
-    this.initServiceForm()
+    this.listerServicesAgenceImmobiliere();
+    this.initServiceAgenceImmobiliereForm();
+    this.listerServices();
+    this.listerAgencesImmobilieres();
+  }
+
+  initServiceAgenceImmobiliereForm(): void {
+    this.serviceAgenceImmobiliereForm = new FormGroup({
+      service: new FormControl('', [Validators.required]),
+      agenceImmobiliere: new FormControl('', [Validators.required])
+    });
+  }
+
+  get service() {
+    return this.serviceAgenceImmobiliereForm.get('service');
+  }
+
+  get agenceImmobiliere() {
+    return this.serviceAgenceImmobiliereForm.get('agenceImmobiliere');
+  }
+
+  // Fonction pour recupérer les services des agences immobilières
+  listerServicesAgenceImmobiliere() {
+    this.servicesAgenceImmobiliereService.getServicesOfAgence().subscribe(
+      (response) => {
+        this.servicesAgenceImmobiliere = response;
+      }
+    );
   }
 
   // Fonction pour recupérer les services
-  listeServices() {
+  listerServices() {
     this._servicesService.getAll().subscribe(
       (response) => {
         this.services = response;
@@ -55,20 +89,38 @@ export class ServicesComponent implements OnInit {
     );
   }
 
+  // Fonction pour recupérer les agences immobilières d'un responsable
+  listerAgencesImmobilieres() {
+    this.agenceImmobiliereService.findAgenceByResponsable().subscribe(
+      (response) => {
+        this.agencesImmobilieres = response;
+      }
+    );
+  }
+
+  serviceChoisi(event: any) {
+    this.serviceSelectionne = event.value;
+  }
+
+  agenceChoisie(event: any) {
+    this.agenceSelectionnee = event.value;
+  }
+
+
   // Récupération des services de la page courante
-  get servicesParPage(): any[] {
-    return this.services.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
+  get servicesAgenceImmobiliereParPage(): any[] {
+    return this.servicesAgenceImmobiliere.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
   }
 
   pagination(event: any) {
     this.pageActuelle = event.first;
     this.elementsParPage = event.rows;
-    this.listeServices()
+    this.listerServicesAgenceImmobiliere();
   }
 
   voirListe(): void {
-    this.listeServices();
-    this.serviceForm.reset();
+    this.listerServicesAgenceImmobiliere();
+    this.serviceAgenceImmobiliereForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
     this.visibleUpdateForm = 0;
@@ -78,63 +130,39 @@ export class ServicesComponent implements OnInit {
     this.affichage = 0;
     this.visibleAddForm = 1;
     this.visibleUpdateForm = 0;
-    this._service = new Services();
+    this.serviceAgenceImmobiliere = new ServicesAgenceImmobiliere();
   }
 
   afficherFormulaireModifier(id: number): void {
-    this.detailService(id);
+    this.detailServiceAgenceImmobiliere(id);
     this.affichage = 0;
     this.visibleAddForm = 0;
     this.visibleUpdateForm = 1;
   }
 
-  detailService(id: number): void {
+  detailServiceAgenceImmobiliere(id: number): void {
     console.log(id)
-    this._servicesService.findById(id).subscribe(
+    this.servicesAgenceImmobiliereService.findById(id).subscribe(
       (response) => {
-        this._service = response;
+        this.serviceAgenceImmobiliere = response;
       }
     );
   }
 
   afficherPageDetail(id: number): void {
-    this.detailService(id);
+    this.detailServiceAgenceImmobiliere(id);
     this.affichage = 2;
   }
 
-  initServiceForm(): void {
-    this.serviceForm = new FormGroup({
-      nomService: new FormControl(this._service.nomService, [Validators.required]),
-      description: new FormControl('', [Validators.required])
-    });
-  }
+  ajouterServiceAgenceImmobiliere(): void {
+    this.serviceAgenceImmobiliere.agenceImmobiliere = this.agenceSelectionnee;
+    this.serviceAgenceImmobiliere.services = this.serviceSelectionne;
 
-  get nomService() {
-    return this.serviceForm.get('nomService');
-  }
-
-  get description() {
-    return this.serviceForm.get('description');
-  }
-
-  ajouterService(): void {
-    this._servicesService.addServices(this._service).subscribe(
+    this.servicesAgenceImmobiliereService.addServicesAgence(this.serviceAgenceImmobiliere).subscribe(
 
       (response) => {
         console.log(response)
         if (response.id > 0) {
-          this.services.push({
-            id: response.id,
-            codeService: response.codeService,
-            nomService: response.nomService,
-            description: response.description,
-            etat: response.etat,
-            creerPar: 0,
-            creerLe: new Date(),
-            modifierPar: 0,
-            modifierLe: new Date(),
-            statut: false
-          });
           this.voirListe();
           this.messageSuccess = "Le service a été ajouté avec succès.";
           this.messageService.add({
@@ -145,8 +173,8 @@ export class ServicesComponent implements OnInit {
         } else {
           this.messageErreur = "Erreur lors de l'ajout du service !"
           this.afficherFormulaireAjouter();
-          this._service.nomService = response.nomService;
-          this._service.description = response.description;
+          this.serviceAgenceImmobiliere.agenceImmobiliere = response.agenceImmobiliere;
+          this.serviceAgenceImmobiliere.services = response.services;
           this.messageService.add({
             severity: 'error',
             summary: "Erreur d'ajout",
@@ -157,7 +185,7 @@ export class ServicesComponent implements OnInit {
     (error) =>{
       console.log(error)
       if (error.status === 409) {
-        this.messageErreur = "Un service avec ce nom existe déjà !";
+        this.messageErreur = "Un service avec ce nom existe déjà dans une de vos agences !";
         this.messageService.add({
           severity: 'warn',
           summary: "Erreur d'ajout",
@@ -167,10 +195,15 @@ export class ServicesComponent implements OnInit {
     })
   }
 
-  modifierService(id: number): void {
-    this._servicesService.updateServices(id, this._service).subscribe(
-      (response) =>{
-        if(response.id > 0) {
+  modifierServiceAgenceImmobiliere(id: number): void {
+    this.serviceAgenceImmobiliere.agenceImmobiliere = this.agenceSelectionnee;
+    this.serviceAgenceImmobiliere.services = this.serviceSelectionne;
+
+    this.servicesAgenceImmobiliereService.updateServicesAgence(id, this.serviceAgenceImmobiliere).subscribe(
+
+      (response) => {
+        console.log(response)
+        if (response.id > 0) {
           this.voirListe();
           this.messageSuccess = "Le service a été modifié avec succès.";
           this.messageService.add({
@@ -179,36 +212,37 @@ export class ServicesComponent implements OnInit {
             detail: this.messageSuccess
           });
         } else {
-          this.messageErreur = "Erreur lors de la modification du service !";
+          this.messageErreur = "Erreur lors de la modification du service !"
+          this.afficherFormulaireAjouter();
+          this.serviceAgenceImmobiliere.agenceImmobiliere = response.agenceImmobiliere;
+          this.serviceAgenceImmobiliere.services = response.services;
           this.messageService.add({
             severity: 'error',
-            summary: 'Erreur modification',
+            summary: "Erreur de modification",
             detail: this.messageErreur
           });
-          this.afficherFormulaireModifier(id);
         }
     },
     (error) =>{
       console.log(error)
       if (error.status === 409) {
-        this.messageErreur = "Le service avec ce nom existe déjà !";
+        this.messageErreur = "Un service avec ce nom existe déjà dans une de vos agences !";
         this.messageService.add({
           severity: 'warn',
-          summary: 'Modification non réussie',
+          summary: "Erreur de modification",
           detail: this.messageErreur
         });
-        this.afficherFormulaireModifier(id);
       }
     })
   }
 
-  activerService(id: number): void {
+  activerServiceAgenceImmobiliere(id: number): void {
     this.confirmationService.confirm({
       message: 'Vous êtes sûr de vouloir activer ce service ?',
       header: "Activation d'un service",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this._servicesService.activerService(id).subscribe(response=>{
+        this.servicesAgenceImmobiliereService.activerServiceAgence(id).subscribe(response=>{
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le service a été activé avec succès !";
@@ -241,13 +275,13 @@ export class ServicesComponent implements OnInit {
     });
   }
 
-  desactiverService(id: number): void {
+  desactiverServiceAgenceImmobiliere(id: number): void {
     this.confirmationService.confirm({
       message: 'Vous êtes sûr de vouloir désactiver ce service ?',
       header: "Désactivaction d'un service",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this._servicesService.desactiverService(id).subscribe(response=>{
+        this.servicesAgenceImmobiliereService.desactiverServiceAgence(id).subscribe(response=>{
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le service a été désactivé avec succès !";

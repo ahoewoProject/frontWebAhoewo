@@ -29,17 +29,17 @@
 
                 <div class="col-lg-6">
                   <div class="mb20">
-                    <label class="form-label fw600 dark-color">Prénom</label>
-                    <input type="text" class="form-control" placeholder="Entrer votre prénom" id="prenom" name="prenom" formControlName="prenom" [(ngModel)]="registerForm.prenom" required>
+                    <label class="form-label fw600 dark-color">Prénom(s)</label>
+                    <input type="text" class="form-control" placeholder="Entrer votre prénom(s)" id="prenom" name="prenom" formControlName="prenom" [(ngModel)]="registerForm.prenom" required>
                     <div class="error" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le prénom est obligatoire</div>
                   </div>
                 </div>
 
                 <div class="col-lg-6">
                   <div class="mb20">
-                    <label class="form-label fw600 dark-color">Nom d'utilisateur</label>
-                    <input type="text" autocomplete="additional-name" class="form-control" placeholder="Entrer votre nom d'utilisateur" id="username" name="username" formControlName="username" [(ngModel)]="registerForm.username" required>
-                    <div class="error" [hidden]="username.valid || username.pristine && !username.touched ">Le nom d'utilisateur est obligatoire</div>
+                    <label class="form-label fw600 dark-color">Téléphone</label>
+                    <input type="tel" class="form-control" placeholder="Entrer votre numero de téléphone" id="telephone" name="telephone" formControlName="telephone" [(ngModel)]="registerForm.telephone" required>
+                    <div class="error" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numero de téléphone est obligatoire</div>
                   </div>
                 </div>
 
@@ -58,9 +58,9 @@
 
                 <div class="col-lg-6">
                   <div class="mb20">
-                    <label class="form-label fw600 dark-color">Téléphone</label>
-                    <input type="tel" class="form-control" placeholder="Entrer votre numero de téléphone" id="telephone" name="telephone" formControlName="telephone" [(ngModel)]="registerForm.telephone" required>
-                    <div class="error" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numero de téléphone est obligatoire</div>
+                    <label class="form-label fw600 dark-color">Nom d'utilisateur</label>
+                    <input type="text" autocomplete="additional-name" class="form-control" placeholder="Entrer votre nom d'utilisateur" id="username" name="username" formControlName="username" [(ngModel)]="registerForm.username" required>
+                    <div class="error" [hidden]="username.valid || username.pristine && !username.touched ">Le nom d'utilisateur est obligatoire</div>
                   </div>
                 </div>
 

@@ -5,6 +5,7 @@ export class AgenceImmobiliere extends EntiteDeBase {
 
   id: number;
   logoAgence: string;
+  codeAgence: string;
   nomAgence: string;
   adresse: string;
   telephone: string;
@@ -13,12 +14,12 @@ export class AgenceImmobiliere extends EntiteDeBase {
   heureFermeture!: string;
   estCertifie: boolean;
   etatAgence: boolean;
-  responsableAgenceImmobiliere!: ResponsableAgenceImmobiliere;
 
   constructor(){
     super();
     this.id = 0;
     this.logoAgence = '';
+    this.codeAgence = '';
     this.nomAgence = '';
     this.adresse = '';
     this.telephone = '';

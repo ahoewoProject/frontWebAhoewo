@@ -1,19 +1,18 @@
 import { EntiteDeBase } from "../EntiteDeBase";
-import { AgenceImmobiliere } from "./AgenceImmobiliere";
 
 export class Services extends EntiteDeBase {
 
   id: number;
+  codeService!: string;
   nomService: string;
   description!: Text;
-  agenceImmobiliere: AgenceImmobiliere;
   etat: boolean;
 
   constructor(){
     super();
     this.id = 0;
+    this.codeService = '';
     this.nomService = ''
-    this.agenceImmobiliere = new AgenceImmobiliere();
     this.etat = true;
   }
 }

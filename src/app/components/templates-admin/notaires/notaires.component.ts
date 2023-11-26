@@ -53,13 +53,10 @@ export class NotairesComponent implements OnInit{
 
   initNotaireForm(): void {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
     this.notaireForm = new FormGroup({
       nom: new FormControl(this.notaire.nom, [Validators.required]),
       prenom: new FormControl(this.notaire.prenom, [Validators.required]),
-      username: new FormControl(this.notaire.username, [Validators.required]),
       email: new FormControl(this.notaire.email, [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
-      motDePasse: new FormControl(this.notaire.motDePasse, [Validators.required, Validators.maxLength(14), Validators.minLength(8), Validators.pattern(passwordRegex)]),
       telephone: new FormControl(this.notaire.telephone, [Validators.required]),
     })
   }
@@ -93,6 +90,7 @@ export class NotairesComponent implements OnInit{
   }
 
   afficherFormulaireAjouter(): void {
+    this.affichage = 0;
     this.visibleAddForm = 1;
     this.notaire = new Notaire();
   }
@@ -119,16 +117,8 @@ export class NotairesComponent implements OnInit{
     return this.notaireForm.get('prenom');
   }
 
-  get username() {
-    return this.notaireForm.get('username');
-  }
-
   get email() {
     return this.notaireForm.get('email');
-  }
-
-  get motDePasse() {
-    return this.notaireForm.get('motDePasse');
   }
 
   get telephone(){
@@ -146,6 +136,7 @@ export class NotairesComponent implements OnInit{
             id: response.id,
             nom: response.nom,
             prenom: response.prenom,
+            matricule: response.matricule,
             username: response.username,
             email: response.email,
             motDePasse: response.motDePasse,
@@ -167,8 +158,7 @@ export class NotairesComponent implements OnInit{
             summary: 'Ajout réussi',
             detail: this.messageSuccess
           });
-        }
-        else{
+        } else {
           this.messageErreur = "Erreur lors de l'ajout du notaire !"
           this.afficherFormulaireAjouter();
           this.notaire.nom = response.nom;

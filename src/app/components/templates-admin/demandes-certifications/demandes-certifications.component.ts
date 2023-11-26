@@ -31,30 +31,27 @@ export class DemandesCertificationsComponent implements OnInit {
   demandeCertificationData: FormData = new  FormData();
   APIEndpoint: string;
   documentJustificatif: any;
+  carteCfe: any;
   demandeCertificationForm: any
 
   constructor(
+    private agenceImmobiliereService: AgenceImmobiliereService,
     private personneService: PersonneService,
     private demandeCertifService: DemandeCertificationService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private agenceImmobiliereService: AgenceImmobiliereService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
     this.user = JSON.parse(utilisateurConnecte);
-    this.agenceImmobiliereService.getAllByResponsableAgenceImmobiliere().subscribe(
-      (response) => {
-        this.agencesImmobilieres = response;
-      }
-    )
   }
 
   ngOnInit(): void {
     if (this.user.role.code == 'ROLE_NOTAIRE') {
       this.listeDemandeCertifications();
-    } else {
+    } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
+      this.listerAgencesImmobilieres();
       this.listeDemandeCertificationParUtilisateur();
     }
     this.initDemandeCertificationForm();
@@ -77,6 +74,7 @@ export class DemandesCertificationsComponent implements OnInit {
   listeDemandeCertifications() {
     this.demandeCertifService.getAll().subscribe(
       (response) => {
+        console.log(response);
         this.demandeCertifications = response;
       }
     );
@@ -85,9 +83,19 @@ export class DemandesCertificationsComponent implements OnInit {
   listeDemandeCertificationParUtilisateur() {
     this.demandeCertifService.findByUser().subscribe(
       (response) => {
+        console.log(response);
         this.demandeCertifications = response;
       }
     )
+  }
+
+  // Fonction pour recupérer les agences immobilières d'un responsable
+  listerAgencesImmobilieres() {
+    this.agenceImmobiliereService.findAgenceByResponsable().subscribe(
+      (response) => {
+        this.agencesImmobilieres = response;
+      }
+    );
   }
 
   // Récupération des demandes de certifications de la page courante
@@ -103,14 +111,16 @@ export class DemandesCertificationsComponent implements OnInit {
     this.listeDemandeCertifications()
   }
 
-  voirListe(): void{
+  voirListe(): void {
     if (this.user.role.code == 'ROLE_NOTAIRE') {
       this.listeDemandeCertifications();
-    } else {
+    } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
       this.listeDemandeCertificationParUtilisateur();
     }
     this.affichage = 1;
     this.visibleAddForm = 0;
+    this.documentJustificatif = '';
+    this.carteCfe = ''
   }
 
   afficherFormulaireAjouter(): void {
@@ -118,11 +128,23 @@ export class DemandesCertificationsComponent implements OnInit {
     this.demandeCertification = new DemandeCertification();
   }
 
-  telecharger(event: any) {
+  telechargerCNI(event: any) {
     const uploadedFile: File = event.files[0];
     console.log(uploadedFile)
     this.documentJustificatif = uploadedFile;
-    this.messageSuccess = "Le document justificatif a été téléchargé avec succès.";
+    this.messageSuccess = "Le carte d'identité a été téléchargé avec succès.";
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Téléchargement réussi',
+      detail: this.messageSuccess
+    });
+  }
+
+  telechargerCarteCfe(event: any) {
+    const uploadedFile: File = event.files[0];
+    console.log(uploadedFile)
+    this.carteCfe = uploadedFile;
+    this.messageSuccess = "Le carte cfe a été téléchargé avec succès.";
     this.messageService.add({
       severity: 'info',
       summary: 'Téléchargement réussi',
@@ -137,7 +159,7 @@ export class DemandesCertificationsComponent implements OnInit {
     }
 
     this.demandeCertificationData.append('demandeCertificationJson', JSON.stringify(formValues))
-    this.demandeCertificationData.append('documentJustificatif', this.documentJustificatif);
+    this.demandeCertificationData.append('cni', this.documentJustificatif);
 
     this.demandeCertifService.addDemandeCertificationCompte(this.demandeCertificationData)
     .subscribe(
@@ -175,7 +197,8 @@ export class DemandesCertificationsComponent implements OnInit {
     }
 
     this.demandeCertificationData.append('demandeCertificationJson', JSON.stringify(formValues))
-    this.demandeCertificationData.append('documentJustificatif', this.documentJustificatif);
+    this.demandeCertificationData.append('cni', this.documentJustificatif);
+    this.demandeCertificationData.append('carteCfe', this.carteCfe);
 
     this.demandeCertifService.addDemandeCertificationAgence(this.demandeCertificationData)
     .subscribe(

@@ -62,7 +62,7 @@ export class TypesDeBienComponent implements OnInit {
     this.listeTypesDeBien()
   }
 
-  voirListe(): void{
+  voirListe(): void {
     this.listeTypesDeBien();
     this.typeDeBienForm.reset();
     this.affichage = 1;
@@ -71,6 +71,7 @@ export class TypesDeBienComponent implements OnInit {
   }
 
   afficherFormulaireAjouter(): void {
+    this.affichage = 0;
     this.visibleAddForm = 1;
     this.visibleUpdateForm = 0;
     this.typeDeBien = new TypeDeBien();
@@ -87,6 +88,7 @@ export class TypesDeBienComponent implements OnInit {
 
   afficherFormulaireModifier(id: number): void {
     this.detailTypeDeBien(id);
+    this.affichage = 0;
     this.visibleUpdateForm = 1;
     this.visibleAddForm = 0;
   }

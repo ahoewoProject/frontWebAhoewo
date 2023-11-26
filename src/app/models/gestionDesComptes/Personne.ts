@@ -6,6 +6,7 @@ export class Personne extends EntiteDeBase {
   id: number;
   nom: string;
   prenom: string;
+  matricule: string;
   username: string;
   email: string;
   motDePasse: string;
@@ -20,6 +21,7 @@ export class Personne extends EntiteDeBase {
     this.id = 0;
     this.nom = '';
     this.prenom = '';
+    this.matricule = '';
     this.username = '';
     this.email = '';
     this.motDePasse = '';

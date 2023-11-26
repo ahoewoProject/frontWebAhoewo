@@ -5,13 +5,14 @@
     <!-- End Menu responsive -->
   </div>
 
+  <p-toast></p-toast>
+  
   <!-- Liste des clients -->
   <div *ngIf="affichage == 1">
     <div class="row align-items-center pb40">
       <div class="col-xxl-3">
         <div class="dashboard_title_area">
           <h4>Liste des clients</h4>
-          <p class="text"></p>
         </div>
       </div>
       <div class="col-xxl-9">
@@ -26,7 +27,6 @@
       </div>
     </div>
     <div class="row">
-      <p-toast></p-toast>
       <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
@@ -36,9 +36,8 @@
                 <tr>
                   <th scope="col">ID</th>
                   <th scope="col">Nom</th>
-                  <th scope="col">Prénom</th>
-                  <th scope="col">Nom d'utilisateur</th>
-                  <th scope="col">Email</th>
+                  <th scope="col">Prénom(s)</th>
+                  <th scope="col">Etat compte</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
@@ -47,8 +46,10 @@
                   <td class="vam">{{ pageActuelle + i + 1 }}</td>
                   <td class="vam">{{ client.nom }}</td>
                   <td class="vam">{{ client.prenom }}</td>
-                  <td class="vam">{{ client.username }}</td>
-                  <td class="vam">{{ client.email }}</td>
+                  <td class="vam">
+                    <p-tag *ngIf="client.etatCompte == true" severity="success" value="Activé"></p-tag>
+                    <p-tag *ngIf="client.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+                  </td>
                   <td class="vam">
                     <div class="d-flex">
                       <button pButton type="button" (click)="afficherPageDetail(client.id)" icon="pi pi-eye"
@@ -93,7 +94,6 @@
       <div class="col-xxl-3">
         <div class="dashboard_title_area">
           <h4>Détails d'un client</h4>
-          <p class="text"></p>
         </div>
       </div>
     </div>
@@ -108,7 +108,7 @@
               <p>{{ client.nom }}</p>
             </div>
             <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Prénom</p>
+              <p class="fw600 mb10 ff-heading dark-color">Prénom(s)</p>
               <p>{{ client.prenom }}</p>
             </div>
 
@@ -128,7 +128,7 @@
               <p>{{ client.telephone }}</p>
             </div>
             <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Rôle</p>
+              <p class="fw600 mb10 ff-heading dark-color">Profil</p>
               <p>{{ client.role.libelle }}</p>
             </div>
 

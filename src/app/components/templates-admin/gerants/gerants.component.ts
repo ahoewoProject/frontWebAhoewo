@@ -60,13 +60,10 @@ export class GerantsComponent implements OnInit{
 
   initGerantForm(): void{
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
     this.gerantForm = new FormGroup({
       nom: new FormControl(this.gerant.nom, [Validators.required]),
       prenom: new FormControl(this.gerant.prenom, [Validators.required]),
-      username: new FormControl(this.gerant.username, [Validators.required]),
       email: new FormControl(this.gerant.email, [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
-      motDePasse: new FormControl(this.gerant.motDePasse, [Validators.required, Validators.maxLength(14), Validators.minLength(8), Validators.pattern(passwordRegex)]),
       telephone: new FormControl(this.gerant.telephone, [Validators.required]),
     })
   }
@@ -112,6 +109,7 @@ export class GerantsComponent implements OnInit{
   }
 
   afficherFormulaireAjouter(): void {
+    this.affichage = 0;
     this.visibleAddForm = 1;
     this.gerant = new Gerant();
   }
@@ -139,16 +137,8 @@ export class GerantsComponent implements OnInit{
     return this.gerantForm.get('prenom');
   }
 
-  get username() {
-    return this.gerantForm.get('username');
-  }
-
   get email() {
     return this.gerantForm.get('email');
-  }
-
-  get motDePasse() {
-    return this.gerantForm.get('motDePasse');
   }
 
   get telephone() {
@@ -166,6 +156,7 @@ export class GerantsComponent implements OnInit{
             id: response.id,
             nom: response.nom,
             prenom: response.prenom,
+            matricule: response.matricule,
             username: response.username,
             email: response.email,
             motDePasse: response.motDePasse,
