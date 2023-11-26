@@ -50,7 +50,7 @@ export class DemandesCertificationsComponent implements OnInit {
   ngOnInit(): void {
     if (this.user.role.code == 'ROLE_NOTAIRE') {
       this.listeDemandeCertifications();
-    } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
+    } else if (this.user.role.code == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
       this.listerAgencesImmobilieres();
       this.listeDemandeCertificationParUtilisateur();
     }
@@ -114,7 +114,7 @@ export class DemandesCertificationsComponent implements OnInit {
   voirListe(): void {
     if (this.user.role.code == 'ROLE_NOTAIRE') {
       this.listeDemandeCertifications();
-    } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
+    } else if (this.user.role.code == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
       this.listeDemandeCertificationParUtilisateur();
     }
     this.affichage = 1;

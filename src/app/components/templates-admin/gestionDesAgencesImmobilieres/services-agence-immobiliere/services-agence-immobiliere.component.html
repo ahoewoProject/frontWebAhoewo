@@ -29,6 +29,7 @@
                   <br>
                   <p-dropdown
                     class="select" emptyFilterMessage="Aucun résultat trouvé"
+                    emptyMessage="Aucun résultat trouvé"
                     [options]="agencesImmobilieres" placeholder="Choisir une agence"
                     formControlName="agenceImmobiliere" [filter]="true" filterBy="codeAgence,nomAgence"
                     filterPlaceholder="Rechercher"
@@ -96,7 +97,8 @@
                   <label class="heading-color ff-heading fw600 mb10">Agence immobilière</label>
                   <br>
                   <p-dropdown
-                    class="select" emptyFilterMessage="Aucun résultat trouvé" [(ngModel)]="serviceAgenceImmobiliere.agenceImmobiliere"
+                    class="select" emptyFilterMessage="Aucun résultat trouvé"
+                    emptyMessage="Aucun résultat trouvé" [(ngModel)]="serviceAgenceImmobiliere.agenceImmobiliere"
                     [options]="agencesImmobilieres" placeholder="Choisir une agence"
                     formControlName="agenceImmobiliere" [filter]="true" filterBy="codeAgence,nomAgence"
                     filterPlaceholder="Rechercher"

@@ -15,17 +15,17 @@ import { DashboardComponent } from './components/templates-admin/dashboard/dashb
 import { MenuComponent } from './components/templates-admin/menu/menu.component';
 import { PiedDePageComponent } from './components/templates-admin/pied-de-page/pied-de-page.component';
 import { NavigationComponent } from './components/templates-admin/navigation/navigation.component';
-import { RolesComponent } from './components/templates-admin/roles/roles.component';
+import { RolesComponent } from './components/templates-admin/gestionDesComptes/roles/roles.component';
 import { MenuResponsiveComponent } from './components/templates-admin/menu-responsive/menu-responsive.component';
-import { AdministrateursComponent } from './components/templates-admin/administrateurs/administrateurs.component';
-import { NotairesComponent } from './components/templates-admin/notaires/notaires.component';
-import { ProprietairesComponent } from './components/templates-admin/proprietaires/proprietaires.component';
-import { AgentsImmobiliersComponent } from './components/templates-admin/agents-immobiliers/agents-immobiliers.component';
-import { DemarcheursComponent } from './components/templates-admin/demarcheurs/demarcheurs.component';
-import { GerantsComponent } from './components/templates-admin/gerants/gerants.component';
-import { ClientsComponent } from './components/templates-admin/clients/clients.component';
-import { ProfilComponent } from './components/templates-admin/profil/profil.component';
-import { DemandesCertificationsComponent } from './components/templates-admin/demandes-certifications/demandes-certifications.component';
+import { AdministrateursComponent } from './components/templates-admin/gestionDesComptes/administrateurs/administrateurs.component';
+import { NotairesComponent } from './components/templates-admin/gestionDesComptes/notaires/notaires.component';
+import { ProprietairesComponent } from './components/templates-admin/gestionDesComptes/proprietaires/proprietaires.component';
+import { AgentsImmobiliersComponent } from './components/templates-admin/gestionDesComptes/agents-immobiliers/agents-immobiliers.component';
+import { DemarcheursComponent } from './components/templates-admin/gestionDesComptes/demarcheurs/demarcheurs.component';
+import { GerantsComponent } from './components/templates-admin/gestionDesComptes/gerants/gerants.component';
+import { ClientsComponent } from './components/templates-admin/gestionDesComptes/clients/clients.component';
+import { ProfilComponent } from './components/templates-admin/gestionDesComptes/profil/profil.component';
+import { DemandesCertificationsComponent } from './components/templates-admin/gestionDesComptes/demandes-certifications/demandes-certifications.component';
 import { ForgotPasswordComponent } from './components/auth/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { TemplatesClientComponent } from './components/templates-client/templates-client.component';
@@ -44,15 +44,27 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { GenericFilterPipe } from './helpers/genericFilter';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TokenInterceptorProvider } from './helpers/token.interceptor';
-import { AgencesImmobilieresComponent } from './components/templates-admin/agences-immobilieres/agences-immobilieres.component';
-import { ServicesComponent } from './components/templates-admin/services/services.component';
+import { AgencesImmobilieresComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/agences-immobilieres/agences-immobilieres.component';
+import { ServicesComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/services/services.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { TypesDeBienComponent } from './components/templates-admin/types-de-bien/types-de-bien.component';
-import { BiensImmobiliersComponent } from './components/templates-admin/biens-immobiliers/biens-immobiliers.component';
-import { DelegationsGestionsComponent } from './components/templates-admin/delegations-gestions/delegations-gestions.component';
-import { ResponsablesAgenceImmobiliereComponent } from './components/templates-admin/responsables-agence-immobiliere/responsables-agence-immobiliere.component';
-import { ServicesAgenceImmobiliereComponent } from './components/templates-admin/services-agence-immobiliere/services-agence-immobiliere.component';
+import { TypesDeBienComponent } from './components/templates-admin/gestionDesComptes/types-de-bien/types-de-bien.component';
+import { BiensImmobiliersComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-immobiliers.component';
+import { DelegationsGestionsComponent } from './components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/delegations-gestions.component';
+import { ResponsablesAgenceImmobiliereComponent } from './components/templates-admin/gestionDesComptes/responsables-agence-immobiliere/responsables-agence-immobiliere.component';
+import { ServicesAgenceImmobiliereComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/services-agence-immobiliere/services-agence-immobiliere.component';
+import { PaysComponent } from './components/templates-admin/gestionDesBiensImmobiliers/pays/pays.component';
+import { VillesComponent } from './components/templates-admin/gestionDesBiensImmobiliers/villes/villes.component';
+import { RegionsComponent } from './components/templates-admin/gestionDesBiensImmobiliers/regions/regions.component';
+import { QuartiersComponent } from './components/templates-admin/gestionDesBiensImmobiliers/quartiers/quartiers.component';
+import { AdminModule } from './routes/admin/admin.module';
+import { AgentImmobilierModule } from './routes/agent-immobilier/agent-immobilier.module';
+import { ClientModule } from './routes/client/client.module';
+import { GerantModule } from './routes/gerant/gerant.module';
+import { ResponsableModule } from './routes/responsable/responsable.module';
+import { NotaireModule } from './routes/notaire/notaire.module';
+import { ProprietaireModule } from './routes/proprietaire/proprietaire.module';
+import { DemarcheurModule } from './routes/demarcheur/demarcheur.module';
 
 @NgModule({
   declarations: [
@@ -85,7 +97,11 @@ import { ServicesAgenceImmobiliereComponent } from './components/templates-admin
     BiensImmobiliersComponent,
     DelegationsGestionsComponent,
     ResponsablesAgenceImmobiliereComponent,
-    ServicesAgenceImmobiliereComponent
+    ServicesAgenceImmobiliereComponent,
+    PaysComponent,
+    VillesComponent,
+    RegionsComponent,
+    QuartiersComponent
   ],
   imports: [
     BrowserModule,
@@ -109,7 +125,15 @@ import { ServicesAgenceImmobiliereComponent } from './components/templates-admin
     GalleriaModule,
     CheckboxModule,
     RadioButtonModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    AdminModule,
+    AgentImmobilierModule,
+    ClientModule,
+    GerantModule,
+    ResponsableModule,
+    NotaireModule,
+    ProprietaireModule,
+    DemarcheurModule
   ],
   providers: [
     MessageService,

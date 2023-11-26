@@ -31,7 +31,13 @@
                   </a>
                   <div class="dropdown-menu">
                     <div class="user_setting_content">
-                      <a class="dropdown-item" routerLink="/admin/profil" ><i class="flaticon-user mr10"></i>Mes informations</a>
+                      <a *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'" class="dropdown-item" routerLink="/admin/profil" ><i class="flaticon-user mr10"></i>Mes informations</a>
+                      <a *ngIf="user.role.code == 'ROLE_NOTAIRE'" class="dropdown-item" routerLink="/notaire/profil" ><i class="flaticon-user mr10"></i>Mes informations</a>
+                      <a *ngIf="user.role.code == 'ROLE_RESPONSABLE'" class="dropdown-item" routerLink="/responsable/profil" ><i class="flaticon-user mr10"></i>Mes informations</a>
+                      <a *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER'" class="dropdown-item" routerLink="/agent-immobilier/profil" ><i class="flaticon-user mr10"></i>Mes informations</a>
+                      <a *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'" class="dropdown-item" routerLink="/proprietaire/profil" ><i class="flaticon-user mr10"></i>Mes informations</a>
+                      <a *ngIf="user.role.code == 'ROLE_GERANT'" class="dropdown-item" routerLink="/gerant/profil" ><i class="flaticon-user mr10"></i>Mes informations</a>
+                      <a *ngIf="user.role.code == 'ROLE_CLIENT'" class="dropdown-item" routerLink="/client/profil" ><i class="flaticon-user mr10"></i>Mes informations</a>
                       <a class="dropdown-item" type="button" (click)="seDeconnecter()" ><i class="flaticon-logout mr10"></i>Se déconnecter</a>
                     </div>
                   </div>

@@ -132,11 +132,56 @@ export class LoginComponent implements OnInit{
       }, 3000);
       console.log(this.message);
     } else {
-    localStorage.setItem('activeLink', '/admin/dashboard');
+      if (this.user.role.code === 'ROLE_ADMINISTRATEUR') {
+        localStorage.setItem('activeLink', '/admin/dashboard');
 
-    this.personneService.enregistrerInfoUser(JSON.stringify(user));
+        this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
-    this.router.navigate(['/admin/dashboard'], { queryParams: { connexionReussie: true } })
+        this.router.navigate(['/admin/dashboard'], { queryParams: { connexionReussie: true } })
+      } else if (this.user.role.code === 'ROLE_NOTAIRE') {
+        localStorage.setItem('activeLink', '/notaire/dashboard');
+
+        this.personneService.enregistrerInfoUser(JSON.stringify(user));
+
+        this.router.navigate(['/notaire/dashboard'], { queryParams: { connexionReussie: true } })
+      } else if (this.user.role.code === 'ROLE_GERANT') {
+        localStorage.setItem('activeLink', '/gerant/dashboard');
+
+        this.personneService.enregistrerInfoUser(JSON.stringify(user));
+
+        this.router.navigate(['/gerant/dashboard'], { queryParams: { connexionReussie: true } })
+      } else if (this.user.role.code === 'ROLE_AGENTIMMOBILIER') {
+        localStorage.setItem('activeLink', '/agent-immobilier/dashboard');
+
+        this.personneService.enregistrerInfoUser(JSON.stringify(user));
+
+        this.router.navigate(['/agent-immobilier/dashboard'], { queryParams: { connexionReussie: true } })
+      } else if (this.user.role.code === 'ROLE_CLIENT') {
+        localStorage.setItem('activeLink', '/client/dashboard');
+
+        this.personneService.enregistrerInfoUser(JSON.stringify(user));
+
+        this.router.navigate(['/client/dashboard'], { queryParams: { connexionReussie: true } })
+      } else if (this.user.role.code === 'ROLE_PROPRIETAIRE') {
+        localStorage.setItem('activeLink', '/proprietaire/dashboard');
+
+        this.personneService.enregistrerInfoUser(JSON.stringify(user));
+
+        this.router.navigate(['/proprietaire/dashboard'], { queryParams: { connexionReussie: true } })
+      } else if (this.user.role.code === 'ROLE_RESPONSABLE') {
+        localStorage.setItem('activeLink', '/responsable/dashboard');
+
+        this.personneService.enregistrerInfoUser(JSON.stringify(user));
+
+        this.router.navigate(['/responsable/dashboard'], { queryParams: { connexionReussie: true } })
+      } else if (this.user.role.code === 'ROLE_DEMARCHEUR') {
+        localStorage.setItem('activeLink', '/demarcheur/dashboard');
+
+        this.personneService.enregistrerInfoUser(JSON.stringify(user));
+
+        this.router.navigate(['/demarcheur/dashboard'], { queryParams: { connexionReussie: true } })
+      }
+
     }
   }
 

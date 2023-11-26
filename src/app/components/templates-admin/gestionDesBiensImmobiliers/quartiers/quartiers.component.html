@@ -1,0 +1,203 @@
+<div class="dashboard__content property-page bgc-f7">
+  <div class="row pb40 d-block d-lg-none">
+    <!-- Menu responsive -->
+    <app-menu-responsive></app-menu-responsive>
+    <!-- End Menu responsive -->
+  </div>
+
+  <p-toast></p-toast>
+
+  <!-- Formulaire d'ajout d'un quartier -->
+  <div *ngIf="visibleAddForm == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-3">
+        <div class="dashboard_title_area">
+          <h4>Ajout d'un quartier</h4>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+          <form [formGroup]="quartierForm" (ngSubmit)="ajouterQuartier()" class="form-style1">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Ville</label>
+                  <br>
+                  <p-dropdown
+                    class="select" emptyFilterMessage="Aucun résultat trouvé"
+                    emptyMessage="Aucun résultat trouvé"
+                    [options]="villes" placeholder="Choisir une ville"
+                    formControlName="ville" [filter]="true" filterBy="libelle"
+                    filterPlaceholder="Rechercher"
+                    [showClear]="true" (onChange)="villeChoisie($event)" optionLabel="libelle">
+                  </p-dropdown>
+                  <div class="error" [hidden]="!ville?.hasError('required') || !ville.touched">La selection de la ville est obligatoire</div>
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Libelle</label>
+                  <input type="text" class="form-control" id="libelle" name="libelle" placeholder="Le libelle du quartier" formControlName="libelle" [(ngModel)]="quartier.libelle" required>
+                  <div class="error" [hidden]="libelle.valid || libelle.pristine && !libelle.touched ">Le libelle du quartier est obligatoire</div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="col-md-12">
+              <div class="text-end">
+                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link':quartierForm.invalid }" (click)="quartierForm.invalid ? null : ajouterQuartier()" type="submit">Ajouter</a>
+                &nbsp;
+                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Formulaire d'ajout d'un quartier -->
+
+  <!-- Formulaire de modification d'un quartier -->
+  <div *ngIf="visibleUpdateForm == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-3">
+        <div class="dashboard_title_area">
+          <h4>Modification d'un quartier</h4>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <form [formGroup]="quartierForm" (ngSubmit)="modifierQuartier()" class="form-style1">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Ville</label>
+                  <br>
+                  <p-dropdown
+                    class="select" emptyFilterMessage="Aucun résultat trouvé"
+                    emptyMessage="Aucun résultat trouvé" [(ngModel)]="quartier.ville"
+                    [options]="villes" placeholder="Choisir une ville"
+                    formControlName="ville" [filter]="true" filterBy="libelle"
+                    filterPlaceholder="Rechercher"
+                    [showClear]="true" (onChange)="villeChoisie($event)" optionLabel="libelle">
+                  </p-dropdown>
+                  <div class="error" [hidden]="!ville?.hasError('required') || !ville.touched">La selection de la ville est obligatoire</div>
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Libelle</label>
+                  <input type="text" class="form-control" id="libelle" name="libelle" placeholder="Le libelle du quartier" formControlName="libelle" [(ngModel)]="quartier.libelle" required>
+                  <div class="error" [hidden]="libelle.valid || libelle.pristine && !libelle.touched ">Le libelle du quartier est obligatoire</div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="col-md-12">
+              <div class="text-end">
+                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': quartierForm.invalid }" (click)="quartierForm.invalid ? null : modifierQuartier()" type="submit">Modifier</a>
+                &nbsp;
+                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Formulaire de modification d'un quartier -->
+
+  <!-- Liste des quartiers -->
+  <div *ngIf="affichage == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-3">
+        <div class="dashboard_title_area">
+          <h4>Liste des quartiers</h4>
+        </div>
+      </div>
+      <div class="col-xxl-9">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <div class="item1 mb15-sm">
+            <div class="search_area">
+              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
+              <label><span class="flaticon-search"></span></label>
+            </div>
+          </div>
+          &nbsp;
+          <a type="button" *ngIf="visibleAddForm == 0" (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">Ajouter un quartier</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+          <div class="packages_table table-responsive">
+            <table class="table-style3 table at-savesearch">
+              <thead class="t-head">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Libelle</th>
+                  <th scope="col">Ville</th>
+                  <th scope="col">Etat</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="t-body">
+                  <tr *ngFor="let quartier of quartiersParPage | genericFilter: recherche; let i = index;">
+                    <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                    <td class="vam">{{ quartier.libelle }}</td>
+                    <td class="vam">{{ quartier.ville.libelle }}</td>
+                    <td class="vam">
+                      <p-tag *ngIf="quartier.etat === true" severity="success" value="Activé"></p-tag>
+                      <p-tag *ngIf="quartier.etat === false" severity="danger" value="Désactivé"></p-tag>
+                    </td>
+                    <td class="vam">
+                      <div class="d-flex">
+
+                        <button pButton type="button" icon="pi pi-pencil"
+                          (click)="afficherFormulaireModifier(quartier.id)"
+                          pTooltip="Modifier" tooltipPosition="top"
+                          class="p-button-text p-button-warning">
+                        </button>
+
+                        <button *ngIf="quartier.etat === true" pButton type="button" icon="pi pi-lock"
+                          (click)="desactiverQuartier(quartier.id)"
+                          pTooltip="Désactiver" tooltipPosition="top"
+                          class="p-button-text p-button-danger">
+                        </button>
+
+                        <button *ngIf="quartier.etat === false" pButton type="button" icon="pi pi-lock-open"
+                          (click)="activerQuartier(quartier.id)"
+                          pTooltip="Activer" tooltipPosition="top"
+                          class="p-button-text p-button-success">
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div *ngIf="quartiers.length !== 0" class="mbp_pagination text-center mt30">
+            <p-paginator
+              (onPageChange)="pagination($event)" [first]="pageActuelle"
+              [rows]="elementsParPage"  [totalRecords]="quartiers.length"
+              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} quartiers"
+              [showPageLinks]="true" [showFirstLastIcon]="true">
+            </p-paginator>
+          </div>
+          <div *ngIf="quartiers.length == 0" class="mbp_pagination text-center mt30">
+            <p class="mt10 pagination_page_count text-center">Aucun quartier enregistré pour le moment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- End Liste des quartiers -->
