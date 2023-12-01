@@ -45,9 +45,8 @@
               <div class="col-md-12">
                 <div class="text-end">
                   <!---->
-                  <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': documentJustificatif == null }" type="button" (click)="ajouterDemandeCertificationCompte()">Envoyer</a>
-                  &nbsp;
-                  <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+                  <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
+                  <button pButton  [ngClass]="{ 'disabled-link': documentJustificatif == null }" type="button" (click)="ajouterDemandeCertificationCompte()" pRipple label="Envoyer" type="submit" class="p-button-success"></button>
                 </div>
               </div>
             </div>
@@ -264,7 +263,7 @@
               </p>
             </div>
 
-            <p-divider></p-divider>
+            <p-divider *ngIf="demandeCertification.agenceImmobiliere"></p-divider>
             <div *ngIf="demandeCertification.agenceImmobiliere" class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Agence immobilière</p>
               <p>{{ demandeCertification.agenceImmobiliere.nomAgence }} <i *ngIf="demandeCertification.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
@@ -277,7 +276,7 @@
             <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Date de la demande de certification</p>
-              <p>{{ demandeCertification.dateDemande | date: "yyyy-dd-MM" }}</p>
+              <p>{{ demandeCertification.dateDemande | date: "dd-MM-yyyy" }}</p>
             </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Statut de la demande de certification</p>

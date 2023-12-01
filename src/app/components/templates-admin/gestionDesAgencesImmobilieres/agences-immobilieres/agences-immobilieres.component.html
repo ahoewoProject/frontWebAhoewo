@@ -102,9 +102,8 @@
             </div>
             <div class="col-md-12">
               <div class="text-end">
-                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': agenceImmobiliereForm.invalid }" (click)="agenceImmobiliereForm.invalid ? null : ajouterAgenceImmobiliere()" type="submit">Ajouter</a>
-                &nbsp;
-                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+                <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
+                <button pButton [ngClass]="{ 'disabled-link': agenceImmobiliereForm.invalid }" (click)="agenceImmobiliereForm.invalid ? null : ajouterAgenceImmobiliere()" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
               </div>
             </div>
           </form>
@@ -208,9 +207,8 @@
             </div>
             <div class="col-md-12">
               <div class="text-end">
-                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': agenceImmobiliereForm.invalid }" (click)="agenceImmobiliereForm.invalid ? null : modifierAgenceImmobiliere(agenceImmobiliere.id)" type="submit">Modifier</a>
-                &nbsp;
-                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+                <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
+                <button pButton [ngClass]="{ 'disabled-link': agenceImmobiliereForm.invalid }" (click)="agenceImmobiliereForm.invalid ? null : modifierAgenceImmobiliere(agenceImmobiliere.id)" pRipple label="Modifier" type="submit" class="p-button-warning"></button>
               </div>
             </div>
           </form>
@@ -655,13 +653,13 @@
                       </button>
 
                       <button pButton type="button"
-                        *ngIf="agenceImmobiliere.etatAgence === true && user.role.code === 'ROLE_ADMINISTRATEUR'"
+                        *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence === true && user.role.code === 'ROLE_ADMINISTRATEUR'"
                         (click)="desactiverAgence(affectationResponsableAgence.agenceImmobiliere.id)" icon="pi pi-lock"
                         pTooltip="Désactiver cette agence immobilière" tooltipPosition="right" class="p-button-text p-button-danger">
                       </button>
 
                       <button pButton type="button"
-                        *ngIf="agenceImmobiliere.etatAgence === false && user.role.code === 'ROLE_ADMINISTRATEUR'"
+                        *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence === false && user.role.code === 'ROLE_ADMINISTRATEUR'"
                         (click)="activerAgence(affectationResponsableAgence.agenceImmobiliere.id)" icon="pi pi-lock-open"
                         pTooltip="Activer cette agence immobilière" tooltipPosition="right" class="p-button-text p-button-success">
                       </button>

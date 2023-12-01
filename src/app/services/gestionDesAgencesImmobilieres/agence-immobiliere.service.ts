@@ -25,9 +25,15 @@ export class AgenceImmobiliereService {
   }
 
   // Affichage de toutes les occurrences d'agence immobilière par responsable d'agence immobilière;
-  // url: http://localhost:4040/api/agences-immobilieres
-  findAgenceByResponsable(): Observable<Array<AgenceImmobiliere>>{
+  // url: http://localhost:4040/api/agences-immobilieres/responsable
+  findAgencesByResponsable(): Observable<Array<AgenceImmobiliere>>{
     return this.httpClient.get<Array<AgenceImmobiliere>>(this.url + 'agences-immobilieres/responsable');
+  }
+
+  // Affichage de toutes les occurrences d'agence immobilière par agent immobilier;
+  // url: http://localhost:4040/api/agences-immobilieres/agent
+  findAgencesByAgent(): Observable<Array<AgenceImmobiliere>>{
+    return this.httpClient.get<Array<AgenceImmobiliere>>(this.url + 'agences-immobilieres/agent');
   }
 
   // Recherche d'une occurrence d'agence immobiliere par la clé primaire ;
@@ -36,8 +42,8 @@ export class AgenceImmobiliereService {
     return this.httpClient.get<AgenceImmobiliere>(this.url + 'agence-immobiliere/' + id);
   }
 
-    // Recherche d'une occurrence d'agence immobiliere par la clé primaire ;
-  // url: http://localhost:4040/api/agence-immobiliere/{id}
+  // Recherche d'une occurrence d'affectation responsable agence par la clé primaire ;
+  // url: http://localhost:4040/api/affectation-responsable-agence/{id}
   detailAffectation(id: number): Observable<AffectationResponsableAgence>{
     return this.httpClient.get<AffectationResponsableAgence>(this.url + 'affectation-responsable-agence/' + id);
   }

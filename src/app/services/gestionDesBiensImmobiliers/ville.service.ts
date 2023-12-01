@@ -43,7 +43,7 @@ export class VilleService {
 
   // Affichage de toutes les occurrences des villes;
   // url: http://localhost:4040/api/villes/actifs
-  getVillesActifs(): Observable<Array<Ville>>{
+  getVillesActives(): Observable<Array<Ville>>{
     return this.httpClient.get<Array<Ville>>(this.url + 'villes/actifs');
   }
 

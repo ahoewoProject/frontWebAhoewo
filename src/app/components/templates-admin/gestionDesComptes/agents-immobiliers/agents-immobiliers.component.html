@@ -58,14 +58,15 @@
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Matricule</label>
                   <br>
-                  <p-autoComplete
+                  <!-- <p-autoComplete
                   [minLength]="2" [(ngModel)]="agentImmobilier"
                   emptySelectionMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé"
                   class="autocomplexion p-fluid" [showEmptyMessage]="true" [showClear]="true"
                   placeholder="La matricule de l'agent immobilier" formControlName="matricule"
                   [suggestions]="agentsImmobiliersFiltres"
                   (completeMethod)="filtrerAgentImmobilier($event)" field="matricule">
-                  </p-autoComplete>
+                  </p-autoComplete> -->
+                  <input type="text" class="form-control" id="matricule" name="matricule" placeholder="Le matricule de l'agent immobilier" formControlName="matricule" [(ngModel)]="agentImmobilier.matricule" required>
                   <div class="error" [hidden]="!matricule?.hasError('required') || !matricule.touched">La matricule de l'agent immobilier est obligatoire</div>
                 </div>
               </div>

@@ -41,16 +41,22 @@ export class BienImmobilierService {
     return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers');
   }
 
-  // Affichage de toutes les occurrences des biens immobiliers;
+  // Affichage de toutes les occurrences des biens immobiliers par propriétaire;
   // url: http://localhost:4040/api/biens-immobiliers/proprietaire
   getAllByProprietaire(): Observable<Array<BienImmobilier>>{
     return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers/proprietaire');
   }
 
-  // Affichage de toutes les occurrences des biens immobiliers par agent immobilier;
-  // url: http://localhost:4040/api/biens-immobiliers/agent-immobilier
-  getAllByAgentImmobilier(): Observable<Array<BienImmobilier>>{
-    return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers/agent-immobilier');
+  // Affichage de toutes les occurrences des biens immobiliers par agence;
+  // url: http://localhost:4040/api/biens-immobiliers/agences/responsable
+  getBiensOfAgencesByResponsable(): Observable<Array<BienImmobilier>>{
+    return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers/agences/responsable');
+  }
+
+  // Affichage de toutes les occurrences des biens immobiliers par agence;
+  // url: http://localhost:4040/api/biens-immobiliers/agences/agent
+  getBiensOfAgencesByAgent(): Observable<Array<BienImmobilier>>{
+    return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers/agences/agent');
   }
 
   // Affichage de toutes les occurrences des biens immobiliers par gérant;
@@ -69,21 +75,13 @@ export class BienImmobilierService {
     return this.httpClient.get<any>(this.url + 'desactiver/bien-immobilier/' + id);
   }
 
-  // Affichage du nombre d'occurrences de biens immobiliers par propriétaire.
-  // url: http://localhost:4040/api/count/biens-immobiliers/proprietaire
-  countBienImmobilierParProprietaire(): Observable<number>{
-    return this.httpClient.get<number>(this.url + 'count/biens-immobiliers/proprietaire');
-  };
+  // Fonction pour afficher la premiere image d'un bien immobilier
+  getPremiereImage(id: number): Observable<any> {
+    const endpoint = this.url + '/premiere-image/bien-immobilier/' + id;
 
-  // Affichage du nombre d'occurrences de biens immobiliers par agent immobilier.
-  // url: http://localhost:4040/api/count/biens-immobiliers/agent-immobilier
-  countBienImmobilierParAgentImmobilier(): Observable<number>{
-    return this.httpClient.get<number>(this.url + 'count/biens-immobiliers/agent-immobilier');
-  };
-
-  // Affichage du nombre d'occurrences de biens immobiliers par gérant.
-  // url: http://localhost:4040/api/count/biens-immobiliers/gerant
-  countBienImmobilierParGerant(): Observable<number>{
-    return this.httpClient.get<number>(this.url + 'count/biens-immobiliers/gerant');
-  };
+    return this.httpClient.get(endpoint, {
+      responseType: 'blob',
+      observe: 'response'
+    });
+  }
 }

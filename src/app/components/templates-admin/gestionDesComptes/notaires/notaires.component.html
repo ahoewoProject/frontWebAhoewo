@@ -58,9 +58,8 @@
             </div>
             <div class="col-md-12">
               <div class="text-end">
-                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': notaireForm.invalid }" (click)="notaireForm.invalid ? null : ajouterNotaire()" type="submit">Ajouter</a>
-                &nbsp;
-                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+                <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
+                <button pButton [ngClass]="{ 'disabled-link': notaireForm.invalid }" (click)="notaireForm.invalid ? null : ajouterNotaire()" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
               </div>
             </div>
           </form>

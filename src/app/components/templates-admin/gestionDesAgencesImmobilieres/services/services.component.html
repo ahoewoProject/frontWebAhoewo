@@ -6,7 +6,7 @@
   </div>
 
   <p-toast></p-toast>
-  
+
   <!-- Formulaire d'ajout d'un service -->
   <div *ngIf="visibleAddForm == 1">
     <div class="row align-items-center pb40">
@@ -43,9 +43,8 @@
             <br>
             <div class="col-md-12">
               <div class="text-end">
-                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': serviceForm.invalid }" (click)="serviceForm.invalid ? null : ajouterService()" type="submit">Ajouter</a>
-                &nbsp;
-                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+                <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
+                <button pButton [ngClass]="{ 'disabled-link': serviceForm.invalid }" (click)="serviceForm.invalid ? null : ajouterService()" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
               </div>
             </div>
           </form>
@@ -91,9 +90,8 @@
             <br>
             <div class="col-md-12">
               <div class="text-end">
-                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': serviceForm.invalid }" (click)="serviceForm.invalid ? null : modifierService(_service.id)" type="submit">Modifier</a>
-                &nbsp;
-                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+                <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
+                <button pButton [ngClass]="{ 'disabled-link': serviceForm.invalid }" (click)="serviceForm.invalid ? null : ajouterService()" pRipple label="Modifier" type="submit" class="p-button-warning"></button>
               </div>
             </div>
           </form>

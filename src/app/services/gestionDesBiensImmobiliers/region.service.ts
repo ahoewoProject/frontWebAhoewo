@@ -43,7 +43,7 @@ export class RegionService {
 
   // Affichage de toutes les occurrences des regions;
   // url: http://localhost:4040/api/regions/actifs
-  getRegionsActifs(): Observable<Array<Region>>{
+  getRegionsActives(): Observable<Array<Region>>{
     return this.httpClient.get<Array<Region>>(this.url + 'regions/actifs');
   }
 

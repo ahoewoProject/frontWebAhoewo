@@ -65,6 +65,8 @@ import { ResponsableModule } from './routes/responsable/responsable.module';
 import { NotaireModule } from './routes/notaire/notaire.module';
 import { ProprietaireModule } from './routes/proprietaire/proprietaire.module';
 import { DemarcheurModule } from './routes/demarcheur/demarcheur.module';
+import { TabViewModule } from 'primeng/tabview';
+import { StepsModule } from 'primeng/steps';
 
 @NgModule({
   declarations: [
@@ -133,7 +135,9 @@ import { DemarcheurModule } from './routes/demarcheur/demarcheur.module';
     ResponsableModule,
     NotaireModule,
     ProprietaireModule,
-    DemarcheurModule
+    DemarcheurModule,
+    TabViewModule,
+    StepsModule
   ],
   providers: [
     MessageService,

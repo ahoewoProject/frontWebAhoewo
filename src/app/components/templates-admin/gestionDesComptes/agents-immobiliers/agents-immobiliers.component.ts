@@ -36,7 +36,7 @@ export class AgentsImmobiliersComponent implements OnInit{
   affectationsAgentAgenceAdmin: AffectationAgentAgence[] = [];
   affectationsAgentAgenceResponsable: AffectationAgentAgence[] = [];
   agentsImmobiliers: AgentImmobilier[] = [];
-  agentsImmobiliersFiltres: AgentImmobilier[] = [];
+  // agentsImmobiliersFiltres: AgentImmobilier[] = [];
   affecationAgentAgence: AffectationAgentAgence = new AffectationAgentAgence();
   affectationAgentAgenceRequest = this.affectationAgentAgenceService.affectationAgentAgenceRequest
   messageErreur: string = "";
@@ -80,17 +80,17 @@ export class AgentsImmobiliersComponent implements OnInit{
     this.initAffectationAgentAgenceForm();
   }
 
-  filtrerAgentImmobilier(event: AutoCompleteCompleteEvent) {
-    let filtres: any[] = [];
-    let query = event.query;
-    for (let i = 0; i < (this.agentsImmobiliers as any[]).length; i++) {
-        let affectation = (this.agentsImmobiliers as any[])[i];
-        if (affectation.matricule.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-          filtres.push(affectation);
-        }
-    }
-    this.agentsImmobiliersFiltres = filtres;
-  }
+  // filtrerAgentImmobilier(event: AutoCompleteCompleteEvent) {
+  //   let filtres: any[] = [];
+  //   let query = event.query;
+  //   for (let i = 0; i < (this.agentsImmobiliers as any[]).length; i++) {
+  //       let affectation = (this.agentsImmobiliers as any[])[i];
+  //       if (affectation.matricule.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+  //         filtres.push(affectation);
+  //       }
+  //   }
+  //   this.agentsImmobiliersFiltres = filtres;
+  // }
 
   initAffectationAgentAgenceForm(): void {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -160,7 +160,7 @@ export class AgentsImmobiliersComponent implements OnInit{
 
   //Fonction pour recupérer une agence immobilière par responsable d'agence immobilière
   listeAgenceImmobilieresResponsable(){
-    this.agenceImmobiliereService.findAgenceByResponsable().subscribe(
+    this.agenceImmobiliereService.findAgencesByResponsable().subscribe(
       (response) => {
         this.agencesImmobilieres = response;
       }
@@ -339,7 +339,7 @@ export class AgentsImmobiliersComponent implements OnInit{
             detail: this.messageErreur
           });
         } else if (error.status === 404) {
-          this.messageErreur = "Cet agent immobilier est introuvable !";
+          this.messageErreur = "La matricule de l'agent immobilier est introuvable !";
           this.messageService.add({
             severity: 'warn',
             summary: 'Ajout non réussi',

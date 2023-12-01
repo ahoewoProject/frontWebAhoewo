@@ -91,7 +91,7 @@ export class DemandesCertificationsComponent implements OnInit {
 
   // Fonction pour recupérer les agences immobilières d'un responsable
   listerAgencesImmobilieres() {
-    this.agenceImmobiliereService.findAgenceByResponsable().subscribe(
+    this.agenceImmobiliereService.findAgencesByResponsable().subscribe(
       (response) => {
         this.agencesImmobilieres = response;
       }

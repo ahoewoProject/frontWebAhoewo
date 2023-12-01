@@ -47,7 +47,7 @@
               <p-divider></p-divider>
               <div class="form-group col-md-6">
                 <p class="fw600 mb10 ff-heading dark-color">Nom & Pénom(s)</p>
-                <p>{{ personne.nom }} {{ personne.prenom }} <i *ngIf="personne.estCertifie && (personne.role.code === 'ROLE_AGENTIMMOBILIER' || personne.role.code === 'ROLE_PROPRIETAIRE' || personne.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+                <p>{{ personne.nom }} {{ personne.prenom }} <i *ngIf="personne.estCertifie && (personne.role.code === 'ROLE_RESPONSABLE' || personne.role.code === 'ROLE_AGENTIMMOBILIER' || personne.role.code === 'ROLE_PROPRIETAIRE' || personne.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
               </div>
               <div class="form-group col-md-6">
                 <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur</p>
@@ -97,7 +97,7 @@
           </div>
         </div>
       </div>
-      <div *ngIf="affichage == 2" class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+      <div *ngIf="affichage == 2" class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
         <h4 class="title fz17 mb30">Modification des informations</h4>
         <form class="form-style1" [formGroup]="userForm" (ngSubmit)="modifierUser()">
           <div class="row">
@@ -161,9 +161,8 @@
             <br>
             <div class="col-md-12">
               <div class="text-end">
-                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': userForm.invalid }" (click)="userForm.invalid ? null : modifierUser()" type="submit">Modifier</a>
-                &nbsp;
-                <a class="ud-btn btn-thm4" id="retour" type="button" (click)="retour()">Annuler</a>
+                <button pButton (click)="retour()" pRipple label="Annuler" class="p-button-secondary"></button>
+                <button pButton [ngClass]="{ 'disabled-link': userForm.invalid }" (click)="userForm.invalid ? null : modifierUser()" pRipple label="Modifier" type="submit" class="p-button-warning"></button>
               </div>
             </div>
           </div>

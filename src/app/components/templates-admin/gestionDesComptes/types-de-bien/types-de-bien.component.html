@@ -30,9 +30,8 @@
             <br>
             <div class="col-md-12">
               <div class="text-end">
-                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': typeDeBienForm.invalid }" (click)="typeDeBienForm.invalid ? null : ajouterTypeDeBien()" type="submit">Ajouter</a>
-                &nbsp;
-                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+                <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
+                <button pButton [ngClass]="{ 'disabled-link': typeDeBienForm.invalid }" (click)="typeDeBienForm.invalid ? null : ajouterTypeDeBien()" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
               </div>
             </div>
           </form>
@@ -65,9 +64,8 @@
             <br>
             <div class="col-md-12">
               <div class="text-end">
-                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': typeDeBienForm.invalid }" (click)="typeDeBienForm.invalid ? null : modifierTypeDeBien()" type="submit">Modifier</a>
-                &nbsp;
-                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+                <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
+                <button pButton [ngClass]="{ 'disabled-link': typeDeBienForm.invalid }" (click)="typeDeBienForm.invalid ? null : modifierTypeDeBien()" pRipple label="Modifier" type="submit" class="p-button-warning"></button>
               </div>
             </div>
           </form>
