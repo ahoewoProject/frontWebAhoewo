@@ -216,6 +216,14 @@
               [showPageLinks]="true" [showFirstLastIcon]="true">
             </p-paginator>
           </div>
+          <div *ngIf="demandeCertifications.length !== 0 && (user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_DEMARCHEUR')" class="mbp_pagination text-center mt30">
+            <p-paginator
+              (onPageChange)="pagination($event)" [first]="pageActuelle"
+              [rows]="elementsParPage"  [totalRecords]="demandeCertifications.length" [showCurrentPageReport]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} demandes de certifications"
+              [showPageLinks]="true" [showFirstLastIcon]="true">
+            </p-paginator>
+          </div>
           <div *ngIf="demandeCertifications.length == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucune demande de certification enregistrée pour le moment</p>
           </div>

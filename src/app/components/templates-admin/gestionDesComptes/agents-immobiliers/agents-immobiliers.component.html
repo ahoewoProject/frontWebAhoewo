@@ -57,7 +57,6 @@
               <div *ngIf="checked == 'Agent immobilier existant'" class="col-lg-6">
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Matricule</label>
-                  <br>
                   <!-- <p-autoComplete
                   [minLength]="2" [(ngModel)]="agentImmobilier"
                   emptySelectionMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé"
@@ -112,9 +111,8 @@
 
             <div class="col-md-12">
               <div class="text-end">
-                <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': affectationAgentAgenceForm.invalid }" (click)="affectationAgentAgenceForm.invalid ? null : ajouterAffectationAgentAgence()" type="submit">Ajouter</a>
-                &nbsp;
-                <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+                <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
+                <button pButton [ngClass]="{ 'disabled-link': affectationAgentAgenceForm.invalid }" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
               </div>
             </div>
           </form>

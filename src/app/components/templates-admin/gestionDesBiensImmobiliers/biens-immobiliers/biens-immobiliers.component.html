@@ -678,7 +678,7 @@
           </div>
           &nbsp;
           <a type="button" *ngIf="(user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR') && user.etatCompte == true"
-            (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
+            (click)="afficherFormulaireAjoutBienImmobilier()" class="ud-btn btn-thm">
             Ajouter un bien immobilier
           </a>
         </div>
@@ -720,11 +720,12 @@
                       </button>
 
                       <button *ngIf="user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_RESPONSABLE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR'"
-                        (click)="afficherFormulaireModifier(bienImmobilier.id)" pButton type="button" icon="pi pi-pencil pi-lg"
+                        (click)="afficherFormulaireModifierBienImmobilier(bienImmobilier.id)" pButton type="button" icon="pi pi-pencil pi-lg"
                         pTooltip="Modifier" tooltipPosition="top" class="p-button-text p-button-warning">
                       </button>
 
                       <button *ngIf="user.role.code === 'ROLE_PROPRIETAIRE'"
+                        (click)="afficherFormulaireDelegationGestion(bienImmobilier)"
                         pButton type="button" icon="fa-light fa-handshake fa-lg"
                         pTooltip="Déléguer" tooltipPosition="top" class="p-button-text p-button-info">
                       </button>
@@ -879,7 +880,6 @@
       </div>
     </div>
     <div class="row">
-
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
 
@@ -968,7 +968,7 @@
           </div>
 
           <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color" *ngIf="utilitaire || confort">Autres détails</p>
+          <p class="fw600 mb10 ff-heading dark-color" *ngIf="utilitaire || confort">Autres détails :</p>
           <div class="row">
             <div class="col-md-6 col-xl-4">
               <div class="d-flex justify-content-between">
@@ -1003,7 +1003,7 @@
           </div>
 
           <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color" *ngIf="utilitaire || confort">Caractéristiques</p>
+          <p class="fw600 mb10 ff-heading dark-color" *ngIf="utilitaire || confort">Caractéristiques :</p>
           <div class="row">
             <div class="col-sm-6 col-md-4">
               <div class="pd-list mb10-sm">
@@ -1026,7 +1026,7 @@
             </div>
             <div class="col-sm-6 col-md-4">
               <div class="pd-list">
-                <p *ngIf="confort.climatiseur" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Climatisateur</p>
+                <p *ngIf="confort.climatisation" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Climatisateur</p>
                 <p *ngIf="confort.chauffage" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Chauffage</p>
                 <p *ngIf="divertissement.piscine" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Piscine</p>
                 <p *ngIf="divertissement.jardin" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Jardin</p>
@@ -1053,7 +1053,6 @@
       </div>
     </div>
     <div class="row">
-
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
 
@@ -1168,7 +1167,6 @@
       </div>
     </div>
     <div class="row">
-
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
 
@@ -1264,9 +1262,9 @@
               </p>
             </div>
           </div>
-          
+
           <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color" *ngIf="utilitaire || confort">Autres détails</p>
+          <p class="fw600 mb10 ff-heading dark-color" *ngIf="utilitaire || confort">Autres détails :</p>
           <div class="row">
             <div class="col-md-6 col-xl-4">
               <div class="d-flex justify-content-between">
@@ -1301,7 +1299,7 @@
           </div>
 
           <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color" *ngIf="utilitaire || confort">Caractéristiques</p>
+          <p class="fw600 mb10 ff-heading dark-color" *ngIf="utilitaire || confort">Caractéristiques :</p>
           <div class="row">
             <div class="col-sm-6 col-md-4">
               <div class="pd-list mb10-sm">
@@ -1324,7 +1322,7 @@
             </div>
             <div class="col-sm-6 col-md-4">
               <div class="pd-list">
-                <p *ngIf="confort.climatiseur" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Climatisateur</p>
+                <p *ngIf="confort.climatisation" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Climatisateur</p>
                 <p *ngIf="confort.chauffage" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Chauffage</p>
                 <p *ngIf="divertissement.piscine" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Piscine</p>
                 <p *ngIf="divertissement.jardin" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Jardin</p>
@@ -1341,4 +1339,64 @@
     </div>
   </div>
   <!-- End Details d'un bien immobilier - Type De Bien(Autres) - Vue Responsable, Agent immobilier -->
+
+  <!-- Formulaire d'ajout de délégation de gestion d'un bien -->
+  <div *ngIf="affichage == 5">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-3">
+        <div class="dashboard_title_area">
+          <h4>Ajout d'un agent immobilier</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+          <form [formGroup]="delegationGestionForm" (ngSubmit)="ajouterDelegationGestion()" class="form-style1">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">À qui voulez vous déléguez la gestion de votre bien ?</label>
+                  <br>
+                  <p-dropdown
+                    class="select" [options]="listeDesChoix" placeholder="Faire un choix"
+                    [(ngModel)]="checked" (onChange)="onChoixChange($event)"
+                    [ngModelOptions]="{standalone: true}">
+                  </p-dropdown>
+                </div>
+              </div>
+
+              <div *ngIf="checked == 'Gérant' || checked == 'Démarcheur'" class="col-md-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Matricule</label>
+                  <input *ngIf="checked == 'Gérant'" type="text" class="form-control" id="matricule" name="matricule" placeholder="Le matricule du gérant" formControlName="matricule" [(ngModel)]="delegationGestionRequest.matricule" required>
+                  <input *ngIf="checked == 'Démarcheur'" type="text" class="form-control" id="matricule" name="matricule" placeholder="Le matricule du démarcheur" formControlName="matricule" [(ngModel)]="delegationGestionRequest.matricule" required>
+                  <div *ngIf="checked == 'Gérant'" class="error" [hidden]="!matricule?.hasError('required') || !matricule.touched">La matricule du gérant est obligatoire</div>
+                  <div *ngIf="checked == 'Démarcheur'" class="error" [hidden]="!matricule?.hasError('required') || !matricule.touched">La matricule du démarcheur est obligatoire</div>
+                </div>
+              </div>
+
+              <div *ngIf="checked == 'Agence immobilière'" class="col-md-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Code agence</label>
+                  <input type="text" class="form-control" id="codeAgence" name="codeAgence" placeholder="Le code de l'agence immobilière" formControlName="codeAgence" [(ngModel)]="delegationGestionRequest.codeAgence" required>
+                  <div class="error" [hidden]="!codeAgence?.hasError('required') || !codeAgence.touched">La code de l'agence immobilière est obligatoire</div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-md-12">
+              <div class="text-end">
+                <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
+                <button pButton [ngClass]="{ 'disabled-link': delegationGestionForm.invalid }" pRipple label="Déléguer" type="submit" class="p-button-success"></button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Formulaire de délégation de gestion d'un bien -->
 </div>

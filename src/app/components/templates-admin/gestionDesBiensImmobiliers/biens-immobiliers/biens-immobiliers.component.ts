@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
 import { BienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/BienImmobilier';
 import { Confort } from 'src/app/models/gestionDesBiensImmobiliers/Confort';
+import { DelegationGestionRequest } from 'src/app/models/gestionDesBiensImmobiliers/DelegationGestionRequest';
 import { Divertissement } from 'src/app/models/gestionDesBiensImmobiliers/Divertissement';
 import { ImagesBienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/ImagesBienImmobilier';
 import { Pays } from 'src/app/models/gestionDesBiensImmobiliers/Pays';
@@ -15,6 +17,7 @@ import { Ville } from 'src/app/models/gestionDesBiensImmobiliers/Ville';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { BienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/bien-immobilier.service';
 import { ConfortService } from 'src/app/services/gestionDesBiensImmobiliers/confort.service';
+import { DelegationGestionService } from 'src/app/services/gestionDesBiensImmobiliers/delegation-gestion.service';
 import { DivertissementService } from 'src/app/services/gestionDesBiensImmobiliers/divertissement.service';
 import { ImagesBienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/images-bien-immobilier.service';
 import { PaysService } from 'src/app/services/gestionDesBiensImmobiliers/pays.service';
@@ -34,6 +37,8 @@ import { environment } from 'src/environments/environment';
 export class BiensImmobiliersComponent implements OnInit {
 
   imageURL: any;
+  listeDesChoix: any[] | undefined;
+  checked: string | undefined;
   menus: MenuItem[] | undefined;
   imagesBienImmobilier: any[] = [];
   responsiveOptions: any[] | undefined;
@@ -55,6 +60,7 @@ export class BiensImmobiliersComponent implements OnInit {
   pageActuelle = 0; // Page actuelle
 
   bienImmobilier = this.bienImmobilierService.bienImmobilier;
+  delegationGestionRequest = new DelegationGestionRequest();
   agencesImmobilieres: AgenceImmobiliere[] = [];
   biensImmobiliers: BienImmobilier[] = [];
   images: ImagesBienImmobilier[] = [];
@@ -69,6 +75,7 @@ export class BiensImmobiliersComponent implements OnInit {
   messageErreur: string = "";
   messageSuccess: string | null = null;
   bienImmobilierForm: any;
+  delegationGestionForm: any;
   APIEndpoint: string;
   bienImmobilierData: FormData = new  FormData();
 
@@ -77,6 +84,8 @@ export class BiensImmobiliersComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private bienImmobilierService: BienImmobilierService,
+    private delegationGestionService: DelegationGestionService,
+    private router: Router,
     private typeDeBienService: TypeDeBienService,
     private paysService: PaysService,
     private regionService: RegionService,
@@ -122,6 +131,7 @@ export class BiensImmobiliersComponent implements OnInit {
     ];
 
     this.initBienImmobilierForm();
+    this.initDelegationGestionForm();
     this.listeTypesDeBienActifs();
     this.listePaysActifs();
     this.listeRegionsActives();
@@ -284,6 +294,7 @@ export class BiensImmobiliersComponent implements OnInit {
   voirListe(): void {
     this.imagesBienImmobilier = [];
     this.bienImmobilierForm.reset();
+    this.delegationGestionForm.reset();
     if (this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
       this.listeBiensImmobiliersParProprietaire();
     } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
@@ -452,7 +463,7 @@ export class BiensImmobiliersComponent implements OnInit {
   }
 
   //Fonction pour afficher le formulaire d'ajout d'un bien immobilier
-  afficherFormulaireAjouter(): void {
+  afficherFormulaireAjoutBienImmobilier(): void {
     this.validerFormulaires();
     this.typeDeBienSelectionne = this.typesDeBien[5];
     this.bienImmobilier = new BienImmobilier();
@@ -460,7 +471,7 @@ export class BiensImmobiliersComponent implements OnInit {
   }
 
   //Fonction pour afficher le formulaire de modification d'un bien immobilier
-  afficherFormulaireModifier(id: number): void {
+  afficherFormulaireModifierBienImmobilier(id: number): void {
     this.validerFormulaires();
     this.detailBienImmobilier(id);
     this.affichage = 3;
@@ -506,7 +517,7 @@ export class BiensImmobiliersComponent implements OnInit {
             this.bienImmobilierData.delete('images');
             this.bienImmobilierData.delete('bienImmobilierJson');
             this.messageErreur = "Erreur lors de l'ajout du bien immobilier !"
-            this.afficherFormulaireAjouter();
+            this.afficherFormulaireAjoutBienImmobilier();
             this.bienImmobilier.typeDeBien = response.typeDeBien;
             this.bienImmobilier.adresse = response.adresse;
             this.bienImmobilier.ville = response.ville;
@@ -563,7 +574,7 @@ export class BiensImmobiliersComponent implements OnInit {
             this.bienImmobilierData.delete('images');
             this.bienImmobilierData.delete('bienImmobilierJson');
             this.messageErreur = "Erreur lors de l'ajout du bien immobilier !"
-            this.afficherFormulaireAjouter();
+            this.afficherFormulaireAjoutBienImmobilier();
             this.bienImmobilier.typeDeBien = response.typeDeBien;
             this.bienImmobilier.adresse = response.adresse;
             this.bienImmobilier.ville = response.ville;
@@ -606,13 +617,10 @@ export class BiensImmobiliersComponent implements OnInit {
       this.bienImmobilier.ville = this.villeSelectionnee;
       this.bienImmobilier.quartier = this.quartierSelectionne;
 
-      /*Parcours de la liste des images d'un bien immobilier en ajoutant
-      celle-ci dans le FormData*/
       for (const image of this.imagesBienImmobilier) {
         this.bienImmobilierData.append('images', image);
       }
 
-      //Ajout des occurences d'un bien immobilier dans le FormData
       this.bienImmobilierData.append('bienImmobilierJson', JSON.stringify(this.bienImmobilier));
       this.bienImmobilierData.append('confortJson', JSON.stringify(this.confort));
       this.bienImmobilierData.append('utilitaireJson', JSON.stringify(this.utilitaire));
@@ -640,7 +648,7 @@ export class BiensImmobiliersComponent implements OnInit {
             this.bienImmobilierData.delete('utilitaireJson');
             this.bienImmobilierData.delete('divertissementJson');
             this.messageErreur = "Erreur lors de l'ajout du bien immobilier !"
-            this.afficherFormulaireAjouter();
+            this.afficherFormulaireAjoutBienImmobilier();
             this.bienImmobilier.typeDeBien = response.typeDeBien;
             this.bienImmobilier.adresse = response.adresse;
             this.bienImmobilier.ville = response.ville;
@@ -709,7 +717,7 @@ export class BiensImmobiliersComponent implements OnInit {
             this.bienImmobilierData.delete('utilitaireJson');
             this.bienImmobilierData.delete('divertissementJson');
             this.messageErreur = "Erreur lors de l'ajout du bien immobilier !"
-            this.afficherFormulaireAjouter();
+            this.afficherFormulaireAjoutBienImmobilier();
             this.bienImmobilier.typeDeBien = response.typeDeBien;
             this.bienImmobilier.adresse = response.adresse;
             this.bienImmobilier.ville = response.ville;
@@ -782,7 +790,7 @@ export class BiensImmobiliersComponent implements OnInit {
             this.bienImmobilierData.delete('images');
             this.bienImmobilierData.delete('bienImmobilierJson');
             this.messageErreur = "Erreur lors de la modification du bien immobilier !"
-            this.afficherFormulaireAjouter();
+            this.afficherFormulaireModifierBienImmobilier(this.bienImmobilier.id);
             this.bienImmobilier.typeDeBien = response.typeDeBien;
             this.bienImmobilier.adresse = response.adresse;
             this.bienImmobilier.ville = response.ville;
@@ -839,7 +847,7 @@ export class BiensImmobiliersComponent implements OnInit {
             this.bienImmobilierData.delete('images');
             this.bienImmobilierData.delete('bienImmobilierJson');
             this.messageErreur = "Erreur lors de la modification du bien immobilier !"
-            this.afficherFormulaireAjouter();
+            this.afficherFormulaireModifierBienImmobilier(this.bienImmobilier.id);
             this.bienImmobilier.typeDeBien = response.typeDeBien;
             this.bienImmobilier.adresse = response.adresse;
             this.bienImmobilier.ville = response.ville;
@@ -913,7 +921,7 @@ export class BiensImmobiliersComponent implements OnInit {
             this.bienImmobilierData.delete('utilitaireJson');
             this.bienImmobilierData.delete('divertissementJson');
             this.messageErreur = "Erreur lors de la modification du bien immobilier !"
-            this.afficherFormulaireAjouter();
+            this.afficherFormulaireModifierBienImmobilier(this.bienImmobilier.id);
             this.bienImmobilier.typeDeBien = response.typeDeBien;
             this.bienImmobilier.adresse = response.adresse;
             this.bienImmobilier.ville = response.ville;
@@ -982,7 +990,7 @@ export class BiensImmobiliersComponent implements OnInit {
             this.bienImmobilierData.delete('utilitaireJson');
             this.bienImmobilierData.delete('divertissementJson');
             this.messageErreur = "Erreur lors de la modification du bien immobilier !"
-            this.afficherFormulaireAjouter();
+            this.afficherFormulaireModifierBienImmobilier(this.bienImmobilier.id);
             this.bienImmobilier.typeDeBien = response.typeDeBien;
             this.bienImmobilier.adresse = response.adresse;
             this.bienImmobilier.ville = response.ville;
@@ -1295,5 +1303,122 @@ export class BiensImmobiliersComponent implements OnInit {
   }
 
   check(): void {}
+
+  afficherFormulaireDelegationGestion(bien: BienImmobilier): void {
+    this.listeDesChoix = [ 'Gérant', 'Démarcheur', 'Agence immobilière'];
+    this.checked = this.listeDesChoix[0];
+    localStorage.setItem('bienImmobilier', JSON.stringify(bien));
+    const event = {value: this.checked};
+    this.onChoixChange(event);
+    this.affichage = 5;
+  }
+
+  //Fonction pour initialiser le formulaire de délégation de gestion d'un bien
+  initDelegationGestionForm(): void {
+    this.delegationGestionForm = new FormGroup({
+      matricule: new FormControl('', [Validators.required]),
+      codeAgence: new FormControl('', [Validators.required])
+    })
+  }
+
+  get matricule() {
+    return this.delegationGestionForm.get('matricule')
+  }
+
+  get codeAgence() {
+    return this.delegationGestionForm.get('codeAgence')
+  }
+
+  onChoixChange(event: any): void {
+    this.delegationGestionForm.reset();
+    this.checked = event.value;
+    if (this.checked == 'Gérant' ||  this.checked == 'Démarcheur') {
+      this.matricule.setValidators([Validators.required]);
+      this.codeAgence.clearValidators();
+    } else if (this.checked == 'Agence immobilière') {
+      this.codeAgence.setValidators([Validators.required]);
+      this.matricule.clearValidators();
+    }
+    this.matricule.updateValueAndValidity();
+    this.codeAgence.updateValueAndValidity();
+  }
+
+  ajouterDelegationGestion(): void {
+    if (this.checked == 'Gérant' ||  this.checked == 'Démarcheur') {
+      this.delegationGestionRequest.bienImmobilier = JSON.parse(localStorage.getItem('bienImmobilier')!);
+      this.delegationGestionService.addDelegationGestionMatricule(this.delegationGestionRequest).subscribe(
+        (response) => {
+          console.log(response);
+          localStorage.removeItem('bienImmobilier');
+          if (response.id > 0) {
+            localStorage.setItem('activeLink', '/proprietaire/delegations-gestions');
+            this.router.navigate(['/proprietaire/delegations-gestions'], { queryParams: { delegationReussie: true } })
+          } else {
+            this.messageErreur = "Erreur lors de la délégation de gestion !"
+            this.afficherFormulaireDelegationGestion(response.bienImmobilier);
+            this.messageService.add({
+              severity: 'error',
+              summary: "Erreur",
+              detail: this.messageErreur
+            });
+          }
+      },
+      (error) =>{
+        console.log(error.status)
+        if (error.status == 409) {
+          this.messageErreur = "Ce bien immobilier a été déjà délégué à un gestionnaire !";
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Délégation de gestion non réussi',
+            detail:  this.messageErreur
+          });
+        } else if (error.status == 404 ) {
+          this.messageErreur = "La matricule du gestionnaire est introuvable !";
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Délégation de gestion non réussi',
+            detail:  this.messageErreur
+          });
+        }
+      })
+    } else {
+      this.delegationGestionRequest.bienImmobilier = JSON.parse(localStorage.getItem('bienImmobilier')!);
+      this.delegationGestionService.addDelegationGestionCodeAgence(this.delegationGestionRequest).subscribe(
+        (response) => {
+          console.log(response);
+          localStorage.removeItem('bienImmobilier');
+          if (response.id > 0) {
+            localStorage.setItem('activeLink', '/proprietaire/delegations-gestions');
+            this.router.navigate(['/proprietaire/delegations-gestions'], { queryParams: { delegationReussie: true } })
+          } else {
+            this.messageErreur = "Erreur lors de la délégation de gestion !"
+            this.afficherFormulaireDelegationGestion(response.bienImmobilier);
+            this.messageService.add({
+              severity: 'error',
+              summary: "Erreur",
+              detail: this.messageErreur
+            });
+          }
+      },
+      (error) =>{
+        console.log(error)
+        if (error.status == 409) {
+          this.messageErreur = "Ce bien immobilier a été déjà délégué à une agence immobilière !";
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Délégation de gestion non réussi',
+            detail: this.messageErreur
+          });
+        } else if (error.status == 404 ) {
+          this.messageErreur = "Le code de l'agence immobilière est introuvable !";
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Délégation de gestion non réussi',
+            detail:  this.messageErreur
+          });
+        }
+      })
+    }
+  }
 
 }

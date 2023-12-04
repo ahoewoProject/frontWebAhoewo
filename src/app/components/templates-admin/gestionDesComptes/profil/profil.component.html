@@ -162,7 +162,7 @@
             <div class="col-md-12">
               <div class="text-end">
                 <button pButton (click)="retour()" pRipple label="Annuler" class="p-button-secondary"></button>
-                <button pButton [ngClass]="{ 'disabled-link': userForm.invalid }" (click)="userForm.invalid ? null : modifierUser()" pRipple label="Modifier" type="submit" class="p-button-warning"></button>
+                <button pButton [ngClass]="{ 'disabled-link': userForm.invalid }" pRipple label="Modifier" type="submit" class="p-button-warning"></button>
               </div>
             </div>
           </div>

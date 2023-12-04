@@ -36,7 +36,7 @@
             <div class="col-md-12">
               <div class="text-end">
                 <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
-                <button pButton [ngClass]="{ 'disabled-link': roleForm.invalid }" (click)="roleForm.invalid ? null : ajouterRole()" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
+                <button pButton [ngClass]="{ 'disabled-link': roleForm.invalid }" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
               </div>
             </div>
           </form>
@@ -75,7 +75,7 @@
             <div class="col-md-12">
               <div class="text-end">
                 <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
-                <button pButton [ngClass]="{ 'disabled-link': roleForm.invalid }" (click)="roleForm.invalid ? null : modifierRole()" pRipple label="Modifier" type="submit" class="p-button-warning"></button>
+                <button pButton [ngClass]="{ 'disabled-link': roleForm.invalid }" pRipple label="Modifier" type="submit" class="p-button-warning"></button>
               </div>
             </div>
           </form>

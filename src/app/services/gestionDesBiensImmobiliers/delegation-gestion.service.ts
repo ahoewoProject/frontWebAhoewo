@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DelegationGestion } from 'src/app/models/gestionDesBiensImmobiliers/DelegationGestion';
+import { DelegationGestionRequest } from 'src/app/models/gestionDesBiensImmobiliers/DelegationGestionRequest';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -29,10 +30,16 @@ export class DelegationGestionService {
     return this.httpClient.get<DelegationGestion[]>(this.url + 'delegations-gestions/gestionnaire');
   }
 
-  // Liste des delegations de gestion d'une agence par ses agents immobiliers
-  // url: http://localhost:4040/api/delegations-gestions/gestionnaire/agent-immobilier
-  getDelegationsGestionsByAgentImmobilier(): Observable<DelegationGestion[]> {
-    return this.httpClient.get<DelegationGestion[]>(this.url + 'delegations-gestions/gestionnaire/agent-immobilier');
+  // Liste des delegations de gestion des agences par responsable
+  // url: http://localhost:4040/api/delegations-gestions/agences/responsable
+  getDelegationsGestionsOfAgencesByResponsable(): Observable<DelegationGestion[]> {
+    return this.httpClient.get<DelegationGestion[]>(this.url + 'delegations-gestions/agences/responsable');
+  }
+
+  // Liste des delegations de gestion des agences par agent immobiliers
+  // url: http://localhost:4040/api/delegations-gestions/agences/agent
+  getDelegationsGestionsOfAgencesByAgent(): Observable<DelegationGestion[]> {
+    return this.httpClient.get<DelegationGestion[]>(this.url + 'delegations-gestions/agences/agent');
   }
 
   // Affichage des détails d'une delegation de gestion par sa clé primaire
@@ -41,10 +48,16 @@ export class DelegationGestionService {
     return this.httpClient.get<DelegationGestion>(this.url + 'delegation-gestion/' + id);
   }
 
-  // Ajout d'une delegation de gestion
-  // url: http://localhost:4040/api/delegation-gestion/ajouter
-  addDelegationGestion(d: DelegationGestion): Observable<DelegationGestion> {
-    return this.httpClient.post<DelegationGestion>(this.url + 'delegation-gestion/ajouter', d);
+  // Ajout d'une delegation de gestion par matricule
+  // url: http://localhost:4040/api/delegation-gestion/ajouter/matricule
+  addDelegationGestionMatricule(d: DelegationGestionRequest): Observable<DelegationGestion> {
+    return this.httpClient.post<DelegationGestion>(this.url + 'delegation-gestion/ajouter/matricule', d);
+  }
+
+  // Ajout d'une delegation de gestion par code agence
+  // url: http://localhost:4040/api/delegation-gestion/ajouter/code-agence
+  addDelegationGestionCodeAgence(d: DelegationGestionRequest): Observable<DelegationGestion> {
+    return this.httpClient.post<DelegationGestion>(this.url + 'delegation-gestion/ajouter/code-agence', d);
   }
 
   // Acceptation d'une delegation de gestion par sa clé primaire
@@ -53,27 +66,15 @@ export class DelegationGestionService {
     return this.httpClient.get<any>(this.url + 'accepter/delegation-gestion/' + id);
   }
 
+  // Refus d'une delegation de gestion par sa clé primaire
+  // url: http://localhost:4040/api/refuser/delegation-gestion/{id}
+  refuserDelegationGestion(id: number): Observable<any> {
+    return this.httpClient.get<any>(this.url + 'refuser/delegation-gestion/' + id);
+  }
+
   // Suppression d'une delegation de gestion par sa clé primaire
   // url: http://localhost:4040/api/delegation-gestion/supprimer/{id}
   deleteById(id: number) {
     return this.httpClient.delete<DelegationGestion>(this.url + 'delegation-gestion/supprimer/' + id);
   }
-
-  // Affichage du nombre d'occurrences de delegation de gestion par proprietaire.
-  // url: http://localhost:4040/api/count/delegations-gestions/proprietaire
-  countDelegationGestionProprietaire(): Observable<number>{
-    return this.httpClient.get<number>(this.url + 'count/delegations-gestions/proprietaire');
-  };
-
-  // Affichage du nombre d'occurrences de delegation de gestion par gestionnaire.
-  // url: http://localhost:4040/api/count/delegations-gestions/gestionnaire
-  countDelegationGestionGestionnaire(): Observable<number>{
-    return this.httpClient.get<number>(this.url + 'count/delegations-gestions/gestionnaire');
-  };
-
-  // Affichage du nombre d'occurrences de delegation de gestion d'une agence par agent immobilier.
-  // url: http://localhost:4040/api/count/delegations-gestions/gestionnaire/agent-immobilier
-  countDelegationGestionAgentImmobilier(): Observable<number>{
-    return this.httpClient.get<number>(this.url + 'count/delegations-gestions/gestionnaire/agent-immobilier');
-  };
 }

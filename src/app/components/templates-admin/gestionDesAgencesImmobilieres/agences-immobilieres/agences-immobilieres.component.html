@@ -103,7 +103,7 @@
             <div class="col-md-12">
               <div class="text-end">
                 <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
-                <button pButton [ngClass]="{ 'disabled-link': agenceImmobiliereForm.invalid }" (click)="agenceImmobiliereForm.invalid ? null : ajouterAgenceImmobiliere()" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
+                <button pButton [ngClass]="{ 'disabled-link': agenceImmobiliereForm.invalid }" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
               </div>
             </div>
           </form>
@@ -208,7 +208,7 @@
             <div class="col-md-12">
               <div class="text-end">
                 <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
-                <button pButton [ngClass]="{ 'disabled-link': agenceImmobiliereForm.invalid }" (click)="agenceImmobiliereForm.invalid ? null : modifierAgenceImmobiliere(agenceImmobiliere.id)" pRipple label="Modifier" type="submit" class="p-button-warning"></button>
+                <button pButton [ngClass]="{ 'disabled-link': agenceImmobiliereForm.invalid }" pRipple label="Modifier" type="submit" class="p-button-warning"></button>
               </div>
             </div>
           </form>
@@ -360,8 +360,8 @@
 
             <p-divider></p-divider>
             <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
-              <p>{{ agenceImmobiliere.heureOuverture }}</p>
+              <p class="fw600 mb10 ff-heading dark-color">Code agence</p>
+              <p>{{ agenceImmobiliere.codeAgence }}</p>
             </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
@@ -370,12 +370,18 @@
 
             <p-divider></p-divider>
             <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Heure Fermeture</p>
+              <p>{{ agenceImmobiliere.heureFermeture }}</p>
+            </div>
+            <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Etat</p>
               <p>
                 <p-tag *ngIf="agenceImmobiliere.etatAgence == true" severity="success" value="Activé"></p-tag>
                 <p-tag *ngIf="agenceImmobiliere.etatAgence == false" severity="danger" value="Désactivé"></p-tag>
               </p>
             </div>
+
+            <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Est certifiée</p>
               <p>
@@ -556,8 +562,8 @@
 
             <p-divider></p-divider>
             <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
-              <p>{{ affectationResponsableAgence.agenceImmobiliere.heureOuverture }}</p>
+              <p class="fw600 mb10 ff-heading dark-color">Code agence</p>
+              <p>{{ agenceImmobiliere.codeAgence }}</p>
             </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
@@ -566,12 +572,18 @@
 
             <p-divider></p-divider>
             <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Heure fermeture</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.heureFermeture }}</p>
+            </div>
+            <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Etat</p>
               <p>
                 <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == true" severity="success" value="Activé"></p-tag>
                 <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == false" severity="danger" value="Désactivé"></p-tag>
               </p>
             </div>
+
+            <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Est certifiée</p>
               <p>
@@ -744,8 +756,8 @@
 
             <p-divider></p-divider>
             <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
-              <p>{{ affectationResponsableAgence.agenceImmobiliere.heureOuverture }}</p>
+              <p class="fw600 mb10 ff-heading dark-color">Code agence</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.codeAgence }}</p>
             </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
@@ -754,12 +766,18 @@
 
             <p-divider></p-divider>
             <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Heure fermeture</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.heureFermeture }}</p>
+            </div>
+            <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Etat</p>
               <p>
                 <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == true" severity="success" value="Activé"></p-tag>
                 <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == false" severity="danger" value="Désactivé"></p-tag>
               </p>
             </div>
+
+            <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Est certifiée</p>
               <p>

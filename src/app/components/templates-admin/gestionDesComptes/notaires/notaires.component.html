@@ -59,7 +59,7 @@
             <div class="col-md-12">
               <div class="text-end">
                 <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
-                <button pButton [ngClass]="{ 'disabled-link': notaireForm.invalid }" (click)="notaireForm.invalid ? null : ajouterNotaire()" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
+                <button pButton [ngClass]="{ 'disabled-link': notaireForm.invalid }" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
               </div>
             </div>
           </form>
@@ -183,21 +183,27 @@
               <p>{{ notaire.username }}</p>
             </div>
             <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Matricule</p>
+              <p>{{ notaire.matricule }}</p>
+            </div>
+
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
               <p>{{ notaire.email }}</p>
             </div>
-
-            <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
               <p>{{ notaire.telephone }}</p>
             </div>
+
+
+            <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Profil</p>
               <p>{{ notaire.role.libelle }}</p>
             </div>
-
-            <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
               <p>

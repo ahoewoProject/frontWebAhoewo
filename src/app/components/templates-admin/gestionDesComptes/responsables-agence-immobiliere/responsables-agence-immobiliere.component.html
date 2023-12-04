@@ -140,6 +140,13 @@
                 <p-tag *ngIf="responsableAgenceImmobiliere.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
               </p>
             </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Est certifié</p>
+              <p>
+                <p-tag *ngIf="responsableAgenceImmobiliere.estCertifie == true" severity="success" value="Oui"></p-tag>
+                <p-tag *ngIf="responsableAgenceImmobiliere.estCertifie == false" severity="danger" value="Non"></p-tag>
+              </p>
+            </div>
             <p-divider></p-divider>
 
           </div>

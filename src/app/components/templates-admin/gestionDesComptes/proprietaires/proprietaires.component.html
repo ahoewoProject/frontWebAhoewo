@@ -114,19 +114,27 @@
 
             <p-divider></p-divider>
             <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Matricule</p>
+              <p>{{ proprietaire.matricule }}</p>
+            </div>
+            <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
               <p>{{ proprietaire.email }}</p>
             </div>
+
+
+            <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
               <p>{{ proprietaire.telephone }}</p>
             </div>
-
-            <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Profil</p>
               <p>{{ proprietaire.role.libelle }}</p>
             </div>
+
+
+            <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
               <p>
@@ -134,8 +142,6 @@
                 <p-tag *ngIf="proprietaire.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
               </p>
             </div>
-
-            <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Est certifié</p>
               <p>

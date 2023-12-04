@@ -65,7 +65,7 @@
             <div class="col-md-12">
               <div class="text-end">
                 <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
-                <button pButton [ngClass]="{ 'disabled-link': serviceAgenceImmobiliereForm.invalid }" (click)="serviceAgenceImmobiliereForm.invalid ? null : ajouterServiceAgenceImmobiliere()" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
+                <button pButton [ngClass]="{ 'disabled-link': serviceAgenceImmobiliereForm.invalid }" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
               </div>
             </div>
           </form>
@@ -80,7 +80,7 @@
     <div class="row align-items-center pb40">
       <div class="col-xxl-5">
         <div class="dashboard_title_area">
-          <h4>Ajout d'un service</h4>
+          <h4>Modification d'un service</h4>
           <p class="text"></p>
         </div>
       </div>
@@ -133,7 +133,7 @@
             <div class="col-md-12">
               <div class="text-end">
                 <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
-                <button pButton [ngClass]="{ 'disabled-link': serviceAgenceImmobiliereForm.invalid }" (click)="serviceAgenceImmobiliereForm.invalid ? null : modifierServiceAgenceImmobiliere(serviceAgenceImmobiliere.id)" pRipple label="Modifier" type="submit" class="p-button-warning"></button>
+                <button pButton [ngClass]="{ 'disabled-link': serviceAgenceImmobiliereForm.invalid }" pRipple label="Modifier" type="submit" class="p-button-warning"></button>
               </div>
             </div>
           </form>

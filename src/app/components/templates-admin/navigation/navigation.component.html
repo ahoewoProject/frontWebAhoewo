@@ -37,6 +37,7 @@
                       <a *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER'" class="dropdown-item" routerLink="/agent-immobilier/profil" ><i class="flaticon-user mr10"></i>Mes informations</a>
                       <a *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'" class="dropdown-item" routerLink="/proprietaire/profil" ><i class="flaticon-user mr10"></i>Mes informations</a>
                       <a *ngIf="user.role.code == 'ROLE_GERANT'" class="dropdown-item" routerLink="/gerant/profil" ><i class="flaticon-user mr10"></i>Mes informations</a>
+                      <a *ngIf="user.role.code == 'ROLE_DEMARCHEUR'" class="dropdown-item" routerLink="/demarcheur/profil" ><i class="flaticon-user mr10"></i>Mes informations</a>
                       <a *ngIf="user.role.code == 'ROLE_CLIENT'" class="dropdown-item" routerLink="/client/profil" ><i class="flaticon-user mr10"></i>Mes informations</a>
                       <a class="dropdown-item" type="button" (click)="seDeconnecter()" ><i class="flaticon-logout mr10"></i>Se déconnecter</a>
                     </div>
