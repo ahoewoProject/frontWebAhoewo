@@ -126,19 +126,31 @@ export class VillesComponent implements OnInit {
         if (response.id > 0) {
           this.voirListe();
           this.messageSuccess = "La ville a été ajouté avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Ajout réussi',
+            detail: this.messageSuccess
+          })
         } else {
           this.messageErreur = "Erreur lors de l'ajout de la ville !"
           this.afficherFormulaireAjouter();
           this.ville.libelle = response.libelle;
-          this.messageService.add({ severity: 'error', summary: "Erreur d'ajout", detail: this.messageErreur });
+          this.messageService.add({
+            severity: 'error',
+            summary: "Erreur d'ajout",
+            detail: this.messageErreur
+          });
         }
     },
     (error) =>{
       console.log(error)
       if (error.status === 409) {
         this.messageErreur = "Une ville avec ce libelle existe déjà !";
-        this.messageService.add({ severity: 'warn', summary: "Erreur d'ajout", detail: this.messageErreur });
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'ajout",
+          detail: this.messageErreur
+        });
       }
     })
   }
@@ -150,10 +162,17 @@ export class VillesComponent implements OnInit {
         if(response.id > 0) {
           this.voirListe();
           this.messageSuccess = "La ville a été modifié avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Modification réussie', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Modification réussie',
+            detail: this.messageSuccess
+          })
         } else {
           this.messageErreur = "Erreur lors de la modification de la ville !";
-          this.messageService.add({ severity: 'error', summary: 'Erreur modification', detail: this.messageErreur });
+          this.messageService.add({
+            severity: 'error', summary: 'Erreur modification',
+            detail: this.messageErreur
+            });
           this.afficherFormulaireModifier(this.ville.id);
         }
     },
@@ -161,7 +180,11 @@ export class VillesComponent implements OnInit {
       console.log(error)
       if (error.status === 409) {
         this.messageErreur = "Une ville avec ce libelle existe déjà !";
-        this.messageService.add({ severity: 'warn', summary: 'Modification non réussie', detail: this.messageErreur });
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Modification non réussie',
+          detail: this.messageErreur
+        });
         this.afficherFormulaireModifier(this.ville.id);
       }
     })
@@ -177,17 +200,29 @@ export class VillesComponent implements OnInit {
           console.log(response);
           this.voirListe();
           this.messageSuccess = "La ville a été activé avec succès !";
-          this.messageService.add({ severity: 'success', summary: 'Activation de la ville confirmée', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Activation de la ville confirmée',
+            detail: this.messageSuccess
+          })
         });
 
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Activation de la ville rejetée', detail: "Vous avez rejeté l'activation de cette ville !" });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Activation de la ville rejetée',
+              detail: "Vous avez rejeté l'activation de cette ville !"
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Activation de la ville annulée', detail: "Vous avez annulé l'activation de cette ville !" });
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Activation de la ville annulée',
+              detail: "Vous avez annulé l'activation de cette ville !"
+            });
             break;
         }
       }
@@ -204,17 +239,29 @@ export class VillesComponent implements OnInit {
           console.log(response);
           this.voirListe();
           this.messageSuccess = "La ville a été désactivé avec succès !";
-          this.messageService.add({ severity: 'success', summary: 'Désactivation de la ville confirmée', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Désactivation de la ville confirmée',
+            detail: this.messageSuccess
+          })
         });
 
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Désactivation de la ville rejetée', detail: "Vous avez rejeté la désactivation de cette ville !" });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Désactivation de la ville rejetée',
+              detail: "Vous avez rejeté la désactivation de cette ville !"
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Désactivation de la ville annulée', detail: "Vous avez annulé la désactivation de cette ville !" });
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Désactivation de la ville annulée',
+              detail: "Vous avez annulé la désactivation de cette ville !"
+            });
             break;
         }
       }

@@ -15,25 +15,25 @@
 
     <h6 *ngIf="user.etatCompte == false" class="text">
       <span class="error">
-        <i class="pi pi-exclamation-triangle"></i> Votre compte est désactivé. Veuillez contacter l'équipe support technique ahoewo pour obtenir de l'aide supplémentaire.
+        <i class="pi pi-exclamation-circle"></i> Votre compte est désactivé. Veuillez contacter l'équipe support technique ahoewo pour obtenir de l'aide supplémentaire.
       </span>
     </h6>
 
     <h6 *ngIf="!user.estCertifie && (user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_DEMARCHEUR')" class="text">
       <span *ngIf="demandeCertifications.length == 0" class="error">
-        <i class="pi pi-exclamation-triangle"></i> Votre compte n'est pas certifié, veuillez demander la certification de compte <br>en cliquant sur le menu <b>certifications</b> !
+        <i class="pi pi-exclamation-circle"></i> Votre compte n'est pas certifié, veuillez demander la certification de compte <br>en cliquant sur le menu <b>certifications</b> !
       </span>
       <span *ngIf="demandeCertifications.length !== 0" class="error">
-        <i class="pi pi-exclamation-triangle"></i> Votre compte est en attente de <b>certifications</b> !
+        <i class="pi pi-exclamation-circle"></i> Votre compte est en attente de <b>certifications</b> !
       </span>
     </h6>
 
     <h6 *ngIf="!user.estCertifie && user.role.code === 'ROLE_RESPONSABLE'" class="text">
       <span *ngIf="demandeCertifications.length == 0" class="error">
-        <i class="pi pi-exclamation-triangle"></i> Votre compte n'est pas certifié, veuillez ajouter votre <b>agence immobilière</b> en cliquant sur le menu <b>agences immobilières</b><br> et demander la certification de cette dernière en cliquant sur le menu <b>certifications</b> !
+        <i class="pi pi-exclamation-circle"></i> Votre compte n'est pas certifié, veuillez ajouter votre <b>agence immobilière</b> en cliquant sur le menu <b>agences immobilières</b><br> et demander la certification de cette dernière en cliquant sur le menu <b>certifications</b> !
       </span>
       <span *ngIf="demandeCertifications.length !== 0" class="error">
-        <i class="pi pi-exclamation-triangle"></i> Votre compte est en attente de <b>certifications</b> !
+        <i class="pi pi-exclamation-circle"></i> Votre compte est en attente de <b>certifications</b> !
       </span>
     </h6>
     <br>

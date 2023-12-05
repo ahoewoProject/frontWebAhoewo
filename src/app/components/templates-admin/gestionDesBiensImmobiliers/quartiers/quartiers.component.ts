@@ -126,19 +126,31 @@ export class QuartiersComponent implements OnInit {
         if (response.id > 0) {
           this.voirListe();
           this.messageSuccess = "Le quartier a été ajouté avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Ajout réussi',
+            detail: this.messageSuccess
+          })
         } else {
           this.messageErreur = "Erreur lors de l'ajout du quartier !"
           this.afficherFormulaireAjouter();
           this.quartier.libelle = response.libelle;
-          this.messageService.add({ severity: 'error', summary: "Erreur d'ajout", detail: this.messageErreur });
+          this.messageService.add({
+            severity: 'error',
+            summary: "Erreur d'ajout",
+            detail: this.messageErreur
+          });
         }
     },
     (error) =>{
       console.log(error)
       if (error.status === 409) {
         this.messageErreur = "Un quartier avec ce libelle existe déjà !";
-        this.messageService.add({ severity: 'warn', summary: "Erreur d'ajout", detail: this.messageErreur });
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'ajout",
+          detail: this.messageErreur
+        });
       }
     })
   }
@@ -150,10 +162,18 @@ export class QuartiersComponent implements OnInit {
         if(response.id > 0) {
           this.voirListe();
           this.messageSuccess = "Le quartier a été modifié avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Modification réussie', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Modification réussie',
+            detail: this.messageSuccess
+          })
         } else {
           this.messageErreur = "Erreur lors de la modification du quartier !";
-          this.messageService.add({ severity: 'error', summary: 'Erreur modification', detail: this.messageErreur });
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur modification',
+            detail: this.messageErreur
+          });
           this.afficherFormulaireModifier(this.quartier.id);
         }
     },
@@ -161,7 +181,11 @@ export class QuartiersComponent implements OnInit {
       console.log(error)
       if (error.status === 409) {
         this.messageErreur = "Un quartier avec ce libelle existe déjà !";
-        this.messageService.add({ severity: 'warn', summary: 'Modification non réussie', detail: this.messageErreur });
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Modification non réussie',
+          detail: this.messageErreur
+        });
         this.afficherFormulaireModifier(this.quartier.id);
       }
     })
@@ -177,17 +201,29 @@ export class QuartiersComponent implements OnInit {
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le quartier a été activé avec succès !";
-          this.messageService.add({ severity: 'success', summary: 'Activation du quartier confirmée', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Activation du quartier confirmée',
+            detail: this.messageSuccess
+          })
         });
 
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Activation ddu quartier rejetée', detail: "Vous avez rejeté l'activation de ce quartier !" });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Activation ddu quartier rejetée',
+              detail: "Vous avez rejeté l'activation de ce quartier !"
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Activation du quartier annulée', detail: "Vous avez annulé l'activation de ce quartier !" });
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Activation du quartier annulée',
+              detail: "Vous avez annulé l'activation de ce quartier !"
+            });
             break;
         }
       }
@@ -204,17 +240,29 @@ export class QuartiersComponent implements OnInit {
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le quartier a été désactivé avec succès !";
-          this.messageService.add({ severity: 'success', summary: 'Désactivation du quartier confirmée', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Désactivation du quartier confirmée',
+            detail: this.messageSuccess
+          })
         });
 
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Désactivation du quartier rejetée', detail: "Vous avez rejeté la désactivation du quartier !" });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Désactivation du quartier rejetée',
+              detail: "Vous avez rejeté la désactivation du quartier !"
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Désactivation du quartier annulée', detail: "Vous avez annulé la désactivation du quartier !" });
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Désactivation du quartier annulée',
+              detail: "Vous avez annulé la désactivation du quartier !"
+            });
             break;
         }
       }

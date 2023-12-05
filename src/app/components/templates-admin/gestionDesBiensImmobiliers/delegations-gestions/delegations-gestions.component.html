@@ -75,13 +75,13 @@
 
                       <button *ngIf="delegationGestion.statutDelegation == 0 &&
                         (user.role.code === 'ROLE_RESPONSABLE' || user.role.code === 'ROLE_GERANT'  || user.role.code === 'ROLE_DEMARCHEUR')"
-                        pButton type="button" icon="pi pi-check" (click)="accepterDelegationGestion(delegationGestion.id)"
+                        pButton type="button" icon="pi pi-check-circle" (click)="accepterDelegationGestion(delegationGestion.id)"
                         pTooltip="Accepter" tooltipPosition="top" class="p-button-text p-button-success">
                       </button>
 
                       <button *ngIf="delegationGestion.statutDelegation == 0 &&
                         (user.role.code === 'ROLE_RESPONSABLE' || user.role.code === 'ROLE_GERANT'  || user.role.code === 'ROLE_DEMARCHEUR')"
-                        pButton type="button" icon="pi pi-minus-circle" (click)="refuserDelegationGestion(delegationGestion.id)"
+                        pButton type="button" icon="pi pi-times-circle" (click)="refuserDelegationGestion(delegationGestion.id)"
                         pTooltip="Refuser" tooltipPosition="top" class="p-button-text p-button-danger">
                       </button>
 

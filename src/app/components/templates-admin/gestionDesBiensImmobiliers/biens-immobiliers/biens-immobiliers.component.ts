@@ -292,6 +292,7 @@ export class BiensImmobiliersComponent implements OnInit {
 
   //Fonction pour retourner à la liste des biens immobiliers
   voirListe(): void {
+    localStorage.removeItem('bienImmobilier');
     this.imagesBienImmobilier = [];
     this.bienImmobilierForm.reset();
     this.delegationGestionForm.reset();

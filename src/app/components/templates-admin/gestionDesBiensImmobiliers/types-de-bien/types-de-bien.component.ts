@@ -113,12 +113,20 @@ export class TypesDeBienComponent implements OnInit {
           });
           this.voirListe();
           this.messageSuccess = "Le type de bien a été ajouté avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Ajout réussi', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Ajout réussi',
+            detail: this.messageSuccess
+          })
         } else {
           this.messageErreur = "Erreur lors de l'ajout du type de bien !"
           this.afficherFormulaireAjouter();
           this.typeDeBien.designation = response.designation;
-          this.messageService.add({ severity: 'error', summary: "Erreur d'ajout", detail: this.messageErreur });
+          this.messageService.add({
+            severity: 'error',
+            summary: "Erreur d'ajout",
+            detail: this.messageErreur
+          });
         }
     },
     (error) =>{
@@ -136,10 +144,18 @@ export class TypesDeBienComponent implements OnInit {
         if(response.id > 0) {
           this.voirListe();
           this.messageSuccess = "Le type de bien a été modifié avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Modification réussie', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Modification réussie',
+            detail: this.messageSuccess
+          })
         } else {
           this.messageErreur = "Erreur lors de la modification du type de bien !";
-          this.messageService.add({ severity: 'error', summary: 'Erreur modification', detail: this.messageErreur });
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur modification',
+            detail: this.messageErreur
+          });
           this.afficherFormulaireModifier(this.typeDeBien.id);
         }
     },
@@ -147,7 +163,11 @@ export class TypesDeBienComponent implements OnInit {
       console.log(error)
       if (error.status === 409) {
         this.messageErreur = "Un type de bien avec cette désignation existe déjà !";
-        this.messageService.add({ severity: 'warn', summary: 'Modification non réussie', detail: this.messageErreur });
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Modification non réussie',
+          detail: this.messageErreur
+        });
         this.afficherFormulaireModifier(this.typeDeBien.id);
       }
     })
@@ -163,17 +183,28 @@ export class TypesDeBienComponent implements OnInit {
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le type de bien a été activé avec succès !";
-          this.messageService.add({ severity: 'success', summary: 'Activation du type de bien confirmée', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Activation du type de bien confirmée',
+            detail: this.messageSuccess
+          })
         });
 
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Activation du type de bien rejetée', detail: "Vous avez rejeté l'activation de ce type de bien !" });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Activation du type de bien rejetée',
+              detail: "Vous avez rejeté l'activation de ce type de bien !"
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Activation du type de bien annulée', detail: "Vous avez annulé l'activation de ce type de bien !" });
+            this.messageService.add({ severity: 'warn',
+            summary: 'Activation du type de bien annulée',
+            detail: "Vous avez annulé l'activation de ce type de bien !"
+          });
             break;
         }
       }
@@ -190,17 +221,29 @@ export class TypesDeBienComponent implements OnInit {
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le type de bien a été désactivé avec succès !";
-          this.messageService.add({ severity: 'success', summary: 'Désactivation du type de bien confirmée', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Désactivation du type de bien confirmée',
+            detail: this.messageSuccess
+          })
         });
 
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Désactivation du type de bien rejetée', detail: "Vous avez rejeté la désactivation de ce type de bien !" });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Désactivation du type de bien rejetée',
+              detail: "Vous avez rejeté la désactivation de ce type de bien !"
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Désactivation du type de bien annulée', detail: "Vous avez annulé la désactivation de ce type de bien !" });
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Désactivation du type de bien annulée',
+              detail: "Vous avez annulé la désactivation de ce type de bien !"
+            });
             break;
         }
       }
@@ -219,15 +262,26 @@ export class TypesDeBienComponent implements OnInit {
             this.voirListe();
 
             this.messageSuccess = "Le type de bien a été supprimé avec succès !";
-            this.messageService.add({ severity: 'success', summary: 'Suppression du type de bien confirmée', detail: this.messageSuccess })
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Suppression du type de bien confirmée',
+              detail: this.messageSuccess
+            })
           },
           error => {
             if (error.status == 400) {
               this.messageErreur = "Impossible de supprimer ce type de bien car des biens immobiliers sont liés à ce dernier !"
-              this.messageService.add({ severity: 'warn', summary: 'Suppression impossible', detail: this.messageErreur })
+              this.messageService.add({
+                severity: 'warn',
+                summary: 'Suppression impossible',
+                detail: this.messageErreur
+              })
             } else {
               this.messageErreur = "Une erreur s'est produite lors de la suppression de ce type de bien !"
-              this.messageService.add({ severity: 'error', summary: 'Erreur lors de la suppression', detail: this.messageErreur })
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur lors de la suppression',
+                detail: this.messageErreur })
             }
           }
         );
@@ -236,10 +290,18 @@ export class TypesDeBienComponent implements OnInit {
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Suppression du type de bien rejetée', detail: "Vous avez rejeté la suppression de ce type de bien !" });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Suppression du type de bien rejetée',
+              detail: "Vous avez rejeté la suppression de ce type de bien !"
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Suppression du type de bien annulée', detail: "Vous avez annulé la suppression de ce type de bien !" });
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Suppression du type de bien annulée',
+              detail: "Vous avez annulé la suppression de ce type de bien !"
+            });
             break;
         }
       }

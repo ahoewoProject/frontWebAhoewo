@@ -27,7 +27,6 @@ export class ServicesAgenceImmobiliereComponent implements OnInit {
   elementsParPage = 5; // Nombre d'éléments par page
   pageActuelle = 0; // Page actuelle
 
-
   serviceAgenceImmobiliere = this.servicesAgenceImmobiliereService.serviceAgenceImmobiliere;
   services : Services[] = [];
   agencesImmobilieres: AgenceImmobiliere[] = [];
@@ -105,7 +104,6 @@ export class ServicesAgenceImmobiliereComponent implements OnInit {
   agenceChoisie(event: any) {
     this.agenceSelectionnee = event.value;
   }
-
 
   // Récupération des services de la page courante
   get servicesAgenceImmobiliereParPage(): any[] {
@@ -185,7 +183,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit {
     (error) =>{
       console.log(error)
       if (error.status === 409) {
-        this.messageErreur = "Un service avec ce nom existe déjà dans une de vos agences !";
+        this.messageErreur = "Un service avec ce nom existe déjà dans cette agence !";
         this.messageService.add({
           severity: 'warn',
           summary: "Erreur d'ajout",
@@ -213,7 +211,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit {
           });
         } else {
           this.messageErreur = "Erreur lors de la modification du service !"
-          this.afficherFormulaireAjouter();
+          this.afficherFormulaireModifier(id);
           this.serviceAgenceImmobiliere.agenceImmobiliere = response.agenceImmobiliere;
           this.serviceAgenceImmobiliere.services = response.services;
           this.messageService.add({
@@ -226,7 +224,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit {
     (error) =>{
       console.log(error)
       if (error.status === 409) {
-        this.messageErreur = "Un service avec ce nom existe déjà dans une de vos agences !";
+        this.messageErreur = "Un service avec ce nom existe déjà dans cette agence !";
         this.messageService.add({
           severity: 'warn',
           summary: "Erreur de modification",

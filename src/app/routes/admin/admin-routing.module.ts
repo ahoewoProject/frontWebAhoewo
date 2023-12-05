@@ -17,7 +17,7 @@ import { ResponsablesAgenceImmobiliereComponent } from 'src/app/components/templ
 import { RolesComponent } from 'src/app/components/templates-admin/gestionDesComptes/roles/roles.component';
 import { ServicesComponent } from 'src/app/components/templates-admin/gestionDesAgencesImmobilieres/services/services.component';
 import { TemplatesAdminComponent } from 'src/app/components/templates-admin/templates-admin.component';
-import { TypesDeBienComponent } from 'src/app/components/templates-admin/gestionDesComptes/types-de-bien/types-de-bien.component';
+import { TypesDeBienComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/types-de-bien/types-de-bien.component';
 import { VillesComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/villes/villes.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
 

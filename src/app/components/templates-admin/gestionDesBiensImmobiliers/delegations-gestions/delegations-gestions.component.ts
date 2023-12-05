@@ -276,7 +276,8 @@ export class DelegationsGestionsComponent implements OnInit {
       header: "Acceptation de la délégation de gestion d'un bien",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.delegationGestionService.accepterDelegationGestion(id).subscribe(response=>{
+        this.delegationGestionService.accepterDelegationGestion(id).subscribe(
+        (response) => {
           console.log(response);
           this.voirListe();
           this.messageSuccess = "La délégation de la gestion de ce bien a été accepté avec succès !";
@@ -285,6 +286,23 @@ export class DelegationsGestionsComponent implements OnInit {
             summary: 'Acceptation de la délégation de gestion d\'un bien confirmée',
             detail: this.messageSuccess
           });
+        },
+        error => {
+          if (error.status == 400) {
+            this.messageErreur = "Impossible d'accepter cette délégation de gestion car ce bien est délégué à un autre utilisateur !"
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Acceptation de la délégation de gestion impossible',
+              detail: this.messageErreur
+            })
+          } else {
+            this.messageErreur = "Une erreur s'est produite lors de l'acceptation de la délégation de gestion !"
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur lors de l\'acceptation de la délégation de gestion',
+              detail: this.messageErreur
+            })
+          }
         });
 
       },

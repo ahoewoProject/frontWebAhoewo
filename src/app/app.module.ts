@@ -48,7 +48,7 @@ import { AgencesImmobilieresComponent } from './components/templates-admin/gesti
 import { ServicesComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/services/services.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { TypesDeBienComponent } from './components/templates-admin/gestionDesComptes/types-de-bien/types-de-bien.component';
+import { TypesDeBienComponent } from './components/templates-admin/gestionDesBiensImmobiliers/types-de-bien/types-de-bien.component';
 import { BiensImmobiliersComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-immobiliers.component';
 import { DelegationsGestionsComponent } from './components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/delegations-gestions.component';
 import { ResponsablesAgenceImmobiliereComponent } from './components/templates-admin/gestionDesComptes/responsables-agence-immobiliere/responsables-agence-immobiliere.component';
