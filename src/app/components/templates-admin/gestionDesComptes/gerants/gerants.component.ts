@@ -152,25 +152,6 @@ export class GerantsComponent implements OnInit{
       (response) =>{
         console.log(response);
         if(response.id > 0) {
-          this.gerants.push({
-            id: response.id,
-            nom: response.nom,
-            prenom: response.prenom,
-            matricule: response.matricule,
-            username: response.username,
-            email: response.email,
-            motDePasse: response.motDePasse,
-            telephone: response.telephone,
-            etatCompte: response.etatCompte,
-            role: response.role,
-            creerLe: response.creerLe,
-            creerPar: response.creerPar,
-            modifierLe: response.modifierLe,
-            modifierPar: response.modifierPar,
-            statut: response.statut,
-            estCertifie: false,
-            resetToken: ''
-          });
           this.voirListe();
           this.messageSuccess = "Le gérant a été ajouté avec succès.";
           this.messageService.add({

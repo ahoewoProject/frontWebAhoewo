@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit {
   _nombreGerants: number = 0;
   _nombreDemarcheurs: number = 0;
   _nombreProprietaires: number = 0;
-  _nombreResponsablesAgenceImmobiliere: number = 0;
+  _nombreResponsables: number = 0;
   _nombreNotaires: number = 0;
   _nombreAdministrateurs: number = 0;
   _nombreDemandeCertification: number = 0;
@@ -70,7 +70,7 @@ export class DashboardComponent implements OnInit {
     this.nombreNotaires();
     this.nombreClients();
     this.nombreProprietaires();
-    this.nombreResponsablesAgenceImmobiliere();
+    this.nombreResponsables();
     this.nombreUtilisateurs();
     this.nombreGerants();
     this.nombreDemarcheurs();
@@ -154,10 +154,10 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  nombreResponsablesAgenceImmobiliere(): void {
+  nombreResponsables(): void {
     this.responsableAgenceImmobiliereService.countResponsablesAgenceImmobiliere().subscribe(
       (response) => {
-        this._nombreResponsablesAgenceImmobiliere = response;
+        this._nombreResponsables = response;
       }
     );
   }

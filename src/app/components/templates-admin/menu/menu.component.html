@@ -1,6 +1,6 @@
 <div class="dashboard_sidebar_list">
 
-  <!-- Start Restriction Menu Administrateur -->
+  <!-- Start Menu Administrateur -->
   <div *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
     <!-- Start Menu Tableau de bord -->
     <div>
@@ -11,6 +11,7 @@
       (click)="setActiveLink('/admin/dashboard')"><i class="flaticon-home mr15"></i>Tableau de bord</a>
     </div>
     <!-- Start Menu Tableau de bord -->
+
     <!-- Start Menu Gestion des comptes -->
     <div>
       <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
@@ -73,19 +74,19 @@
     </div>
     <div class="sidebar_list_item">
       <a class="items-center" routerLink="/admin/pays" [class.-is-active]="activeLink === '/admin/pays'"
-      (click)="setActiveLink('/admin/pays')"><i class="fa-light fa-city mr15"></i>Pays</a>
+      (click)="setActiveLink('/admin/pays')"><i class="fa-light fa-globe mr15"></i>&nbsp;Pays</a>
     </div>
     <div class="sidebar_list_item">
       <a class="items-center" routerLink="/admin/regions" [class.-is-active]="activeLink === '/admin/regions'"
-      (click)="setActiveLink('/admin/regions')"><i class="fa-light fa-city mr15"></i>Régions</a>
+      (click)="setActiveLink('/admin/regions')"><i class="fa-light fa-globe mr15"></i>&nbsp;Régions</a>
     </div>
     <div class="sidebar_list_item">
       <a class="items-center" routerLink="/admin/villes" [class.-is-active]="activeLink === '/admin/villes'"
-      (click)="setActiveLink('/admin/villes')"><i class="fa-light fa-city mr15"></i>Villes</a>
+      (click)="setActiveLink('/admin/villes')"><i class="fa-light fa-globe mr15"></i>&nbsp;Villes</a>
     </div>
     <div class="sidebar_list_item">
       <a class="items-center" routerLink="/admin/quartiers" [class.-is-active]="activeLink === '/admin/quartiers'"
-      (click)="setActiveLink('/admin/quartiers')"><i class="fa-light fa-city mr15"></i>Quartiers</a>
+      (click)="setActiveLink('/admin/quartiers')"><i class="fa-light fa-globe mr15"></i>&nbsp;Quartiers</a>
     </div>
     <div class="sidebar_list_item">
       <a class="items-center" routerLink="/admin/types-de-bien" [class.-is-active]="activeLink === '/admin/types-de-bien'"
@@ -93,9 +94,9 @@
     </div>
     <!-- End Menu Gestion des biens immobiliers -->
   </div>
-  <!-- End Restriction Menu Administrateur -->
+  <!-- End Menu Administrateur -->
 
-  <!-- Start Restriction Menu Notaire -->
+  <!-- Start Menu Notaire -->
   <div *ngIf="user.role.code == 'ROLE_NOTAIRE'">
     <!-- Start Menu Tableau de bord -->
     <div>
@@ -106,6 +107,7 @@
       (click)="setActiveLink('/notaire/dashboard')"><i class="flaticon-home mr15"></i>Tableau de bord</a>
     </div>
     <!-- Start Menu Tableau de bord -->
+
     <!-- Start Menu Gestion des comptes -->
     <div>
       <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
@@ -116,9 +118,9 @@
     </div>
     <!-- End Menu Gestion des comptes -->
   </div>
-  <!-- End Restriction Menu Notaire -->
+  <!-- End Menu Notaire -->
 
-  <!-- Start Restriction Propriétaire -->
+  <!-- Start Propriétaire -->
   <div *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'">
     <!-- Start Menu Tableau de bord -->
     <div>
@@ -129,6 +131,7 @@
       (click)="setActiveLink('/proprietaire/dashboard')"><i class="flaticon-home mr15"></i>Tableau de bord</a>
     </div>
     <!-- Start Menu Tableau de bord -->
+
     <!-- Start Menu Gestion des comptes -->
     <div>
       <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
@@ -199,9 +202,9 @@
     </div>
     <!-- End Menu Gestion des paiements -->
   </div>
-  <!-- End Restriction Propriétaire -->
+  <!-- End Propriétaire -->
 
-  <!-- End Restriction Gérant -->
+  <!-- End Gérant -->
   <div *ngIf="user.role.code == 'ROLE_GERANT'">
     <!-- Start Menu Tableau de bord -->
     <div>
@@ -215,10 +218,6 @@
     <!-- Start Menu Gestion des biens immobiliers -->
     <div>
       <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a class="items-center" routerLink="/gerant/biens-immobiliers" [class.-is-active]="activeLink === '/gerant/biens-immobiliers'"
-      (click)="setActiveLink('/gerant/biens-immobiliers')"><i class="fa-light fa-house-building mr15"></i>Biens immobiliers</a>
     </div>
     <div class="sidebar_list_item">
       <a class="items-center" routerLink="/gerant/delegations-gestions" [class.-is-active]="activeLink === '/gerant/delegations-gestions'"
@@ -268,9 +267,9 @@
     </div>
     <!-- End Menu Gestion des paiements -->
   </div>
-  <!-- End Restriction Gérant -->
+  <!-- End Gérant -->
 
-  <!-- Start Restriction Responsable -->
+  <!-- Start Responsable -->
   <div *ngIf="user.role.code == 'ROLE_RESPONSABLE'">
     <!-- Start Menu Tableau de bord -->
     <div>
@@ -281,6 +280,7 @@
       (click)="setActiveLink('/responsable/dashboard')"><i class="flaticon-home mr15"></i>Tableau de bord</a>
     </div>
     <!-- Start Menu Tableau de bord -->
+
     <!-- Start Menu Gestion des agences immobilières -->
     <div>
       <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
@@ -365,9 +365,9 @@
     </div>
     <!-- End Menu Gestion des paiements -->
   </div>
-  <!-- End Restriction Responsable -->
+  <!-- End Responsable -->
 
-  <!-- Start Restriction Agent immobilier -->
+  <!-- Start Agent immobilier -->
   <div *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER'">
     <!-- Start Menu Tableau de bord -->
     <div>
@@ -378,6 +378,7 @@
       (click)="setActiveLink('/agent-immobilier/dashboard')"><i class="flaticon-home mr15"></i>Tableau de bord</a>
     </div>
     <!-- Start Menu Tableau de bord -->
+
     <!-- Start Menu Gestion des agences immobilières -->
     <div>
       <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
@@ -444,9 +445,9 @@
     </div>
     <!-- End Menu Gestion des paiements -->
   </div>
-  <!-- End Restriction Agent immobilier -->
+  <!-- End Agent immobilier -->
 
-  <!-- Start Restriction Démarcheur -->
+  <!-- Start Démarcheur -->
   <div *ngIf="user.role.code == 'ROLE_DEMARCHEUR'">
     <!-- Start Menu Tableau de bord -->
     <div>
@@ -457,6 +458,7 @@
       (click)="setActiveLink('/demarcheur/dashboard')"><i class="flaticon-home mr15"></i>Tableau de bord</a>
     </div>
     <!-- Start Menu Tableau de bord -->
+
     <!-- Start Menu Gestion des comptes -->
     <div>
       <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
@@ -523,7 +525,54 @@
     </div>
     <!-- End Menu Gestion des paiements -->
   </div>
-  <!-- End Restriction Démarcheur -->
+  <!-- End Démarcheur -->
+
+  <!-- Start Client -->
+  <div *ngIf="user.role.code == 'ROLE_CLIENT'">
+    <!-- Start Menu Tableau de bord -->
+    <div>
+      <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
+    </div>
+    <div class="sidebar_list_item">
+      <a routerLink="/client/dashboard" [class.-is-active]="activeLink === '/client/dashboard'"
+      (click)="setActiveLink('/client/dashboard')"><i class="flaticon-home mr15"></i>Tableau de bord</a>
+    </div>
+    <!-- Start Menu Tableau de bord -->
+
+    <!-- Start Menu Gestion des locations et ventes -->
+    <div>
+      <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
+    </div>
+    <div class="sidebar_list_item">
+      <a class="items-center"><i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites</a>
+    </div>
+    <div class="sidebar_list_item">
+      <a class="items-center"><i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations</a>
+    </div>
+    <div class="sidebar_list_item">
+      <a class="items-center"><i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats</a>
+    </div>
+    <div class="sidebar_list_item">
+      <a class="items-center"><i class="fa-light fa-folders mr15"></i>Contrats</a>
+    </div>
+    <div class="sidebar_list_item">
+      <a class="items-center"><i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens</a>
+    </div>
+    <!-- End Menu Gestion des locations et ventes -->
+
+    <!-- Start Menu Gestion des paiements -->
+    <div>
+      <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
+    </div>
+    <div class="sidebar_list_item">
+      <a class="items-center"><i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
+    </div>
+    <div class="sidebar_list_item">
+      <a class="items-center"><i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
+    </div>
+    <!-- End Menu Gestion des paiements -->
+  </div>
+  <!-- End Client -->
 
   <!-- Start Menu Déconnecter -->
   <div class="sidebar_list_item ">

@@ -77,7 +77,11 @@ export class DemarcheursComponent implements OnInit{
         console.log(response);
         this.voirListe();
         this.messageSuccess = "Le démarcheur a été supprimé avec succès.";
-        this.messageService.add({ severity: 'success', summary: 'Suppression réussie', detail: this.messageSuccess })
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Suppression réussie',
+          detail: this.messageSuccess
+        })
       }
     );
   }
@@ -92,17 +96,29 @@ export class DemarcheursComponent implements OnInit{
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été activé avec succès !";
-          this.messageService.add({ severity: 'success', summary: 'Activation de compte confirmée', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Activation de compte confirmée',
+            detail: this.messageSuccess
+          })
         });
 
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Activation de compte rejetée', detail: "Vous avez rejeté l'activation de ce compte !" });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Activation de compte rejetée',
+              detail: "Vous avez rejeté l'activation de ce compte !"
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Activation de compte annulée', detail: "Vous avez annulé l'activation de ce compte !" });
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Activation de compte annulée',
+              detail: "Vous avez annulé l'activation de ce compte !"
+            });
             break;
         }
       }
@@ -119,17 +135,29 @@ export class DemarcheursComponent implements OnInit{
           console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été désactivé avec succès.";
-          this.messageService.add({ severity: 'success', summary: 'Désactivaction de compte confirmée', detail: this.messageSuccess })
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Désactivaction de compte confirmée',
+            detail: this.messageSuccess
+          })
         });
 
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Désactivation de compte rejetée', detail: 'Vous avez rejeté la désactivation de ce compte !' });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Désactivation de compte rejetée',
+              detail: 'Vous avez rejeté la désactivation de ce compte !'
+            });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn', summary: 'Désactivation de compte annulée', detail: 'Vous avez annulé la désactivation de ce compte !' });
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Désactivation de compte annulée',
+              detail: 'Vous avez annulé la désactivation de ce compte !'
+            });
             break;
         }
       }

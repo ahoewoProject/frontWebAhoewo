@@ -49,13 +49,13 @@
               <tbody class="t-body">
                 <tr *ngFor="let delegationGestion of delegationGestionsParPage | genericFilter: recherche;  let i = index">
                   <td class="vam">{{ pageActuelle + i + 1 }}</td>
-                  <!-- <th scope="row">
-                    <p-image *ngIf="delegationGestion.bienImmobilier.images.length === 0" class="w-100" src="assets/images/home/house.jpg" alt="" width="150" imageClass="image"></p-image>
-                    <p-image *ngIf="delegationGestion.bienImmobilier.images && delegationGestion.bienImmobilier.images.length > 0" class="w-100" src="{{this.APIEndpoint+'api/premiere-image/bien-immobilier/'+delegationGestion.bienImmobilier.id}}" alt="" width="150" imageClass="image"></p-image>
-                  </th> -->
                   <th scope="row">
-                    <p-image class="w-100" *ngIf="imageURL"  src="{{this.APIEndpoint+'api/premiere-image/bien-immobilier/'+delegationGestion.bienImmobilier.id}}" alt="" width="150" imageClass="image"></p-image>
-                    <p-image class="w-100" *ngIf="!imageURL" src="assets/images/home/house.jpg" alt="" width="150" imageClass="image"></p-image>
+                    <p-image class="w-100"
+                             src="{{ image != null ? (this.APIEndpoint+'api/premiere-image/bien-immobilier/'+delegationGestion.bienImmobilier.id) : 'assets/images/home/house.jpg' }}"
+                             alt=""
+                             width="150"
+                             imageClass="image">
+                    </p-image>
                   </th>
                   <td class="vam" *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT'">{{ delegationGestion.bienImmobilier.personne.nom }} {{ delegationGestion.bienImmobilier.personne.prenom }}</td>
                   <td class="vam" *ngIf="user.role.code == 'ROLE_PROPRIETAIRE' && delegationGestion.gestionnaire">{{ delegationGestion.gestionnaire.nom }} {{ delegationGestion.gestionnaire.prenom }}</td>

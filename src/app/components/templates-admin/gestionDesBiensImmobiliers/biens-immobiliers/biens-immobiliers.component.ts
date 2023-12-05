@@ -36,7 +36,7 @@ import { environment } from 'src/environments/environment';
 })
 export class BiensImmobiliersComponent implements OnInit {
 
-  imageURL: any;
+  image: any;
   listeDesChoix: any[] | undefined;
   checked: string | undefined;
   menus: MenuItem[] | undefined;
@@ -147,26 +147,23 @@ export class BiensImmobiliersComponent implements OnInit {
       this.listeAgencesImmobilieresParAgent();
       this.listeBiensParAgencesAgent();
     }
-
-    this.biensImmobiliers.forEach((bien) => {
-      this.bienImmobilierService.getPremiereImage(bien.id).subscribe(
-        (response: any) => {
-          if (response instanceof Blob) {
-            this.imageURL = response;
-          } else {
-            this.imageURL = '';
-          }
-        },
-        (error) => {
-          console.error('Une erreur s\'est produite : ', error);
-          this.imageURL = '';
-        }
-      );
-    });
   }
 
   onActiveIndexChange(event: number) {
     this.activeIndex = event;
+  }
+
+  premiereImageDuBien(bienId: any) {
+    this.bienImmobilierService.getPremiereImage(bienId).subscribe(
+      (response: any) => {
+        this.image = response;
+      },
+      (error) => {
+        if (error.status === 404) {
+          this.image = null;
+        }
+      }
+    );
   }
 
   //Fonction pour recupérer les images associées à un bien immobilier
@@ -203,6 +200,9 @@ export class BiensImmobiliersComponent implements OnInit {
       (response) => {
         console.log(response);
         this.biensImmobiliers = response;
+        this.biensImmobiliers.forEach((bien) => {
+          this.premiereImageDuBien(bien.id);
+        });
       }
     );
   }
@@ -213,6 +213,9 @@ export class BiensImmobiliersComponent implements OnInit {
       (response) => {
         console.log(response);
         this.biensImmobiliers = response;
+        this.biensImmobiliers.forEach((bien) => {
+          this.premiereImageDuBien(bien.id);
+        });
       }
     );
   }
@@ -223,6 +226,9 @@ export class BiensImmobiliersComponent implements OnInit {
       (response) => {
         console.log(response);
         this.biensImmobiliers = response;
+        this.biensImmobiliers.forEach((bien) => {
+          this.premiereImageDuBien(bien.id);
+        });
       }
     );
   }
@@ -465,7 +471,7 @@ export class BiensImmobiliersComponent implements OnInit {
 
   //Fonction pour afficher le formulaire d'ajout d'un bien immobilier
   afficherFormulaireAjoutBienImmobilier(): void {
-    this.validerFormulaires();
+    this.validerFormulaire();
     this.typeDeBienSelectionne = this.typesDeBien[5];
     this.bienImmobilier = new BienImmobilier();
     this.affichage = 2;
@@ -473,7 +479,7 @@ export class BiensImmobiliersComponent implements OnInit {
 
   //Fonction pour afficher le formulaire de modification d'un bien immobilier
   afficherFormulaireModifierBienImmobilier(id: number): void {
-    this.validerFormulaires();
+    this.validerFormulaire();
     this.detailBienImmobilier(id);
     this.affichage = 3;
   }
@@ -1154,10 +1160,12 @@ export class BiensImmobiliersComponent implements OnInit {
           designation == 'Villas meublées' || designation == 'Immeubles'
   }
 
+  ///Fonction pour afficher la deuxième étape d'un formulaire step by step
   afficherFormStep2(designation: string): boolean {
     return designation !== 'Terrains';
   }
 
+  //Fonction pour la non affichage de la deuxième étape d'un formulaire step by step
   nePasAfficherFormStep2(designation: string): boolean {
     return designation == 'Terrains';
   }
@@ -1270,7 +1278,8 @@ export class BiensImmobiliersComponent implements OnInit {
     }
   }
 
-  validerFormulaires(): void {
+  //Fonction pour valider le formulaire d'enregistrement et de modification d'un bien immobilier
+  validerFormulaire(): void {
     if ((this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR')) {
       this.typeDeBien.setValidators([Validators.required]);
       this.agenceImmobiliere.clearValidators();
@@ -1330,6 +1339,7 @@ export class BiensImmobiliersComponent implements OnInit {
     return this.delegationGestionForm.get('codeAgence')
   }
 
+  //Fonction pour changer l'entité à laquelle on délègue la gestion du bien
   onChoixChange(event: any): void {
     this.delegationGestionForm.reset();
     this.checked = event.value;
@@ -1344,6 +1354,7 @@ export class BiensImmobiliersComponent implements OnInit {
     this.codeAgence.updateValueAndValidity();
   }
 
+  //Fonction pour ajouter une délégation de gestion
   ajouterDelegationGestion(): void {
     if (this.checked == 'Gérant' ||  this.checked == 'Démarcheur') {
       this.delegationGestionRequest.bienImmobilier = JSON.parse(localStorage.getItem('bienImmobilier')!);

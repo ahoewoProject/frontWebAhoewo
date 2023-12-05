@@ -705,8 +705,12 @@
                 <tr *ngFor="let bienImmobilier of biensImmobiliersParPage | genericFilter: recherche;  let i = index">
                   <td class="vam">{{ pageActuelle + i + 1 }}</td>
                   <th scope="row">
-                    <p-image class="w-100" *ngIf="imageURL"  src="{{this.APIEndpoint+'api/premiere-image/bien-immobilier/'+bienImmobilier.id}}" alt="" width="150" imageClass="image"></p-image>
-                    <p-image class="w-100" *ngIf="!imageURL" src="assets/images/home/house.jpg" alt="" width="150" imageClass="image"></p-image>
+                    <p-image class="w-100"
+                             src="{{ image != null ? (this.APIEndpoint+'api/premiere-image/bien-immobilier/'+bienImmobilier.id) : 'assets/images/home/house.jpg' }}"
+                             alt=""
+                             width="150"
+                             imageClass="image">
+                    </p-image>
                   </th>
                   <td class="vam">{{ bienImmobilier.numeroIdentifiant }} </td>
                   <td class="vam">{{ bienImmobilier.ville.libelle }} </td>
@@ -1010,9 +1014,9 @@
                 <p *ngIf="utilitaire.wifi" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>WiFi</p>
                 <p *ngIf="utilitaire.laveLinge" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Lave linge</p>
                 <p *ngIf="utilitaire.cuisine" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Cuisine</p>
-                <p *ngIf="utilitaire.refrigirateur" class="text mb-0"><i class="fas fa-circle fz6 align-middle pe-2"></i>Refrigirateur</p>
-                <p *ngIf="utilitaire.toilette" class="text mb-0"><i class="fas fa-circle fz6 align-middle pe-2"></i>Toilettes</p>
-                <p *ngIf="confort.secheCheveux" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Sèche cheveux</p>
+                <p *ngIf="utilitaire.refrigirateur" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Refrigirateur</p>
+                <p *ngIf="utilitaire.toilette" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Toilettes</p>
+                <p *ngIf="confort.secheCheveux" class="text mb-0"><i class="fas fa-circle fz6 align-middle pe-2"></i>Sèche cheveux</p>
               </div>
             </div>
             <div class="col-sm-6 col-md-4">
@@ -1020,7 +1024,7 @@
                 <p *ngIf="utilitaire.ferARepasser" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Fer à repasser</p>
                 <p *ngIf="utilitaire.espaceDeTravail" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Espace de travail</p>
                 <p *ngIf="utilitaire.eau" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Eau</p>
-                <p *ngIf="utilitaire.electricite" class="text mb-0"><i class="fas fa-circle fz6 align-middle pe-2"></i>Électricité</p>
+                <p *ngIf="utilitaire.electricite" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Électricité</p>
                 <p *ngIf="utilitaire.parking" class="text mb-0"><i class="fas fa-circle fz6 align-middle pe-2"></i>Parking</p>
               </div>
             </div>
@@ -1306,9 +1310,9 @@
                 <p *ngIf="utilitaire.wifi" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>WiFi</p>
                 <p *ngIf="utilitaire.laveLinge" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Lave linge</p>
                 <p *ngIf="utilitaire.cuisine" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Cuisine</p>
-                <p *ngIf="utilitaire.refrigirateur" class="text mb-0"><i class="fas fa-circle fz6 align-middle pe-2"></i>Refrigirateur</p>
-                <p *ngIf="utilitaire.toilette" class="text mb-0"><i class="fas fa-circle fz6 align-middle pe-2"></i>Toilettes</p>
-                <p *ngIf="confort.secheCheveux" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Sèche cheveux</p>
+                <p *ngIf="utilitaire.refrigirateur" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Refrigirateur</p>
+                <p *ngIf="utilitaire.toilette" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Toilettes</p>
+                <p *ngIf="confort.secheCheveux" class="text mb-0"><i class="fas fa-circle fz6 align-middle pe-2"></i>Sèche cheveux</p>
               </div>
             </div>
             <div class="col-sm-6 col-md-4">
@@ -1316,7 +1320,7 @@
                 <p *ngIf="utilitaire.ferARepasser" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Fer à repasser</p>
                 <p *ngIf="utilitaire.espaceDeTravail" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Espace de travail</p>
                 <p *ngIf="utilitaire.eau" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Eau</p>
-                <p *ngIf="utilitaire.electricite" class="text mb-0"><i class="fas fa-circle fz6 align-middle pe-2"></i>Électricité</p>
+                <p *ngIf="utilitaire.electricite" class="text mb10"><i class="fas fa-circle fz6 align-middle pe-2"></i>Électricité</p>
                 <p *ngIf="utilitaire.parking" class="text mb-0"><i class="fas fa-circle fz6 align-middle pe-2"></i>Parking</p>
               </div>
             </div>

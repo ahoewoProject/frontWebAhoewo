@@ -77,7 +77,7 @@ export class BienImmobilierService {
 
   // Fonction pour afficher la premiere image d'un bien immobilier
   getPremiereImage(id: number): Observable<any> {
-    const endpoint = this.url + '/premiere-image/bien-immobilier/' + id;
+    const endpoint = this.url + 'premiere-image/bien-immobilier/' + id;
 
     return this.httpClient.get(endpoint, {
       responseType: 'blob',

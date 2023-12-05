@@ -1,3 +1,4 @@
+import { BienImmobilier } from './../../../../models/gestionDesBiensImmobiliers/BienImmobilier';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, ConfirmEventType } from 'primeng/api';
@@ -23,7 +24,7 @@ import { environment } from 'src/environments/environment';
 })
 export class DelegationsGestionsComponent implements OnInit {
 
-  imageURL: any;
+  image: any;
   responsiveOptions: any[] | undefined;
   recherche: string = '';
   user: any;
@@ -89,28 +90,28 @@ export class DelegationsGestionsComponent implements OnInit {
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
       this.listeDelegationsGestionsOfAgencesByAgent();
     }
+  }
 
-    this.delegationGestions.forEach((delegationGestion) => {
-      this.bienImmobilierService.getPremiereImage(delegationGestion.bienImmobilier.id).subscribe(
-        (response: any) => {
-          if (response instanceof Blob) {
-            this.imageURL = response;
-          } else {
-            this.imageURL = '';
-          }
-        },
-        (error) => {
-          console.error('Une erreur s\'est produite : ', error);
-          this.imageURL = '';
+  premiereImageDuBien(bienId: any) {
+    this.bienImmobilierService.getPremiereImage(bienId).subscribe(
+      (response: any) => {
+        this.image = response;
+      },
+      (error) => {
+        if (error.status === 404) {
+          this.image = null;
         }
-      );
-    });
+      }
+    );
   }
 
   listeDelegationGestionProprietaire(): void {
     this.delegationGestionService.getAllByProprietaire().subscribe(
       (response) => {
         this.delegationGestions = response;
+        this.delegationGestions.forEach((delegationGestion) => {
+          this.premiereImageDuBien(delegationGestion.bienImmobilier.id);
+        });
         if (this.delegationReussie) {
           this.messageService.add({ severity: 'success', summary: 'Délagation de gestion réussie', detail: 'Le bien correspondant a été délégué avec succès.' });
         }
@@ -122,6 +123,9 @@ export class DelegationsGestionsComponent implements OnInit {
     this.delegationGestionService.getAllByGestionnaire().subscribe(
       (response) => {
         this.delegationGestions = response;
+        this.delegationGestions.forEach((delegationGestion) => {
+          this.premiereImageDuBien(delegationGestion.bienImmobilier.id);
+        });
       }
     );
   }
@@ -130,6 +134,9 @@ export class DelegationsGestionsComponent implements OnInit {
     this.delegationGestionService.getDelegationsGestionsOfAgencesByResponsable().subscribe(
       (response) => {
         this.delegationGestions = response;
+        this.delegationGestions.forEach((delegationGestion) => {
+          this.premiereImageDuBien(delegationGestion.bienImmobilier.id);
+        });
       }
     );
   }
@@ -138,6 +145,9 @@ export class DelegationsGestionsComponent implements OnInit {
     this.delegationGestionService.getDelegationsGestionsOfAgencesByAgent().subscribe(
       (response) => {
         this.delegationGestions = response;
+        this.delegationGestions.forEach((delegationGestion) => {
+          this.premiereImageDuBien(delegationGestion.bienImmobilier.id);
+        });
       }
     );
   }
@@ -329,17 +339,17 @@ export class DelegationsGestionsComponent implements OnInit {
 
   refuserDelegationGestion(id: number): void {
     this.confirmationService.confirm({
-      message: 'Vous êtes sûr de vouloir rejeter la délégation de la gestion de ce bien ?',
-      header: "Rejet de la délégation de gestion d'un bien",
+      message: 'Vous êtes sûr de vouloir refuser la délégation de la gestion de ce bien ?',
+      header: "Refus de la délégation de gestion d'un bien",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.delegationGestionService.refuserDelegationGestion(id).subscribe(response=>{
           console.log(response);
           this.voirListe();
-          this.messageSuccess = "La délégation de la gestion de ce bien a été rejeté avec succès !";
+          this.messageSuccess = "La délégation de la gestion de ce bien a été refusé avec succès !";
           this.messageService.add({
             severity: 'success',
-            summary: 'Rejet de la délégation de gestion d\'un bien confirmé',
+            summary: 'Refus de la délégation de gestion d\'un bien confirmé',
             detail: this.messageSuccess
           });
         });
@@ -350,15 +360,15 @@ export class DelegationsGestionsComponent implements OnInit {
           case ConfirmEventType.REJECT:
             this.messageService.add({
               severity: 'error',
-              summary: 'Rejet de la délégation de gestion d\'un bien rejeté',
-              detail: "Vous avez rejeté de la délégation de gestion de ce bien !"
+              summary: 'Refus de la délégation de gestion d\'un bien rejeté',
+              detail: "Vous avez rejeté le refus de la délégation de gestion de ce bien !"
             });
             break;
           case ConfirmEventType.CANCEL:
             this.messageService.add({
               severity: 'warn',
-              summary: 'Rejet de la délégation de gestion d\'un bien annulée',
-              detail: "Vous avez annulé le rejet de la délégation de gestion de ce bien !"
+              summary: 'Refus de la délégation de gestion d\'un bien annulée',
+              detail: "Vous avez annulé le refus de la délégation de gestion de ce bien !"
             });
             break;
         }

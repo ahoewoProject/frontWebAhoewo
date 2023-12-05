@@ -101,16 +101,6 @@ export class TypesDeBienComponent implements OnInit {
     this.typeDeBienService.addTypeDeBien(this.typeDeBien).subscribe(
       (response) => {
         if (response.id > 0) {
-          this.typesDeBien.push({
-            id: response.id,
-            designation: response.designation,
-            etat: response.etat,
-            creerPar: 0,
-            creerLe: new Date(),
-            modifierPar: 0,
-            modifierLe: new Date(),
-            statut: false
-          });
           this.voirListe();
           this.messageSuccess = "Le type de bien a été ajouté avec succès.";
           this.messageService.add({
@@ -201,10 +191,11 @@ export class TypesDeBienComponent implements OnInit {
             });
             break;
           case ConfirmEventType.CANCEL:
-            this.messageService.add({ severity: 'warn',
-            summary: 'Activation du type de bien annulée',
-            detail: "Vous avez annulé l'activation de ce type de bien !"
-          });
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Activation du type de bien annulée',
+              detail: "Vous avez annulé l'activation de ce type de bien !"
+            });
             break;
         }
       }
@@ -281,7 +272,8 @@ export class TypesDeBienComponent implements OnInit {
               this.messageService.add({
                 severity: 'error',
                 summary: 'Erreur lors de la suppression',
-                detail: this.messageErreur })
+                detail: this.messageErreur
+              })
             }
           }
         );

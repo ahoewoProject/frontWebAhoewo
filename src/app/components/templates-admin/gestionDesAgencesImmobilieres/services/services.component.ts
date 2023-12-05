@@ -119,22 +119,9 @@ export class ServicesComponent implements OnInit {
 
   ajouterService(): void {
     this._servicesService.addServices(this._service).subscribe(
-
       (response) => {
         console.log(response)
         if (response.id > 0) {
-          this.services.push({
-            id: response.id,
-            codeService: response.codeService,
-            nomService: response.nomService,
-            description: response.description,
-            etat: response.etat,
-            creerPar: 0,
-            creerLe: new Date(),
-            modifierPar: 0,
-            modifierLe: new Date(),
-            statut: false
-          });
           this.voirListe();
           this.messageSuccess = "Le service a été ajouté avec succès.";
           this.messageService.add({

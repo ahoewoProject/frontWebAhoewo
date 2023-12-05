@@ -1,10 +1,10 @@
 <div class="col-lg-12">
   <div class="dashboard_navigationbar">
     <div class="dropdown">
-      <button onclick="myFunction()" class="dropbtn"><i class="fa fa-bars pr10"></i> Navigation du tableau de bord</button>
+      <button onclick="myFunction()" class="dropbtn"><i class="fa fa-bars pr10"></i> Menus </button>
       <ul id="myDropdown" class="dropdown-content">
 
-        <!-- Start Restriction Menu Administrateur -->
+        <!-- Start Menu Administrateur -->
         <div *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
           <!-- Start Menu Tableau de bord -->
           <li>
@@ -18,7 +18,7 @@
 
           <!-- Start Menu Gestion des comptes -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">GESTION DES COMPTES</p>
           </li>
           <li>
             <a routerLink="/admin/roles" [class.-is-active]="activeLink === '/admin/roles'"
@@ -60,7 +60,7 @@
 
           <!-- Start Menu Gestion des agences immobilières -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">AGENCES IMMOBILIERES</p>
           </li>
           <li>
             <a routerLink="/admin/agences-immobilieres" [class.-is-active]="activeLink === '/admin/agences-immobilieres'"
@@ -74,33 +74,39 @@
 
           <!-- Start Menu Gestion des biens immobiliers -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">BIENS IMMOBILIERS</p>
           </li>
           <li>
             <a class="items-center" routerLink="/admin/pays" [class.-is-active]="activeLink === '/admin/pays'"
-            (click)="setActiveLink('/admin/pays')"><i class="fa-light fa-city mr15"></i>Pays</a>
+            (click)="setActiveLink('/admin/pays')"><i class="fa-light fa-globe mr15"></i>&nbsp;Pays</a>
           </li>
           <li>
             <a class="items-center" routerLink="/admin/regions" [class.-is-active]="activeLink === '/admin/regions'"
-            (click)="setActiveLink('/admin/regions')"><i class="fa-light fa-city mr15"></i>Régions</a>
+            (click)="setActiveLink('/admin/regions')"><i class="fa-light fa-globe mr15"></i>&nbsp;Régions</a>
           </li>
           <li>
             <a class="items-center" routerLink="/admin/villes" [class.-is-active]="activeLink === '/admin/villes'"
-            (click)="setActiveLink('/admin/villes')"><i class="fa-light fa-city mr15"></i>Villes</a>
+            (click)="setActiveLink('/admin/villes')"><i class="fa-light fa-globe mr15"></i>&nbsp;Villes</a>
           </li>
           <li>
             <a class="items-center" routerLink="/admin/quartiers" [class.-is-active]="activeLink === '/admin/quartiers'"
-            (click)="setActiveLink('/admin/quartiers')"><i class="fa-light fa-city mr15"></i>Quartiers</a>
+            (click)="setActiveLink('/admin/quartiers')"><i class="fa-light fa-globe mr15"></i>&nbsp;Quartiers</a>
           </li>
           <li>
             <a class="items-center" routerLink="/admin/types-de-bien" [class.-is-active]="activeLink === '/admin/types-de-bien'"
             (click)="setActiveLink('/admin/types-de-bien')"><i class="fa-light fa-house-building mr15"></i>Types de bien</a>
           </li>
           <!-- End Menu Gestion des biens immobiliers -->
+          <!-- Start Menu Profil -->
+          <li>
+            <a routerLink="/admin/profil" [class.-is-active]="activeLink === '/admin/profil'"
+            (click)="setActiveLink('/admin/profil')" class="items-center"><i class="flaticon-user mr15"></i>&nbsp;Mon profil</a>
+          </li>
+          <!-- End Menu Profil -->
         </div>
-        <!-- End Restriction Menu Administrateur -->
+        <!-- End Menu Administrateur -->
 
-        <!-- Start Restriction Menu Notaire -->
+        <!-- Start Menu Notaire -->
         <div *ngIf="user.role.code == 'ROLE_NOTAIRE'">
           <!-- Start Menu Tableau de bord -->
           <li>
@@ -113,17 +119,23 @@
           <!-- End Menu Tableau de bord -->
           <!-- Start Menu Gestion des comptes -->
           <div>
-            <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">GESTION DES COMPTES</p>
           </div>
           <li>
             <a routerLink="/notaire/demandes-certifications" [class.-is-active]="activeLink === '/notaires/demandes-certifications'"
             (click)="setActiveLink('/notaire/demandes-certifications')" class="items-center"><i class="pi pi-verified mr15"></i>&nbsp;Certifications</a>
           </li>
           <!-- End Menu Gestion des comptes -->
+          <!-- Start Menu Profil -->
+          <li>
+            <a routerLink="/notaire/profil" [class.-is-active]="activeLink === '/notaire/profil'"
+            (click)="setActiveLink('/notaire/profil')" class="items-center"><i class="flaticon-user mr15"></i>&nbsp;Mon profil</a>
+          </li>
+          <!-- End Menu Profil -->
         </div>
-        <!-- End Restriction Menu Notaire -->
+        <!-- End Menu Notaire -->
 
-        <!-- Start Restriction Propriétaire -->
+        <!-- Start Menu Propriétaire -->
         <div *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'">
           <!-- Start Menu Tableau de bord -->
           <li>
@@ -150,7 +162,7 @@
 
           <!-- Start Menu Gestion des biens immobiliers -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">BIENS IMMOBILIERS</p>
           </li>
           <li>
             <a class="items-center" routerLink="/proprietaire/biens-immobiliers" [class.-is-active]="activeLink === '/proprietaire/biens-immobiliers'"
@@ -164,7 +176,7 @@
 
           <!-- Start Menu Gestion de la publication des biens -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">PUBLICATION DES BIENS</p>
           </li>
           <li>
             <a class="items-center"><i class="fa-light fa-share-all mr15"></i>Publication des biens</a>
@@ -173,7 +185,7 @@
 
           <!-- Start Menu Gestion des locations et ventes -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">LOCATIONS ET VENTES</p>
           </li>
           <li>
             <a class="items-center"><i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites</a>
@@ -194,7 +206,7 @@
 
           <!-- Start Menu Gestion des paiements -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">GESTION DES PAIEMENTS</p>
           </li>
           <li>
             <a class="items-center"><i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
@@ -203,10 +215,16 @@
             <a class="items-center"><i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
           </li>
           <!-- End Menu Gestion des paiements -->
+          <!-- Start Menu Profil -->
+          <li>
+            <a routerLink="/proprietaire/profil" [class.-is-active]="activeLink === '/proprietaire/profil'"
+            (click)="setActiveLink('/proprietaire/profil')" class="items-center"><i class="flaticon-user mr15"></i>&nbsp;Mon profil</a>
+          </li>
+          <!-- End Menu Profil -->
         </div>
-        <!-- End Restriction Propriétaire -->
+        <!-- End Menu Propriétaire -->
 
-        <!-- End Restriction Gérant -->
+        <!-- End Menu Gérant -->
         <div *ngIf="user.role.code == 'ROLE_GERANT'">
           <!-- Start Menu Tableau de bord -->
           <li>
@@ -219,7 +237,7 @@
           <!-- End Menu Tableau de bord -->
           <!-- Start Menu Gestion des biens immobiliers -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">BIENS IMMOBILIERS</p>
           </li>
           <li>
             <a class="items-center" routerLink="/gerant/biens-immobiliers" [class.-is-active]="activeLink === '/gerant/biens-immobiliers'"
@@ -242,7 +260,7 @@
 
           <!-- Start Menu Gestion des locations et ventes -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">LOCATIONS ET VENTES</p>
           </li>
           <li>
             <a class="items-center"><i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites</a>
@@ -263,7 +281,7 @@
 
           <!-- Start Menu Gestion des paiements -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">GESTION DES PAIEMENTS</p>
           </li>
           <li>
             <a class="items-center"><i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
@@ -272,10 +290,16 @@
             <a class="items-center"><i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
           </li>
           <!-- End Menu Gestion des paiements -->
+          <!-- Start Menu Profil -->
+          <li>
+            <a routerLink="/gerant/profil" [class.-is-active]="activeLink === '/gerant/profil'"
+            (click)="setActiveLink('/gerant/profil')" class="items-center"><i class="flaticon-user mr15"></i>&nbsp;Mon profil</a>
+          </li>
+          <!-- End Menu Profil -->
         </div>
-        <!-- End Restriction Gérant -->
+        <!-- End Menu Gérant -->
 
-        <!-- Start Restriction Responsable -->
+        <!-- Start Menu Responsable -->
         <div *ngIf="user.role.code == 'ROLE_RESPONSABLE'">
           <!-- Start Menu Tableau de bord -->
           <li>
@@ -289,7 +313,7 @@
 
           <!-- Start Menu Gestion des agences immobilières -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">AGENCES IMMOBILIERES</p>
           </li>
           <li>
             <a routerLink="/responsable/agences-immobilieres" [class.-is-active]="activeLink === '/responsable/agences-immobilieres'"
@@ -303,7 +327,7 @@
 
           <!-- Start Menu Gestion des comptes -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">GESTION DES COMPTES</p>
           </li>
           <li>
             <a routerLink="/responsable/agents-immobiliers" [class.-is-active]="activeLink === '/responsable/agents-immobiliers'"
@@ -313,7 +337,7 @@
 
           <!-- Start Menu Gestion des biens immobiliers -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">BIENS IMMOBILIERS</p>
           </li>
           <li>
             <a class="items-center" routerLink="/responsable/agences-immobilieres/biens-immobiliers" [class.-is-active]="activeLink === '/responsable/agences-immobilieres/biens-immobiliers'"
@@ -327,7 +351,7 @@
 
           <!-- Start Menu Gestion de la publication des biens -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">PUBLICATION DES BIENS</p>
           </li>
           <li>
             <a class="items-center"><i class="fa-light fa-share-all mr15"></i>Publication des biens</a>
@@ -336,7 +360,7 @@
 
           <!-- Start Menu Gestion des locations et ventes -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">LOCATIONS ET VENTES</p>
           </li>
           <li>
             <a class="items-center"><i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites</a>
@@ -357,7 +381,7 @@
 
           <!-- Start Menu Gestion des paiements -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">GESTION DES PAIEMENTS</p>
           </li>
           <li>
             <a class="items-center"><i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
@@ -366,10 +390,16 @@
             <a class="items-center"><i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
           </li>
           <!-- End Menu Gestion des paiements -->
+          <!-- Start Menu Profil -->
+          <li>
+            <a routerLink="/responsable/profil" [class.-is-active]="activeLink === '/responsable/profil'"
+            (click)="setActiveLink('/responsable/profil')" class="items-center"><i class="flaticon-user mr15"></i>&nbsp;Mon profil</a>
+          </li>
+          <!-- End Menu Profil -->
         </div>
-        <!-- End Restriction Responsable -->
+        <!-- End Menu Responsable -->
 
-        <!-- Start Restriction Agent immobilier -->
+        <!-- Start Menu Agent immobilier -->
         <div *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER'">
           <!-- Start Menu Tableau de bord -->
           <li>
@@ -382,7 +412,7 @@
           <!-- End Menu Tableau de bord -->
           <!-- Start Menu Gestion des agences immobilières -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">AGENCES IMMOBILIERES</p>
           </li>
           <li>
             <a routerLink="/agent-immobilier/agences-immobilieres" [class.-is-active]="activeLink === '/agent-immobilier/agences-immobilieres'"
@@ -392,7 +422,7 @@
 
           <!-- Start Menu Gestion des biens immobiliers -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">BIENS IMMOBILIERS</p>
           </li>
           <li>
             <a class="items-center" routerLink="/agent-immobilier/agences-immobilieres/biens-immobiliers" [class.-is-active]="activeLink === '/agent-immobilier/agences-immobilieres/biens-immobiliers'"
@@ -406,7 +436,7 @@
 
           <!-- Start Menu Gestion de la publication des biens -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">PUBLICATION DES BIENS</p>
           </li>
           <li>
             <a class="items-center"><i class="fa-light fa-share-all mr15"></i>Publication des biens</a>
@@ -415,7 +445,7 @@
 
           <!-- Start Menu Gestion des locations et ventes -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">LOCATIONS ET VENTES</p>
           </li>
           <li>
             <a class="items-center"><i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites</a>
@@ -436,7 +466,7 @@
 
           <!-- Start Menu Gestion des paiements -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">GESTION DES PAIEMENTS</p>
           </li>
           <li>
             <a class="items-center"><i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
@@ -445,38 +475,53 @@
             <a class="items-center"><i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
           </li>
           <!-- End Menu Gestion des paiements -->
-        </div>
-        <!-- End Restriction Agent immobilier -->
-
-        <!-- Start Restriction Démarcheur -->
-        <div *ngIf="user.role.code == 'ROLE_DEMARCHEUR'">
-          <!-- Start Menu Gestion des comptes -->
+          <!-- Start Menu Profil -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
+            <a routerLink="/agent-immobilier/profil" [class.-is-active]="activeLink === '/agent-immobilier/profil'"
+            (click)="setActiveLink('/agent-immobilier/profil')" class="items-center"><i class="flaticon-user mr15"></i>&nbsp;Mon profil</a>
+          </li>
+          <!-- End Menu Profil -->
+        </div>
+        <!-- End Menu Agent immobilier -->
+
+        <!-- Start Menu Démarcheur -->
+        <div *ngIf="user.role.code == 'ROLE_DEMARCHEUR'">
+          <!-- Start Menu Tableau de bord -->
+          <li>
+            <p class="fz15 fw400 ff-heading mt30 pl30">TABLEAU DE BORD</p>
           </li>
           <li>
-            <a routerLink="/admin/demandes-certifications" [class.-is-active]="activeLink === '/admin/demandes-certifications'"
-            (click)="setActiveLink('/admin/demandes-certifications')" class="items-center"><i class="pi pi-verified mr15"></i>&nbsp;Certifications</a>
+            <a routerLink="/demarcheur/dashboard" [class.-is-active]="activeLink === '/demarcheur/dashboard'"
+            (click)="setActiveLink('/demarcheur/dashboard')" class="items-center"><i class="flaticon-home mr15"></i>Tableau de bord</a>
+          </li>
+          <!-- End Menu Tableau de bord -->
+          <!-- Start Menu Gestion des comptes -->
+          <li>
+            <p class="fz15 fw400 ff-heading mt30 pl30">GESTION DES COMPTES</p>
+          </li>
+          <li>
+            <a routerLink="/demarcheur/demandes-certifications" [class.-is-active]="activeLink === '/demarcheur/demandes-certifications'"
+            (click)="setActiveLink('/demarcheur/demandes-certifications')" class="items-center"><i class="pi pi-verified mr15"></i>&nbsp;Certifications</a>
           </li>
           <!-- End Menu Gestion des comptes -->
 
           <!-- Start Menu Gestion des biens immobiliers -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">BIENS IMMOBILIERS</p>
           </li>
           <li>
-            <a class="items-center" routerLink="/admin/biens-immobiliers" [class.-is-active]="activeLink === '/admin/biens-immobiliers'"
-            (click)="setActiveLink('/admin/biens-immobiliers')"><i class="fa-light fa-house-building mr15"></i>Biens immobiliers</a>
+            <a class="items-center" routerLink="/demarcheur/biens-immobiliers" [class.-is-active]="activeLink === '/demarcheur/biens-immobiliers'"
+            (click)="setActiveLink('/demarcheur/biens-immobiliers')"><i class="fa-light fa-house-building mr15"></i>Biens immobiliers</a>
           </li>
           <li>
-            <a class="items-center" routerLink="/admin/delegations-gestions" [class.-is-active]="activeLink === '/admin/delegations-gestions'"
-            (click)="setActiveLink('/admin/delegations-gestions')"><i class="fa-light fa-handshake mr15"></i>Biens délégués</a>
+            <a class="items-center" routerLink="/demarcheur/delegations-gestions" [class.-is-active]="activeLink === '/demarcheur/delegations-gestions'"
+            (click)="setActiveLink('/demarcheur/delegations-gestions')"><i class="fa-light fa-handshake mr15"></i>Biens délégués</a>
           </li>
           <!-- End Menu Gestion des biens immobiliers -->
 
           <!-- Start Menu Gestion de la publication des biens -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">PUBLICATION DES BIENS</p>
           </li>
           <li>
             <a class="items-center"><i class="fa-light fa-share-all mr15"></i>Publication des biens</a>
@@ -485,7 +530,7 @@
 
           <!-- Start Menu Gestion des locations et ventes -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">LOCATIONS ET VENTES</p>
           </li>
           <li>
             <a class="items-center"><i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites</a>
@@ -506,7 +551,7 @@
 
           <!-- Start Menu Gestion des paiements -->
           <li>
-            <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
+            <p class="fz15 fw400 ff-heading mt30 pl30">GESTION DES PAIEMENTS</p>
           </li>
           <li>
             <a class="items-center"><i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
@@ -515,15 +560,67 @@
             <a class="items-center"><i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
           </li>
           <!-- End Menu Gestion des paiements -->
+          <!-- Start Menu Profil -->
+          <li>
+            <a routerLink="/demarcheur/profil" [class.-is-active]="activeLink === '/demarcheur/profil'"
+            (click)="setActiveLink('/demarcheur/profil')" class="items-center"><i class="flaticon-user mr15"></i>&nbsp;Mon profil</a>
+          </li>
+          <!-- End Menu Profil -->
         </div>
-        <!-- End Restriction Démarcheur -->
+        <!-- End Menu Démarcheur -->
 
-        <!-- Start Menu Profil -->
-        <li>
-          <a routerLink="/admin/profil" [class.-is-active]="activeLink === '/admin/profil'"
-          (click)="setActiveLink('/admin/profil')" class="items-center"><i class="flaticon-user mr15"></i>&nbsp;Mon profil</a>
-        </li>
-        <!-- End Menu Profil -->
+        <!-- Start Menu Client -->
+        <div *ngIf="user.role.code == 'ROLE_CLIENT'">
+          <!-- Start Menu Tableau de bord -->
+          <li>
+            <p class="fz15 fw400 ff-heading mt30 pl30">TABLEAU DE BORD</p>
+          </li>
+          <li>
+            <a routerLink="/client/dashboard" [class.-is-active]="activeLink === '/client/dashboard'"
+            (click)="setActiveLink('/client/dashboard')" class="items-center"><i class="flaticon-home mr15"></i>Tableau de bord</a>
+          </li>
+          <!-- End Menu Tableau de bord -->
+
+          <!-- Start Menu Gestion des locations et ventes -->
+          <li>
+            <p class="fz15 fw400 ff-heading mt30 pl30">LOCATIONS ET VENTES</p>
+          </li>
+          <li>
+            <a class="items-center"><i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites</a>
+          </li>
+          <li>
+            <a class="items-center"><i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations</a>
+          </li>
+          <li>
+            <a class="items-center"><i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats</a>
+          </li>
+          <li>
+            <a class="items-center"><i class="fa-light fa-folders mr15"></i>Contrats</a>
+          </li>
+          <li>
+            <a class="items-center"><i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens</a>
+          </li>
+          <!-- End Menu Gestion des locations et ventes -->
+
+          <!-- Start Menu Gestion des paiements -->
+          <li>
+            <p class="fz15 fw400 ff-heading mt30 pl30">GESTION DES PAIEMENTS</p>
+          </li>
+          <li>
+            <a class="items-center"><i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
+          </li>
+          <li>
+            <a class="items-center"><i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
+          </li>
+          <!-- End Menu Gestion des paiements -->
+          <!-- Start Menu Profil -->
+          <li>
+            <a routerLink="/client/profil" [class.-is-active]="activeLink === '/client/profil'"
+            (click)="setActiveLink('/client/profil')" class="items-center"><i class="flaticon-user mr15"></i>&nbsp;Mon profil</a>
+          </li>
+          <!-- End Menu Profil -->
+        </div>
+        <!-- End Menu Client -->
 
         <!-- Start Menu Déconnexion -->
         <li>
