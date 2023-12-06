@@ -15,23 +15,23 @@
             <h4>Mon profil</h4>
             <h6 *ngIf="user.etatCompte == false" class="text">
               <span class="error">
-                <i class="pi pi-exclamation-triangle"></i> Votre compte est désactivé. Veuillez contacter l'équipe support technique ahoewo pour obtenir de l'aide supplémentaire.
+                <i class="fa-regular fa-triangle-exclamation fa-2xl"></i> Votre compte est désactivé. Veuillez contacter l'équipe support technique ahoewo pour obtenir de l'aide supplémentaire.
               </span>
             </h6>
-            <h6 *ngIf="!user.estCertifie && (user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_DEMARCHEUR')" class="text">
+            <h6 *ngIf="!user.estCertifie && (user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR')" class="text">
               <span *ngIf="demandeCertifications.length == 0" class="error">
-                <i class="pi pi-exclamation-triangle"></i> Votre compte n'est pas certifié, veuillez demander la certification de compte <br>en cliquant sur le menu <b>certifications</b> !
+                <i class="fa-regular fa-triangle-exclamation fa-2xl"></i> Votre compte n'est pas certifié, veuillez demander la certification de compte <br>en cliquant sur le menu <b>certifications</b> !
               </span>
               <span *ngIf="demandeCertifications.length !== 0" class="error">
-                <i class="pi pi-exclamation-triangle"></i> Votre compte est en attente de <b>certifications</b> !
+                <i class="fa-regular fa-triangle-exclamation fa-2xl"></i> Votre compte est en attente de <b>certifications</b> !
               </span>
             </h6>
-            <h6 *ngIf="!personne.estCertifie && personne.role.code === 'ROLE_RESPONSABLE'" class="text">
+            <h6 *ngIf="!personne.estCertifie && personne.role.code == 'ROLE_RESPONSABLE'" class="text">
               <span *ngIf="demandeCertifications.length == 0" class="error">
-                <i class="pi pi-exclamation-triangle"></i> Votre compte n'est pas certifié, si vous n'avez pas encore d'agence immobilière, veuillez ajouter votre <b>agence immobilière</b> en cliquant sur le menu <b>agences immobilières</b> et demander la certification de cette dernière en cliquant sur le menu <b>certifications</b> !
+                <i class="fa-regular fa-triangle-exclamation fa-2xl"></i> Votre compte n'est pas certifié, si vous n'avez pas encore d'agence immobilière, veuillez ajouter votre <b>agence immobilière</b> en cliquant sur le menu <b>agences immobilières</b> et demander la certification de cette dernière en cliquant sur le menu <b>certifications</b> !
               </span>
               <span *ngIf="demandeCertifications.length !== 0" class="error">
-                <i class="pi pi-exclamation-triangle"></i> Votre compte est en attente de <b>certifications</b> !
+                <i class="fa-regular fa-triangle-exclamation fa-2xl"></i> Votre compte est en attente de <b>certifications</b> !
               </span>
             </h6>
           </div>
@@ -47,7 +47,7 @@
               <p-divider></p-divider>
               <div class="form-group col-md-6">
                 <p class="fw600 mb10 ff-heading dark-color">Nom & Pénom(s)</p>
-                <p>{{ personne.nom }} {{ personne.prenom }} <i *ngIf="personne.estCertifie && (personne.role.code === 'ROLE_RESPONSABLE' || personne.role.code === 'ROLE_AGENTIMMOBILIER' || personne.role.code === 'ROLE_PROPRIETAIRE' || personne.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+                <p>{{ personne.nom }} {{ personne.prenom }} <i *ngIf="personne.estCertifie && (personne.role.code == 'ROLE_RESPONSABLE' || personne.role.code == 'ROLE_AGENTIMMOBILIER' || personne.role.code == 'ROLE_PROPRIETAIRE' || personne.role.code == 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
               </div>
               <div class="form-group col-md-6">
                 <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur</p>
@@ -170,5 +170,5 @@
       </div>
     </div>
     <!-- End Mes informations -->
-    
+
   </div>

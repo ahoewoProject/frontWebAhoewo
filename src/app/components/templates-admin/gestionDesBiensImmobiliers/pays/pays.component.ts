@@ -121,7 +121,7 @@ export class PaysComponent implements OnInit {
     },
     (error) =>{
       console.log(error)
-      if (error.status === 409) {
+      if (error.status == 409) {
         this.messageErreur = "Un pays avec ce libelle existe déjà !";
         this.messageService.add({
           severity: 'warn',
@@ -155,7 +155,7 @@ export class PaysComponent implements OnInit {
     },
     (error) =>{
       console.log(error)
-      if (error.status === 409) {
+      if (error.status == 409) {
         this.messageErreur = "Un pays avec ce libelle existe déjà !";
         this.messageService.add({
           severity: 'warn',

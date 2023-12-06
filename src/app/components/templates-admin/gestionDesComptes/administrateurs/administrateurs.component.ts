@@ -152,7 +152,7 @@ export class AdministrateursComponent implements OnInit {
     },
     (error) =>{
       console.log(error)
-      if (error.status === 409) {
+      if (error.status == 409) {
         this.messageErreur = "Un administrateur avec cette adresse e-mail existe déjà !";
         this.messageService.add({
           severity: 'warn',

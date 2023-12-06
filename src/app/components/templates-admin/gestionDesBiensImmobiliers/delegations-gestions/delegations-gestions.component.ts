@@ -1,4 +1,3 @@
-import { BienImmobilier } from './../../../../models/gestionDesBiensImmobiliers/BienImmobilier';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, ConfirmEventType } from 'primeng/api';
@@ -98,7 +97,7 @@ export class DelegationsGestionsComponent implements OnInit {
         this.image = response;
       },
       (error) => {
-        if (error.status === 404) {
+        if (error.status == 404) {
           this.image = null;
         }
       }
@@ -113,7 +112,7 @@ export class DelegationsGestionsComponent implements OnInit {
           this.premiereImageDuBien(delegationGestion.bienImmobilier.id);
         });
         if (this.delegationReussie) {
-          this.messageService.add({ severity: 'success', summary: 'Délagation de gestion réussie', detail: 'Le bien correspondant a été délégué avec succès.' });
+          this.messageService.add({ severity: 'success', summary: 'Délégation de gestion réussie', detail: 'Le bien correspondant a été délégué avec succès.' });
         }
       }
     );
@@ -287,34 +286,35 @@ export class DelegationsGestionsComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.delegationGestionService.accepterDelegationGestion(id).subscribe(
-        (response) => {
-          console.log(response);
-          this.voirListe();
-          this.messageSuccess = "La délégation de la gestion de ce bien a été accepté avec succès !";
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Acceptation de la délégation de gestion d\'un bien confirmée',
-            detail: this.messageSuccess
-          });
-        },
-        error => {
-          if (error.status == 400) {
-            this.messageErreur = "Impossible d'accepter cette délégation de gestion car ce bien est délégué à un autre utilisateur !"
+          (response) => {
+            console.log(response);
+            this.voirListe();
+            this.messageSuccess = "La délégation de la gestion de ce bien a été accepté avec succès !";
             this.messageService.add({
-              severity: 'warn',
-              summary: 'Acceptation de la délégation de gestion impossible',
-              detail: this.messageErreur
-            })
-          } else {
-            this.messageErreur = "Une erreur s'est produite lors de l'acceptation de la délégation de gestion !"
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Erreur lors de l\'acceptation de la délégation de gestion',
-              detail: this.messageErreur
-            })
+              severity: 'success',
+              summary: 'Acceptation de la délégation de gestion d\'un bien confirmée',
+              detail: this.messageSuccess
+            });
+          },
+          error => {
+            console.log(error)
+            if (error.status == 400) {
+              this.messageErreur = "Impossible d'accepter cette délégation de gestion car ce bien est délégué à un autre utilisateur !"
+              this.messageService.add({
+                severity: 'warn',
+                summary: 'Acceptation de la délégation de gestion impossible',
+                detail: this.messageErreur
+              })
+            } else {
+              this.messageErreur = "Une erreur s'est produite lors de l'acceptation de la délégation de gestion !"
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur lors de l\'acceptation de la délégation de gestion',
+                detail: this.messageErreur
+              })
+            }
           }
-        });
-
+        );
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
@@ -353,7 +353,6 @@ export class DelegationsGestionsComponent implements OnInit {
             detail: this.messageSuccess
           });
         });
-
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
@@ -374,6 +373,22 @@ export class DelegationsGestionsComponent implements OnInit {
         }
       }
     });
+  }
+
+  afficherSectionAutresDetails(utilitaire: Utilitaire, confort: Confort): boolean {
+    return utilitaire.nombreGarages > 0 ||
+           utilitaire.nombreChambres > 0 ||
+           utilitaire.nombrePieces > 0 ||
+           confort.nombreLits > 0;
+  }
+
+  afficherSectionCaracteristiques(utilitaire: Utilitaire, confort: Confort, divertissement: Divertissement): boolean {
+    return utilitaire.wifi || utilitaire.laveLinge || utilitaire.cuisine ||
+      utilitaire.refrigirateur || utilitaire.toilette || confort.secheCheveux ||
+      utilitaire.ferARepasser || utilitaire.espaceDeTravail || utilitaire.eau ||
+      utilitaire.electricite || utilitaire.parking || confort.climatisation ||
+      confort.chauffage || divertissement.piscine || divertissement.jardin ||
+      divertissement.salleDeSport;
   }
 
 }

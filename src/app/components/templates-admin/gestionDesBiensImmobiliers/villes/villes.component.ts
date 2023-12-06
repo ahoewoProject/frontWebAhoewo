@@ -144,7 +144,7 @@ export class VillesComponent implements OnInit {
     },
     (error) =>{
       console.log(error)
-      if (error.status === 409) {
+      if (error.status == 409) {
         this.messageErreur = "Une ville avec ce libelle existe déjà !";
         this.messageService.add({
           severity: 'warn',
@@ -178,7 +178,7 @@ export class VillesComponent implements OnInit {
     },
     (error) =>{
       console.log(error)
-      if (error.status === 409) {
+      if (error.status == 409) {
         this.messageErreur = "Une ville avec ce libelle existe déjà !";
         this.messageService.add({
           severity: 'warn',

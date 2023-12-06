@@ -422,7 +422,7 @@ export class AgencesImmobilieresComponent implements OnInit {
     },
     (error) => {
       console.log(error)
-      if (error.status === 409) {
+      if (error.status == 409) {
         this.messageErreur = "Une agence immobilière avec ce nom existe déjà !";
         this.messageService.add({
           severity: 'warn',
@@ -460,7 +460,7 @@ export class AgencesImmobilieresComponent implements OnInit {
     },
     (error) => {
       console.log(error)
-      if (error.status === 409) {
+      if (error.status == 409) {
         this.messageErreur = "Une agence immobilière avec ce nom existe déjà !";
         this.messageService.add({
           severity: 'warn',

@@ -159,7 +159,7 @@ export class BiensImmobiliersComponent implements OnInit {
         this.image = response;
       },
       (error) => {
-        if (error.status === 404) {
+        if (error.status == 404) {
           this.image = null;
         }
       }
@@ -299,6 +299,7 @@ export class BiensImmobiliersComponent implements OnInit {
   //Fonction pour retourner à la liste des biens immobiliers
   voirListe(): void {
     localStorage.removeItem('bienImmobilier');
+    localStorage.removeItem('/proprietaire/delegations-gestions');
     this.imagesBienImmobilier = [];
     this.bienImmobilierForm.reset();
     this.delegationGestionForm.reset();
@@ -383,7 +384,7 @@ export class BiensImmobiliersComponent implements OnInit {
       ville: new FormControl('', [Validators.required]),
       quartier: new FormControl('', [Validators.required]),
       adresse: new FormControl('', [Validators.required]),
-      surface: new FormControl('', [Validators.required]),
+      surface: new FormControl('', [Validators.required, Validators.min(0)]),
       description: new FormControl('', [Validators.required]),
     })
   }
@@ -440,7 +441,7 @@ export class BiensImmobiliersComponent implements OnInit {
   paysChoisi(event: any) {
     this.paysSelectionne = event.value;
     console.log(this.paysSelectionne);
-    this.regionsFiltrees = this.regions.filter((region) => region.pays.id === this.paysSelectionne.id);
+    this.regionsFiltrees = this.regions.filter((region) => region.pays.id == this.paysSelectionne.id);
     this.regionSelectionnee = new Region();
     this.villeSelectionnee = new Ville();
     this.quartierSelectionne = new Quartier();
@@ -450,7 +451,7 @@ export class BiensImmobiliersComponent implements OnInit {
   regionChoisie(event: any) {
     this.regionSelectionnee = event.value;
     console.log(this.regionSelectionnee)
-    this.villesFiltrees = this.villes.filter((ville) => ville.region.id === this.regionSelectionnee.id);
+    this.villesFiltrees = this.villes.filter((ville) => ville.region.id == this.regionSelectionnee.id);
     this.villeSelectionnee = new Ville();
     this.quartierSelectionne = new Quartier();
   }
@@ -459,7 +460,7 @@ export class BiensImmobiliersComponent implements OnInit {
   villeChoisie(event: any) {
     this.villeSelectionnee = event.value;
     console.log(this.villeSelectionnee)
-    this.quartiersFiltres = this.quartiers.filter((quartier) => quartier.ville.id === this.villeSelectionnee.id);
+    this.quartiersFiltres = this.quartiers.filter((quartier) => quartier.ville.id == this.villeSelectionnee.id);
     this.quartierSelectionne = new Quartier();
   }
 
@@ -541,7 +542,7 @@ export class BiensImmobiliersComponent implements OnInit {
         this.bienImmobilierData.delete('images');
         this.bienImmobilierData.delete('bienImmobilierJson');
         console.log(error)
-        if (error.status === 409) {
+        if (error.status == 409) {
           this.messageErreur = "Erreur lors de l'ajout du bien immobilier !";
           this.messageService.add({
             severity: 'warn',
@@ -598,7 +599,7 @@ export class BiensImmobiliersComponent implements OnInit {
         this.bienImmobilierData.delete('images');
         this.bienImmobilierData.delete('bienImmobilierJson');
         console.log(error)
-        if (error.status === 409) {
+        if (error.status == 409) {
           this.messageErreur = "Un bien immobilier avec ce nom existe déjà !";
           this.messageService.add({
             severity: 'warn',
@@ -675,7 +676,7 @@ export class BiensImmobiliersComponent implements OnInit {
         this.bienImmobilierData.delete('utilitaireJson');
         this.bienImmobilierData.delete('divertissementJson');
         console.log(error)
-        if (error.status === 409) {
+        if (error.status == 409) {
           this.messageErreur = "Erreur lors de l'ajout du bien immobilier !";
           this.messageService.add({
             severity: 'warn',
@@ -744,7 +745,7 @@ export class BiensImmobiliersComponent implements OnInit {
         this.bienImmobilierData.delete('utilitaireJson');
         this.bienImmobilierData.delete('divertissementJson');
         console.log(error)
-        if (error.status === 409) {
+        if (error.status == 409) {
           this.messageErreur = "Erreur lors de l'ajout du bien immobilier !";
           this.messageService.add({
             severity: 'warn',
@@ -814,7 +815,7 @@ export class BiensImmobiliersComponent implements OnInit {
         this.bienImmobilierData.delete('images');
         this.bienImmobilierData.delete('bienImmobilierJson');
         console.log(error)
-        if (error.status === 409) {
+        if (error.status == 409) {
           this.messageErreur = "Erreur lors de la modification du bien immobilier !";
           this.messageService.add({
             severity: 'warn',
@@ -871,7 +872,7 @@ export class BiensImmobiliersComponent implements OnInit {
         this.bienImmobilierData.delete('images');
         this.bienImmobilierData.delete('bienImmobilierJson');
         console.log(error)
-        if (error.status === 409) {
+        if (error.status == 409) {
           this.messageErreur = "Erreur lors de la modification du bien immobilier !";
           this.messageService.add({
             severity: 'warn',
@@ -948,7 +949,7 @@ export class BiensImmobiliersComponent implements OnInit {
         this.bienImmobilierData.delete('utilitaireJson');
         this.bienImmobilierData.delete('divertissementJson');
         console.log(error)
-        if (error.status === 409) {
+        if (error.status == 409) {
           this.messageErreur = "Erreur lors de la modification du bien immobilier !";
           this.messageService.add({
             severity: 'warn',
@@ -1017,7 +1018,7 @@ export class BiensImmobiliersComponent implements OnInit {
         this.bienImmobilierData.delete('utilitaireJson');
         this.bienImmobilierData.delete('divertissementJson');
         console.log(error)
-        if (error.status === 409) {
+        if (error.status == 409) {
           this.messageErreur = "Erreur lors de la modification du bien immobilier !";
           this.messageService.add({
             severity: 'warn',
@@ -1111,15 +1112,15 @@ export class BiensImmobiliersComponent implements OnInit {
 
   estRoleProprietaireOuDemarcheur(): boolean {
     return (
-      this.user.role.code === 'ROLE_PROPRIETAIRE' ||
-      this.user.role.code === 'ROLE_DEMARCHEUR'
+      this.user.role.code == 'ROLE_PROPRIETAIRE' ||
+      this.user.role.code == 'ROLE_DEMARCHEUR'
     );
   }
 
   estRoleResponsableOuAgentImmo(): boolean {
     return (
-      this.user.role.code === 'ROLE_RESPONSABLE' ||
-      this.user.role.code === 'ROLE_AGENTIMMOBILIER'
+      this.user.role.code == 'ROLE_RESPONSABLE' ||
+      this.user.role.code == 'ROLE_AGENTIMMOBILIER'
     );
   }
 
@@ -1142,7 +1143,7 @@ export class BiensImmobiliersComponent implements OnInit {
   }
 
   afficherNombreLits(designation: string): boolean {
-    return designation == 'Villas meublées' || designation === 'Appartements meublés'
+    return designation == 'Villas meublées' || designation == 'Appartements meublés'
   }
 
   afficherNombreSallesDeBains(designation: string): boolean {
@@ -1169,6 +1170,24 @@ export class BiensImmobiliersComponent implements OnInit {
   nePasAfficherFormStep2(designation: string): boolean {
     return designation == 'Terrains';
   }
+
+
+  afficherSectionAutresDetails(utilitaire: Utilitaire, confort: Confort): boolean {
+    return utilitaire.nombreGarages > 0 ||
+           utilitaire.nombreChambres > 0 ||
+           utilitaire.nombrePieces > 0 ||
+           confort.nombreLits > 0;
+  }
+
+  afficherSectionCaracteristiques(utilitaire: Utilitaire, confort: Confort, divertissement: Divertissement): boolean {
+    return utilitaire.wifi || utilitaire.laveLinge || utilitaire.cuisine ||
+      utilitaire.refrigirateur || utilitaire.toilette || confort.secheCheveux ||
+      utilitaire.ferARepasser || utilitaire.espaceDeTravail || utilitaire.eau ||
+      utilitaire.electricite || utilitaire.parking || confort.climatisation ||
+      confort.chauffage || divertissement.piscine || divertissement.jardin ||
+      divertissement.salleDeSport;
+  }
+
 
   precedent(): void {
     this.activeIndex = 0;
@@ -1318,6 +1337,7 @@ export class BiensImmobiliersComponent implements OnInit {
     this.listeDesChoix = [ 'Gérant', 'Démarcheur', 'Agence immobilière'];
     this.checked = this.listeDesChoix[0];
     localStorage.setItem('bienImmobilier', JSON.stringify(bien));
+    localStorage.setItem('activeLink', '/proprietaire/delegations-gestions');
     const event = {value: this.checked};
     this.onChoixChange(event);
     this.affichage = 5;
@@ -1363,7 +1383,6 @@ export class BiensImmobiliersComponent implements OnInit {
           console.log(response);
           localStorage.removeItem('bienImmobilier');
           if (response.id > 0) {
-            localStorage.setItem('activeLink', '/proprietaire/delegations-gestions');
             this.router.navigate(['/proprietaire/delegations-gestions'], { queryParams: { delegationReussie: true } })
           } else {
             this.messageErreur = "Erreur lors de la délégation de gestion !"
@@ -1400,7 +1419,6 @@ export class BiensImmobiliersComponent implements OnInit {
           console.log(response);
           localStorage.removeItem('bienImmobilier');
           if (response.id > 0) {
-            localStorage.setItem('activeLink', '/proprietaire/delegations-gestions');
             this.router.navigate(['/proprietaire/delegations-gestions'], { queryParams: { delegationReussie: true } })
           } else {
             this.messageErreur = "Erreur lors de la délégation de gestion !"

@@ -8,7 +8,7 @@
   <p-toast></p-toast>
 
   <!-- Formulaire d'ajout d'une demande de certification -->
-  <div *ngIf="visibleAddForm == 1 && (user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_DEMARCHEUR')">
+  <div *ngIf="visibleAddForm == 1 && (user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR')">
     <div class="row align-items-center pb40">
       <div class="col-xxl-5">
         <div class="dashboard_title_area">
@@ -55,7 +55,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="visibleAddForm == 1 && user.role.code === 'ROLE_RESPONSABLE'">
+  <div *ngIf="visibleAddForm == 1 && user.role.code == 'ROLE_RESPONSABLE'">
     <div class="row align-items-center pb40">
       <div class="col-xxl-5">
         <div class="dashboard_title_area">
@@ -188,7 +188,7 @@
                 <tr *ngFor="let demandeCertif of demandesCertificationsParPage | genericFilter: recherche;  let i = index">
                   <td class="vam">{{ pageActuelle + i + 1 }}</td>
                   <td class="vam">{{ demandeCertif.dateDemande | date: "dd-MM-yyyy" }}</td>
-                  <td class="vam">{{ demandeCertif.personne.nom }} {{ demandeCertif.personne.prenom }} <i *ngIf="demandeCertif.personne.estCertifie && (demandeCertif.personne.role.code === 'ROLE_RESPONSABLE' || demandeCertif.personne.role.code === 'ROLE_AGENTIMMOBILIER' || demandeCertif.personne.role.code === 'ROLE_PROPRIETAIRE' || demandeCertif.personne.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
+                  <td class="vam">{{ demandeCertif.personne.nom }} {{ demandeCertif.personne.prenom }} <i *ngIf="demandeCertif.personne.estCertifie && (demandeCertif.personne.role.code == 'ROLE_RESPONSABLE' || demandeCertif.personne.role.code == 'ROLE_AGENTIMMOBILIER' || demandeCertif.personne.role.code == 'ROLE_PROPRIETAIRE' || demandeCertif.personne.role.code == 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
                   <td class="vam">
                     <p-tag *ngIf="demandeCertif.statutDemande == 1" severity="success" value="Validé"></p-tag>
                     <p-tag *ngIf="demandeCertif.statutDemande == 0" severity="warning" value="En attente"></p-tag>
@@ -196,8 +196,8 @@
                   <td class="vam">
                     <div class="d-flex">
                       <a type="button" (click)="afficherPageDetail(demandeCertif.id)" class="icon" pTooltip="Détails" tooltipPosition="top"><i class="pi pi-eye" style="font-size: 1rem"></i></a>
-                      <a *ngIf="demandeCertif.statutDemande == 0 && user.role.code === 'ROLE_NOTAIRE' && demandeCertif.agenceImmobiliere === null" type="button" class="icon" (click)="certifierCompte(demandeCertif.personne.id, demandeCertif.id)" pTooltip="Certifier le compte du demandeur" tooltipPosition="left"><i class="pi pi-verified"></i></a>
-                      <a *ngIf="demandeCertif.statutDemande == 0 && user.role.code === 'ROLE_NOTAIRE' && demandeCertif.agenceImmobiliere" type="button" class="icon" (click)="certifierAgence(demandeCertif.agenceImmobiliere.id, demandeCertif.id)" pTooltip="Certifier l'agence immobilière" tooltipPosition="left"><i class="pi pi-verified"></i></a>
+                      <a *ngIf="demandeCertif.statutDemande == 0 && user.role.code == 'ROLE_NOTAIRE' && demandeCertif.agenceImmobiliere == null" type="button" class="icon" (click)="certifierCompte(demandeCertif.personne.id, demandeCertif.id)" pTooltip="Certifier le compte du demandeur" tooltipPosition="left"><i class="pi pi-verified"></i></a>
+                      <a *ngIf="demandeCertif.statutDemande == 0 && user.role.code == 'ROLE_NOTAIRE' && demandeCertif.agenceImmobiliere" type="button" class="icon" (click)="certifierAgence(demandeCertif.agenceImmobiliere.id, demandeCertif.id)" pTooltip="Certifier l'agence immobilière" tooltipPosition="left"><i class="pi pi-verified"></i></a>
                       <a *ngIf="demandeCertif.agenceImmobiliere == null" href="{{this.APIEndpoint+'api/cni/demande-certification/'+demandeCertif.id}}" class="icon" pTooltip="Télécharger la cni du demandeur" tooltipPosition="left"><i class="pi pi-download"></i></a>
                       <a *ngIf="demandeCertif.agenceImmobiliere" href="{{this.APIEndpoint+'api/carte-cfe/demande-certification/'+demandeCertif.id}}" class="icon" pTooltip="Télécharger la carte cfe du demandeur" tooltipPosition="left"><i class="pi pi-download"></i></a>
                     </div>
@@ -251,7 +251,7 @@
 
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Nom & prénom du demandeur</p>
-              <p>{{ demandeCertification.personne.nom }} {{ demandeCertification.personne.prenom }} <i *ngIf="demandeCertification.personne.estCertifie && (demandeCertification.personne.role.code === 'ROLE_RESPONSABLE' || demandeCertification.personne.role.code === 'ROLE_PROPRIETAIRE' || demandeCertification.personne.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+              <p>{{ demandeCertification.personne.nom }} {{ demandeCertification.personne.prenom }} <i *ngIf="demandeCertification.personne.estCertifie && (demandeCertification.personne.role.code == 'ROLE_RESPONSABLE' || demandeCertification.personne.role.code == 'ROLE_PROPRIETAIRE' || demandeCertification.personne.role.code == 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
             </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du demandeur</p>
@@ -305,5 +305,5 @@
     </div>
   </div>
   <!-- End Details d'une demande de certification -->
-  
+
 </div>

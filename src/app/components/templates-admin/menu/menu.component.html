@@ -7,7 +7,7 @@
       <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/admin/dashboard" [class.-is-active]="activeLink === '/admin/dashboard'"
+      <a routerLink="/admin/dashboard" [class.-is-active]="activeLink == '/admin/dashboard'"
       (click)="setActiveLink('/admin/dashboard')"><i class="flaticon-home mr15"></i>Tableau de bord</a>
     </div>
     <!-- Start Menu Tableau de bord -->
@@ -17,39 +17,39 @@
       <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/admin/roles" [class.-is-active]="activeLink === '/admin/roles'"
+      <a routerLink="/admin/roles" [class.-is-active]="activeLink == '/admin/roles'"
       (click)="setActiveLink('/admin/roles')"><i class="fa-light fa-gears mr15"></i>Rôles</a>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/admin/administrateurs" [class.-is-active]="activeLink === '/admin/administrateurs'"
+      <a routerLink="/admin/administrateurs" [class.-is-active]="activeLink == '/admin/administrateurs'"
       (click)="setActiveLink('/admin/administrateurs')" class="items-center"><i class="fa-light fa-user-gear mr15"></i>Administrateurs</a>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/admin/notaires" [class.-is-active]="activeLink === '/admin/notaires'"
+      <a routerLink="/admin/notaires" [class.-is-active]="activeLink == '/admin/notaires'"
       (click)="setActiveLink('/admin/notaires')" class="items-center"><i class="fa-light fa-user-shield mr15"></i>Notaires</a>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/admin/proprietaires" [class.-is-active]="activeLink === '/admin/proprietaires'"
+      <a routerLink="/admin/proprietaires" [class.-is-active]="activeLink == '/admin/proprietaires'"
       (click)="setActiveLink('/admin/proprietaires')" class="items-center"><i class="fa-light fa-user-group mr15"></i>Propriétaires</a>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/admin/responsables" [class.-is-active]="activeLink === '/admin/responsabled'"
+      <a routerLink="/admin/responsables" [class.-is-active]="activeLink == '/admin/responsabled'"
       (click)="setActiveLink('/admin/responsables')" class="items-center"><i class="fa-light fa-user-group mr15"></i>Responsables</a>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/admin/agents-immobiliers" [class.-is-active]="activeLink === '/admin/agents-immobiliers'"
+      <a routerLink="/admin/agents-immobiliers" [class.-is-active]="activeLink == '/admin/agents-immobiliers'"
       (click)="setActiveLink('/admin/agents-immobiliers')" class="items-center"><i class="fa-light fa-user-group mr15"></i>Agents immobiliers</a>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/admin/demarcheurs" [class.-is-active]="activeLink === '/admin/demarcheurs'"
+      <a routerLink="/admin/demarcheurs" [class.-is-active]="activeLink == '/admin/demarcheurs'"
       (click)="setActiveLink('/admin/demarcheurs')" class="items-center"><i class="fa-light fa-user-group mr15"></i>Démarcheurs</a>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/admin/gerants" [class.-is-active]="activeLink === '/admin/gerants'"
+      <a routerLink="/admin/gerants" [class.-is-active]="activeLink == '/admin/gerants'"
       (click)="setActiveLink('/admin/gerants')" class="items-center"><i class="fa-light fa-user-group mr15"></i>Gérants</a>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/admin/clients" [class.-is-active]="activeLink === '/admin/clients'"
+      <a routerLink="/admin/clients" [class.-is-active]="activeLink == '/admin/clients'"
       (click)="setActiveLink('/admin/clients')" class="items-center"><i class="fa-light fa-user-group mr15"></i>Clients</a>
     </div>
     <!-- End Menu Gestion des comptes -->
@@ -59,11 +59,11 @@
       <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/admin/agences-immobilieres" [class.-is-active]="activeLink === '/admin/agences-immobilieres'"
+      <a routerLink="/admin/agences-immobilieres" [class.-is-active]="activeLink == '/admin/agences-immobilieres'"
       (click)="setActiveLink('/admin/agences-immobilieres')" class="items-center"><i class="fa-light fa-key mr15"></i>&nbsp;Agences immobilières</a>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/admin/services" [class.-is-active]="activeLink === '/admin/services'"
+      <a routerLink="/admin/services" [class.-is-active]="activeLink == '/admin/services'"
       (click)="setActiveLink('/admin/services')" class="items-center"><i class="fa-light fa-briefcase mr15"></i>&nbsp;Services</a>
     </div>
     <!-- End Menu Gestion des agences immobilières -->
@@ -73,23 +73,23 @@
       <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center" routerLink="/admin/pays" [class.-is-active]="activeLink === '/admin/pays'"
+      <a class="items-center" routerLink="/admin/pays" [class.-is-active]="activeLink == '/admin/pays'"
       (click)="setActiveLink('/admin/pays')"><i class="fa-light fa-globe mr15"></i>&nbsp;Pays</a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center" routerLink="/admin/regions" [class.-is-active]="activeLink === '/admin/regions'"
+      <a class="items-center" routerLink="/admin/regions" [class.-is-active]="activeLink == '/admin/regions'"
       (click)="setActiveLink('/admin/regions')"><i class="fa-light fa-globe mr15"></i>&nbsp;Régions</a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center" routerLink="/admin/villes" [class.-is-active]="activeLink === '/admin/villes'"
+      <a class="items-center" routerLink="/admin/villes" [class.-is-active]="activeLink == '/admin/villes'"
       (click)="setActiveLink('/admin/villes')"><i class="fa-light fa-globe mr15"></i>&nbsp;Villes</a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center" routerLink="/admin/quartiers" [class.-is-active]="activeLink === '/admin/quartiers'"
+      <a class="items-center" routerLink="/admin/quartiers" [class.-is-active]="activeLink == '/admin/quartiers'"
       (click)="setActiveLink('/admin/quartiers')"><i class="fa-light fa-globe mr15"></i>&nbsp;Quartiers</a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center" routerLink="/admin/types-de-bien" [class.-is-active]="activeLink === '/admin/types-de-bien'"
+      <a class="items-center" routerLink="/admin/types-de-bien" [class.-is-active]="activeLink == '/admin/types-de-bien'"
       (click)="setActiveLink('/admin/types-de-bien')"><i class="fa-light fa-house-building mr15"></i>Types de bien</a>
     </div>
     <!-- End Menu Gestion des biens immobiliers -->
@@ -103,7 +103,7 @@
       <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/notaire/dashboard" [class.-is-active]="activeLink === '/notaire/dashboard'"
+      <a routerLink="/notaire/dashboard" [class.-is-active]="activeLink == '/notaire/dashboard'"
       (click)="setActiveLink('/notaire/dashboard')"><i class="flaticon-home mr15"></i>Tableau de bord</a>
     </div>
     <!-- Start Menu Tableau de bord -->
@@ -113,7 +113,7 @@
       <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/notaire/demandes-certifications" [class.-is-active]="activeLink === '/notaire/demandes-certifications'"
+      <a routerLink="/notaire/demandes-certifications" [class.-is-active]="activeLink == '/notaire/demandes-certifications'"
       (click)="setActiveLink('/notaire/demandes-certifications')" class="items-center"><i class="pi pi-verified mr15"></i>&nbsp;Certifications</a>
     </div>
     <!-- End Menu Gestion des comptes -->
@@ -127,7 +127,7 @@
       <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/proprietaire/dashboard" [class.-is-active]="activeLink === '/proprietaire/dashboard'"
+      <a routerLink="/proprietaire/dashboard" [class.-is-active]="activeLink == '/proprietaire/dashboard'"
       (click)="setActiveLink('/proprietaire/dashboard')"><i class="flaticon-home mr15"></i>Tableau de bord</a>
     </div>
     <!-- Start Menu Tableau de bord -->
@@ -137,11 +137,11 @@
       <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/proprietaire/gerants" [class.-is-active]="activeLink === '/proprietaire/gerants'"
+      <a routerLink="/proprietaire/gerants" [class.-is-active]="activeLink == '/proprietaire/gerants'"
       (click)="setActiveLink('/proprietaire/gerants')" class="items-center"><i class="fa-light fa-user-group mr15"></i>Gérants</a>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/proprietaire/demandes-certifications" [class.-is-active]="activeLink === '/proprietaire/demandes-certifications'"
+      <a routerLink="/proprietaire/demandes-certifications" [class.-is-active]="activeLink == '/proprietaire/demandes-certifications'"
       (click)="setActiveLink('/proprietaire/demandes-certifications')" class="items-center"><i class="pi pi-verified mr15"></i>&nbsp;Certifications</a>
     </div>
     <!-- End Menu Gestion des comptes -->
@@ -151,11 +151,11 @@
       <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center" routerLink="/proprietaire/biens-immobiliers" [class.-is-active]="activeLink === '/proprietaire/biens-immobiliers'"
+      <a class="items-center" routerLink="/proprietaire/biens-immobiliers" [class.-is-active]="activeLink == '/proprietaire/biens-immobiliers'"
       (click)="setActiveLink('/proprietaire/biens-immobiliers')"><i class="fa-light fa-house-building mr15"></i>Biens immobiliers</a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center" routerLink="/proprietaire/delegations-gestions" [class.-is-active]="activeLink === '/proprietaire/delegations-gestions'"
+      <a class="items-center" routerLink="/proprietaire/delegations-gestions" [class.-is-active]="activeLink == '/proprietaire/delegations-gestions'"
       (click)="setActiveLink('/proprietaire/delegations-gestions')"><i class="fa-light fa-handshake mr15"></i>Biens délégués</a>
     </div>
     <!-- End Menu Gestion des biens immobiliers -->
@@ -211,7 +211,7 @@
       <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/gerant/dashboard" [class.-is-active]="activeLink === '/gerant/dashboard'"
+      <a routerLink="/gerant/dashboard" [class.-is-active]="activeLink == '/gerant/dashboard'"
       (click)="setActiveLink('/gerant/dashboard')"><i class="flaticon-home mr15"></i>Tableau de bord</a>
     </div>
     <!-- Start Menu Tableau de bord -->
@@ -220,7 +220,7 @@
       <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center" routerLink="/gerant/delegations-gestions" [class.-is-active]="activeLink === '/gerant/delegations-gestions'"
+      <a class="items-center" routerLink="/gerant/delegations-gestions" [class.-is-active]="activeLink == '/gerant/delegations-gestions'"
       (click)="setActiveLink('/gerant/delegations-gestions')"><i class="fa-light fa-handshake mr15"></i>Biens délégués</a>
     </div>
     <!-- End Menu Gestion des biens immobiliers -->
@@ -276,7 +276,7 @@
       <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/responsable/dashboard" [class.-is-active]="activeLink === '/responsable/dashboard'"
+      <a routerLink="/responsable/dashboard" [class.-is-active]="activeLink == '/responsable/dashboard'"
       (click)="setActiveLink('/responsable/dashboard')"><i class="flaticon-home mr15"></i>Tableau de bord</a>
     </div>
     <!-- Start Menu Tableau de bord -->
@@ -286,15 +286,15 @@
       <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/responsable/agences-immobilieres" [class.-is-active]="activeLink === '/responsable/agences-immobilieres'"
+      <a routerLink="/responsable/agences-immobilieres" [class.-is-active]="activeLink == '/responsable/agences-immobilieres'"
       (click)="setActiveLink('/responsable/agences-immobilieres')" class="items-center"><i class="fa-light fa-key mr15"></i>&nbsp;Agences immobilières</a>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/responsable/demandes-certifications" [class.-is-active]="activeLink === '/responsable/demandes-certifications'"
+      <a routerLink="/responsable/demandes-certifications" [class.-is-active]="activeLink == '/responsable/demandes-certifications'"
       (click)="setActiveLink('/responsable/demandes-certifications')" class="items-center"><i class="pi pi-verified mr15"></i>&nbsp;Certifications</a>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/responsable/agences-immobilieres/services" [class.-is-active]="activeLink === '/responsable/agences-immobilieres/services'"
+      <a routerLink="/responsable/agences-immobilieres/services" [class.-is-active]="activeLink == '/responsable/agences-immobilieres/services'"
       (click)="setActiveLink('/responsable/agences-immobilieres/services')" class="items-center"><i class="fa-light fa-briefcase mr15"></i>&nbsp;Services</a>
     </div>
     <!-- End Menu Gestion des agences immobilières -->
@@ -304,7 +304,7 @@
       <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/responsable/agents-immobiliers" [class.-is-active]="activeLink === '/responsable/agents-immobiliers'"
+      <a routerLink="/responsable/agents-immobiliers" [class.-is-active]="activeLink == '/responsable/agents-immobiliers'"
       (click)="setActiveLink('/responsable/agents-immobiliers')" class="items-center"><i class="fa-light fa-user-group mr15"></i>Agents immobiliers</a>
     </div>
     <!-- End Menu Gestion des comptes -->
@@ -314,11 +314,11 @@
       <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center" routerLink="/responsable/agences-immobilieres/biens-immobiliers" [class.-is-active]="activeLink === '/responsable/agences-immobilieres/biens-immobiliers'"
+      <a class="items-center" routerLink="/responsable/agences-immobilieres/biens-immobiliers" [class.-is-active]="activeLink == '/responsable/agences-immobilieres/biens-immobiliers'"
       (click)="setActiveLink('/responsable/agences-immobilieres/biens-immobiliers')"><i class="fa-light fa-house-building mr15"></i>Biens immobiliers</a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center" routerLink="/responsable/agences-immobilieres/delegations-gestions" [class.-is-active]="activeLink === '/responsable/agences-immobilieres/delegations-gestions'"
+      <a class="items-center" routerLink="/responsable/agences-immobilieres/delegations-gestions" [class.-is-active]="activeLink == '/responsable/agences-immobilieres/delegations-gestions'"
       (click)="setActiveLink('/responsable/agences-immobilieres/delegations-gestions')"><i class="fa-light fa-handshake mr15"></i>Biens délégués</a>
     </div>
     <!-- End Menu Gestion des biens immobiliers -->
@@ -374,7 +374,7 @@
       <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/agent-immobilier/dashboard" [class.-is-active]="activeLink === '/agent-immobilier/dashboard'"
+      <a routerLink="/agent-immobilier/dashboard" [class.-is-active]="activeLink == '/agent-immobilier/dashboard'"
       (click)="setActiveLink('/agent-immobilier/dashboard')"><i class="flaticon-home mr15"></i>Tableau de bord</a>
     </div>
     <!-- Start Menu Tableau de bord -->
@@ -384,7 +384,7 @@
       <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/agent-immobilier/agences-immobilieres" [class.-is-active]="activeLink === '/agent-immobilier/agences-immobilieres'"
+      <a routerLink="/agent-immobilier/agences-immobilieres" [class.-is-active]="activeLink == '/agent-immobilier/agences-immobilieres'"
       (click)="setActiveLink('/agent-immobilier/agences-immobilieres')" class="items-center"><i class="fa-light fa-key mr15"></i>&nbsp;Agences immobilières</a>
     </div>
     <!-- End Menu Gestion des agences immobilières -->
@@ -394,11 +394,11 @@
       <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center" routerLink="/agent-immobilier/agences-immobilieres/biens-immobiliers" [class.-is-active]="activeLink === '/agent-immobilier/agences-immobilieres/biens-immobiliers'"
+      <a class="items-center" routerLink="/agent-immobilier/agences-immobilieres/biens-immobiliers" [class.-is-active]="activeLink == '/agent-immobilier/agences-immobilieres/biens-immobiliers'"
       (click)="setActiveLink('/agent-immobilier/agences-immobilieres/biens-immobiliers')"><i class="fa-light fa-house-building mr15"></i>Biens immobiliers</a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center" routerLink="/agent-immobilier/agences-immobilieres/delegations-gestions" [class.-is-active]="activeLink === '/agent-immobilier/agences-immobilieres/delegations-gestions'"
+      <a class="items-center" routerLink="/agent-immobilier/agences-immobilieres/delegations-gestions" [class.-is-active]="activeLink == '/agent-immobilier/agences-immobilieres/delegations-gestions'"
       (click)="setActiveLink('/agent-immobilier/agences-immobilieres/delegations-gestions')"><i class="fa-light fa-handshake mr15"></i>Biens délégués</a>
     </div>
     <!-- End Menu Gestion des biens immobiliers -->
@@ -454,7 +454,7 @@
       <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/demarcheur/dashboard" [class.-is-active]="activeLink === '/demarcheur/dashboard'"
+      <a routerLink="/demarcheur/dashboard" [class.-is-active]="activeLink == '/demarcheur/dashboard'"
       (click)="setActiveLink('/demarcheur/dashboard')"><i class="flaticon-home mr15"></i>Tableau de bord</a>
     </div>
     <!-- Start Menu Tableau de bord -->
@@ -464,7 +464,7 @@
       <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/demarcheur/demandes-certifications" [class.-is-active]="activeLink === '/demarcheur/demandes-certifications'"
+      <a routerLink="/demarcheur/demandes-certifications" [class.-is-active]="activeLink == '/demarcheur/demandes-certifications'"
       (click)="setActiveLink('/demarcheur/demandes-certifications')" class="items-center"><i class="pi pi-verified mr15"></i>&nbsp;Certifications</a>
     </div>
     <!-- End Menu Gestion des comptes -->
@@ -474,11 +474,11 @@
       <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center" routerLink="/demarcheur/biens-immobiliers" [class.-is-active]="activeLink === '/demarcheur/biens-immobiliers'"
+      <a class="items-center" routerLink="/demarcheur/biens-immobiliers" [class.-is-active]="activeLink == '/demarcheur/biens-immobiliers'"
       (click)="setActiveLink('/demarcheur/biens-immobiliers')"><i class="fa-light fa-house-building mr15"></i>Biens immobiliers</a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center" routerLink="/demarcheur/delegations-gestions" [class.-is-active]="activeLink === '/demarcheur/delegations-gestions'"
+      <a class="items-center" routerLink="/demarcheur/delegations-gestions" [class.-is-active]="activeLink == '/demarcheur/delegations-gestions'"
       (click)="setActiveLink('/demarcheur/delegations-gestions')"><i class="fa-light fa-handshake mr15"></i>Biens délégués</a>
     </div>
     <!-- End Menu Gestion des biens immobiliers -->
@@ -534,7 +534,7 @@
       <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/client/dashboard" [class.-is-active]="activeLink === '/client/dashboard'"
+      <a routerLink="/client/dashboard" [class.-is-active]="activeLink == '/client/dashboard'"
       (click)="setActiveLink('/client/dashboard')"><i class="flaticon-home mr15"></i>Tableau de bord</a>
     </div>
     <!-- Start Menu Tableau de bord -->

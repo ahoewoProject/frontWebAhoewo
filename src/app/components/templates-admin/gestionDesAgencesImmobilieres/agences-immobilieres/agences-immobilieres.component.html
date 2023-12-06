@@ -463,7 +463,7 @@
                       </button>
 
                       <button pButton type="button"
-                        *ngIf="user.role.code === 'ROLE_AGENTIMMOBILIER'"
+                        *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER'"
                         (click)="afficherListeServices(affectationResponsableAgence.agenceImmobiliere.id)"
                         icon="pi pi-briefcase"
                         pTooltip="Services" tooltipPosition="top"
@@ -471,13 +471,13 @@
                       </button>
 
                       <button pButton type="button"
-                        *ngIf="agenceImmobiliere.etatAgence === true && user.role.code === 'ROLE_ADMINISTRATEUR'"
+                        *ngIf="agenceImmobiliere.etatAgence == true && user.role.code == 'ROLE_ADMINISTRATEUR'"
                         (click)="desactiverAgence(affectationResponsableAgence.agenceImmobiliere.id)" icon="pi pi-lock"
                         pTooltip="Désactiver cette agence immobilière" tooltipPosition="right" class="p-button-text p-button-danger">
                       </button>
 
                       <button pButton type="button"
-                        *ngIf="agenceImmobiliere.etatAgence === false && user.role.code === 'ROLE_ADMINISTRATEUR'"
+                        *ngIf="agenceImmobiliere.etatAgence == false && user.role.code == 'ROLE_ADMINISTRATEUR'"
                         (click)="activerAgence(affectationResponsableAgence.agenceImmobiliere.id)" icon="pi pi-lock-open"
                         pTooltip="Activer cette agence immobilière" tooltipPosition="right" class="p-button-text p-button-success">
                       </button>
@@ -665,13 +665,13 @@
                       </button>
 
                       <button pButton type="button"
-                        *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence === true && user.role.code === 'ROLE_ADMINISTRATEUR'"
+                        *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == true && user.role.code == 'ROLE_ADMINISTRATEUR'"
                         (click)="desactiverAgence(affectationResponsableAgence.agenceImmobiliere.id)" icon="pi pi-lock"
                         pTooltip="Désactiver cette agence immobilière" tooltipPosition="right" class="p-button-text p-button-danger">
                       </button>
 
                       <button pButton type="button"
-                        *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence === false && user.role.code === 'ROLE_ADMINISTRATEUR'"
+                        *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == false && user.role.code == 'ROLE_ADMINISTRATEUR'"
                         (click)="activerAgence(affectationResponsableAgence.agenceImmobiliere.id)" icon="pi pi-lock-open"
                         pTooltip="Activer cette agence immobilière" tooltipPosition="right" class="p-button-text p-button-success">
                       </button>
@@ -853,8 +853,8 @@
                   </th>
                   <td class="vam">{{ serviceAgenceImmobiliere.services.nomService }} </td>
                   <td class="vam">
-                    <p-tag *ngIf="serviceAgenceImmobiliere.etat === true" severity="success" value="Activé"></p-tag>
-                    <p-tag *ngIf="serviceAgenceImmobiliere.etat === false" severity="danger" value="Désactivé"></p-tag>
+                    <p-tag *ngIf="serviceAgenceImmobiliere.etat == true" severity="success" value="Activé"></p-tag>
+                    <p-tag *ngIf="serviceAgenceImmobiliere.etat == false" severity="danger" value="Désactivé"></p-tag>
                   </td>
                   <td class="vam">
                     <div class="d-flex">
@@ -924,8 +924,8 @@
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Etat</p>
               <p>
-                <p-tag *ngIf="serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.etat === true" severity="success" value="Activé"></p-tag>
-                <p-tag *ngIf="serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.etat === false" severity="danger" value="Désactivé"></p-tag>
+                <p-tag *ngIf="serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.etat == true" severity="success" value="Activé"></p-tag>
+                <p-tag *ngIf="serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.etat == false" severity="danger" value="Désactivé"></p-tag>
               </p>
             </div>
             <div class="form-group col-md-6">
@@ -952,5 +952,5 @@
     </div>
   </div>
   <!-- End Details d'un service d'une agence immobilière -->
-  
+
 </div>

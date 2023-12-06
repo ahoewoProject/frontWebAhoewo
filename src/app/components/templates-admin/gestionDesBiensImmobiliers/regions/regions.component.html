@@ -149,8 +149,8 @@
                     <td class="vam">{{ region.libelle }}</td>
                     <td class="vam">{{ region.pays.libelle }}</td>
                     <td class="vam">
-                      <p-tag *ngIf="region.etat === true" severity="success" value="Activé"></p-tag>
-                      <p-tag *ngIf="region.etat === false" severity="danger" value="Désactivé"></p-tag>
+                      <p-tag *ngIf="region.etat == true" severity="success" value="Activé"></p-tag>
+                      <p-tag *ngIf="region.etat == false" severity="danger" value="Désactivé"></p-tag>
                     </td>
                     <td class="vam">
                       <div class="d-flex">
@@ -161,13 +161,13 @@
                           class="p-button-text p-button-warning">
                         </button>
 
-                        <button *ngIf="region.etat === true" pButton type="button" icon="pi pi-lock"
+                        <button *ngIf="region.etat == true" pButton type="button" icon="pi pi-lock"
                           (click)="desactiverRegion(region.id)"
                           pTooltip="Désactiver" tooltipPosition="top"
                           class="p-button-text p-button-danger">
                         </button>
 
-                        <button *ngIf="region.etat === false" pButton type="button" icon="pi pi-lock-open"
+                        <button *ngIf="region.etat == false" pButton type="button" icon="pi pi-lock-open"
                           (click)="activerRegion(region.id)"
                           pTooltip="Activer" tooltipPosition="top"
                           class="p-button-text p-button-success">

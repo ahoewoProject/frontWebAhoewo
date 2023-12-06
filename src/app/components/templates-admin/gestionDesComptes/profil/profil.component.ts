@@ -133,7 +133,7 @@ export class ProfilComponent implements OnInit{
     },
     (error) =>{
       console.log(error)
-      if(error.status === 409){
+      if(error.status == 409){
         this.messageErreur = "Ce nom d'utilisateur a été déjà utilisé!";
         this.messageService.add({
           severity: 'warn',

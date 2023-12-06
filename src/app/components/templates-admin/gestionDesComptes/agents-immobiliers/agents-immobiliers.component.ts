@@ -331,14 +331,14 @@ export class AgentsImmobiliersComponent implements OnInit{
       },
       (error) =>{
         console.log(error)
-        if (error.status === 409) {
+        if (error.status == 409) {
           this.messageErreur = "Cet agent immobilier à été déjà ajouté dans cette agence !";
           this.messageService.add({
             severity: 'warn',
             summary: 'Ajout non réussi',
             detail: this.messageErreur
           });
-        } else if (error.status === 404) {
+        } else if (error.status == 404) {
           this.messageErreur = "La matricule de l'agent immobilier est introuvable !";
           this.messageService.add({
             severity: 'warn',

@@ -56,11 +56,11 @@
                         pTooltip="Détails" tooltipPosition="right" class="p-button-text p-button-info">
                       </button>
 
-                      <button pButton type="button" *ngIf="responsable.etatCompte === true"(click)="desactiverCompte(responsable.id)" icon="pi pi-lock"
+                      <button pButton type="button" *ngIf="responsable.etatCompte == true"(click)="desactiverCompte(responsable.id)" icon="pi pi-lock"
                         pTooltip="Désactiver ce compte" tooltipPosition="top"class="p-button-text p-button-danger">
                       </button>
 
-                      <button pButton type="button" *ngIf="responsable.etatCompte === false" (click)="activerCompte(responsable.id)" icon="pi pi-lock-open"
+                      <button pButton type="button" *ngIf="responsable.etatCompte == false" (click)="activerCompte(responsable.id)" icon="pi pi-lock-open"
                         pTooltip="Activer ce compte" tooltipPosition="left"class="p-button-text p-button-success">
                       </button>
                     </div>
@@ -159,5 +159,5 @@
     </div>
   </div>
   <!-- End Details d'un responsable d'agence immobilière -->
-  
+
 </div>

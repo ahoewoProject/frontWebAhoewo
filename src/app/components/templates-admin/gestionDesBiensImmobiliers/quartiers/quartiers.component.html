@@ -151,8 +151,8 @@
                     <td class="vam">{{ quartier.libelle }}</td>
                     <td class="vam">{{ quartier.ville.libelle }}</td>
                     <td class="vam">
-                      <p-tag *ngIf="quartier.etat === true" severity="success" value="Activé"></p-tag>
-                      <p-tag *ngIf="quartier.etat === false" severity="danger" value="Désactivé"></p-tag>
+                      <p-tag *ngIf="quartier.etat == true" severity="success" value="Activé"></p-tag>
+                      <p-tag *ngIf="quartier.etat == false" severity="danger" value="Désactivé"></p-tag>
                     </td>
                     <td class="vam">
                       <div class="d-flex">
@@ -163,13 +163,13 @@
                           class="p-button-text p-button-warning">
                         </button>
 
-                        <button *ngIf="quartier.etat === true" pButton type="button" icon="pi pi-lock"
+                        <button *ngIf="quartier.etat == true" pButton type="button" icon="pi pi-lock"
                           (click)="desactiverQuartier(quartier.id)"
                           pTooltip="Désactiver" tooltipPosition="top"
                           class="p-button-text p-button-danger">
                         </button>
 
-                        <button *ngIf="quartier.etat === false" pButton type="button" icon="pi pi-lock-open"
+                        <button *ngIf="quartier.etat == false" pButton type="button" icon="pi pi-lock-open"
                           (click)="activerQuartier(quartier.id)"
                           pTooltip="Activer" tooltipPosition="top"
                           class="p-button-text p-button-success">

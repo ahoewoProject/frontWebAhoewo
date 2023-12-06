@@ -8,7 +8,7 @@
   <div class="dashboard_title_area">
     <h3>
       Bienvenue, M/Mlle {{ user.nom }} {{ user.prenom }}!
-      <i *ngIf="user.estCertifie && (user.role.code === 'ROLE_RESPONSABLE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6;"></i>
+      <i *ngIf="user.estCertifie && (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6;"></i>
     </h3>
 
     <h6 class="text">Nous sommes heureux de vous revoir !</h6>
@@ -19,7 +19,7 @@
       </span>
     </h6>
 
-    <h6 *ngIf="!user.estCertifie && (user.role.code === 'ROLE_PROPRIETAIRE' || user.role.code === 'ROLE_DEMARCHEUR')" class="text">
+    <h6 *ngIf="!user.estCertifie && (user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR')" class="text">
       <span *ngIf="demandeCertifications.length == 0" class="error">
         <i class="fa-regular fa-triangle-exclamation fa-2xl"></i> Votre compte n'est pas certifié, veuillez demander la certification de compte <br>en cliquant sur le menu <b>certifications</b> !
       </span>
@@ -28,12 +28,12 @@
       </span>
     </h6>
 
-    <h6 *ngIf="!user.estCertifie && user.role.code === 'ROLE_RESPONSABLE'" class="text">
+    <h6 *ngIf="!user.estCertifie && user.role.code == 'ROLE_RESPONSABLE'" class="text">
       <span *ngIf="demandeCertifications.length == 0" class="error">
-        <i class="pi pi-exclamation-circle"></i> Votre compte n'est pas certifié, veuillez ajouter votre <b>agence immobilière</b> en cliquant sur le menu <b>agences immobilières</b><br> et demander la certification de cette dernière en cliquant sur le menu <b>certifications</b> !
+        <i class="fa-regular fa-triangle-exclamation fa-2xl"></i> Votre compte n'est pas certifié, veuillez ajouter votre <b>agence immobilière</b> en cliquant sur le menu <b>agences immobilières</b><br> et demander la certification de cette dernière en cliquant sur le menu <b>certifications</b> !
       </span>
       <span *ngIf="demandeCertifications.length !== 0" class="error">
-        <i class="pi pi-exclamation-circle"></i> Votre compte est en attente de <b>certifications</b> !
+        <i class="fa-regular fa-triangle-exclamation fa-2xl"></i> Votre compte est en attente de <b>certifications</b> !
       </span>
     </h6>
     <br>
@@ -60,7 +60,7 @@
           <div class="text fz25">Utilisateurs</div>
           <div class="title">{{ _nombreUtilisateurs }}</div>
         </div>
-        <div style="background-color: #0d7915;"class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+        <div style="background-color: #0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
       </div>
     </div>
     <div class="col-sm-6 col-xxl-3">

@@ -49,19 +49,19 @@ export class TypeDeBienService {
 
   // Activation d'un type de bien;
   // url: http://localhost:4040/api/activer/type-de-bien
-  activerTypeDeBien(id: number): Observable<any>{
+  activerTypeDeBien(id: number): Observable<any> {
     return this.httpClient.get<any>(this.url + 'activer/type-de-bien/' + id);
   }
 
   // Désactivation d'un type de bien;
   // url: http://localhost:4040/api/desactiver/type-de-bien
-  desactiverTypeDeBien(id: number): Observable<any>{
+  desactiverTypeDeBien(id: number): Observable<any> {
     return this.httpClient.get<any>(this.url + 'desactiver/type-de-bien/' + id);
   }
 
   // Suppression d'une occurrence d'un type de bien par la clé primaire ;
   // url: http://localhost:4040/api/type-de-bien/supprimer/{id}
-  deleteById(id: number){
+  deleteById(id: number) {
     return this.httpClient.delete(this.url + 'type-de-bien/supprimer/' + id);
   }
 }

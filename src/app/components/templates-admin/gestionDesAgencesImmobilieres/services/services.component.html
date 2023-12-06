@@ -119,7 +119,7 @@
           </div>
           &nbsp;
           <a type="button" (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
-            Ajouter un services
+            Ajouter un service
           </a>
         </div>
       </div>
@@ -145,8 +145,8 @@
                   <td class="vam">{{ _service.codeService }} </td>
                   <td class="vam">{{ _service.nomService }} </td>
                   <td class="vam">
-                    <p-tag *ngIf="_service.etat === true" severity="success" value="Activé"></p-tag>
-                    <p-tag *ngIf="_service.etat === false" severity="danger" value="Désactivé"></p-tag>
+                    <p-tag *ngIf="_service.etat == true" severity="success" value="Activé"></p-tag>
+                    <p-tag *ngIf="_service.etat == false" severity="danger" value="Désactivé"></p-tag>
                   </td>
                   <td class="vam">
                     <div class="d-flex">
@@ -164,13 +164,13 @@
                       </button>
 
                       <button pButton type="button"
-                        *ngIf="_service.etat === true"
+                        *ngIf="_service.etat == true"
                         (click)="desactiverService(_service.id)" icon="pi pi-lock"
                         pTooltip="Désactiver ce service" tooltipPosition="right" class="p-button-text p-button-danger">
                       </button>
 
                       <button pButton type="button"
-                        *ngIf="_service.etat === false"
+                        *ngIf="_service.etat == false"
                         (click)="activerService(_service.id)" icon="pi pi-lock-open"
                         pTooltip="Activer ce service" tooltipPosition="right" class="p-button-text p-button-success">
                       </button>
@@ -234,8 +234,8 @@
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Etat</p>
               <p>
-                <p-tag *ngIf="_service.etat === true" severity="success" value="Activé"></p-tag>
-                <p-tag *ngIf="_service.etat === false" severity="danger" value="Désactivé"></p-tag>
+                <p-tag *ngIf="_service.etat == true" severity="success" value="Activé"></p-tag>
+                <p-tag *ngIf="_service.etat == false" severity="danger" value="Désactivé"></p-tag>
               </p>
             </div>
 

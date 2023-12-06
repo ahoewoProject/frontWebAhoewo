@@ -5,11 +5,7 @@
     <!-- End Menu responsive -->
   </div>
 
-  <div *ngIf="delegationReussie" >
-    <p-toast [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'1000ms'" [hideTransitionOptions]="'3000ms'" [showTransformOptions]="'translateX(100%)'"></p-toast>
-  </div>
-
-  <p-toast></p-toast>
+  <p-toast [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'1000ms'" [hideTransitionOptions]="'3000ms'" [showTransformOptions]="'translateX(100%)'"></p-toast>
 
   <!-- Liste de la délégation de gestion de biens -->
   <div *ngIf="affichage == 1">
@@ -42,7 +38,7 @@
                   <th scope="col">Image</th>
                   <th scope="col" *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT'">Propriétaire</th>
                   <th scope="col" *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'">Gestionnaire</th>
-                  <th scope="col">Statut de la délégation</th>
+                  <th scope="col">Statut</th>
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
@@ -74,13 +70,13 @@
                       </button>
 
                       <button *ngIf="delegationGestion.statutDelegation == 0 &&
-                        (user.role.code === 'ROLE_RESPONSABLE' || user.role.code === 'ROLE_GERANT'  || user.role.code === 'ROLE_DEMARCHEUR')"
+                        (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_GERANT'  || user.role.code == 'ROLE_DEMARCHEUR')"
                         pButton type="button" icon="pi pi-check-circle" (click)="accepterDelegationGestion(delegationGestion.id)"
                         pTooltip="Accepter" tooltipPosition="top" class="p-button-text p-button-success">
                       </button>
 
                       <button *ngIf="delegationGestion.statutDelegation == 0 &&
-                        (user.role.code === 'ROLE_RESPONSABLE' || user.role.code === 'ROLE_GERANT'  || user.role.code === 'ROLE_DEMARCHEUR')"
+                        (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_GERANT'  || user.role.code == 'ROLE_DEMARCHEUR')"
                         pButton type="button" icon="pi pi-times-circle" (click)="refuserDelegationGestion(delegationGestion.id)"
                         pTooltip="Refuser" tooltipPosition="top" class="p-button-text p-button-danger">
                       </button>
@@ -524,8 +520,8 @@
             </div>
           </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color" *ngIf="utilitaire || confort">Autres détails :</p>
+          <p-divider *ngIf="afficherSectionAutresDetails(utilitaire, confort)"></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color" *ngIf="afficherSectionAutresDetails(utilitaire, confort)">Autres détails :</p>
           <div class="row">
             <div class="col-md-6 col-xl-4">
               <div class="d-flex justify-content-between">
@@ -559,8 +555,8 @@
             </div>
           </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color" *ngIf="utilitaire || confort">Caractéristiques :</p>
+          <p-divider *ngIf="afficherSectionCaracteristiques(utilitaire, confort, divertissement)"></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color" *ngIf="afficherSectionCaracteristiques(utilitaire, confort, divertissement)">Caractéristiques :</p>
           <div class="row">
             <div class="col-sm-6 col-md-4">
               <div class="pd-list mb10-sm">
@@ -732,8 +728,8 @@
             </div>
           </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color" *ngIf="utilitaire || confort">Autres détails :</p>
+          <p-divider *ngIf="afficherSectionAutresDetails(utilitaire, confort)"></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color"*ngIf="afficherSectionAutresDetails(utilitaire, confort)">Autres détails :</p>
           <div class="row">
             <div class="col-md-6 col-xl-4">
               <div class="d-flex justify-content-between">
@@ -767,8 +763,8 @@
             </div>
           </div>
 
-          <p-divider></p-divider>
-          <p class="fw600 mb10 ff-heading dark-color" *ngIf="utilitaire || confort">Caractéristiques :</p>
+          <p-divider *ngIf="afficherSectionCaracteristiques(utilitaire, confort, divertissement)"></p-divider>
+          <p class="fw600 mb10 ff-heading dark-color" *ngIf="afficherSectionCaracteristiques(utilitaire, confort, divertissement)">Caractéristiques :</p>
           <div class="row">
             <div class="col-sm-6 col-md-4">
               <div class="pd-list mb10-sm">

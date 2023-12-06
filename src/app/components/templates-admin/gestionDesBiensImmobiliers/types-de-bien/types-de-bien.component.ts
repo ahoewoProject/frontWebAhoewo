@@ -121,7 +121,7 @@ export class TypesDeBienComponent implements OnInit {
     },
     (error) =>{
       console.log(error)
-      if (error.status === 409) {
+      if (error.status == 409) {
         this.messageErreur = "Un type de bien avec cette désignation existe déjà !";
         this.messageService.add({ severity: 'warn', summary: "Erreur d'ajout", detail: this.messageErreur });
       }
@@ -151,7 +151,7 @@ export class TypesDeBienComponent implements OnInit {
     },
     (error) =>{
       console.log(error)
-      if (error.status === 409) {
+      if (error.status == 409) {
         this.messageErreur = "Un type de bien avec cette désignation existe déjà !";
         this.messageService.add({
           severity: 'warn',
@@ -251,7 +251,6 @@ export class TypesDeBienComponent implements OnInit {
           (response) => {
             console.log(response);
             this.voirListe();
-
             this.messageSuccess = "Le type de bien a été supprimé avec succès !";
             this.messageService.add({
               severity: 'success',
