@@ -111,8 +111,8 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                  <tr *ngFor="let typeDeBien of typesDeBienParPage | genericFilter: recherche; let i = index;">
-                    <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                  <tr *ngFor="let typeDeBien of typesDeBien.content | genericFilter: recherche; let i = index;">
+                    <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                     <td class="vam">{{ typeDeBien.designation }}</td>
                     <td class="vam">
                       <p-tag *ngIf="typeDeBien.etat == true" severity="success" value="Activé"></p-tag>
@@ -120,7 +120,6 @@
                     </td>
                     <td class="vam">
                       <div class="d-flex">
-
                         <button pButton type="button" icon="pi pi-pencil"
                           (click)="afficherFormulaireModifier(typeDeBien.id)"
                           pTooltip="Modifier" tooltipPosition="top"
@@ -150,17 +149,15 @@
               </tbody>
             </table>
           </div>
-
-          <div *ngIf="typesDeBien.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="typesDeBien.totalElements !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="typesDeBien.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} types de bien"
-              [showPageLinks]="true" [showFirstLastIcon]="true">
+              (onPageChange)="pagination($event)" [rows]="typesDeBien.size"
+              [totalRecords]="typesDeBien.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} types de bien">
             </p-paginator>
           </div>
-          <div *ngIf="typesDeBien.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="typesDeBien.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucun type de bien enregistré pour le moment</p>
           </div>
         </div>

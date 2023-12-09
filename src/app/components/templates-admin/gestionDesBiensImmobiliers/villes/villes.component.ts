@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Page } from 'src/app/interfaces/Page';
 import { Region } from 'src/app/models/gestionDesBiensImmobiliers/Region';
 import { Ville } from 'src/app/models/gestionDesBiensImmobiliers/Ville';
 import { RegionService } from 'src/app/services/gestionDesBiensImmobiliers/region.service';
@@ -19,11 +20,11 @@ export class VillesComponent implements OnInit {
   visibleAddForm = 0;
   visibleUpdateForm = 0;
 
-  pageActuelle = 0;
+  numeroDeLaPage = 0;
   elementsParPage = 5;
 
   ville = this.villeService.ville;
-  villes: Ville[] = [];
+  villes!: Page<Ville>;
   regions: Region[] = [];
   messageErreur: string = "";
   messageSuccess: string | null = null;
@@ -39,7 +40,7 @@ export class VillesComponent implements OnInit {
 
   ngOnInit(): void {
     this.listerRegions();
-    this.listerVilles();
+    this.listerVilles(this.numeroDeLaPage, this.elementsParPage);
     this.initVilleForm();
   }
 
@@ -58,8 +59,8 @@ export class VillesComponent implements OnInit {
     );
   }
 
-  listerVilles():void {
-    this.villeService.getAll().subscribe(
+  listerVilles(numeroDeLaPage: number, elementsParPage: number):void {
+    this.villeService.getVillesPaginees(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.villes = response;
       }
@@ -70,18 +71,14 @@ export class VillesComponent implements OnInit {
     this.regionSelectionnee = event.value;
   }
 
-  get villesParPage(): any[] {
-    return this.villes.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
-  }
-
   pagination(event: any) {
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    this.listerVilles()
+    this.listerVilles(this.numeroDeLaPage, this.elementsParPage);
   }
 
   voirListe(): void {
-    this.listerVilles();
+    this.listerVilles(this.numeroDeLaPage, this.elementsParPage);
     this.villeForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
@@ -96,7 +93,7 @@ export class VillesComponent implements OnInit {
   }
 
   detailVille(id: number): void {
-    console.log(id)
+    //console.log(id)
     this.villeService.findById(id).subscribe(
       (response) => {
         this.ville = response;
@@ -177,7 +174,7 @@ export class VillesComponent implements OnInit {
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)
       if (error.status == 409) {
         this.messageErreur = "Une ville avec ce libelle existe déjà !";
         this.messageService.add({
@@ -197,7 +194,7 @@ export class VillesComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.villeService.activerVille(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "La ville a été activé avec succès !";
           this.messageService.add({
@@ -236,7 +233,7 @@ export class VillesComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.villeService.desactiverVille(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "La ville a été désactivé avec succès !";
           this.messageService.add({

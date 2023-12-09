@@ -166,22 +166,22 @@ export class RegisterComponent implements OnInit {
 
   profilChoisi(event: any) {
     this.profilSelectionne = event.value;
-    console.log(this.profilSelectionne)
+    //console.log(this.profilSelectionne)
   }
 
   register(): void {
 
     if (this.profilSelectionne.libelle === 'Propriétaire') {
       this.registerForm.role = this.roleProprietaire;
-      console.log(this.registerForm)
+      //console.log(this.registerForm)
       this.personneService.inscription(this.registerForm).subscribe(
         (response) => {
           this.RegisterForm.reset();
-          console.log(response);
+          //console.log(response);
           this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
         },
         (error) => {
-          console.log(error)
+          //console.log(error)
           if (error.message === "Un utilisateur avec ce nom d'utilisateur existe déjà") {
             this.inscriptionNonReussie = true;
             this.message = "Un propriétaire avec ce nom d'utilisateur existe déjà. Veuillez réessayez !";
@@ -206,11 +206,11 @@ export class RegisterComponent implements OnInit {
       this.personneService.inscription(this.registerForm).subscribe(
         (response) => {
           this.RegisterForm.reset();
-          console.log(response);
+          //console.log(response);
           this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
         },
         (error) => {
-          console.log(error)
+          //console.log(error)
           if (error.message === "Un utilisateur avec ce nom d'utilisateur existe déjà") {
             this.inscriptionNonReussie = true;
             this.message = "Un responsable d'agence immobilière avec ce nom d'utilisateur existe déjà. Veuillez réessayez !";
@@ -235,7 +235,7 @@ export class RegisterComponent implements OnInit {
       this.personneService.inscription(this.registerForm).subscribe(
         (response) => {
           this.RegisterForm.reset();
-          console.log(response);
+          //console.log(response);
           this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
         },
         (error) => {
@@ -263,11 +263,11 @@ export class RegisterComponent implements OnInit {
       this.personneService.inscription(this.registerForm).subscribe(
         (response) => {
           this.RegisterForm.reset();
-          console.log(response);
+          //console.log(response);
           this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
         },
         (error) => {
-          console.log(error)
+          //console.log(error)
           if (error.message === "Un utilisateur avec ce nom d'utilisateur existe déjà") {
             this.inscriptionNonReussie = true;
             this.message = "Un client avec ce nom d'utilisateur existe déjà. Veuillez réessayez !";

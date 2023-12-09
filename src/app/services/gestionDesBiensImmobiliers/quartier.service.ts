@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Page } from 'src/app/interfaces/Page';
 import { Quartier } from 'src/app/models/gestionDesBiensImmobiliers/Quartier';
 import { environment } from 'src/environments/environment';
 
@@ -41,7 +42,15 @@ export class QuartierService {
     return this.httpClient.get<Array<Quartier>>(this.url + 'quartiers');
   }
 
-  // Affichage de toutes les occurrences des quartiers;
+  // Affichage de toutes les occurrences de quartiers avec pagination;
+  getQuartiersPagines(numeroDeLaPage: number, elementsParPage: number): Observable<Page<Quartier>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<Quartier>>(this.url + 'quartiers/pagines', {params: params});
+  }
+
+  // Affichage de toutes les occurrences de quartiers;
   // url: http://localhost:4040/api/quartiers/actifs
   getQuartiersActifs(): Observable<Array<Quartier>>{
     return this.httpClient.get<Array<Quartier>>(this.url + 'quartiers/actifs');

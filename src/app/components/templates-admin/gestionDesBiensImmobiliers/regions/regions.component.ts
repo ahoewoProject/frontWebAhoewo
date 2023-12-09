@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Page } from 'src/app/interfaces/Page';
 import { Pays } from 'src/app/models/gestionDesBiensImmobiliers/Pays';
 import { Region } from 'src/app/models/gestionDesBiensImmobiliers/Region';
 import { PaysService } from 'src/app/services/gestionDesBiensImmobiliers/pays.service';
@@ -20,11 +21,11 @@ export class RegionsComponent implements OnInit {
   visibleAddForm = 0;
   visibleUpdateForm = 0;
 
-  pageActuelle = 0;
+  numeroDeLaPage = 0;
   elementsParPage = 5;
 
   region = this.regionService.region;
-  regions : Region[] = [];
+  regions!: Page<Region>;
   ListePays: Pays[] = [];
   messageErreur: string = "";
   messageSuccess: string | null = null;
@@ -40,7 +41,7 @@ export class RegionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.listerPays();
-    this.listerRegions();
+    this.listerRegions(this.numeroDeLaPage, this.elementsParPage);
     this.initRegionForm();
   }
 
@@ -51,8 +52,8 @@ export class RegionsComponent implements OnInit {
     })
   }
 
-  listerRegions():void {
-    this.regionService.getAll().subscribe(
+  listerRegions(numeroDeLaPage: number, elementsParPage: number):void {
+    this.regionService.getRegionsPaginees(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.regions = response;
       }
@@ -67,14 +68,10 @@ export class RegionsComponent implements OnInit {
     );
   }
 
-  get regionsParPage(): any[] {
-    return this.regions.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
-  }
-
   pagination(event: any) {
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    this.listerRegions()
+    this.listerRegions(this.numeroDeLaPage, this.elementsParPage);
   }
 
   paysChoisi(event: any) {
@@ -82,7 +79,7 @@ export class RegionsComponent implements OnInit {
   }
 
   voirListe(): void {
-    this.listerRegions();
+    this.listerRegions(this.numeroDeLaPage, this.elementsParPage);
     this.regionForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
@@ -97,7 +94,7 @@ export class RegionsComponent implements OnInit {
   }
 
   detailRegion(id: number): void {
-    console.log(id)
+    //console.log(id)
     this.regionService.findById(id).subscribe(
       (response) => {
         this.region = response;
@@ -144,7 +141,7 @@ export class RegionsComponent implements OnInit {
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)
       if (error.status == 409) {
         this.messageErreur = "Une région avec ce libelle existe déjà !";
         this.messageService.add({
@@ -179,7 +176,7 @@ export class RegionsComponent implements OnInit {
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)
       if (error.status == 409) {
         this.messageErreur = "Une région avec ce libelle existe déjà !";
         this.messageService.add({
@@ -199,7 +196,7 @@ export class RegionsComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.regionService.activerRegion(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "La région a été activé avec succès !";
           this.messageService.add({
@@ -238,7 +235,7 @@ export class RegionsComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.regionService.desactiverRegion(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "La région a été désactivé avec succès !";
           this.messageService.add({

@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Page } from 'src/app/interfaces/Page';
 import { BienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/BienImmobilier';
 import { environment } from 'src/environments/environment';
 
@@ -35,34 +36,55 @@ export class BienImmobilierService {
     return this.httpClient.get<BienImmobilier>(this.url + 'bien-immobilier/' + id);
   }
 
-  // Affichage de toutes les occurrences des biens immobiliers;
+  // Affichage de toutes les occurrences de biens immobiliers;
   // url: http://localhost:4040/api/biens-immobiliers
   getAll(): Observable<Array<BienImmobilier>>{
     return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers');
   }
 
-  // Affichage de toutes les occurrences des biens immobiliers par propriétaire;
+  // Affichage de toutes les occurrences de biens immobiliers par propriétaire;
   // url: http://localhost:4040/api/biens-immobiliers/proprietaire
   getAllByProprietaire(): Observable<Array<BienImmobilier>>{
     return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers/proprietaire');
   }
 
-  // Affichage de toutes les occurrences des biens immobiliers par agence;
+  // Affichage de toutes les occurrences de biens immobiliers par agence;
   // url: http://localhost:4040/api/biens-immobiliers/agences/responsable
   getBiensOfAgencesByResponsable(): Observable<Array<BienImmobilier>>{
     return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers/agences/responsable');
   }
 
-  // Affichage de toutes les occurrences des biens immobiliers par agence;
+  // Affichage de toutes les occurrences de biens immobiliers par agence;
   // url: http://localhost:4040/api/biens-immobiliers/agences/agent
   getBiensOfAgencesByAgent(): Observable<Array<BienImmobilier>>{
     return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers/agences/agent');
   }
 
-  // Affichage de toutes les occurrences des biens immobiliers par gérant;
-  // url: http://localhost:4040/api/biens-immobiliers/gerant
-  getAllByGerant(): Observable<Array<BienImmobilier>>{
-    return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers/gerant');
+    // Affichage de toutes les occurrences de biens immobiliers paginés par propriétaire;
+  // url: http://localhost:4040/api/biens-immobiliers/proprietaire/pagines
+  getAllByProprietairePagines(numeroDeLaPage: number, elementsParPage: number): Observable<Page<BienImmobilier>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<BienImmobilier>>(this.url + 'biens-immobiliers/proprietaire/pagines', {params: params});
+  }
+
+  // Affichage de toutes les occurrences de biens immobiliers paginés par agence;
+  // url: http://localhost:4040/api/biens-immobiliers/agences/responsable/pagines
+  getBiensOfAgencesByResponsablePagines(numeroDeLaPage: number, elementsParPage: number): Observable<Page<BienImmobilier>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<BienImmobilier>>(this.url + 'biens-immobiliers/agences/responsable/pagines', {params: params});
+  }
+
+  // Affichage de toutes les occurrences de biens immobiliers paginés par agence;
+  // url: http://localhost:4040/api/biens-immobiliers/agences/agent/pagines
+  getBiensOfAgencesByAgentPagines(numeroDeLaPage: number, elementsParPage: number): Observable<Page<BienImmobilier>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<BienImmobilier>>(this.url + 'biens-immobiliers/agences/agent/pagines', {params: params});
   }
 
   // url: http://localhost:4040/api/activer/bien-immobilier/{id}

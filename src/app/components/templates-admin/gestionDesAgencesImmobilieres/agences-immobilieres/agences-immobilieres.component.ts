@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Page } from 'src/app/interfaces/Page';
 import { AffectationResponsableAgence } from 'src/app/models/gestionDesAgencesImmobilieres/AffectationResponsableAgence';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
 import { ServicesAgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/ServicesAgenceImmobiliere';
@@ -24,14 +25,14 @@ export class AgencesImmobilieresComponent implements OnInit {
   user: any;
 
   elementsParPage = 5; // Nombre d'éléments par page
-  pageActuelle = 0; // Page actuelle
+  numeroDeLaPage = 0; // Page actuelle
 
   agenceImmobiliere = this.agenceImmobiliereService.agenceImmobiliere;
   serviceAgenceImmobiliere = this.servicesAgenceImmobiliereService.serviceAgenceImmobiliere;
-  agencesImmobilieres: AgenceImmobiliere[] = [];
-  affectationsResponsableAgences: AffectationResponsableAgence[] = [];
-  agencesOfAgent: AffectationResponsableAgence[] = [];
-  servicesAgenceImmobiliere: ServicesAgenceImmobiliere[] = [];
+  agencesImmobilieres!: Page<AgenceImmobiliere>;
+  affectationsResponsableAgences!: Page<AffectationResponsableAgence>;
+  agencesOfAgent!: Page<AffectationResponsableAgence>;
+  servicesAgenceImmobiliere!: Page<ServicesAgenceImmobiliere>;
   affectationResponsableAgence: AffectationResponsableAgence = new AffectationResponsableAgence();
   messageErreur: string = "";
   messageSuccess: string | null = null;
@@ -59,18 +60,18 @@ export class AgencesImmobilieresComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.listeAgenceImmobilieresResponsable();
+      this.listeAgenceImmobilieresResponsable(this.numeroDeLaPage, this.elementsParPage);
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.listerAgencesImmobilieresParAgentImmobilier();
+      this.listerAgencesImmobilieresParAgentImmobilier(this.numeroDeLaPage, this.elementsParPage);
     } else {
-      this.listeAgencesImmobilieres();
+      this.listeAgencesImmobilieres(this.numeroDeLaPage, this.elementsParPage);
     }
     this.initAgenceImmobiliereForm();
   }
 
   //Fonction pour recupérer la liste des agences immobilières
-  listeAgencesImmobilieres(){
-    this.agenceImmobiliereService.getAll().subscribe(
+  listeAgencesImmobilieres(numeroDeLaPage: number, elementsParPage: number) {
+    this.agenceImmobiliereService.getAffectationsResponsableAgence(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.affectationsResponsableAgences = response;
       }
@@ -78,8 +79,8 @@ export class AgencesImmobilieresComponent implements OnInit {
   }
 
   //Fonction pour recupérer les agences immobilières par responsable
-  listeAgenceImmobilieresResponsable() {
-    this.agenceImmobiliereService.findAgencesByResponsable().subscribe(
+  listeAgenceImmobilieresResponsable(numeroDeLaPage: number, elementsParPage: number) {
+    this.agenceImmobiliereService.findAgencesByResponsablePaginees(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.agencesImmobilieres = response;
       }
@@ -87,52 +88,36 @@ export class AgencesImmobilieresComponent implements OnInit {
   }
 
   //Lister les agences immobilières par agent immobilier
-  listerAgencesImmobilieresParAgentImmobilier() {
-    this.affectationAgentAgenceService.getAgencesOfAgent().subscribe(
+  listerAgencesImmobilieresParAgentImmobilier(numeroDeLaPage: number, elementsParPage: number) {
+    this.affectationAgentAgenceService.getAgencesOfAgentPaginees(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.agencesOfAgent = response;
       }
     );
   }
 
-  //Récupération des agences immobilières de la page courante
-  get agencesImmobilieresParPage(): any[] {
-    if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      return this.agencesImmobilieres.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
-    } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      return this.agencesOfAgent.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
-    } else {
-      return this.affectationsResponsableAgences.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
-    }
-  }
-
   pagination(event: any) {
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
     if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.listeAgenceImmobilieresResponsable();
+      this.listeAgenceImmobilieresResponsable(this.numeroDeLaPage, this.elementsParPage);
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.listerAgencesImmobilieresParAgentImmobilier();
+      this.listerAgencesImmobilieresParAgentImmobilier(this.numeroDeLaPage, this.elementsParPage);
     } else {
-      this.listeAgencesImmobilieres();
+      this.listeAgencesImmobilieres(this.numeroDeLaPage, this.elementsParPage);
     }
-  }
-
-  // Récupération des services de la page courante
-  get servicesAgenceImmobiliereParPage(): any[] {
-    return this.servicesAgenceImmobiliere.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
   }
 
   paginationListeServices(event: any) {
     const idAgence = localStorage.getItem('idAgence');
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    this.listeServices(parseInt(idAgence!));
+    this.listeServices(parseInt(idAgence!), this.numeroDeLaPage, this.elementsParPage);
   }
 
   telecharger(event: any) {
     const uploadedFile: File = event.files[0];
-    console.log(uploadedFile)
+    //console.log(error)(uploadedFile)
     this.logoAgence = uploadedFile;
     this.messageSuccess = "Le logo de l'agence immobilière a été téléchargé avec succès.";
     this.messageService.add({
@@ -144,11 +129,11 @@ export class AgencesImmobilieresComponent implements OnInit {
 
   voirListe(): void{
     if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.listeAgenceImmobilieresResponsable();
+      this.listeAgenceImmobilieresResponsable(this.numeroDeLaPage, this.elementsParPage);
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.listerAgencesImmobilieresParAgentImmobilier();
+      this.listerAgencesImmobilieresParAgentImmobilier(this.numeroDeLaPage, this.elementsParPage);
     } else {
-      this.listeAgencesImmobilieres();
+      this.listeAgencesImmobilieres(this.numeroDeLaPage, this.elementsParPage);
     }
     this.agenceImmobiliereForm.reset();
     this.affichage = 1;
@@ -156,17 +141,17 @@ export class AgencesImmobilieresComponent implements OnInit {
     this.visibleUpdateForm = 0;
   }
 
-  listeServices(id: number): void {
-    this.servicesAgenceImmobiliereService.findServicesOfAgence(id).subscribe(
+  listeServices(id: number, numeroDeLaPage: number, elementsParPage: number): void {
+    this.servicesAgenceImmobiliereService.findServicesOfAgencePagines(id, numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
-        console.log(response)
+        //console.log(error)(response)
         this.servicesAgenceImmobiliere = response;
       }
     );
   }
 
   afficherListeServices(id: number): void {
-    this.listeServices(id);
+    this.listeServices(id, this.numeroDeLaPage, this.elementsParPage);
     localStorage.setItem('idAgence', id.toString());
     this.affichage = 3;
   }
@@ -182,7 +167,7 @@ export class AgencesImmobilieresComponent implements OnInit {
   voirListeServices(): void {
     this.affichage = 3;
     const idAgence = localStorage.getItem('idAgence');
-    this.listeServices(parseInt(idAgence!));
+    this.listeServices(parseInt(idAgence!), this.numeroDeLaPage, this.elementsParPage);
   }
 
   afficherPageDetailService(id: number): void {
@@ -191,7 +176,7 @@ export class AgencesImmobilieresComponent implements OnInit {
   }
 
   detailAgenceImmobiliere(id: number): void {
-    console.log(id)
+    //console.log(error)(id)
     if (this.user.role.code == 'ROLE_RESPONSABLE') {
       this.agenceImmobiliereService.findById(id).subscribe(
         (response) => {
@@ -263,7 +248,7 @@ export class AgencesImmobilieresComponent implements OnInit {
       if (heureOuvertureValue) {
         // Convertir les valeurs en objets Date
         const dateOuverture = new Date('1970-01-02T' + heureOuvertureValue);
-        console.log(dateOuverture);
+        //console.log(error)(dateOuverture);
         // Les heures doivent être comprises entre 6h (06:00) et minuit (00:00)
         const heureMin = new Date('1970-01-02T06:00:00');
         const heureMax = new Date('1970-01-02T23:59:59');
@@ -274,9 +259,9 @@ export class AgencesImmobilieresComponent implements OnInit {
         // Convertissez les heures minimales et maximales en millisecondes
         const heureMinMs = heureMin.getTime();
         const heureMaxMs = heureMax.getTime();
-        console.log(heureMinMs)
-        console.log(heureMaxMs)
-        console.log(dateOuvertureMs)
+        //console.log(error)(heureMinMs)
+        //console.log(error)(heureMaxMs)
+        //console.log(error)(dateOuvertureMs)
         // Vérifiez si l'heure d'ouverture se trouve entre 6h et minuit
         if (dateOuvertureMs >= heureMinMs && dateOuvertureMs <= heureMaxMs) {
           return null;
@@ -298,7 +283,7 @@ export class AgencesImmobilieresComponent implements OnInit {
       if (heureFermetureValue) {
         // Convertir les valeurs en objets Date
         const dateFermeture = new Date('1970-01-02T' + heureFermetureValue);
-        console.log(dateFermeture);
+        //console.log(error)(dateFermeture);
         // Les heures doivent être comprises entre 6h (06:00) et minuit (00:00)
         const heureMin = new Date('1970-01-02T06:00:00');
         const heureMax = new Date('1970-01-02T23:59:59');
@@ -309,9 +294,9 @@ export class AgencesImmobilieresComponent implements OnInit {
         // Convertissez les heures minimales et maximales en millisecondes
         const heureMinMs = heureMin.getTime();
         const heureMaxMs = heureMax.getTime();
-        console.log(heureMinMs)
-        console.log(heureMaxMs)
-        console.log(dateFermetureMs)
+        //console.log(error)(heureMinMs)
+        //console.log(error)(heureMaxMs)
+        //console.log(error)(dateFermetureMs)
         // Vérifiez si l'heure de fermeture se trouve entre 6h et minuit
         if (dateFermetureMs >= heureMinMs && dateFermetureMs <= heureMaxMs) {
           return null;
@@ -341,8 +326,8 @@ export class AgencesImmobilieresComponent implements OnInit {
         // Convertir les valeurs en objets Date
         const dateOuverture = new Date('1970-01-02T' + heureOuvertureValue);
         const dateFermeture = new Date('1970-01-02T' + heureFermetureValue);
-        console.log(dateFermeture);
-        console.log(dateOuverture);
+        //console.log(error)(dateFermeture);
+        //console.log(error)(dateOuverture);
         // Les heures doivent être comprises entre 6h (06:00) et minuit (00:00)
         const heureMin = new Date('1970-01-02T06:00:00');
         const heureMax = new Date('1970-01-02T23:59:59');
@@ -354,10 +339,10 @@ export class AgencesImmobilieresComponent implements OnInit {
         // Convertissez les heures minimales et maximales en millisecondes
         const heureMinMs = heureMin.getTime();
         const heureMaxMs = heureMax.getTime();
-        console.log(heureMinMs)
-        console.log(heureMaxMs)
-        console.log(dateFermetureMs)
-        console.log(dateOuvertureMs)
+        //console.log(error)(heureMinMs)
+        //console.log(error)(heureMaxMs)
+        //console.log(error)(dateFermetureMs)
+        //console.log(error)(dateOuvertureMs)
 
         if (dateOuvertureMs > dateFermetureMs){
           return { heureOuvertureSuperieure: true}
@@ -421,7 +406,7 @@ export class AgencesImmobilieresComponent implements OnInit {
         }
     },
     (error) => {
-      console.log(error)
+      //console.log(error)(error)
       if (error.status == 409) {
         this.messageErreur = "Une agence immobilière avec ce nom existe déjà !";
         this.messageService.add({
@@ -459,7 +444,7 @@ export class AgencesImmobilieresComponent implements OnInit {
         }
     },
     (error) => {
-      console.log(error)
+      //console.log(error)(error)
       if (error.status == 409) {
         this.messageErreur = "Une agence immobilière avec ce nom existe déjà !";
         this.messageService.add({
@@ -479,7 +464,7 @@ export class AgencesImmobilieresComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.agenceImmobiliereService.activerAgence(id).subscribe(response=>{
-          console.log(response);
+          ////console.log(error)(error)(response);
           this.voirListe();
           this.messageSuccess = "L'agence immobilière a été activé avec succès !";
           this.messageService.add({
@@ -518,7 +503,7 @@ export class AgencesImmobilieresComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.agenceImmobiliereService.desactiverAgence(id).subscribe(response=>{
-          console.log(response);
+          ////console.log(error)(error)(response);
           this.voirListe();
           this.messageSuccess = "L'agence immobilière a été désactivé avec succès.";
           this.messageService.add({

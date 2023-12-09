@@ -42,8 +42,8 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr *ngFor="let proprietaire of proprietairesParPage | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                <tr *ngFor="let proprietaire of proprietaires.content | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                   <td class="vam">{{ proprietaire.nom }}</td>
                   <td class="vam">{{ proprietaire.prenom }}  <i *ngIf="proprietaire.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
                   <td class="vam">
@@ -70,16 +70,15 @@
             </table>
           </div>
 
-          <div *ngIf="proprietaires.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="proprietaires.totalElements !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="proprietaires.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} proprietaires"
-              [showPageLinks]="true" [showFirstLastIcon]="true">
+              (onPageChange)="pagination($event)" [rows]="proprietaires.size"
+              [totalRecords]="proprietaires.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} proprietaires">
             </p-paginator>
           </div>
-          <div *ngIf="proprietaires.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="proprietaires.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucun propriétaire enregistré pour le moment</p>
           </div>
         </div>

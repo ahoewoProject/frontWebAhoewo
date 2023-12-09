@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Page } from 'src/app/interfaces/Page';
 import { ServicesAgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/ServicesAgenceImmobiliere';
 import { environment } from 'src/environments/environment';
 
@@ -17,7 +18,7 @@ export class ServicesAgenceImmobiliereService {
     this.url = APIEndpoint + 'api/';
   }
 
-  // Affichage de toutes les occurrences des services d'agence immobilière;
+  // Affichage de toutes les occurrences de services d'agence immobilière;
   // url: http://localhost:4040/api/services/agence-immobiliere
   getServicesOfAgence(): Observable<Array<ServicesAgenceImmobiliere>>{
     return this.httpClient.get<Array<ServicesAgenceImmobiliere>>(this.url + 'services/agence-immobiliere');
@@ -26,6 +27,23 @@ export class ServicesAgenceImmobiliereService {
   // url: http://localhost:4040/api/services/agence-immobiliere/{id}
   findServicesOfAgence(id: number): Observable<Array<ServicesAgenceImmobiliere>>{
     return this.httpClient.get<Array<ServicesAgenceImmobiliere>>(this.url + 'services/agence-immobiliere/' + id);
+  }
+
+  // Affichage de toutes les occurrences de services d'agence immobilière;
+  // url: http://localhost:4040/api/services/agence-immobiliere/pagines
+  getServicesOfAgencePagines(numeroDeLaPage: number, elementsParPage: number): Observable<Page<ServicesAgenceImmobiliere>>{
+    let params = new HttpParams()
+    .set('numeroDeLaPage', numeroDeLaPage.toString())
+    .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<ServicesAgenceImmobiliere>>(this.url + 'services/agence-immobiliere/pagines', {params: params});
+  }
+
+  // url: http://localhost:4040/api/services/agence-immobiliere/pagines/{id}
+  findServicesOfAgencePagines(id: number, numeroDeLaPage: number, elementsParPage: number): Observable<Page<ServicesAgenceImmobiliere>>{
+    let params = new HttpParams()
+    .set('numeroDeLaPage', numeroDeLaPage.toString())
+    .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<ServicesAgenceImmobiliere>>(this.url + 'services/agence-immobiliere/pagines/' + id, {params: params});
   }
 
   // url: http://localhost:4040/api/service/agence-immobiliere/{id}

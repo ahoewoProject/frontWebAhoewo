@@ -64,8 +64,8 @@ export class LoginComponent implements OnInit{
 
   login(): void {
 
-    console.log(this.loginForm.username);
-    console.log(this.loginForm.password)
+    //console.log(this.loginForm.username);
+    //console.log(this.loginForm.password)
 
     this.loginData.append('username', this.loginForm.username);
     this.loginData.append('password', this.loginForm.password);
@@ -79,7 +79,7 @@ export class LoginComponent implements OnInit{
 
   private loginSuccess(response: any): void {
     this.LoginForm.reset();
-    console.log(response.refresh_token);
+    //console.log(response.refresh_token);
 
     const access_token = response.access_token;
     const refresh_token = response.refresh_token;
@@ -94,12 +94,12 @@ export class LoginComponent implements OnInit{
     this.personneService.infoUser()
       .subscribe(
         user => this.userInfo(user),
-        error => console.log(error)
+        //error => console.log(error)
       );
   }
 
   private userInfo(user: any): void {
-    console.log(user);
+    //console.log(user);
     this.user = user;
 
     // if (this.user.etatCompte === true) {
@@ -130,7 +130,7 @@ export class LoginComponent implements OnInit{
         this.connexionNonReussie = false;
         this.message = '';
       }, 3000);
-      console.log(this.message);
+      //console.log(this.message);
     } else {
       if (this.user.role.code === 'ROLE_ADMINISTRATEUR') {
         localStorage.setItem('activeLink', '/admin/dashboard');
@@ -186,7 +186,7 @@ export class LoginComponent implements OnInit{
   }
 
   private loginError(error: any): void {
-    console.log(error);
+    //console.log(error);
     this.connexionNonReussie = true;
     this.loginData.delete('username');
     this.loginData.delete('password');

@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Page } from 'src/app/interfaces/Page';
 import { Client } from 'src/app/models/gestionDesComptes/Client';
 import { environment } from 'src/environments/environment';
 
@@ -24,6 +25,14 @@ export class ClientService {
   // url: http://localhost:4040/api/clients
   getAll(): Observable<Array<Client>>{
     return this.httpClient.get<Array<Client>>(this.url + 'clients');
+  }
+
+  // url: http://localhost:4040/api/clients/pagines?numeroDeLaPage=0&elementsParPage=5
+  getClients(numeroDeLaPage: number, elementsParPage: number): Observable<Page<Client>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<Client>>(this.url + 'clients/pagines', {params: params});
   }
 
   // url: http://localhost:4040/api/client/{id}

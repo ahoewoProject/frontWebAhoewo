@@ -111,8 +111,8 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                  <tr *ngFor="let pays of paysParPage | genericFilter: recherche; let i = index;">
-                    <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                  <tr *ngFor="let pays of listePays.content | genericFilter: recherche; let i = index;">
+                    <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                     <td class="vam">{{ pays.libelle }}</td>
                     <td class="vam">
                       <p-tag *ngIf="pays.etat == true" severity="success" value="Activé"></p-tag>
@@ -145,16 +145,15 @@
             </table>
           </div>
 
-          <div *ngIf="listePays.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="listePays.totalElements !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="listePays.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} pays"
-              [showPageLinks]="true" [showFirstLastIcon]="true">
+              (onPageChange)="pagination($event)" [rows]="listePays.size"
+              [totalRecords]="listePays.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} pays">
             </p-paginator>
           </div>
-          <div *ngIf="listePays.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="listePays.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucun pays enregistré pour le moment</p>
           </div>
         </div>

@@ -120,8 +120,8 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                  <tr *ngFor="let role of rolesParPage | genericFilter: recherche; let i = index;">
-                    <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                  <tr *ngFor="let role of roles.content | genericFilter: recherche; let i = index;">
+                    <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                     <td class="vam">{{ role.code }}</td>
                     <td class="vam">{{ role.libelle }}</td>
                     <td class="vam">
@@ -137,18 +137,17 @@
               </tbody>
             </table>
 
-            <div *ngIf="roles.length !== 0" class="mbp_pagination text-center mt30">
+            <div *ngIf="roles.totalElements !== 0" class="mbp_pagination text-center mt30">
               <p-paginator
-                (onPageChange)="pagination($event)" [first]="pageActuelle"
-                [rows]="elementsParPage"  [totalRecords]="roles.length"
-                [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-                currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} rôles"
+                (onPageChange)="pagination($event)" [rows]="roles.size"
+                [totalRecords]="roles.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+                [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} rôles"
                 [showPageLinks]="true" [showFirstLastIcon]="true">
               </p-paginator>
             </div>
 
           </div>
-          <div *ngIf="roles.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="roles.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucun rôle enregistré pour le moment</p>
           </div>
         </div>

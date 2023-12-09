@@ -45,14 +45,14 @@ export class ForgotPasswordComponent implements OnInit{
     this.personneService.requestResetPassword(emailData)
     .subscribe(
       (response) => {
-        console.log(response);
+        //console.log(response);
         this.cacherFormulaire = true;
 
         this.loading = false;
         this.messageLoading = null;
       },
       (error) => {
-        console.log(error)
+        //console.log(error)
         if (error.status === 400) {
           emailData.delete('email');
           this.loading = false;

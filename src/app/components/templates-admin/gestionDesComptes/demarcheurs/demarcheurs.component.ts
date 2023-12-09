@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Page } from 'src/app/interfaces/Page';
 import { Demarcheur } from 'src/app/models/gestionDesComptes/Demarcheur';
 import { DemarcheurService } from 'src/app/services/gestionDesComptes/demarcheur.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
@@ -15,10 +16,10 @@ export class DemarcheursComponent implements OnInit{
   affichage = 1;
 
   elementsParPage = 5; // Nombre d'éléments par page
-  pageActuelle = 0; // Page actuelle
+  numeroDeLaPage = 0; // Page actuelle
 
   demarcheur = new Demarcheur();
-  demarcheurs : Demarcheur[] = [];
+  demarcheurs!: Page<Demarcheur>;
   messageSuccess: string | null = null;
 
   constructor(
@@ -29,32 +30,25 @@ export class DemarcheursComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    this.listeDemarcheurs();
+    this.listeDemarcheurs(this.numeroDeLaPage, this.elementsParPage);
   }
 
-  listeDemarcheurs():void{
-    this.demarcheurService.getAll().subscribe(
+  listeDemarcheurs(numeroDeLaPage: number, elementsParPage: number):void{
+    this.demarcheurService.getDemarcheurs(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.demarcheurs = response;
       }
     );
   }
 
-  // Récupération des démarcheurs de la page courante
-  get demarcheursParPage(): any[] {
-    const startIndex = this.pageActuelle;
-    const endIndex = startIndex + this.elementsParPage;
-    return this.demarcheurs.slice(startIndex, endIndex);
-  }
-
   pagination(event: any) {
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    this.listeDemarcheurs()
+    this.listeDemarcheurs(this.numeroDeLaPage, this.elementsParPage);
   }
 
   voirListe(): void{
-    this.listeDemarcheurs();
+    this.listeDemarcheurs(this.numeroDeLaPage, this.elementsParPage);
     this.affichage = 1;
   }
 
@@ -74,7 +68,7 @@ export class DemarcheursComponent implements OnInit{
   supprimerDemarcheur(id: number): void{
     this.demarcheurService.deleteById(id).subscribe(
       (response) => {
-        console.log(response);
+        //console.log(response);
         this.voirListe();
         this.messageSuccess = "Le démarcheur a été supprimé avec succès.";
         this.messageService.add({
@@ -93,7 +87,7 @@ export class DemarcheursComponent implements OnInit{
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.personneService.activerCompte(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été activé avec succès !";
           this.messageService.add({
@@ -132,7 +126,7 @@ export class DemarcheursComponent implements OnInit{
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.personneService.desactiverCompte(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été désactivé avec succès.";
           this.messageService.add({

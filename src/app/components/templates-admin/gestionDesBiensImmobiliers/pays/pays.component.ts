@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Page } from 'src/app/interfaces/Page';
 import { Pays } from 'src/app/models/gestionDesBiensImmobiliers/Pays';
 import { PaysService } from 'src/app/services/gestionDesBiensImmobiliers/pays.service';
 
@@ -17,11 +18,11 @@ export class PaysComponent implements OnInit {
   visibleAddForm = 0;
   visibleUpdateForm = 0;
 
-  pageActuelle = 0;
+  numeroDeLaPage = 0;
   elementsParPage = 5;
 
   pays = this.paysService.pays;
-  listePays : Pays[] = [];
+  listePays!: Page<Pays>;
   messageErreur: string = "";
   messageSuccess: string | null = null;
 
@@ -34,7 +35,7 @@ export class PaysComponent implements OnInit {
   paysForm: any;
 
   ngOnInit(): void {
-    this.listerPays();
+    this.listerPaysPagines(this.numeroDeLaPage, this.elementsParPage);
     this.initPaysForm();
   }
 
@@ -44,26 +45,22 @@ export class PaysComponent implements OnInit {
     })
   }
 
-  listerPays():void {
-    this.paysService.getAll().subscribe(
+  listerPaysPagines(numeroDeLaPage: number, elementsParPage: number):void {
+    this.paysService.getPaysPagines(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.listePays = response;
       }
     );
   }
 
-  get paysParPage(): any[] {
-    return this.listePays.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
-  }
-
   pagination(event: any) {
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    this.listerPays()
+    this.listerPaysPagines(this.numeroDeLaPage, this.elementsParPage);
   }
 
   voirListe(): void {
-    this.listerPays();
+    this.listerPaysPagines(this.numeroDeLaPage, this.elementsParPage);
     this.paysForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
@@ -78,7 +75,7 @@ export class PaysComponent implements OnInit {
   }
 
   detailPays(id: number): void {
-    console.log(id)
+    //console.log(error)(id)
     this.paysService.findById(id).subscribe(
       (response) => {
         this.pays = response;
@@ -120,7 +117,7 @@ export class PaysComponent implements OnInit {
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)(error)
       if (error.status == 409) {
         this.messageErreur = "Un pays avec ce libelle existe déjà !";
         this.messageService.add({
@@ -154,7 +151,7 @@ export class PaysComponent implements OnInit {
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)(error)
       if (error.status == 409) {
         this.messageErreur = "Un pays avec ce libelle existe déjà !";
         this.messageService.add({
@@ -174,7 +171,7 @@ export class PaysComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.paysService.activerPays(id).subscribe(response=>{
-          console.log(response);
+          //console.log(error)(response);
           this.voirListe();
           this.messageSuccess = "Le pays a été activé avec succès !";
           this.messageService.add({
@@ -212,7 +209,7 @@ export class PaysComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.paysService.desactiverPays(id).subscribe(response=>{
-          console.log(response);
+          //console.log(error)(response);
           this.voirListe();
           this.messageSuccess = "Le pays a été désactivé avec succès !";
           this.messageService.add({

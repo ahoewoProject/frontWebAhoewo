@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Page } from 'src/app/interfaces/Page';
 import { Proprietaire } from 'src/app/models/gestionDesComptes/Proprietaire';
 import { environment } from 'src/environments/environment';
 
@@ -24,6 +25,14 @@ export class ProprietaireService {
   // url: http://localhost:4040/api/proprietaires
   getAll(): Observable<Array<Proprietaire>>{
     return this.httpClient.get<Array<Proprietaire>>(this.url + 'proprietaires');
+  }
+
+  // url: http://localhost:4040/api/proprietaires/pagines?numeroDeLaPage=0&elementsParPage=5
+  getProprietaires(numeroDeLaPage: number, elementsParPage: number): Observable<Page<Proprietaire>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<Proprietaire>>(this.url + 'proprietaires/pagines', {params: params});
   }
 
   // url: http://localhost:4040/api/proprietaire/{id}

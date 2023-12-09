@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Page } from 'src/app/interfaces/Page';
 import { TypeDeBien } from 'src/app/models/gestionDesBiensImmobiliers/TypeDeBien';
 import { environment } from 'src/environments/environment';
 
@@ -35,10 +36,18 @@ export class TypeDeBienService {
     return this.httpClient.get<TypeDeBien>(this.url + 'type-de-bien/' + id);
   }
 
-  // Affichage de toutes les occurrences des types de bien;
+  // Affichage de toutes les occurrences de types de bien;
   // url: http://localhost:4040/api/types-de-bien
   getAll(): Observable<Array<TypeDeBien>>{
     return this.httpClient.get<Array<TypeDeBien>>(this.url + 'types-de-bien');
+  }
+
+  // Affichage de toutes les occurrences de types de bien avec pagination;
+  getTypesDeBienPagines(numeroDeLaPage: number, elementsParPage: number): Observable<Page<TypeDeBien>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<TypeDeBien>>(this.url + 'types-de-bien/pagines', {params: params});
   }
 
   // Affichage de toutes les occurrences des types de bien;

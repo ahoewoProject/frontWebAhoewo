@@ -64,12 +64,12 @@ export class ResetPasswordComponent implements OnInit{
     resetPasswordData.append('newPassword', motDePasse)
     this.personneService.reinitialiserMotDePasse(resetPasswordData).subscribe(
       (response) => {
-        console.log(response);
+        //console.log(response);
         localStorage.removeItem('token')
         this.router.navigate(['/connexion'], { queryParams: { passwordResetSuccess: true } });
       },
       (error) => {
-        console.log(error);
+        //console.log(error);
         if (error) {
           this.erreur = true;
           this.message = "Le lien utilisé pour réinitialiser le mot de passe est invalide ou expiré. Veuillez vérifier le mail que vous avez reçu et utiliser le lien correct.";

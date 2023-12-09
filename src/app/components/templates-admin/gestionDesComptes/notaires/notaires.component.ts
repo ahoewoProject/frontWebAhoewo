@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Page } from 'src/app/interfaces/Page';
 import { Notaire } from 'src/app/models/gestionDesComptes/Notaire';
 import { Role } from 'src/app/models/gestionDesComptes/Role';
 import { NotaireService } from 'src/app/services/gestionDesComptes/notaire.service';
@@ -16,13 +17,12 @@ export class NotairesComponent implements OnInit{
   recherche: string = '';
   affichage = 1;
   visibleAddForm = 0;
-  voirMotDePasse: boolean = false;
 
   elementsParPage = 5; // Nombre d'éléments par page
-  pageActuelle = 0; // Page actuelle
+  numeroDeLaPage = 0; // Page actuelle
 
   notaire = this.notaireService.notaire;
-  notaires : Notaire[] = [];
+  notaires!: Page<Notaire>;
   messageErreur: string = "";
   messageSuccess: string | null = null;
 
@@ -47,7 +47,7 @@ export class NotairesComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
-    this.listeNotaires();
+    this.listeNotaires(this.numeroDeLaPage, this.elementsParPage);
     this.initNotaireForm()
   }
 
@@ -61,29 +61,23 @@ export class NotairesComponent implements OnInit{
     })
   }
 
-  listeNotaires():void{
-    this.notaireService.getAll().subscribe(
+  listeNotaires(numeroDeLaPage: number, elementsParPage: number):void{
+    this.notaireService.getNotaires(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.notaires = response;
       }
     );
   }
 
-  // Récupération des notaires de la page courante
-  get notairesParPage(): any[] {
-    const startIndex = this.pageActuelle;
-    const endIndex = startIndex + this.elementsParPage;
-    return this.notaires.slice(startIndex, endIndex);
-  }
 
   pagination(event: any) {
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    this.listeNotaires()
+    this.listeNotaires(this.numeroDeLaPage, this.elementsParPage);
   }
 
   voirListe(): void {
-    this.listeNotaires();
+    this.listeNotaires(this.numeroDeLaPage, this.elementsParPage);
     this.notaireForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
@@ -130,7 +124,7 @@ export class NotairesComponent implements OnInit{
 
     this.notaireService.addNotaire(this.notaire).subscribe(
       (response) => {
-        console.log(response);
+        //console.log(response);
         if(response.id > 0) {
           this.voirListe();
           this.messageSuccess = "Le notaire a été ajouté avec succès.";
@@ -155,7 +149,7 @@ export class NotairesComponent implements OnInit{
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)
       if(error.status == 409){
         this.messageErreur = "Un notaire avec ce nom d'utilisateur existe déjà !";
         this.messageService.add({
@@ -170,7 +164,7 @@ export class NotairesComponent implements OnInit{
   supprimerNotaire(id: number): void {
     this.notaireService.deleteById(id).subscribe(
       (response) => {
-        console.log(response);
+        //console.log(response);
         this.voirListe();
         this.messageSuccess = "Le notaire a été supprimé avec succès.";
         this.messageService.add({
@@ -189,7 +183,7 @@ export class NotairesComponent implements OnInit{
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.personneService.activerCompte(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été activé avec succès !";
           this.messageService.add({
@@ -228,7 +222,7 @@ export class NotairesComponent implements OnInit{
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.personneService.desactiverCompte(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été désactivé avec succès.";
           this.messageService.add({

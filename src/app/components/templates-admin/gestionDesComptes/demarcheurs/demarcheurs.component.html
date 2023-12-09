@@ -42,8 +42,8 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr *ngFor="let demarcheur of demarcheursParPage | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                <tr *ngFor="let demarcheur of demarcheurs.content | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                   <td class="vam">{{ demarcheur.nom }}</td>
                   <td class="vam">{{ demarcheur.prenom }} <i *ngIf="demarcheur.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
                   <td class="vam">
@@ -70,16 +70,15 @@
             </table>
           </div>
 
-          <div *ngIf="demarcheurs.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="demarcheurs.totalElements !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="demarcheurs.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} démarcheurs"
-              [showPageLinks]="true" [showFirstLastIcon]="true">
+              (onPageChange)="pagination($event)" [rows]="demarcheurs.size"
+              [totalRecords]="demarcheurs.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} démarcheurs">
             </p-paginator>
           </div>
-          <div *ngIf="demarcheurs.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="demarcheurs.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucun démarcheur enregistré pour le moment</p>
           </div>
         </div>

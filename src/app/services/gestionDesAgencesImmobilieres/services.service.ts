@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Page } from 'src/app/interfaces/Page';
 import { Services } from 'src/app/models/gestionDesAgencesImmobilieres/Services';
 import { environment } from 'src/environments/environment';
 
@@ -21,6 +22,14 @@ export class ServicesService {
   // url: http://localhost:4040/api/services
   getAll(): Observable<Array<Services>>{
     return this.httpClient.get<Array<Services>>(this.url + 'services');
+  }
+
+  // Affichage de toutes les occurrences de services avec pagination;
+  getServicesPagines(numeroDeLaPage: number, elementsParPage: number): Observable<Page<Services>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<Services>>(this.url + 'services/pagines', {params: params});
   }
 
   // Affichage de toutes les occurrences des services;

@@ -146,8 +146,8 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                  <tr *ngFor="let quartier of quartiersParPage | genericFilter: recherche; let i = index;">
-                    <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                  <tr *ngFor="let quartier of quartiers.content | genericFilter: recherche; let i = index;">
+                    <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                     <td class="vam">{{ quartier.libelle }}</td>
                     <td class="vam">{{ quartier.ville.libelle }}</td>
                     <td class="vam">
@@ -181,16 +181,15 @@
             </table>
           </div>
 
-          <div *ngIf="quartiers.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="quartiers.totalElements !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="quartiers.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} quartiers"
-              [showPageLinks]="true" [showFirstLastIcon]="true">
+              (onPageChange)="pagination($event)" [rows]="quartiers.size"
+              [totalRecords]="quartiers.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} quartiers">
             </p-paginator>
           </div>
-          <div *ngIf="quartiers.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="quartiers.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucun quartier enregistré pour le moment</p>
           </div>
         </div>

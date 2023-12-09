@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Page } from 'src/app/interfaces/Page';
 import { AffectationResponsableAgence } from 'src/app/models/gestionDesAgencesImmobilieres/AffectationResponsableAgence';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
 import { environment } from 'src/environments/environment';
@@ -28,6 +29,24 @@ export class AgenceImmobiliereService {
   // url: http://localhost:4040/api/agences-immobilieres/responsable
   findAgencesByResponsable(): Observable<Array<AgenceImmobiliere>>{
     return this.httpClient.get<Array<AgenceImmobiliere>>(this.url + 'agences-immobilieres/responsable');
+  }
+
+    // Affichage de toutes les occurrences d'agence immobilière paginées;
+  // url: http://localhost:4040/api/agences-immobilieres/paginees
+  getAffectationsResponsableAgence(numeroDeLaPage: number, elementsParPage: number): Observable<Page<AffectationResponsableAgence>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<AffectationResponsableAgence>>(this.url + 'agences-immobilieres/paginees', {params: params});
+  }
+
+  // Affichage de toutes les occurrences d'agence immobilière paginées par responsable d'agence immobilière;
+  // url: http://localhost:4040/api/agences-immobilieres/responsable/paginees
+  findAgencesByResponsablePaginees(numeroDeLaPage: number, elementsParPage: number): Observable<Page<AgenceImmobiliere>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<AgenceImmobiliere>>(this.url + 'agences-immobilieres/responsable/paginees', {params: params});
   }
 
   // Affichage de toutes les occurrences d'agence immobilière par agent immobilier;

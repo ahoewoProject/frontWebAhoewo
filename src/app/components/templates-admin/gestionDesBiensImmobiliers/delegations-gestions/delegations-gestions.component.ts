@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, ConfirmEventType } from 'primeng/api';
+import { Page } from 'src/app/interfaces/Page';
 import { Confort } from 'src/app/models/gestionDesBiensImmobiliers/Confort';
 import { DelegationGestion } from 'src/app/models/gestionDesBiensImmobiliers/DelegationGestion';
 import { Divertissement } from 'src/app/models/gestionDesBiensImmobiliers/Divertissement';
@@ -31,15 +32,14 @@ export class DelegationsGestionsComponent implements OnInit {
   visibleAddForm = 0;
 
   elementsParPage = 5; // Nombre d'éléments par page
-  pageActuelle = 0; // Page actuelle
+  numeroDeLaPage = 0; // Page actuelle
 
   delegationGestion = this.delegationGestionService.delegationGestion;
-  delegationGestions : DelegationGestion[] = [];
+  delegationGestions!: Page<DelegationGestion>;
   confort = new Confort();
   divertissement = new Divertissement();
   utilitaire = new Utilitaire();
   images: ImagesBienImmobilier[] = [];
-  gestionnaires: Personne[] = [];
   messageErreur: string = "";
   messageSuccess: string | null = null;
   APIEndpoint: string;
@@ -80,14 +80,14 @@ export class DelegationsGestionsComponent implements OnInit {
     ];
 
     if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
-      this.listeDelegationGestionProprietaire();
+      this.listeDelegationGestionProprietaire(this.numeroDeLaPage, this.elementsParPage);
       this.messageService.add({ severity: 'success', summary: 'Délagation de gestion réussie', detail: 'Le bien correspondant a été délégué avec succès.' });
     } else if (this.user.role.code == 'ROLE_DEMARCHEUR' || this.user.role.code == 'ROLE_GERANT') {
-      this.listeDelegationGestionGestionnaire();
+      this.listeDelegationGestionGestionnaire(this.numeroDeLaPage, this.elementsParPage);
     } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.listeDelegationsGestionsOfAgencesByResponsable();
+      this.listeDelegationsGestionsOfAgencesByResponsable(this.numeroDeLaPage, this.elementsParPage);
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.listeDelegationsGestionsOfAgencesByAgent();
+      this.listeDelegationsGestionsOfAgencesByAgent(this.numeroDeLaPage, this.elementsParPage);
     }
   }
 
@@ -104,11 +104,11 @@ export class DelegationsGestionsComponent implements OnInit {
     );
   }
 
-  listeDelegationGestionProprietaire(): void {
-    this.delegationGestionService.getAllByProprietaire().subscribe(
+  listeDelegationGestionProprietaire(numeroDeLaPage: number, elementsParPage: number): void {
+    this.delegationGestionService.getAllByProprietairPaginees(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.delegationGestions = response;
-        this.delegationGestions.forEach((delegationGestion) => {
+        this.delegationGestions.content.forEach((delegationGestion) => {
           this.premiereImageDuBien(delegationGestion.bienImmobilier.id);
         });
         if (this.delegationReussie) {
@@ -118,33 +118,33 @@ export class DelegationsGestionsComponent implements OnInit {
     );
   }
 
-  listeDelegationGestionGestionnaire(): void {
-    this.delegationGestionService.getAllByGestionnaire().subscribe(
+  listeDelegationGestionGestionnaire(numeroDeLaPage: number, elementsParPage: number): void {
+    this.delegationGestionService.getAllByGestionnairePaginees(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.delegationGestions = response;
-        this.delegationGestions.forEach((delegationGestion) => {
+        this.delegationGestions.content.forEach((delegationGestion) => {
           this.premiereImageDuBien(delegationGestion.bienImmobilier.id);
         });
       }
     );
   }
 
-  listeDelegationsGestionsOfAgencesByResponsable(): void {
-    this.delegationGestionService.getDelegationsGestionsOfAgencesByResponsable().subscribe(
+  listeDelegationsGestionsOfAgencesByResponsable(numeroDeLaPage: number, elementsParPage: number): void {
+    this.delegationGestionService.getDelegationsGestionsOfAgencesByResponsablePaginees(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.delegationGestions = response;
-        this.delegationGestions.forEach((delegationGestion) => {
+        this.delegationGestions.content.forEach((delegationGestion) => {
           this.premiereImageDuBien(delegationGestion.bienImmobilier.id);
         });
       }
     );
   }
 
-  listeDelegationsGestionsOfAgencesByAgent(): void {
-    this.delegationGestionService.getDelegationsGestionsOfAgencesByAgent().subscribe(
+  listeDelegationsGestionsOfAgencesByAgent(numeroDeLaPage: number, elementsParPage: number): void {
+    this.delegationGestionService.getDelegationsGestionsOfAgencesByAgentPaginees(numeroDeLaPage,elementsParPage).subscribe(
       (response) => {
         this.delegationGestions = response;
-        this.delegationGestions.forEach((delegationGestion) => {
+        this.delegationGestions.content.forEach((delegationGestion) => {
           this.premiereImageDuBien(delegationGestion.bienImmobilier.id);
         });
       }
@@ -155,48 +155,42 @@ export class DelegationsGestionsComponent implements OnInit {
     this.imagesBienImmobilierService.getImagesByBienImmobilier(id)
     .subscribe((response) => {
       this.images = response;
-      console.log(response);
+      //console.log(error)(response);
       }
     );
   }
 
-  // Récupération des delegation de gestion de la page courante
-  get delegationGestionsParPage(): any[] {
-    const startIndex = this.pageActuelle;
-    const endIndex = startIndex + this.elementsParPage;
-    return this.delegationGestions.slice(startIndex, endIndex);
-  }
 
   pagination(event: any) {
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
     if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
-      this.listeDelegationGestionProprietaire();
+      this.listeDelegationGestionProprietaire(this.numeroDeLaPage, this.elementsParPage);
     } else if (this.user.role.code == 'ROLE_DEMARCHEUR' || this.user.role.code == 'ROLE_GERANT') {
-      this.listeDelegationGestionGestionnaire();
+      this.listeDelegationGestionGestionnaire(this.numeroDeLaPage, this.elementsParPage);
     } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.listeDelegationsGestionsOfAgencesByResponsable();
+      this.listeDelegationsGestionsOfAgencesByResponsable(this.numeroDeLaPage, this.elementsParPage);
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.listeDelegationsGestionsOfAgencesByAgent();
+      this.listeDelegationsGestionsOfAgencesByAgent(this.numeroDeLaPage, this.elementsParPage);
     }
   }
 
   voirListe(): void {
     if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
-      this.listeDelegationGestionProprietaire();
+      this.listeDelegationGestionProprietaire(this.numeroDeLaPage, this.elementsParPage);
     } else if (this.user.role.code == 'ROLE_DEMARCHEUR' || this.user.role.code == 'ROLE_GERANT') {
-      this.listeDelegationGestionGestionnaire();
+      this.listeDelegationGestionGestionnaire(this.numeroDeLaPage, this.elementsParPage);
     } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.listeDelegationsGestionsOfAgencesByResponsable();
+      this.listeDelegationsGestionsOfAgencesByResponsable(this.numeroDeLaPage, this.elementsParPage);
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.listeDelegationsGestionsOfAgencesByAgent();
+      this.listeDelegationsGestionsOfAgencesByAgent(this.numeroDeLaPage, this.elementsParPage);
     }
     this.delegationReussie = false;
     this.affichage = 1;
   }
 
   detailDelegationGestion(id: number): void {
-    console.log(id)
+    //console.log(error)(id)
     this.delegationGestionService.findById(id).subscribe(
       (response) => {
         this.delegationGestion = response;
@@ -247,7 +241,7 @@ export class DelegationsGestionsComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.delegationGestionService.deleteById(id).subscribe(response=>{
-          console.log(response);
+          //console.log(error)(response);
           this.voirListe();
           this.messageSuccess = "La délégation de gestion de bien a été supprimé avec succès !";
           this.messageService.add({
@@ -287,7 +281,7 @@ export class DelegationsGestionsComponent implements OnInit {
       accept: () => {
         this.delegationGestionService.accepterDelegationGestion(id).subscribe(
           (response) => {
-            console.log(response);
+            //console.log(error)(response);
             this.voirListe();
             this.messageSuccess = "La délégation de la gestion de ce bien a été accepté avec succès !";
             this.messageService.add({
@@ -297,7 +291,7 @@ export class DelegationsGestionsComponent implements OnInit {
             });
           },
           error => {
-            console.log(error)
+            //console.log(error)(error)
             if (error.status == 400) {
               this.messageErreur = "Impossible d'accepter cette délégation de gestion car ce bien est délégué à un autre utilisateur !"
               this.messageService.add({
@@ -344,7 +338,7 @@ export class DelegationsGestionsComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.delegationGestionService.refuserDelegationGestion(id).subscribe(response=>{
-          console.log(response);
+          //console.log(error)(response);
           this.voirListe();
           this.messageSuccess = "La délégation de la gestion de ce bien a été refusé avec succès !";
           this.messageService.add({

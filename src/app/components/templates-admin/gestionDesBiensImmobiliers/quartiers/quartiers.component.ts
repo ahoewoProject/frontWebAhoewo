@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Page } from 'src/app/interfaces/Page';
 import { Quartier } from 'src/app/models/gestionDesBiensImmobiliers/Quartier';
 import { Ville } from 'src/app/models/gestionDesBiensImmobiliers/Ville';
 import { QuartierService } from 'src/app/services/gestionDesBiensImmobiliers/quartier.service';
@@ -19,11 +20,11 @@ export class QuartiersComponent implements OnInit {
   visibleAddForm = 0;
   visibleUpdateForm = 0;
 
-  pageActuelle = 0;
+  numeroDeLaPage = 0;
   elementsParPage = 5;
 
   quartier = this.quartierService.quartier;
-  quartiers : Quartier[] = [];
+  quartiers!: Page<Quartier>;
   villes: Ville[] = [];
   messageErreur: string = "";
   messageSuccess: string | null = null;
@@ -39,7 +40,7 @@ export class QuartiersComponent implements OnInit {
 
   ngOnInit(): void {
     this.listerVilles();
-    this.listerQuartiers();
+    this.listerQuartiers(this.numeroDeLaPage, this.elementsParPage);
     this.initQuartierForm();
   }
 
@@ -58,22 +59,18 @@ export class QuartiersComponent implements OnInit {
     );
   }
 
-  listerQuartiers():void {
-    this.quartierService.getAll().subscribe(
+  listerQuartiers(numeroDeLaPage: number, elementsParPage: number):void {
+    this.quartierService.getQuartiersPagines(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.quartiers = response;
       }
     );
   }
 
-  get quartiersParPage(): any[] {
-    return this.quartiers.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
-  }
-
   pagination(event: any) {
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first;
     this.elementsParPage = event.rows;
-    this.listerQuartiers()
+    this.listerQuartiers(this.numeroDeLaPage, this.elementsParPage);
   }
 
   villeChoisie(event: any) {
@@ -81,7 +78,7 @@ export class QuartiersComponent implements OnInit {
   }
 
   voirListe(): void {
-    this.listerQuartiers();
+    this.listerQuartiers(this.numeroDeLaPage, this.elementsParPage);
     this.quartierForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
@@ -96,7 +93,7 @@ export class QuartiersComponent implements OnInit {
   }
 
   detailQuartier(id: number): void {
-    console.log(id)
+    //console.log(id)
     this.quartierService.findById(id).subscribe(
       (response) => {
         this.quartier = response;
@@ -143,7 +140,7 @@ export class QuartiersComponent implements OnInit {
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)
       if (error.status == 409) {
         this.messageErreur = "Un quartier avec ce libelle existe déjà !";
         this.messageService.add({
@@ -178,7 +175,7 @@ export class QuartiersComponent implements OnInit {
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)
       if (error.status == 409) {
         this.messageErreur = "Un quartier avec ce libelle existe déjà !";
         this.messageService.add({
@@ -198,7 +195,7 @@ export class QuartiersComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.quartierService.activerQuartier(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le quartier a été activé avec succès !";
           this.messageService.add({
@@ -237,7 +234,7 @@ export class QuartiersComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.quartierService.desactiverQuartier(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le quartier a été désactivé avec succès !";
           this.messageService.add({

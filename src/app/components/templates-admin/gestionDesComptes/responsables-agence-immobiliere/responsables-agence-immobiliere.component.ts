@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Page } from 'src/app/interfaces/Page';
 import { ResponsableAgenceImmobiliere } from 'src/app/models/gestionDesComptes/ResponsableAgenceImmobiliere';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { ResponsableAgenceImmobiliereService } from 'src/app/services/gestionDesComptes/responsable-agence-immobiliere.service';
@@ -15,10 +16,10 @@ export class ResponsablesAgenceImmobiliereComponent implements OnInit {
   affichage = 1;
 
   elementsParPage = 5; // Nombre d'éléments par page
-  pageActuelle = 0; // Page actuelle
+  numeroDeLaPage = 0; // Page actuelle
 
   responsableAgenceImmobiliere = new ResponsableAgenceImmobiliere();
-  responsablesAgenceImmobiliere : ResponsableAgenceImmobiliere[] = [];
+  responsablesAgenceImmobiliere!: Page<ResponsableAgenceImmobiliere>;
   messageSuccess: string | null = null;
 
   constructor(
@@ -29,30 +30,25 @@ export class ResponsablesAgenceImmobiliereComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.listeResponsablesAgenceImmobiliere();
+    this.listeResponsablesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
   }
 
-  listeResponsablesAgenceImmobiliere(): void {
-    this.responsableAgenceImmobiliereService.getAll().subscribe(
+  listeResponsablesAgenceImmobiliere(numeroDeLaPage: number, elementsParPage: number): void {
+    this.responsableAgenceImmobiliereService.getResponsables(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.responsablesAgenceImmobiliere = response;
       }
     );
   }
 
-  // Récupération des responsables d'agence immobilière de la page courante
-  get responsablesAgenceImmobiliereParPage(): any[] {
-    return this.responsablesAgenceImmobiliere.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
-  }
-
   pagination(event: any) {
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    this.listeResponsablesAgenceImmobiliere()
+    this.listeResponsablesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
   }
 
   voirListe(): void {
-    this.listeResponsablesAgenceImmobiliere();
+    this.listeResponsablesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
     this.affichage = 1;
   }
 
@@ -60,7 +56,7 @@ export class ResponsablesAgenceImmobiliereComponent implements OnInit {
     this.responsableAgenceImmobiliereService.findById(id).subscribe(
       (response) => {
         this.responsableAgenceImmobiliere = response;
-        console.log(response);
+        //console.log(response);
       }
     );
   }
@@ -73,7 +69,7 @@ export class ResponsablesAgenceImmobiliereComponent implements OnInit {
   supprimerResponsableAgenceImmobiliere(id: number): void {
     this.responsableAgenceImmobiliereService.deleteById(id).subscribe(
       (response) => {
-        console.log(response);
+        //console.log(response);
         this.voirListe();
         this.messageSuccess = "Le client a été supprimé avec succès.";
         this.messageService.add({
@@ -92,7 +88,7 @@ export class ResponsablesAgenceImmobiliereComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.personneService.activerCompte(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été activé avec succès !";
           this.messageService.add({
@@ -131,7 +127,7 @@ export class ResponsablesAgenceImmobiliereComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.personneService.desactiverCompte(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été désactivé avec succès.";
           this.messageService.add({

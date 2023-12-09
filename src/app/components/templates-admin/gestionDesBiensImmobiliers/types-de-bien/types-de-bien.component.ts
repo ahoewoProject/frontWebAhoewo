@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Page } from 'src/app/interfaces/Page';
 import { TypeDeBien } from 'src/app/models/gestionDesBiensImmobiliers/TypeDeBien';
 import { TypeDeBienService } from 'src/app/services/gestionDesBiensImmobiliers/type-de-bien.service';
 
@@ -17,11 +18,11 @@ export class TypesDeBienComponent implements OnInit {
   visibleAddForm = 0;
   visibleUpdateForm = 0;
 
-  pageActuelle = 0;
+  numeroDeLaPage = 0;
   elementsParPage = 5;
 
   typeDeBien = this.typeDeBienService.typeDeBien;
-  typesDeBien : TypeDeBien[] = [];
+  typesDeBien!: Page<TypeDeBien>;
   messageErreur: string = "";
   messageSuccess: string | null = null;
 
@@ -34,7 +35,7 @@ export class TypesDeBienComponent implements OnInit {
   typeDeBienForm: any;
 
   ngOnInit(): void {
-    this.listeTypesDeBien();
+    this.listeTypesDeBienPagines(0, 5);
     this.initTypeDeBienForm();
   }
 
@@ -44,26 +45,22 @@ export class TypesDeBienComponent implements OnInit {
     })
   }
 
-  listeTypesDeBien():void {
-    this.typeDeBienService.getAll().subscribe(
+  listeTypesDeBienPagines(pageActuelle: number, elementsParPage: number):void {
+    this.typeDeBienService.getTypesDeBienPagines(pageActuelle, elementsParPage).subscribe(
       (response) => {
         this.typesDeBien = response;
       }
     );
   }
 
-  get typesDeBienParPage(): any[] {
-    return this.typesDeBien.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
-  }
-
   pagination(event: any) {
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    this.listeTypesDeBien()
+    this.listeTypesDeBienPagines(this.numeroDeLaPage, this.elementsParPage)
   }
 
   voirListe(): void {
-    this.listeTypesDeBien();
+    this.listeTypesDeBienPagines(this.numeroDeLaPage, this.elementsParPage);
     this.typeDeBienForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
@@ -78,7 +75,7 @@ export class TypesDeBienComponent implements OnInit {
   }
 
   detailTypeDeBien(id: number): void {
-    console.log(id)
+    //console.log(id)
     this.typeDeBienService.findById(id).subscribe(
       (response) => {
         this.typeDeBien = response;
@@ -150,7 +147,7 @@ export class TypesDeBienComponent implements OnInit {
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)
       if (error.status == 409) {
         this.messageErreur = "Un type de bien avec cette désignation existe déjà !";
         this.messageService.add({
@@ -170,7 +167,7 @@ export class TypesDeBienComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.typeDeBienService.activerTypeDeBien(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le type de bien a été activé avec succès !";
           this.messageService.add({
@@ -209,7 +206,7 @@ export class TypesDeBienComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.typeDeBienService.desactiverTypeDeBien(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le type de bien a été désactivé avec succès !";
           this.messageService.add({
@@ -249,7 +246,7 @@ export class TypesDeBienComponent implements OnInit {
       accept: () => {
         this.typeDeBienService.deleteById(id).subscribe(
           (response) => {
-            console.log(response);
+            //console.log(response);
             this.voirListe();
             this.messageSuccess = "Le type de bien a été supprimé avec succès !";
             this.messageService.add({

@@ -256,10 +256,10 @@ export class AgentsImmobiliersComponent implements OnInit{
       this.agentImmobilier.role = this.roleAgentImmobilier;
       this.affectationAgentAgenceRequest.agentImmobilier = this.agentImmobilier;
       this.affectationAgentAgenceRequest.agenceImmobiliere = this.agenceSelectionnee;
-      console.log(this.affectationAgentAgenceRequest)
+      //console.log(this.affectationAgentAgenceRequest)
       this.affectationAgentAgenceService.ajouterAgentAgence(this.affectationAgentAgenceRequest).subscribe(
         (response) => {
-          console.log(response);
+          //console.log(response);
           if (response.id > 0) {
             this.voirListe();
             this.messageSuccess = "L'agent immobilier a été ajouté avec succès.";
@@ -285,7 +285,7 @@ export class AgentsImmobiliersComponent implements OnInit{
           }
       },
       (error) =>{
-        console.log(error)
+        //console.log(error)
         if (error.message == "Cet agent immobilier à été déjà ajouté dans cette agence.") {
           this.messageErreur = "Cet agent immobilier à été déjà ajouté dans cette agence !";
           this.messageService.add({
@@ -305,10 +305,10 @@ export class AgentsImmobiliersComponent implements OnInit{
     } else if (this.checked == 'Agent immobilier existant') {
       this.affectationAgentAgenceRequest.matricule = this.agentImmobilier.matricule;
       this.affectationAgentAgenceRequest.agenceImmobiliere = this.agenceSelectionnee;
-      console.log(this.affectationAgentAgenceRequest)
+      //console.log(this.affectationAgentAgenceRequest)
       this.affectationAgentAgenceService.ajoutParMatriculeAgent(this.affectationAgentAgenceRequest).subscribe(
         (response) => {
-          console.log(response);
+          //console.log(response);
           if (response.id > 0) {
             this.voirListe();
             this.messageSuccess = "L'agent immobilier a été ajouté avec succès.";
@@ -330,7 +330,7 @@ export class AgentsImmobiliersComponent implements OnInit{
           }
       },
       (error) =>{
-        console.log(error)
+        //console.log(error)
         if (error.status == 409) {
           this.messageErreur = "Cet agent immobilier à été déjà ajouté dans cette agence !";
           this.messageService.add({
@@ -357,7 +357,7 @@ export class AgentsImmobiliersComponent implements OnInit{
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.personneService.activerCompte(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été activé avec succès !";
           this.messageService.add({
@@ -395,7 +395,7 @@ export class AgentsImmobiliersComponent implements OnInit{
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.personneService.desactiverCompte(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été désactivé avec succès.";
           this.messageService.add({

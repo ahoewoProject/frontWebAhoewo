@@ -140,8 +140,8 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr *ngFor="let _service of servicesParPage | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                <tr *ngFor="let _service of services.content | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                   <td class="vam">{{ _service.codeService }} </td>
                   <td class="vam">{{ _service.nomService }} </td>
                   <td class="vam">
@@ -182,16 +182,15 @@
             </table>
           </div>
 
-          <div *ngIf="services.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="services.totalElements !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="services.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} services"
+              (onPageChange)="pagination($event)" [rows]="services.size"
+              [totalRecords]="services.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} services"
               [showPageLinks]="true" [showFirstLastIcon]="true">
             </p-paginator>
           </div>
-          <div *ngIf="services.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="services.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucun service enregistré pour le moment</p>
           </div>
         </div>

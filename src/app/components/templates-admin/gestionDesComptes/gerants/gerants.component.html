@@ -106,8 +106,8 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr *ngFor="let gerant of gerantsParPage | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                <tr *ngFor="let gerant of gerants.content | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                   <td class="vam">{{ gerant.nom }}</td>
                   <td class="vam">{{ gerant.prenom }}</td>
                   <td class="vam">
@@ -134,16 +134,15 @@
             </table>
           </div>
 
-          <div *ngIf="gerants.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="gerants.totalElements !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage" [totalRecords]="gerants.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} gérants"
-              [showPageLinks]="true" [showFirstLastIcon]="true">
+              (onPageChange)="pagination($event)" [rows]="gerants.size"
+              [totalRecords]="gerants.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} gérants">
             </p-paginator>
           </div>
-          <div *ngIf="gerants.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="gerants.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucun gérant enregistré pour le moment</p>
           </div>
         </div>

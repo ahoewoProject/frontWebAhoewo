@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Page } from 'src/app/interfaces/Page';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
 import { Services } from 'src/app/models/gestionDesAgencesImmobilieres/Services';
 import { ServicesAgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/ServicesAgenceImmobiliere';
@@ -25,12 +26,12 @@ export class ServicesAgenceImmobiliereComponent implements OnInit {
   user : any;
 
   elementsParPage = 5; // Nombre d'éléments par page
-  pageActuelle = 0; // Page actuelle
+  numeroDeLaPage = 0; // Page actuelle
 
   serviceAgenceImmobiliere = this.servicesAgenceImmobiliereService.serviceAgenceImmobiliere;
   services : Services[] = [];
   agencesImmobilieres: AgenceImmobiliere[] = [];
-  servicesAgenceImmobiliere: ServicesAgenceImmobiliere[] = [];
+  servicesAgenceImmobiliere!: Page<ServicesAgenceImmobiliere>;
   messageErreur: string = "";
   messageSuccess: string | null = null;
   serviceForm: any;
@@ -49,7 +50,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.listerServicesAgenceImmobiliere();
+    this.listerServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
     this.initServiceAgenceImmobiliereForm();
     this.listerServices();
     this.listerAgencesImmobilieres();
@@ -71,8 +72,8 @@ export class ServicesAgenceImmobiliereComponent implements OnInit {
   }
 
   // Fonction pour recupérer les services des agences immobilières
-  listerServicesAgenceImmobiliere() {
-    this.servicesAgenceImmobiliereService.getServicesOfAgence().subscribe(
+  listerServicesAgenceImmobiliere(numeroDeLaPage: number, elementsParPage: number) {
+    this.servicesAgenceImmobiliereService.getServicesOfAgencePagines(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.servicesAgenceImmobiliere = response;
       }
@@ -105,19 +106,14 @@ export class ServicesAgenceImmobiliereComponent implements OnInit {
     this.agenceSelectionnee = event.value;
   }
 
-  // Récupération des services de la page courante
-  get servicesAgenceImmobiliereParPage(): any[] {
-    return this.servicesAgenceImmobiliere.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
-  }
-
   pagination(event: any) {
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    this.listerServicesAgenceImmobiliere();
+    this.listerServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
   }
 
   voirListe(): void {
-    this.listerServicesAgenceImmobiliere();
+    this.listerServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
     this.serviceAgenceImmobiliereForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
@@ -139,7 +135,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit {
   }
 
   detailServiceAgenceImmobiliere(id: number): void {
-    console.log(id)
+    //console.log(error)(id)
     this.servicesAgenceImmobiliereService.findById(id).subscribe(
       (response) => {
         this.serviceAgenceImmobiliere = response;
@@ -159,7 +155,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit {
     this.servicesAgenceImmobiliereService.addServicesAgence(this.serviceAgenceImmobiliere).subscribe(
 
       (response) => {
-        console.log(response)
+        //console.log(error)(response)
         if (response.id > 0) {
           this.voirListe();
           this.messageSuccess = "Le service a été ajouté avec succès.";
@@ -181,7 +177,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit {
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)(error)
       if (error.status == 409) {
         this.messageErreur = "Un service avec ce nom existe déjà dans cette agence !";
         this.messageService.add({
@@ -200,7 +196,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit {
     this.servicesAgenceImmobiliereService.updateServicesAgence(id, this.serviceAgenceImmobiliere).subscribe(
 
       (response) => {
-        console.log(response)
+        //console.log(error)(response)
         if (response.id > 0) {
           this.voirListe();
           this.messageSuccess = "Le service a été modifié avec succès.";
@@ -222,7 +218,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit {
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)(error)
       if (error.status == 409) {
         this.messageErreur = "Un service avec ce nom existe déjà dans cette agence !";
         this.messageService.add({
@@ -241,7 +237,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.servicesAgenceImmobiliereService.activerServiceAgence(id).subscribe(response=>{
-          console.log(response);
+          //console.log(error)(response);
           this.voirListe();
           this.messageSuccess = "Le service a été activé avec succès !";
           this.messageService.add({
@@ -280,7 +276,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.servicesAgenceImmobiliereService.desactiverServiceAgence(id).subscribe(response=>{
-          console.log(response);
+          //console.log(error)(response);
           this.voirListe();
           this.messageSuccess = "Le service a été désactivé avec succès !";
           this.messageService.add({

@@ -125,9 +125,8 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="text-end">
-                  <a class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': demandeCertificationForm.invalid || (documentJustificatif == null && carteCfe == null) }" (click)="demandeCertificationForm.invalid ? null : ajouterDemandeCertificationAgence()" type="submit">Envoyer</a>
-                  &nbsp;
-                  <a class="ud-btn btn-thm4" type="button" (click)="voirListe()">Annuler</a>
+                  <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
+                  <button pButton [ngClass]="{ 'disabled-link': demandeCertificationForm.invalid || (documentJustificatif == null && carteCfe == null) }" type="submit" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
                 </div>
               </div>
             </div>
@@ -146,7 +145,7 @@
           <h4 *ngIf="user.role.code == 'ROLE_NOTAIRE'">Demandes de certifications</h4>
           <h4 *ngIf="user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR' ">Demande de certification de compte</h4>
           <h4 *ngIf="user.role.code == 'ROLE_RESPONSABLE' ">Demande de certification d'une agence</h4>
-          <h6 *ngIf="user.role.code == 'ROLE_RESPONSABLE' && agencesImmobilieres.length == 0" class="text error"><i class="pi pi-exclamation-triangle"></i> Pour demander la certification pour vos agences, veuillez en premier lieu ajouter une de vos <b>agence immobilière</b>.</h6>
+          <h6 *ngIf="user.role.code == 'ROLE_RESPONSABLE' && agencesImmobilieres.length == 0" class="text error"><i class="fa-regular fa-triangle-exclamation fa-2xl"></i> Pour demander la certification pour vos agences, veuillez en premier lieu ajouter une de vos <b>agence immobilière</b>.</h6>
         </div>
       </div>
       <div class="col-xxl-7 d-flex justify-content-end">

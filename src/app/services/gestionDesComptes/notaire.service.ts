@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Page } from 'src/app/interfaces/Page';
 import { Notaire } from 'src/app/models/gestionDesComptes/Notaire';
 import { environment } from 'src/environments/environment';
 
@@ -22,11 +23,6 @@ export class NotaireService {
     return this.httpClient.post<Notaire>(this.url + 'notaire/ajouter', a);
   }
 
-  // url: http://localhost:4040/api/notaire/modifier/{id}
-  updateNotaire(id: number, n: Notaire): Observable<Notaire>{
-    return this.httpClient.put<Notaire>(this.url + 'notaire/modifier/'+ id, n);
-  }
-
   // url: http://localhost:4040/api/notaire/supprimer/{id}
   deleteById(id: number){
     return this.httpClient.delete(this.url + 'notaire/supprimer/' + id);
@@ -35,6 +31,14 @@ export class NotaireService {
   // url: http://localhost:4040/api/notaires
   getAll(): Observable<Array<Notaire>>{
     return this.httpClient.get<Array<Notaire>>(this.url + 'notaires');
+  }
+
+  // url: http://localhost:4040/api/notaires/pagines?numeroDeLaPage=0&elementsParPage=5
+  getNotaires(numeroDeLaPage: number, elementsParPage: number): Observable<Page<Notaire>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<Notaire>>(this.url + 'notaires/pagines', {params: params});
   }
 
   // url: http://localhost:4040/api/notaire/{id}

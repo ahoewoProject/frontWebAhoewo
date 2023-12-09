@@ -124,13 +124,14 @@ export class DemandesCertificationsComponent implements OnInit {
   }
 
   afficherFormulaireAjouter(): void {
+    this.affichage = 0;
     this.visibleAddForm = 1;
     this.demandeCertification = new DemandeCertification();
   }
 
   telechargerCNI(event: any) {
     const uploadedFile: File = event.files[0];
-    console.log(uploadedFile)
+    //console.log(uploadedFile)
     this.documentJustificatif = uploadedFile;
     this.messageSuccess = "Le carte d'identité a été téléchargé avec succès.";
     this.messageService.add({
@@ -142,7 +143,7 @@ export class DemandesCertificationsComponent implements OnInit {
 
   telechargerCarteCfe(event: any) {
     const uploadedFile: File = event.files[0];
-    console.log(uploadedFile)
+    //console.log(uploadedFile)
     this.carteCfe = uploadedFile;
     this.messageSuccess = "Le carte cfe a été téléchargé avec succès.";
     this.messageService.add({
@@ -184,7 +185,7 @@ export class DemandesCertificationsComponent implements OnInit {
         }
       },
       (error) => {
-        console.log(error);
+        //console.log(error);
       }
     );
   }
@@ -250,7 +251,7 @@ export class DemandesCertificationsComponent implements OnInit {
       accept: () => {
         this.demandeCertifService.certifierCompte(idPersonne, idDemandeCertif).subscribe(
           (response) => {
-            console.log(response);
+            //console.log(response);
             this.voirListe();
             this.messageSuccess = "Le compte du demandeur a été certifié avec succès!";
             this.messageService.add({
@@ -290,7 +291,7 @@ export class DemandesCertificationsComponent implements OnInit {
       accept: () => {
         this.demandeCertifService.certifierAgence(idAgence, idDemandeCertif).subscribe(
           (response) => {
-            console.log(response);
+            //console.log(response);
             this.voirListe();
             this.messageSuccess = "L'agence immobilière a été certifiée avec succès!";
             this.messageService.add({

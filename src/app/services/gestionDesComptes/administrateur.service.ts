@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Page } from 'src/app/interfaces/Page';
 import { Administrateur } from 'src/app/models/gestionDesComptes/Administrateur';
 import { environment } from 'src/environments/environment';
 
@@ -22,11 +23,6 @@ export class AdministrateurService {
     return this.httpClient.post<Administrateur>(this.url + 'administrateur/ajouter', a);
   }
 
-  // url: http://localhost:4040/api/administrateur/modifier/{id}
-  updateAdministrateur(id: number, a: Administrateur): Observable<Administrateur>{
-    return this.httpClient.put<Administrateur>(this.url + 'administrateur/modifier/'+ id, a);
-  }
-
   // url: http://localhost:4040/api/administrateur/supprimer/{id}
   deleteById(id: number){
     return this.httpClient.delete(this.url + 'administrateur/supprimer/' + id);
@@ -35,6 +31,14 @@ export class AdministrateurService {
   // url: http://localhost:4040/api/administrateurs
   getAll(): Observable<Array<Administrateur>>{
     return this.httpClient.get<Array<Administrateur>>(this.url + 'administrateurs');
+  }
+
+  // url: http://localhost:4040/api/administrateurs/pagines?numeroDeLaPage=0&elementsParPage=5
+  getAdministrateurs(numeroDeLaPage: number, elementsParPage: number): Observable<Page<Administrateur>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<Administrateur>>(this.url + 'administrateurs/pagines', {params: params});
   }
 
   // url: http://localhost:4040/api/administrateur/{id}

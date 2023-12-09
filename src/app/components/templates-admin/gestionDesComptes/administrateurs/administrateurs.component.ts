@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Page } from 'src/app/interfaces/Page';
 import { Administrateur } from 'src/app/models/gestionDesComptes/Administrateur';
 import { Role } from 'src/app/models/gestionDesComptes/Role';
 import { AdministrateurService } from 'src/app/services/gestionDesComptes/administrateur.service';
@@ -15,13 +16,12 @@ export class AdministrateursComponent implements OnInit {
 
   affichage = 1;
   visibleAddForm = 0;
-  voirMotDePasse: boolean = false;
 
   elementsParPage = 5; // Nombre d'éléments par page
-  pageActuelle = 0; // Page actuelle
+  numeroDeLaPage = 0; // Page actuelle
 
   admin = this.adminService.administrateur;
-  administrateurs : Administrateur[] = [];
+  administrateurs!: Page<Administrateur>;
   messageErreur: string = "";
   messageSuccess: string | null = null;
 
@@ -45,7 +45,7 @@ export class AdministrateursComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.listeAdmins();
+    this.listeAdmins(this.numeroDeLaPage, this.elementsParPage);
     this.initAdminForm();
   }
 
@@ -59,27 +59,22 @@ export class AdministrateursComponent implements OnInit {
     })
   }
 
-  listeAdmins(): void {
-    this.adminService.getAll().subscribe(
+  listeAdmins(numeroDeLaPage: number, elementsParPage: number): void {
+    this.adminService.getAdministrateurs(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.administrateurs = response;
       }
     );
   }
 
-  // Récupération des admins de la page courante
-  get administrateursParPage(): any[] {
-    return this.administrateurs.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
-  }
-
   pagination(event: any) {
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    this.listeAdmins()
+    this.listeAdmins(this.numeroDeLaPage, this.elementsParPage);
   }
 
   voirListe(): void {
-    this.listeAdmins();
+    this.listeAdmins(this.numeroDeLaPage, this.elementsParPage);
     this.adminForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
@@ -151,7 +146,7 @@ export class AdministrateursComponent implements OnInit {
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)
       if (error.status == 409) {
         this.messageErreur = "Un administrateur avec cette adresse e-mail existe déjà !";
         this.messageService.add({
@@ -170,7 +165,7 @@ export class AdministrateursComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.personneService.activerCompte(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été activé avec succès !";
           this.messageService.add({
@@ -208,7 +203,7 @@ export class AdministrateursComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.personneService.desactiverCompte(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été désactivé avec succès.";
           this.messageService.add({

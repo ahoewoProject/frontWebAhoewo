@@ -42,8 +42,8 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr *ngFor="let client of clientsParPage | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                <tr *ngFor="let client of clients.content | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                   <td class="vam">{{ client.nom }}</td>
                   <td class="vam">{{ client.prenom }}</td>
                   <td class="vam">
@@ -70,16 +70,16 @@
             </table>
           </div>
 
-          <div *ngIf="clients.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="clients.totalElements !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="clients.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
+              (onPageChange)="pagination($event)" [rows]="clients.size"
+              [totalRecords]="clients.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showCurrentPageReport]="true"
               currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} clients"
               [showPageLinks]="true" [showFirstLastIcon]="true">
             </p-paginator>
           </div>
-          <div *ngIf="clients.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="clients.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucun compte client crée pour le moment</p>
           </div>
         </div>

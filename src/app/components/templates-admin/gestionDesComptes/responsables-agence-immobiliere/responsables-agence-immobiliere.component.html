@@ -42,8 +42,8 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr *ngFor="let responsable of responsablesAgenceImmobiliereParPage | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                <tr *ngFor="let responsable of responsablesAgenceImmobiliere.content | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                   <td class="vam">{{ responsable.nom }}</td>
                   <td class="vam">{{ responsable.prenom }} <i *ngIf="responsable.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
                   <td class="vam">
@@ -70,16 +70,15 @@
             </table>
           </div>
 
-          <div *ngIf="responsablesAgenceImmobiliere.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="responsablesAgenceImmobiliere.totalElements !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="responsablesAgenceImmobiliere.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} responsables d'agence immbilière"
-              [showPageLinks]="true" [showFirstLastIcon]="true">
+              (onPageChange)="pagination($event)" [rows]="responsablesAgenceImmobiliere.size"
+              [totalRecords]="responsablesAgenceImmobiliere.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showPageLinks]="true" [showFirstLastIcon]="true" [showCurrentPageReport]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} responsables d'agence immbilière">
             </p-paginator>
           </div>
-          <div *ngIf="responsablesAgenceImmobiliere.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="responsablesAgenceImmobiliere.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucun compte responsable d'agence immobilière crée pour le moment</p>
           </div>
         </div>

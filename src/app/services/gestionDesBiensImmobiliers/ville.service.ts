@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Page } from 'src/app/interfaces/Page';
 import { Ville } from 'src/app/models/gestionDesBiensImmobiliers/Ville';
 import { environment } from 'src/environments/environment';
 
@@ -35,10 +36,18 @@ export class VilleService {
     return this.httpClient.get<Ville>(this.url + 'ville/' + id);
   }
 
-  // Affichage de toutes les occurrences des villes;
+  // Affichage de toutes les occurrences de villes;
   // url: http://localhost:4040/api/villes
   getAll(): Observable<Array<Ville>>{
     return this.httpClient.get<Array<Ville>>(this.url + 'villes');
+  }
+
+  // Affichage de toutes les occurrences de villes avec pagination;
+  getVillesPaginees(numeroDeLaPage: number, elementsParPage: number): Observable<Page<Ville>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<Ville>>(this.url + 'villes/paginees', {params: params});
   }
 
   // Affichage de toutes les occurrences des villes;

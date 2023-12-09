@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Page } from 'src/app/interfaces/Page';
 import { Demarcheur } from 'src/app/models/gestionDesComptes/Demarcheur';
 import { environment } from 'src/environments/environment';
 
@@ -24,6 +25,14 @@ export class DemarcheurService {
   // url: http://localhost:4040/api/demarcheurs
   getAll(): Observable<Array<Demarcheur>>{
     return this.httpClient.get<Array<Demarcheur>>(this.url + 'demarcheurs');
+  }
+
+  // url: http://localhost:4040/api/demarcheurs/pagines?numeroDeLaPage=0&elementsParPage=5
+  getDemarcheurs(numeroDeLaPage: number, elementsParPage: number): Observable<Page<Demarcheur>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<Demarcheur>>(this.url + 'demarcheurs/pagines', {params: params});
   }
 
   // url: http://localhost:4040/api/demarcheur/{id}

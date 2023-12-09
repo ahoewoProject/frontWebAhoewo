@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { Page } from 'src/app/interfaces/Page';
 import { Role } from 'src/app/models/gestionDesComptes/Role';
 import { RoleService } from 'src/app/services/gestionDesComptes/role.service';
 
@@ -17,11 +18,11 @@ export class RolesComponent implements OnInit{
   visibleAddForm = 0;
   visibleUpdateForm = 0;
 
-  pageActuelle = 0;
+  numeroDeLaPage = 0;
   elementsParPage = 5;
 
   role = this.roleService.role;
-  roles : Role[] = [];
+  roles!: Page<Role>;
   messageErreur: string = "";
   messageSuccess: string | null = null;
 
@@ -33,7 +34,7 @@ export class RolesComponent implements OnInit{
   roleForm: any;
 
   ngOnInit(): void {
-    this.listeRoles();
+    this.listeRoles(this.numeroDeLaPage, this.elementsParPage);
     this.initRoleForm();
   }
 
@@ -44,26 +45,22 @@ export class RolesComponent implements OnInit{
     })
   }
 
-  listeRoles(): void {
-    this.roleService.getAll().subscribe(
+  listeRoles(numeroDeLaPage: number, elementsParPage: number): void {
+    this.roleService.getRolesPagines(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.roles = response;
       }
     );
   }
 
-  get rolesParPage(): any[] {
-    return this.roles.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
-  }
-
   pagination(event: any) {
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    this.listeRoles()
+    this.listeRoles(this.numeroDeLaPage, this.elementsParPage);
   }
 
   voirListe(): void {
-    this.listeRoles();
+    this.listeRoles(this.numeroDeLaPage, this.elementsParPage);
     this.roleForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
@@ -78,7 +75,7 @@ export class RolesComponent implements OnInit{
   }
 
   detailRole(id: number): void {
-    console.log(id)
+    //console.log(id)
     this.roleService.findById(id).subscribe(
       (response) => {
         this.role = response;
@@ -112,16 +109,6 @@ export class RolesComponent implements OnInit{
     this.roleService.addRole(this.role).subscribe(
       (response) => {
         if (response.id > 0) {
-          this.roles.push({
-            id: response.id,
-            code: response.code,
-            libelle: response.libelle,
-            creerPar: 0,
-            creerLe: new Date(),
-            modifierPar: 0,
-            modifierLe: new Date(),
-            statut: false
-          });
           this.voirListe();
           this.messageSuccess = "Le rôle a été ajouté avec succès.";
           this.messageService.add({
@@ -142,7 +129,7 @@ export class RolesComponent implements OnInit{
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)
       if (error.status === 409) {
           this.messageErreur = "Un rôle avec ce code existe déjà !";
           this.messageService.add({
@@ -176,7 +163,7 @@ export class RolesComponent implements OnInit{
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)
       if (error.status === 409) {
         this.messageErreur = "Un rôle avec ce code existe déjà !";
         this.messageService.add({
@@ -192,7 +179,7 @@ export class RolesComponent implements OnInit{
   deleteRole(id: number): void{
     this.roleService.deleteById(id).subscribe(
       (response) => {
-        console.log(response);
+        //console.log(response);
         this.voirListe();
         this.messageSuccess = "Le rôle a été supprimé avec succès.";
         this.messageService.add({

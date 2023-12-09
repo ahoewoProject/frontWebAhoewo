@@ -704,8 +704,8 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr *ngFor="let bienImmobilier of biensImmobiliersParPage | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                <tr *ngFor="let bienImmobilier of biensImmobiliers.content | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                   <th scope="row">
                     <p-image class="w-100"
                              src="{{ image != null ? (this.APIEndpoint+'api/premiere-image/bien-immobilier/'+bienImmobilier.id) : 'assets/images/home/house.jpg' }}"
@@ -752,16 +752,15 @@
             </table>
           </div>
 
-          <div *ngIf="biensImmobiliers.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="biensImmobiliers.totalElements !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="biensImmobiliers.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} biens immobiliers"
+              (onPageChange)="pagination($event)" [rows]="biensImmobiliers.size"
+              [totalRecords]="biensImmobiliers.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} biens immobiliers"
               [showPageLinks]="true" [showFirstLastIcon]="true">
             </p-paginator>
           </div>
-          <div *ngIf="biensImmobiliers.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="biensImmobiliers.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucun bien immobilier enregistré pour le moment</p>
           </div>
         </div>

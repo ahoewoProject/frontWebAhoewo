@@ -259,8 +259,8 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr *ngFor="let agenceImmobiliere of agencesImmobilieresParPage | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                <tr *ngFor="let agenceImmobiliere of agencesImmobilieres.content | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                   <th scope="row">
                     <div class="listing-style1 dashboard-style d-xxl-flex align-items-center mb-0">
                       <div class="list-thumb">
@@ -296,16 +296,15 @@
             </table>
           </div>
 
-          <div *ngIf="agencesImmobilieres.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="agencesImmobilieres.totalElements !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="agencesImmobilieres.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} agences immobilières"
+              (onPageChange)="pagination($event)" [rows]="agencesImmobilieres.size"
+              [totalRecords]="agencesImmobilieres.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} agences immobilières"
               [showPageLinks]="true" [showFirstLastIcon]="true">
             </p-paginator>
           </div>
-          <div *ngIf="agencesImmobilieres.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="agencesImmobilieres.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucune agence immobilière enregistrée pour le moment</p>
           </div>
         </div>
@@ -435,53 +434,39 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr *ngFor="let affectationResponsableAgence of agencesImmobilieresParPage | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                <tr *ngFor="let agenceOfAgent of agencesOfAgent.content | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                   <th scope="row">
                     <div class="listing-style1 dashboard-style d-xxl-flex align-items-center mb-0">
                       <div class="list-thumb">
-                        <img *ngIf="affectationResponsableAgence.agenceImmobiliere.logoAgence == ''" class="w-100"
+                        <img *ngIf="agenceOfAgent.agenceImmobiliere.logoAgence == ''" class="w-100"
                         src="assets/images/team/logo_par_defaut.jpg" alt="">
 
-                        <img *ngIf="affectationResponsableAgence.agenceImmobiliere.logoAgence !== ''" class="w-100"
-                        src="{{this.APIEndpoint+'api/logo/agence-immobiliere/'+affectationResponsableAgence.agenceImmobiliere.id}}" alt="">
+                        <img *ngIf="agenceOfAgent.agenceImmobiliere.logoAgence !== ''" class="w-100"
+                        src="{{this.APIEndpoint+'api/logo/agence-immobiliere/'+agenceOfAgent.agenceImmobiliere.id}}" alt="">
                       </div>
                     </div>
                   </th>
-                  <td class="vam">{{ affectationResponsableAgence.agenceImmobiliere.nomAgence }} <i *ngIf="affectationResponsableAgence.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
-                  <td class="vam">{{ affectationResponsableAgence.responsableAgenceImmobiliere.nom }} {{ affectationResponsableAgence.responsableAgenceImmobiliere.prenom }} <i *ngIf="affectationResponsableAgence.responsableAgenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
+                  <td class="vam">{{ agenceOfAgent.agenceImmobiliere.nomAgence }} <i *ngIf="agenceOfAgent.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
+                  <td class="vam">{{ agenceOfAgent.responsableAgenceImmobiliere.nom }} {{ agenceOfAgent.responsableAgenceImmobiliere.prenom }} <i *ngIf="agenceOfAgent.responsableAgenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
                   <td class="vam">
-                    <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == true" severity="success" value="Activé"></p-tag>
-                    <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == false" severity="danger" value="Désactivé"></p-tag>
+                    <p-tag *ngIf="agenceOfAgent.agenceImmobiliere.etatAgence == true" severity="success" value="Activé"></p-tag>
+                    <p-tag *ngIf="agenceOfAgent.agenceImmobiliere.etatAgence == false" severity="danger" value="Désactivé"></p-tag>
                   </td>
                   <td class="vam">
                     <div class="d-flex">
                       <button pButton type="button"
-                        (click)="afficherPageDetail(affectationResponsableAgence.id)" icon="pi pi-eye"
+                        (click)="afficherPageDetail(agenceOfAgent.id)" icon="pi pi-eye"
                         pTooltip="Détails" tooltipPosition="top"
                         class="p-button-text p-button-info">
                       </button>
 
                       <button pButton type="button"
-                        *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER'"
-                        (click)="afficherListeServices(affectationResponsableAgence.agenceImmobiliere.id)"
+                        (click)="afficherListeServices(agenceOfAgent.agenceImmobiliere.id)"
                         icon="pi pi-briefcase"
                         pTooltip="Services" tooltipPosition="top"
                         class="p-button-text p-button-secondary">
                       </button>
-
-                      <button pButton type="button"
-                        *ngIf="agenceImmobiliere.etatAgence == true && user.role.code == 'ROLE_ADMINISTRATEUR'"
-                        (click)="desactiverAgence(affectationResponsableAgence.agenceImmobiliere.id)" icon="pi pi-lock"
-                        pTooltip="Désactiver cette agence immobilière" tooltipPosition="right" class="p-button-text p-button-danger">
-                      </button>
-
-                      <button pButton type="button"
-                        *ngIf="agenceImmobiliere.etatAgence == false && user.role.code == 'ROLE_ADMINISTRATEUR'"
-                        (click)="activerAgence(affectationResponsableAgence.agenceImmobiliere.id)" icon="pi pi-lock-open"
-                        pTooltip="Activer cette agence immobilière" tooltipPosition="right" class="p-button-text p-button-success">
-                      </button>
-
                     </div>
                   </td>
                 </tr>
@@ -489,16 +474,15 @@
             </table>
           </div>
 
-          <div *ngIf="affectationsResponsableAgences.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="agencesOfAgent.totalElements !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="affectationsResponsableAgences.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} agences immobilières"
+              (onPageChange)="pagination($event)" [rows]="agencesOfAgent.size"
+              [totalRecords]="agencesOfAgent.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} agences immobilières"
               [showPageLinks]="true" [showFirstLastIcon]="true">
             </p-paginator>
           </div>
-          <div *ngIf="affectationsResponsableAgences.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="agencesOfAgent.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucune agence immobilière enregistrée pour le moment</p>
           </div>
         </div>
@@ -637,8 +621,8 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr *ngFor="let affectationResponsableAgence of agencesImmobilieresParPage | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                <tr *ngFor="let affectationResponsableAgence of affectationsResponsableAgences.content | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                   <th scope="row">
                     <div class="listing-style1 dashboard-style d-xxl-flex align-items-center mb-0">
                       <div class="list-thumb">
@@ -683,16 +667,15 @@
             </table>
           </div>
 
-          <div *ngIf="affectationsResponsableAgences.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="affectationsResponsableAgences.totalElements !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="affectationsResponsableAgences.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} agences immobilières"
+              (onPageChange)="pagination($event)" [rows]="affectationsResponsableAgences.size"
+              [totalRecords]="affectationsResponsableAgences.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} agences immobilières"
               [showPageLinks]="true" [showFirstLastIcon]="true">
             </p-paginator>
           </div>
-          <div *ngIf="affectationsResponsableAgences.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="affectationsResponsableAgences.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucune agence immobilière enregistrée pour le moment</p>
           </div>
         </div>
@@ -800,7 +783,7 @@
     <div class="row align-items-center pb40">
       <div class="col-xxl-5">
         <div class="dashboard_title_area">
-          <h4>Vos services</h4>
+          <h4>Services</h4>
         </div>
       </div>
       <div class="col-xxl-7">
@@ -834,8 +817,8 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr *ngFor="let serviceAgenceImmobiliere of servicesAgenceImmobiliereParPage | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                <tr *ngFor="let serviceAgenceImmobiliere of servicesAgenceImmobiliere.content | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                   <th scope="row">
                     <div class="listing-style1 dashboard-style d-xxl-flex align-items-center mb-0">
                       <div class="list-thumb">
@@ -872,16 +855,15 @@
             </table>
           </div>
 
-          <div *ngIf="servicesAgenceImmobiliere.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="servicesAgenceImmobiliere.totalElements !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
-              (onPageChange)="paginationListeServices($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="servicesAgenceImmobiliere.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} services"
+              (onPageChange)="paginationListeServices($event)" [rows]="servicesAgenceImmobiliere.size"
+              [totalRecords]="servicesAgenceImmobiliere.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} services"
               [showPageLinks]="true" [showFirstLastIcon]="true">
             </p-paginator>
           </div>
-          <div *ngIf="servicesAgenceImmobiliere.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="servicesAgenceImmobiliere.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucun service enregistré pour le moment</p>
           </div>
         </div>

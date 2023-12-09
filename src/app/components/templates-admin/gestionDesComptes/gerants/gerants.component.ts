@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Page } from 'src/app/interfaces/Page';
 import { Gerant } from 'src/app/models/gestionDesComptes/Gerant';
 import { Role } from 'src/app/models/gestionDesComptes/Role';
 import { GerantService } from 'src/app/services/gestionDesComptes/gerant.service';
@@ -17,13 +18,12 @@ export class GerantsComponent implements OnInit{
   user: any;
   affichage = 1;
   visibleAddForm = 0;
-  voirMotDePasse: boolean = false
 
   elementsParPage = 5; // Nombre d'éléments par page
-  pageActuelle = 0; // Page actuelle
+  numeroDeLaPage = 0; // Page actuelle
 
   gerant = this.gerantService.gerant;
-  gerants : Gerant[] = [];
+  gerants!: Page<Gerant>;
   messageErreur: string = "";
   messageSuccess: string | null = null;
 
@@ -51,9 +51,9 @@ export class GerantsComponent implements OnInit{
 
   ngOnInit(): void {
     if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
-      this.listeGerants();
-    } else {
-      this.listeGerantsParProprietaire();
+      this.listeGerants(this.numeroDeLaPage, this.elementsParPage);
+    } else{
+      this.listeGerantsParProprietaire(this.numeroDeLaPage, this.elementsParPage);
     }
     this.initGerantForm()
   }
@@ -68,40 +68,37 @@ export class GerantsComponent implements OnInit{
     })
   }
 
-  listeGerants(): void {
-    this.gerantService.getAll().subscribe(
+  listeGerants(numeroDeLaPage: number, elementsParPage: number): void {
+    this.gerantService.getGerants(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.gerants = response;
       }
     );
   }
 
-  listeGerantsParProprietaire(): void {
-    this.gerantService.findGerantsByProprietaire().subscribe(
+  listeGerantsParProprietaire(numeroDeLaPage: number, elementsParPage: number): void {
+    this.gerantService.getGerantsParProprietaire(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.gerants = response;
       }
     );
-  }
-
-  // Récupération des gérants de la page courante
-  get gerantsParPage(): any[] {
-    const startIndex = this.pageActuelle;
-    const endIndex = startIndex + this.elementsParPage;
-    return this.gerants.slice(startIndex, endIndex);
   }
 
   pagination(event: any) {
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    this.listeGerants()
+    if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
+      this.listeGerants(this.numeroDeLaPage, this.elementsParPage);
+    } else{
+      this.listeGerantsParProprietaire(this.numeroDeLaPage, this.elementsParPage);
+    }
   }
 
   voirListe(): void {
     if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
-      this.listeGerants();
+      this.listeGerants(this.numeroDeLaPage, this.elementsParPage);
     } else{
-      this.listeGerantsParProprietaire();
+      this.listeGerantsParProprietaire(this.numeroDeLaPage, this.elementsParPage);
     }
     this.gerantForm.reset();
     this.affichage = 1;
@@ -115,7 +112,7 @@ export class GerantsComponent implements OnInit{
   }
 
   detailGerant(id: number): void {
-    console.log(id)
+    //console.log(id)
     this.gerantService.findById(id).subscribe(
       (response) => {
         this.gerant = response;
@@ -176,7 +173,7 @@ export class GerantsComponent implements OnInit{
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)
       if(error.status === 409) {
         this.messageErreur = "Un gérant avec ce nom d'utilisateur existe déjà !";
         this.messageService.add({
@@ -190,7 +187,7 @@ export class GerantsComponent implements OnInit{
 
   supprimerGerant(id: number): void {
     this.gerantService.deleteById(id).subscribe(response=>{
-      console.log(response);
+      //(response);
       this.voirListe();
       this.messageSuccess = "Le gérant a été supprimé avec succès.";
       this.messageService.add({
@@ -208,7 +205,7 @@ export class GerantsComponent implements OnInit{
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.personneService.activerCompte(id).subscribe(response=>{
-          console.log(response);
+          //(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été activé avec succès !";
           this.messageService.add({
@@ -247,7 +244,7 @@ export class GerantsComponent implements OnInit{
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.personneService.desactiverCompte(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été désactivé avec succès.";
           this.messageService.add({

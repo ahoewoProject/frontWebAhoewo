@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Page } from 'src/app/interfaces/Page';
 import { Client } from 'src/app/models/gestionDesComptes/Client';
 import { ClientService } from 'src/app/services/gestionDesComptes/client.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
@@ -15,10 +16,10 @@ export class ClientsComponent implements OnInit{
   affichage = 1;
 
   elementsParPage = 5; // Nombre d'éléments par page
-  pageActuelle = 0; // Page actuelle
+  numeroDeLaPage = 0; // Page actuelle
 
   client = new Client();
-  clients : Client[] = [];
+  clients!: Page<Client>;
   messageSuccess: string | null = null;
 
   constructor(
@@ -29,30 +30,25 @@ export class ClientsComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    this.listeClients();
+    this.listeClients(this.numeroDeLaPage, this.elementsParPage);
   }
 
-  listeClients(): void {
-    this.clientService.getAll().subscribe(
+  listeClients(numeroDeLaPage: number, elementsParPage: number): void {
+    this.clientService.getClients(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.clients = response;
       }
     );
   }
 
-  // Récupération des clients de la page courante
-  get clientsParPage(): any[] {
-    return this.clients.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
-  }
-
   pagination(event: any) {
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first / event.rows ;
     this.elementsParPage = event.rows;
-    this.listeClients()
+    this.listeClients(this.numeroDeLaPage, this.elementsParPage);
   }
 
   voirListe(): void {
-    this.listeClients();
+    this.listeClients(this.numeroDeLaPage, this.elementsParPage);
     this.affichage = 1;
   }
 
@@ -60,7 +56,7 @@ export class ClientsComponent implements OnInit{
     this.clientService.findById(id).subscribe(
       (response) => {
         this.client = response;
-        console.log(response);
+        //console.log(response);
       }
     );
   }
@@ -73,7 +69,7 @@ export class ClientsComponent implements OnInit{
   supprimerClient(id: number): void {
     this.clientService.deleteById(id).subscribe(
       (response) => {
-        console.log(response);
+        //console.log(response);
         this.voirListe();
         this.messageSuccess = "Le client a été supprimé avec succès.";
         this.messageService.add({
@@ -92,7 +88,7 @@ export class ClientsComponent implements OnInit{
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.personneService.activerCompte(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été activé avec succès !";
           this.messageService.add({
@@ -131,7 +127,7 @@ export class ClientsComponent implements OnInit{
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.personneService.desactiverCompte(id).subscribe(response=>{
-          console.log(response);
+          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été désactivé avec succès.";
           this.messageService.add({

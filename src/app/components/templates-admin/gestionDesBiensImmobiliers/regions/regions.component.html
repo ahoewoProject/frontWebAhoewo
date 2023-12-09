@@ -144,8 +144,8 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                  <tr *ngFor="let region of regionsParPage | genericFilter: recherche; let i = index;">
-                    <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                  <tr *ngFor="let region of regions.content | genericFilter: recherche; let i = index;">
+                    <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                     <td class="vam">{{ region.libelle }}</td>
                     <td class="vam">{{ region.pays.libelle }}</td>
                     <td class="vam">
@@ -179,16 +179,15 @@
             </table>
           </div>
 
-          <div *ngIf="regions.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="regions.totalElements !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="regions.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} régions"
-              [showPageLinks]="true" [showFirstLastIcon]="true">
+              (onPageChange)="pagination($event)" [rows]="regions.size"
+              [totalRecords]="regions.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} régions">
             </p-paginator>
           </div>
-          <div *ngIf="regions.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="regions.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucune région enregistré pour le moment</p>
           </div>
         </div>

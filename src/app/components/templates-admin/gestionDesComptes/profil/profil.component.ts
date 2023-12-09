@@ -93,7 +93,7 @@ export class ProfilComponent implements OnInit{
   }
 
   detailUser(): void {
-    console.log(this.user.id)
+    //console.log(this.user.id)
     this.personneService.findById(this.user.id).subscribe(
       (response) => {
         this.personne = response;
@@ -132,7 +132,7 @@ export class ProfilComponent implements OnInit{
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)
       if(error.status == 409){
         this.messageErreur = "Ce nom d'utilisateur a été déjà utilisé!";
         this.messageService.add({

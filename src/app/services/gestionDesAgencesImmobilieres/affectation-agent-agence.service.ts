@@ -1,10 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { AffectationResponsableAgence } from 'src/app/models/gestionDesAgencesImmobilieres/AffectationResponsableAgence';
 import { AffectationAgentAgence } from 'src/app/models/gestionDesAgencesImmobilieres/AffectationAgentAgence';
 import { AffectationAgentAgenceRequest } from 'src/app/models/gestionDesAgencesImmobilieres/AffectationAgentAgenceRequest';
+import { Page } from 'src/app/interfaces/Page';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,15 @@ export class AffectationAgentAgenceService {
   // url: http://localhost:4040/api/affectations-agents-agences/agent
   getAgencesOfAgent(): Observable<Array<AffectationResponsableAgence>>{
     return this.httpClient.get<Array<AffectationResponsableAgence>>(this.url + 'affectations-agents-agences/agent');
+  }
+
+  //Affichage de toutes les occurrences des agences immobilières paginées par agent immobilier;
+  // url: http://localhost:4040/api/affectations-agents-agences/agent/paginees
+  getAgencesOfAgentPaginees(numeroDeLaPage: number, elementsParPage: number): Observable<Page<AffectationResponsableAgence>>{
+    let params = new HttpParams()
+    .set('numeroDeLaPage', numeroDeLaPage.toString())
+    .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<AffectationResponsableAgence>>(this.url + 'affectations-agents-agences/agent/paginees', {params: params});
   }
 
   // url: http://localhost:4040/api/affectation-agent-agence/{id}

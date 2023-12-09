@@ -43,8 +43,8 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr *ngFor="let delegationGestion of delegationGestionsParPage | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                <tr *ngFor="let delegationGestion of delegationGestions.content | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                   <th scope="row">
                     <p-image class="w-100"
                              src="{{ image != null ? (this.APIEndpoint+'api/premiere-image/bien-immobilier/'+delegationGestion.bienImmobilier.id) : 'assets/images/home/house.jpg' }}"
@@ -94,16 +94,15 @@
             </table>
           </div>
 
-          <div *ngIf="delegationGestions.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="delegationGestions.totalElements !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="delegationGestions.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} de la délégation de gestion des biens"
+              (onPageChange)="pagination($event)" [rows]="delegationGestions.size"
+              [totalRecords]="delegationGestions.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} de la délégation de gestion des biens"
               [showPageLinks]="true" [showFirstLastIcon]="true">
             </p-paginator>
           </div>
-          <div *ngIf="delegationGestions.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="delegationGestions.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucun bien immobilier délégué pour le moment</p>
           </div>
         </div>

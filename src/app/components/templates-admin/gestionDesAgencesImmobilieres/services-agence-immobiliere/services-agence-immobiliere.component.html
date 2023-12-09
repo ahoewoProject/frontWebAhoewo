@@ -182,8 +182,8 @@
                 </tr>
               </thead>
               <tbody class="t-body">
-                <tr *ngFor="let serviceAgenceImmobiliere of servicesAgenceImmobiliereParPage | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                <tr *ngFor="let serviceAgenceImmobiliere of servicesAgenceImmobiliere.content | genericFilter: recherche;  let i = index">
+                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                   <th scope="row">
                     <div class="listing-style1 dashboard-style d-xxl-flex align-items-center mb-0">
                       <div class="list-thumb">
@@ -238,16 +238,15 @@
             </table>
           </div>
 
-          <div *ngIf="servicesAgenceImmobiliere.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="servicesAgenceImmobiliere.totalElements !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="servicesAgenceImmobiliere.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} services"
+              (onPageChange)="pagination($event)" [rows]="servicesAgenceImmobiliere.size"
+              [totalRecords]="servicesAgenceImmobiliere.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} services"
               [showPageLinks]="true" [showFirstLastIcon]="true">
             </p-paginator>
           </div>
-          <div *ngIf="servicesAgenceImmobiliere.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="servicesAgenceImmobiliere.totalElements == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucun service enregistré pour le moment</p>
           </div>
         </div>

@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Page } from 'src/app/interfaces/Page';
 import { Pays } from 'src/app/models/gestionDesBiensImmobiliers/Pays';
 import { environment } from 'src/environments/environment';
 
@@ -35,10 +36,18 @@ export class PaysService {
     return this.httpClient.get<Pays>(this.url + 'pays/' + id);
   }
 
-  // Affichage de toutes les occurrences des pays;
+  // Affichage de toutes les occurrences de pays;
   // url: http://localhost:4040/api/pays
   getAll(): Observable<Array<Pays>>{
     return this.httpClient.get<Array<Pays>>(this.url + 'pays');
+  }
+
+  // Affichage de toutes les occurrences de pays avec pagination;
+  getPaysPagines(numeroDeLaPage: number, elementsParPage: number): Observable<Page<Pays>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<Pays>>(this.url + 'pays/pagines', {params: params});
   }
 
   // Affichage de toutes les occurrences des pays;

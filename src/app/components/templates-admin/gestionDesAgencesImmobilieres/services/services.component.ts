@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Page } from 'src/app/interfaces/Page';
 import { Services } from 'src/app/models/gestionDesAgencesImmobilieres/Services';
 import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/services.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
@@ -20,10 +21,10 @@ export class ServicesComponent implements OnInit {
   user : any;
 
   elementsParPage = 5; // Nombre d'éléments par page
-  pageActuelle = 0; // Page actuelle
+  numeroDeLaPage = 0; // Page actuelle
 
   _service = this._servicesService._service;
-  services : Services[] = [];
+  services!: Page<Services>;
   messageErreur: string = "";
   messageSuccess: string | null = null;
   serviceForm: any;
@@ -42,32 +43,27 @@ export class ServicesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.listeServices();
+    this.listeServices(this.numeroDeLaPage, this.elementsParPage);
     this.initServiceForm()
   }
 
   // Fonction pour recupérer les services
-  listeServices() {
-    this._servicesService.getAll().subscribe(
+  listeServices(numeroDeLaPage: number, elementsParPage: number) {
+    this._servicesService.getServicesPagines(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.services = response;
       }
     );
   }
 
-  // Récupération des services de la page courante
-  get servicesParPage(): any[] {
-    return this.services.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
-  }
-
   pagination(event: any) {
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    this.listeServices()
+    this.listeServices(this.numeroDeLaPage, this.elementsParPage);
   }
 
   voirListe(): void {
-    this.listeServices();
+    this.listeServices(this.numeroDeLaPage, this.elementsParPage);
     this.serviceForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
@@ -89,7 +85,7 @@ export class ServicesComponent implements OnInit {
   }
 
   detailService(id: number): void {
-    console.log(id)
+    //console.log(error)(id)
     this._servicesService.findById(id).subscribe(
       (response) => {
         this._service = response;
@@ -120,7 +116,7 @@ export class ServicesComponent implements OnInit {
   ajouterService(): void {
     this._servicesService.addServices(this._service).subscribe(
       (response) => {
-        console.log(response)
+        //console.log(error)(response)
         if (response.id > 0) {
           this.voirListe();
           this.messageSuccess = "Le service a été ajouté avec succès.";
@@ -142,7 +138,7 @@ export class ServicesComponent implements OnInit {
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)(error)
       if (error.status == 409) {
         this.messageErreur = "Un service avec ce nom existe déjà !";
         this.messageService.add({
@@ -176,7 +172,7 @@ export class ServicesComponent implements OnInit {
         }
     },
     (error) =>{
-      console.log(error)
+      //console.log(error)(error)
       if (error.status == 409) {
         this.messageErreur = "Le service avec ce nom existe déjà !";
         this.messageService.add({
@@ -196,7 +192,7 @@ export class ServicesComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this._servicesService.activerService(id).subscribe(response=>{
-          console.log(response);
+          //console.log(error)(response);
           this.voirListe();
           this.messageSuccess = "Le service a été activé avec succès !";
           this.messageService.add({
@@ -235,7 +231,7 @@ export class ServicesComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this._servicesService.desactiverService(id).subscribe(response=>{
-          console.log(response);
+          //console.log(error)(response);
           this.voirListe();
           this.messageSuccess = "Le service a été désactivé avec succès !";
           this.messageService.add({

@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Page } from 'src/app/interfaces/Page';
 import { Role } from 'src/app/models/gestionDesComptes/Role';
 import { environment } from 'src/environments/environment';
 
@@ -39,6 +40,14 @@ export class RoleService {
   // url: http://localhost:4040/api/roles
   getAll(): Observable<Array<Role>>{
     return this.httpClient.get<Array<Role>>(this.url + 'roles');
+  }
+
+  // Affichage de toutes les occurrences de rôles avec pagination;
+  getRolesPagines(numeroDeLaPage: number, elementsParPage: number): Observable<Page<Role>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<Role>>(this.url + 'roles/pagines', {params: params});
   }
 
   // Recherche d'une occurrence de role par la clé primaire ;
