@@ -1,0 +1,154 @@
+<div class="dashboard__content property-page bgc-f7">
+  <div class="row pb40 d-block d-lg-none">
+    <!-- Menu responsive -->
+    <app-menu-responsive></app-menu-responsive>
+    <!-- End Menu responsive -->
+  </div>
+
+  <p-toast></p-toast>
+
+  <!-- Liste des notifications -->
+  <div *ngIf="affichage == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-3">
+        <div class="dashboard_title_area">
+          <h4>Liste des notifications</h4>
+        </div>
+      </div>
+      <div class="col-xxl-9">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <div class="item1 mb15-sm">
+            <div class="search_area">
+              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
+              <label><span class="flaticon-search"></span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+          <div class="packages_table">
+            <table class="table-style3 table at-savesearch">
+              <thead class="t-head">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Titre</th>
+                  <th scope="col">Etat</th>
+                  <th scope="col">Date notification</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="t-body">
+                  <tr *ngFor="let notification of notifications.content | genericFilter: recherche; let i = index;">
+                    <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
+                    <td class="vam">{{ notification.titre }}</td>
+                    <td class="vam">
+                      <p-tag *ngIf="notification.lu == true" severity="success" value="Lue"></p-tag>
+                      <p-tag *ngIf="notification.lu == false" severity="danger" value="Non lue"></p-tag>
+                    </td>
+                    <td class="vam">
+                      {{ notification.dateNotification | date: "dd-MM-yyyy" }}
+                    </td>
+                    <td class="vam">
+                      <div class="d-flex">
+                        <button pButton type="button" icon="pi pi-eye"
+                          (click)="afficherPageDetail(notification.id)"
+                          pTooltip="Details" tooltipPosition="left"
+                          class="p-button-text p-button-info">
+                        </button>
+
+                        <button pButton type="button" icon="pi pi-external-link"
+                          (click)="redirectToPageConcernee(notification.url)"
+                          pTooltip="Aller à la page concernée" tooltipPosition="left"
+                          class="p-button-text p-button-info">
+                        </button>
+
+                        <button pButton type="button" icon="pi pi-trash"
+                          (click)="supprimerNotification(notification.id)"
+                          pTooltip="Supprimer" tooltipPosition="top"
+                          class="p-button-text p-button-danger">
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+              </tbody>
+            </table>
+
+            <div *ngIf="notifications.totalElements !== 0" class="mbp_pagination text-center mt30">
+              <p-paginator
+                (onPageChange)="pagination($event)" [rows]="notifications.size"
+                [totalRecords]="notifications.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+                [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} notifications"
+                [showPageLinks]="true" [showFirstLastIcon]="true">
+              </p-paginator>
+            </div>
+
+          </div>
+          <div *ngIf="notifications.totalElements == 0" class="mbp_pagination text-center mt30">
+            <p class="mt10 pagination_page_count text-center">Aucune notificatione reçue pour le moment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- End Liste des notifications -->
+
+  <!-- Details d'une notification -->
+  <div *ngIf="affichage == 2">
+    <div  class="row align-items-center pb40">
+      <div class="col-xxl-8">
+        <div class="dashboard_title_area">
+          <h4>Détails d'une notification</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+      <div class="col-xxl-4">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Titre</p>
+              <p>{{ notification.titre }}</p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Message</p>
+              <p>{{ notification.message }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+              <p>
+                <p-tag *ngIf="notification.lu == true" severity="success" value="Lue"></p-tag>
+                <p-tag *ngIf="notification.lu == false" severity="danger" value="Non lue"></p-tag>
+              </p>
+            </div>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Date notification</p>
+              <p>{{ notification.dateNotification | date: "dd-MM-yyyy" }}</p>
+            </div>
+
+          <div class="text-end">
+            <a class="ud-btn btn-valider" (click)="redirectToPageConcernee(notification.url)"  type="button">Accéder à la page concernée</a>
+            &nbsp;
+            <a class="ud-btn btn-retour" (click)="voirListe()"  type="button">Retour</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <!-- End Details d'une notification -->
+</div>
+

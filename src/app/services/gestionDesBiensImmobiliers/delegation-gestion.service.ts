@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { DelegationGestion } from 'src/app/models/gestionDesBiensImmobiliers/DelegationGestion';
-import { DelegationGestionRequest } from 'src/app/models/gestionDesBiensImmobiliers/DelegationGestionRequest';
+import { DelegationGestionForm1 } from 'src/app/models/gestionDesBiensImmobiliers/DelegationGestionForm1';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -87,13 +87,13 @@ export class DelegationGestionService {
 
   // Ajout d'une delegation de gestion par matricule
   // url: http://localhost:4040/api/delegation-gestion/ajouter/matricule
-  addDelegationGestionMatricule(d: DelegationGestionRequest): Observable<DelegationGestion> {
+  addDelegationGestionMatricule(d: DelegationGestionForm1): Observable<DelegationGestion> {
     return this.httpClient.post<DelegationGestion>(this.url + 'delegation-gestion/ajouter/matricule', d);
   }
 
   // Ajout d'une delegation de gestion par code agence
   // url: http://localhost:4040/api/delegation-gestion/ajouter/code-agence
-  addDelegationGestionCodeAgence(d: DelegationGestionRequest): Observable<DelegationGestion> {
+  addDelegationGestionCodeAgence(d: DelegationGestionForm1): Observable<DelegationGestion> {
     return this.httpClient.post<DelegationGestion>(this.url + 'delegation-gestion/ajouter/code-agence', d);
   }
 
@@ -109,9 +109,21 @@ export class DelegationGestionService {
     return this.httpClient.get<any>(this.url + 'refuser/delegation-gestion/' + id);
   }
 
-  // Suppression d'une delegation de gestion par sa clé primaire
-  // url: http://localhost:4040/api/delegation-gestion/supprimer/{id}
-  deleteById(id: number) {
-    return this.httpClient.delete<DelegationGestion>(this.url + 'delegation-gestion/supprimer/' + id);
+  // Activation d'une delegation de gestion par sa clé primaire
+  // url: http://localhost:4040/api/delegation-gestion/activer/{id}
+  activerDelegationGestion(id: number) {
+    return this.httpClient.delete<DelegationGestion>(this.url + 'delegation-gestion/activer/' + id);
+  }
+
+  // Desactivation d'une delegation de gestion par sa clé primaire
+  // url: http://localhost:4040/api/delegation-gestion/desactiver/{id}
+  desactiverDelegationGestion(id: number) {
+    return this.httpClient.delete<DelegationGestion>(this.url + 'delegation-gestion/desactiver/' + id);
+  }
+
+  // Fonction pour enregistrer une delegation de gestion - Responsable, Agent immobilier, Demarcheur
+  // url: http://localhost:4040/api/delegation-gestion/ajouter
+  enregistrerDelegationGestion(d: FormData): Observable<DelegationGestion> {
+    return this.httpClient.post<DelegationGestion>(this.url + 'delegation-gestion/ajouter', d);
   }
 }

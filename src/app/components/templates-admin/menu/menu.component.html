@@ -33,7 +33,7 @@
       (click)="setActiveLink('/admin/proprietaires')" class="items-center"><i class="fa-light fa-user-group mr15"></i>Propriétaires</a>
     </div>
     <div class="sidebar_list_item">
-      <a routerLink="/admin/responsables" [class.-is-active]="activeLink == '/admin/responsabled'"
+      <a routerLink="/admin/responsables" [class.-is-active]="activeLink == '/admin/responsables'"
       (click)="setActiveLink('/admin/responsables')" class="items-center"><i class="fa-light fa-user-group mr15"></i>Responsables</a>
     </div>
     <div class="sidebar_list_item">
@@ -65,6 +65,10 @@
     <div class="sidebar_list_item">
       <a routerLink="/admin/services" [class.-is-active]="activeLink == '/admin/services'"
       (click)="setActiveLink('/admin/services')" class="items-center"><i class="fa-light fa-briefcase mr15"></i>&nbsp;Services</a>
+    </div>
+    <div class="sidebar_list_item">
+      <a routerLink="/admin/autres-services" [class.-is-active]="activeLink == '/admin/autres-services'"
+      (click)="setActiveLink('/admin/autres-services')" class="items-center"><i class="fa-light fa-briefcase mr15"></i>&nbsp;Autres services</a>
     </div>
     <!-- End Menu Gestion des agences immobilières -->
 
@@ -302,6 +306,10 @@
     <!-- Start Menu Gestion des comptes -->
     <div>
       <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
+    </div>
+    <div class="sidebar_list_item">
+      <a routerLink="/responsable/co-responsables" [class.-is-active]="activeLink == '/responsable/co-responsables'"
+      (click)="setActiveLink('/responsable/co-responsables')" class="items-center"><i class="fa-light fa-user-group mr15"></i>Co - Responsables</a>
     </div>
     <div class="sidebar_list_item">
       <a routerLink="/responsable/agents-immobiliers" [class.-is-active]="activeLink == '/responsable/agents-immobiliers'"

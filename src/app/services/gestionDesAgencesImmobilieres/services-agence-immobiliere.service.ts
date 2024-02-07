@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
+import { ServiceNonTrouveForm } from 'src/app/models/gestionDesAgencesImmobilieres/ServiceNonTrouveForm';
 import { ServicesAgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/ServicesAgenceImmobiliere';
 import { environment } from 'src/environments/environment';
 
@@ -16,17 +17,6 @@ export class ServicesAgenceImmobiliereService {
   constructor(private httpClient: HttpClient) {
     const APIEndpoint = environment.APIEndpoint;
     this.url = APIEndpoint + 'api/';
-  }
-
-  // Affichage de toutes les occurrences de services d'agence immobilière;
-  // url: http://localhost:4040/api/services/agence-immobiliere
-  getServicesOfAgence(): Observable<Array<ServicesAgenceImmobiliere>>{
-    return this.httpClient.get<Array<ServicesAgenceImmobiliere>>(this.url + 'services/agence-immobiliere');
-  }
-
-  // url: http://localhost:4040/api/services/agence-immobiliere/{id}
-  findServicesOfAgence(id: number): Observable<Array<ServicesAgenceImmobiliere>>{
-    return this.httpClient.get<Array<ServicesAgenceImmobiliere>>(this.url + 'services/agence-immobiliere/' + id);
   }
 
   // Affichage de toutes les occurrences de services d'agence immobilière;
@@ -55,6 +45,12 @@ export class ServicesAgenceImmobiliereService {
   // url: http://localhost:4040/api/service/agence-immobiliere/ajouter
   addServicesAgence(s: ServicesAgenceImmobiliere): Observable<ServicesAgenceImmobiliere>{
     return this.httpClient.post<ServicesAgenceImmobiliere>(this.url + 'service/agence-immobiliere/ajouter', s);
+  }
+
+  // Demande d'ajout d'un nouveau service;
+  // url: http://localhost:4040/api/demande/ajout-nouveau-service
+  demandeAjoutNouveauService(s: ServiceNonTrouveForm): Observable<any>{
+    return this.httpClient.post<any>(this.url + 'demande/ajout-nouveau-service', s);
   }
 
   // Modification d'une occurrence de services d'agence immobilière;

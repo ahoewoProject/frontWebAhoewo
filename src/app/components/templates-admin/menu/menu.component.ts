@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BehaviorService } from 'src/app/services/behavior.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 
 @Component({
@@ -9,10 +10,11 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 export class MenuComponent implements OnInit {
 
   user: any;
-  activeLink: string = localStorage.getItem('activeLink') || '';
-  
+  activeLink: any;
+
   constructor(
-    private personneService: PersonneService
+    private personneService: PersonneService,
+    private behaviorService: BehaviorService
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -20,12 +22,15 @@ export class MenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.behaviorService.activeLink$.subscribe((donnee) => {
+      this.activeLink = donnee;
+    });
+    console.log(this.activeLink);
   }
 
   setActiveLink(link: string) {
     this.activeLink = link;
-    localStorage.setItem('activeLink', this.activeLink);
+    this.behaviorService.setActiveLink(this.activeLink);
   }
 
   seDeconnecter(): void {

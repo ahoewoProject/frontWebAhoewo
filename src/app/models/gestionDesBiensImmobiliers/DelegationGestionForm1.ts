@@ -1,6 +1,6 @@
 import { BienImmobilier } from "./BienImmobilier";
 
-export class DelegationGestionRequest {
+export class DelegationGestionForm1 {
 
   id: number;
   matricule!: string;

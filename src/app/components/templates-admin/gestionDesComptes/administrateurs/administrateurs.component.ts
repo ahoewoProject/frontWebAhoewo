@@ -80,6 +80,12 @@ export class AdministrateursComponent implements OnInit {
     this.visibleAddForm = 0;
   }
 
+  annuler(): void {
+    this.adminForm.reset();
+    this.affichage = 0;
+    this.visibleAddForm = 1;
+  }
+
   afficherFormulaireAjouter(): void {
     this.affichage = 0;
     this.visibleAddForm = 1;

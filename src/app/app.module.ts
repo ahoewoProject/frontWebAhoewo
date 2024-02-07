@@ -30,8 +30,10 @@ import { ForgotPasswordComponent } from './components/auth/forgot-password/forgo
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { TemplatesClientComponent } from './components/templates-client/templates-client.component';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
 import { ImageModule } from 'primeng/image';
 import { AccordionModule } from 'primeng/accordion';
@@ -67,6 +69,12 @@ import { ProprietaireModule } from './routes/proprietaire/proprietaire.module';
 import { DemarcheurModule } from './routes/demarcheur/demarcheur.module';
 import { TabViewModule } from 'primeng/tabview';
 import { StepsModule } from 'primeng/steps';
+import { InputTextModule } from 'primeng/inputtext';
+import { BadgeModule } from 'primeng/badge';
+import { AutresServicesComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/autres-services/autres-services.component';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { NotificationsComponent } from './components/templates-admin/notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -103,7 +111,9 @@ import { StepsModule } from 'primeng/steps';
     PaysComponent,
     VillesComponent,
     RegionsComponent,
-    QuartiersComponent
+    QuartiersComponent,
+    AutresServicesComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,
@@ -112,6 +122,7 @@ import { StepsModule } from 'primeng/steps';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    AvatarModule,
     ButtonModule,
     PaginatorModule,
     FileUploadModule,
@@ -119,6 +130,9 @@ import { StepsModule } from 'primeng/steps';
     TooltipModule,
     ConfirmDialogModule,
     TagModule,
+    AvatarGroupModule,
+    DialogModule,
+    BadgeModule,
     DropdownModule,
     AutoCompleteModule,
     ImageModule,
@@ -137,7 +151,9 @@ import { StepsModule } from 'primeng/steps';
     ProprietaireModule,
     DemarcheurModule,
     TabViewModule,
-    StepsModule
+    StepsModule,
+    InputTextModule,
+    MessagesModule
   ],
   providers: [
     MessageService,

@@ -10,10 +10,15 @@
   <!-- Formulaire d'ajout d'un agent immobilier -->
   <div *ngIf="visibleAddForm == 1">
     <div class="row align-items-center pb40">
-      <div class="col-xxl-3">
+      <div class="col-xxl-9">
         <div class="dashboard_title_area">
           <h4>Ajout d'un agent immobilier</h4>
           <p class="text"></p>
+        </div>
+      </div>
+      <div class="col-xxl-3">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
         </div>
       </div>
     </div>
@@ -22,10 +27,10 @@
         <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
           <form [formGroup]="affectationAgentAgenceForm" (ngSubmit)="ajouterAffectationAgentAgence()" class="form-style1">
             <div class="row">
-              <p class="error">Les identifiants de connexion seront envoyés à l'adresse e-mail à l'agent immobilier une fois l'opération de l'enregistrement terminée.</p>
+              <p *ngIf="checked == 'Nouvel agent immobilier'" class="error">Les identifiants de connexion seront envoyés à l'adresse e-mail à l'agent immobilier une fois l'opération de l'enregistrement terminée.</p>
               <div class="col-md-6">
                 <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Type d'agent immobilier</label>
+                  <label class="heading-color ff-heading fw600 mb10">Nouvel agent immobilier / Agent immobilier existant</label>
                   <br>
                   <p-dropdown
                     class="select" [options]="listeDesChoix" placeholder="Faire un choix"
@@ -82,7 +87,7 @@
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Prénoms(s)</label>
                   <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Le(s) prénom(s) de l'agent immobilier" formControlName="prenom" [(ngModel)]="agentImmobilier.prenom" required>
-                  <div class="error" [hidden]="!prenom?.hasError('required') || !prenom.touched">Le prénom de l'agent immobilier est obligatoire</div>
+                  <div class="error" [hidden]="!prenom?.hasError('required') || !prenom.touched">Le(s) prénom(s) de l'agent immobilier est obligatoire</div>
                 </div>
               </div>
 
@@ -111,8 +116,9 @@
 
             <div class="col-md-12">
               <div class="text-end">
-                <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
-                <button pButton [ngClass]="{ 'disabled-link': affectationAgentAgenceForm.invalid }" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
+                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
+                &nbsp;
+                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': affectationAgentAgenceForm.invalid }" type="submit">Ajouter</button>
               </div>
             </div>
           </form>
@@ -149,7 +155,7 @@
             <table class="table-style3 table at-savesearch">
               <thead class="t-head">
                 <tr>
-                  <th scope="col">ID</th>
+                  <th scope="col">#</th>
                   <th scope="col">Nom</th>
                   <th scope="col">Prénom(s)</th>
                   <th scope="col">Etat compte</th>
@@ -185,16 +191,16 @@
             </table>
           </div>
 
-          <div *ngIf="affectationsAgentAgenceAdmin.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="affectationsAgentAgence.length !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
               (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="affectationsAgentAgenceAdmin.length"
+              [rows]="elementsParPage"  [totalRecords]="affectationsAgentAgence.length"
               [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
               currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} agents immobiliers"
               [showPageLinks]="true" [showFirstLastIcon]="true">
             </p-paginator>
           </div>
-          <div *ngIf="affectationsAgentAgenceAdmin.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="affectationsAgentAgence.length == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucun agent immobilier enregistré pour le moment</p>
           </div>
         </div>
@@ -228,11 +234,26 @@
       <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+          <div class="col-xl-4" *ngIf="agencesImmobilieres.length > 1">
+            <p-dropdown
+              class="select"
+              emptyMessage="Aucun résultat trouvé"
+              [options]="agencesImmobilieres" placeholder="Filtrer par agence"
+              formControlName="agenceImmobiliere"
+              [(ngModel)]="agenceSelectionnee"
+              [showClear]="true" (onChange)="filtrerParAgence($event)" optionLabel="nomAgence">
+              <ng-template let-agenceImmobiliere pTemplate="item">
+                {{ agenceImmobiliere.codeAgence }}/ {{ agenceImmobiliere.nomAgence }}
+              </ng-template>
+            </p-dropdown>
+          </div>
+          <br>
           <div class="packages_table table-responsive">
             <table class="table-style3 table at-savesearch">
               <thead class="t-head">
                 <tr>
-                  <th scope="col">ID</th>
+                  <th scope="col">#</th>
+                  <th scope="col" *ngIf="agencesImmobilieres.length > 1">Agence immobilère</th>
                   <th scope="col">Nom</th>
                   <th scope="col">Prénom(s)</th>
                   <th scope="col">Etat compte</th>
@@ -242,11 +263,26 @@
               <tbody class="t-body">
                 <tr *ngFor="let affectationAgentAgence of affectationsAgentAgenceParPage | genericFilter: recherche;  let i = index">
                   <td class="vam">{{ pageActuelle + i + 1 }}</td>
+                  <th scope="row" *ngIf="agencesImmobilieres.length > 1">
+                    <div class="listing-style1 dashboard-style d-xxl-flex align-items-center mb-0">
+                      <div class="list-thumb">
+                        <img *ngIf="affectationAgentAgence.agenceImmobiliere.logoAgence == ''" class="w-100"
+                        src="assets/images/team/logo_par_defaut.jpg" alt="">
+
+                        <img *ngIf="affectationAgentAgence.agenceImmobiliere.logoAgence !== ''" class="w-100"
+                        src="{{this.APIEndpoint+'api/logo/agence-immobiliere/'+ affectationAgentAgence.agenceImmobiliere.id}}" alt="">
+                      </div>
+                      <div class="list-content flex-shrink-1">
+                        <h6 class="list-title"><a href="{{this.APIEndpoint+'api/logo/agence-immobiliere/'+ affectationAgentAgence.agenceImmobiliere.id}}">{{ affectationAgentAgence.agenceImmobiliere.adresse }}</a></h6>
+                        <p class="list-text">{{ affectationAgentAgence.agenceImmobiliere.nomAgence }} <i *ngIf="affectationAgentAgence.agenceImmobiliere && affectationAgentAgence.agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+                      </div>
+                    </div>
+                  </th>
                   <td class="vam">{{ affectationAgentAgence.agentImmobilier.nom }}</td>
                   <td class="vam">{{ affectationAgentAgence.agentImmobilier.prenom }} <i *ngIf="affectationAgentAgence.agentImmobilier.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></td>
                   <td class="vam">
-                    <p-tag *ngIf="affectationAgentAgence.agentImmobilier.etatCompte == true" severity="success" value="Activé"></p-tag>
-                    <p-tag *ngIf="affectationAgentAgence.agentImmobilier.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+                    <p-tag *ngIf="affectationAgentAgence.actif == true" severity="success" value="Activé"></p-tag>
+                    <p-tag *ngIf="affectationAgentAgence.actif == false" severity="danger" value="Désactivé"></p-tag>
                   </td>
                   <td class="vam">
                     <div class="d-flex">
@@ -254,12 +290,12 @@
                         pTooltip="Détails" tooltipPosition="right" class="p-button-text p-button-info">
                       </button>
 
-                      <button pButton type="button" *ngIf="affectationAgentAgence.agentImmobilier.etatCompte === true && user.etatCompte == true" (click)="desactiverCompte(affectationAgentAgence.agentImmobilier.id)" icon="pi pi-lock"
-                        pTooltip="Désactiver ce compte" tooltipPosition="top" class="p-button-text p-button-danger">
+                      <button pButton type="button" *ngIf="affectationAgentAgence.actif === true && user.etatCompte == true" (click)="desactiverCompteAgentAgence(affectationAgentAgence.id)" icon="pi pi-lock"
+                        pTooltip="Désactiver cet agent" tooltipPosition="top" class="p-button-text p-button-danger">
                       </button>
 
-                      <button pButton type="button" *ngIf="affectationAgentAgence.agentImmobilier.etatCompte === false && user.etatCompte == true" (click)="activerCompte(affectationAgentAgence.agentImmobilier.id)" icon="pi pi-lock-open"
-                        pTooltip="Activer ce compte" tooltipPosition="left" class="p-button-text p-button-success">
+                      <button pButton type="button" *ngIf="affectationAgentAgence.actif === false && user.etatCompte == true" (click)="activerCompteAgentAgence(affectationAgentAgence.id)" icon="pi pi-lock-open"
+                        pTooltip="Activer cet agent" tooltipPosition="left" class="p-button-text p-button-success">
                       </button>
                     </div>
                   </td>
@@ -268,16 +304,16 @@
             </table>
           </div>
 
-          <div *ngIf="affectationsAgentAgenceResponsable.length !== 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="affectationsAgentAgence.length !== 0" class="mbp_pagination text-center mt30">
             <p-paginator
               (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="affectationsAgentAgenceResponsable.length"
+              [rows]="elementsParPage"  [totalRecords]="affectationsAgentAgence.length"
               [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
               currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} agents immobiliers"
               [showPageLinks]="true" [showFirstLastIcon]="true">
             </p-paginator>
           </div>
-          <div *ngIf="affectationsAgentAgenceResponsable.length == 0" class="mbp_pagination text-center mt30">
+          <div *ngIf="affectationsAgentAgence.length == 0" class="mbp_pagination text-center mt30">
             <p class="mt10 pagination_page_count text-center">Aucun agent immobilier enregistré pour le moment</p>
           </div>
         </div>
@@ -289,10 +325,15 @@
   <!-- Détails d'un agent immobilier -->
   <div *ngIf="affichage == 3">
     <div  class="row align-items-center pb40">
-      <div class="col-xxl-3">
+      <div class="col-xxl-9">
         <div class="dashboard_title_area">
-          <h4>Détails d'un administrateur</h4>
+          <h4>Détails d'un agent immobilier</h4>
           <p class="text"></p>
+        </div>
+      </div>
+      <div class="col-xxl-3">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
         </div>
       </div>
     </div>
@@ -317,27 +358,24 @@
               <p>{{ affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.username }}</p>
             </div>
             <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
-              <p>{{ affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.email }}</p>
+              <p class="fw600 mb10 ff-heading dark-color">Matricule</p>
+              <p>{{ affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.matricule }}</p>
             </div>
 
             <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+              <p>{{ affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.email }}</p>
+            </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
               <p>{{ affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.telephone }}</p>
             </div>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Profil</p>
-              <p>{{ affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.role.libelle }}</p>
-            </div>
 
             <p-divider></p-divider>
             <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
-              <p>
-                <p-tag *ngIf="affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.etatCompte == true" severity="success" value="Activé"></p-tag>
-                <p-tag *ngIf="affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
-              </p>
+              <p class="fw600 mb10 ff-heading dark-color">Profil</p>
+              <p>{{ affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.role.libelle }}</p>
             </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Agence immobilière</p>
@@ -355,6 +393,20 @@
             </div>
 
             <p-divider></p-divider>
+            <div class="form-group col-md-6" *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
+              <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
+              <p>
+                <p-tag *ngIf="affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.etatCompte == true" severity="success" value="Activé"></p-tag>
+                <p-tag *ngIf="affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+              </p>
+            </div>
+            <div class="form-group col-md-6" *ngIf="user.role.code == 'ROLE_RESPONSABLE'">
+              <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
+              <p>
+                <p-tag *ngIf="affecationAgentAgence && affecationAgentAgence.actif == true" severity="success" value="Activé"></p-tag>
+                <p-tag *ngIf="affecationAgentAgence && affecationAgentAgence.actif == false" severity="danger" value="Désactivé"></p-tag>
+              </p>
+            </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Date affection</p>
               <p>{{ affecationAgentAgence && affecationAgentAgence.dateAffectation | date: "dd-MM-yyyy" }}</p>
@@ -363,12 +415,12 @@
           </div>
 
           <div class="text-end">
-            <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
+            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
           </div>
         </div>
       </div>
     </div>
   </div>
   <!-- En Détails d'un agent immobilier -->
-  
+
 </div>

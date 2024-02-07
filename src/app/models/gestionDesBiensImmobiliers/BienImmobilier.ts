@@ -11,11 +11,12 @@ import { Ville } from "./Ville";
 export class BienImmobilier extends EntiteDeBase {
 
   id: number;
-  numeroIdentifiant: string;
+  codeBien: string;
   description!: Text;
   adresse: string;
   surface!: number;
   typeDeBien: TypeDeBien;
+  categorie!: string;
   pays: Pays;
   region: Region;
   ville: Ville;
@@ -29,7 +30,7 @@ export class BienImmobilier extends EntiteDeBase {
   constructor() {
     super();
     this.id = 0;
-    this.numeroIdentifiant = '';
+    this.codeBien = '';
     this.adresse = '';
     this.typeDeBien = new TypeDeBien();
     this.pays = new Pays();

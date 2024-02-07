@@ -40,7 +40,7 @@ export class ForgotPasswordComponent implements OnInit{
     emailData.append('email', this.rechercheCompteForm.get('email')?.value)
 
     this.loading = true;
-    this.messageLoading = "Recherche de votre compte en cours..."
+    this.messageLoading = "Recherche de votre compte en cours, veuillez patienter..."
 
     this.personneService.requestResetPassword(emailData)
     .subscribe(

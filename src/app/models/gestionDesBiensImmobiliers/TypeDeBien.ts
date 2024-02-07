@@ -3,6 +3,7 @@ import { EntiteDeBase } from "../EntiteDeBase";
 export class TypeDeBien extends EntiteDeBase {
 
   id: number;
+  code!: string;
   designation: string;
   etat: boolean;
 

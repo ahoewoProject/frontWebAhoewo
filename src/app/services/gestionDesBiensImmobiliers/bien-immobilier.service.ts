@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
@@ -36,15 +36,9 @@ export class BienImmobilierService {
     return this.httpClient.get<BienImmobilier>(this.url + 'bien-immobilier/' + id);
   }
 
-  // Affichage de toutes les occurrences de biens immobiliers;
-  // url: http://localhost:4040/api/biens-immobiliers
-  getAll(): Observable<Array<BienImmobilier>>{
-    return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers');
-  }
-
   // Affichage de toutes les occurrences de biens immobiliers par propriétaire;
   // url: http://localhost:4040/api/biens-immobiliers/proprietaire
-  getAllByProprietaire(): Observable<Array<BienImmobilier>>{
+  getBiensByProprietaire(): Observable<Array<BienImmobilier>>{
     return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers/proprietaire');
   }
 
@@ -60,9 +54,9 @@ export class BienImmobilierService {
     return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers/agences/agent');
   }
 
-    // Affichage de toutes les occurrences de biens immobiliers paginés par propriétaire;
+  // Affichage de toutes les occurrences de biens immobiliers paginés par propriétaire;
   // url: http://localhost:4040/api/biens-immobiliers/proprietaire/pagines
-  getAllByProprietairePagines(numeroDeLaPage: number, elementsParPage: number): Observable<Page<BienImmobilier>>{
+  getBiensPaginesByProprietaire(numeroDeLaPage: number, elementsParPage: number): Observable<Page<BienImmobilier>>{
     let params = new HttpParams()
       .set('numeroDeLaPage', numeroDeLaPage.toString())
       .set('elementsParPage', elementsParPage.toString());
@@ -71,7 +65,7 @@ export class BienImmobilierService {
 
   // Affichage de toutes les occurrences de biens immobiliers paginés par agence;
   // url: http://localhost:4040/api/biens-immobiliers/agences/responsable/pagines
-  getBiensOfAgencesByResponsablePagines(numeroDeLaPage: number, elementsParPage: number): Observable<Page<BienImmobilier>>{
+  getBiensPaginesOfAgencesByResponsable(numeroDeLaPage: number, elementsParPage: number): Observable<Page<BienImmobilier>>{
     let params = new HttpParams()
       .set('numeroDeLaPage', numeroDeLaPage.toString())
       .set('elementsParPage', elementsParPage.toString());
@@ -80,7 +74,7 @@ export class BienImmobilierService {
 
   // Affichage de toutes les occurrences de biens immobiliers paginés par agence;
   // url: http://localhost:4040/api/biens-immobiliers/agences/agent/pagines
-  getBiensOfAgencesByAgentPagines(numeroDeLaPage: number, elementsParPage: number): Observable<Page<BienImmobilier>>{
+  getBiensPaginesOfAgencesByAgent(numeroDeLaPage: number, elementsParPage: number): Observable<Page<BienImmobilier>>{
     let params = new HttpParams()
       .set('numeroDeLaPage', numeroDeLaPage.toString())
       .set('elementsParPage', elementsParPage.toString());
@@ -98,7 +92,7 @@ export class BienImmobilierService {
   }
 
   // Fonction pour afficher la premiere image d'un bien immobilier
-  getPremiereImage(id: number): Observable<any> {
+  getPremiereImage(id: number): Observable<HttpResponse<Blob>> {
     const endpoint = this.url + 'premiere-image/bien-immobilier/' + id;
 
     return this.httpClient.get(endpoint, {

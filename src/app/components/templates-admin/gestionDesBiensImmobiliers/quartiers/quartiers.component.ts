@@ -68,7 +68,7 @@ export class QuartiersComponent implements OnInit {
   }
 
   pagination(event: any) {
-    this.numeroDeLaPage = event.first;
+    this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
     this.listerQuartiers(this.numeroDeLaPage, this.elementsParPage);
   }
@@ -85,7 +85,21 @@ export class QuartiersComponent implements OnInit {
     this.visibleUpdateForm = 0;
   }
 
+  annuler(): void {
+    this.quartierForm.reset();
+    if (this.visibleAddForm == 1) {
+      this.affichage = 0;
+      this.visibleAddForm = 1;
+      this.visibleUpdateForm = 0;
+    } else {
+      this.affichage = 0;
+      this.visibleUpdateForm = 1;
+      this.visibleAddForm = 0;
+    }
+  }
+
   afficherFormulaireAjouter(): void {
+    this.villeSelectionnee = this.villes[0];
     this.affichage = 0;
     this.visibleAddForm = 1;
     this.visibleUpdateForm = 0;
@@ -142,7 +156,7 @@ export class QuartiersComponent implements OnInit {
     (error) =>{
       //console.log(error)
       if (error.status == 409) {
-        this.messageErreur = "Un quartier avec ce libelle existe déjà !";
+        this.messageErreur = "Un quartier avec ce libelle existe déjà dans cette ville !";
         this.messageService.add({
           severity: 'warn',
           summary: "Erreur d'ajout",
@@ -177,7 +191,7 @@ export class QuartiersComponent implements OnInit {
     (error) =>{
       //console.log(error)
       if (error.status == 409) {
-        this.messageErreur = "Un quartier avec ce libelle existe déjà !";
+        this.messageErreur = "Un quartier avec ce libelle existe déjà dans cette ville !";
         this.messageService.add({
           severity: 'warn',
           summary: 'Modification non réussie',

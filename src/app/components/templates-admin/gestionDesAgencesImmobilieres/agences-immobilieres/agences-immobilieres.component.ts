@@ -127,7 +127,7 @@ export class AgencesImmobilieresComponent implements OnInit {
     });
   }
 
-  voirListe(): void{
+  voirListe(): void {
     if (this.user.role.code == 'ROLE_RESPONSABLE') {
       this.listeAgenceImmobilieresResponsable(this.numeroDeLaPage, this.elementsParPage);
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
@@ -141,16 +141,30 @@ export class AgencesImmobilieresComponent implements OnInit {
     this.visibleUpdateForm = 0;
   }
 
+  annuler(): void {
+    this.logoAgence = '';
+    this.agenceImmobiliereForm.reset();
+    if (this.visibleAddForm == 1) {
+      this.affichage = 0;
+      this.visibleAddForm = 1;
+      this.visibleUpdateForm = 0;
+    } else {
+      this.affichage = 0;
+      this.visibleAddForm = 0;
+      this.visibleUpdateForm = 1;
+    }
+  }
+
   listeServices(id: number, numeroDeLaPage: number, elementsParPage: number): void {
     this.servicesAgenceImmobiliereService.findServicesOfAgencePagines(id, numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
-        //console.log(error)(response)
         this.servicesAgenceImmobiliere = response;
       }
     );
   }
 
   afficherListeServices(id: number): void {
+    this.detailAgenceImmobiliere(id);
     this.listeServices(id, this.numeroDeLaPage, this.elementsParPage);
     localStorage.setItem('idAgence', id.toString());
     this.affichage = 3;
@@ -176,7 +190,6 @@ export class AgencesImmobilieresComponent implements OnInit {
   }
 
   detailAgenceImmobiliere(id: number): void {
-    //console.log(error)(id)
     if (this.user.role.code == 'ROLE_RESPONSABLE') {
       this.agenceImmobiliereService.findById(id).subscribe(
         (response) => {

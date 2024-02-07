@@ -56,6 +56,12 @@ export class RegionService {
     return this.httpClient.get<Array<Region>>(this.url + 'regions/actifs');
   }
 
+  // Affichage de toutes les occurrences des regions par id de pays;
+  // url: http://localhost:4040/api/regions/pays/{id}
+  getRegionsByPaysId(id: number): Observable<Array<Region>>{
+    return this.httpClient.get<Array<Region>>(this.url + 'regions/pays/' + id);
+  }
+
   // Activation d'une region;
   // url: http://localhost:4040/api/activer/ville/{id}
   activerRegion(id: number): Observable<any>{

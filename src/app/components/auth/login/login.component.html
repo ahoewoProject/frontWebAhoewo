@@ -10,7 +10,7 @@
 
             <div class="text-center mb40">
               <a routerLink="/" class="logo"><img class="mb25 img" src="assets/images/ahoe-min.png" width="145" height="38" alt=""></a>
-              <h3 class="heading">Connectez-vous !</h3>
+              <h2 class="heading">Connectez-vous !</h2>
               <p class="text">Connectez-vous pour avoir accès à nos fonctionnalités.</p>
             </div>
 
@@ -21,9 +21,9 @@
               <div class="mb25">
                 <label class="form-label fw600 dark-color">Nom d'utilisateur</label>
                 <input type="text" class="form-control" placeholder="Entrer votre nom d'utilisateur" id="username" name="username" formControlName="username" [(ngModel)]="loginForm.username" required>
-                <div class="error" [hidden]="username.valid || username.pristine && !username.touched ">Le nom d'utilisateur est obligatoire</div>
+                <div class="error" [hidden]="username.valid || username.pristine && !username.touched">Le nom d'utilisateur est obligatoire</div>
               </div>
-              
+
               <div class="mb15">
                 <label class="form-label fw600 dark-color">Mot de passe</label>
                 <input placeholder="Entrer votre mot de passe" [type]="voirMotDePasse ? 'text' : 'password'" class="form-control" id="password" name="password" formControlName="password" [(ngModel)]="loginForm.password" required>

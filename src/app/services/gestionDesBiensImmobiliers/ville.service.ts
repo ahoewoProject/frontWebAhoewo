@@ -56,6 +56,13 @@ export class VilleService {
     return this.httpClient.get<Array<Ville>>(this.url + 'villes/actifs');
   }
 
+  // Affichage de toutes les occurrences des villes par id de région;
+  // url: http://localhost:4040/api/villes/region/{id}
+  getVillesByRegionId(id: number): Observable<Array<Ville>>{
+    return this.httpClient.get<Array<Ville>>(this.url + 'villes/region/' + id);
+  }
+
+
   // Activation d'une ville;
   // url: http://localhost:4040/api/activer/ville/{id}
   activerVille(id: number): Observable<any>{

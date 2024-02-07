@@ -56,6 +56,12 @@ export class QuartierService {
     return this.httpClient.get<Array<Quartier>>(this.url + 'quartiers/actifs');
   }
 
+  // Affichage de toutes les occurrences de quartiers par id de ville;
+  // url: http://localhost:4040/api/quartiers/ville/{id}
+  getQuartiersByVilleId(id: number): Observable<Array<Quartier>>{
+    return this.httpClient.get<Array<Quartier>>(this.url + 'quartiers/ville/' + id);
+  }
+
   // Activation d'un quartier;
   // url: http://localhost:4040/api/activer/quartier/{id}
   activerQuartier(id: number): Observable<any>{

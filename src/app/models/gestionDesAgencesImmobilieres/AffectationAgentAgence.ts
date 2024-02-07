@@ -7,7 +7,9 @@ export class AffectationAgentAgence extends EntiteDeBase {
   id: number;
   agenceImmobiliere!: AgenceImmobiliere;
   agentImmobilier!: AgentImmobilier;
-  dateAffectation!: Date; 
+  dateAffectation!: Date;
+  dateFin!: Date;
+  actif!: boolean;
 
   constructor(){
     super();

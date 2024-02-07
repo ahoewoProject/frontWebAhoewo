@@ -9,6 +9,7 @@ import { AffectationAgentAgenceService } from 'src/app/services/gestionDesAgence
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { AgentImmobilierService } from 'src/app/services/gestionDesComptes/agent-immobilier.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
+import { environment } from 'src/environments/environment';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -33,8 +34,7 @@ export class AgentsImmobiliersComponent implements OnInit{
   pageActuelle = 0; // Page actuelle
 
   agentImmobilier = new AgentImmobilier();
-  affectationsAgentAgenceAdmin: AffectationAgentAgence[] = [];
-  affectationsAgentAgenceResponsable: AffectationAgentAgence[] = [];
+  affectationsAgentAgence: AffectationAgentAgence[] = [];
   agentsImmobiliers: AgentImmobilier[] = [];
   // agentsImmobiliersFiltres: AgentImmobilier[] = [];
   affecationAgentAgence: AffectationAgentAgence = new AffectationAgentAgence();
@@ -42,6 +42,7 @@ export class AgentsImmobiliersComponent implements OnInit{
   messageErreur: string = "";
   messageSuccess: string | null = null;
   agencesImmobilieres : AgenceImmobiliere[] = [];
+  APIEndpoint: string;
 
   user: any;
   affectationAgentAgenceForm: any;
@@ -67,6 +68,7 @@ export class AgentsImmobiliersComponent implements OnInit{
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
     this.user = JSON.parse(utilisateurConnecte);
+    this.APIEndpoint = environment.APIEndpoint;
   }
 
   ngOnInit(): void {
@@ -91,6 +93,12 @@ export class AgentsImmobiliersComponent implements OnInit{
   //   }
   //   this.agentsImmobiliersFiltres = filtres;
   // }
+
+  filtrerParAgence(event: any) {
+    this.agenceSelectionnee = event.value;
+    this.affectationsAgentAgence = this.affectationsAgentAgence.filter((affectationAgenceAgence) => affectationAgenceAgence.agenceImmobiliere.id == this.agenceSelectionnee.id);
+    console.log(this.affectationsAgentAgence);
+  }
 
   initAffectationAgentAgenceForm(): void {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -158,7 +166,7 @@ export class AgentsImmobiliersComponent implements OnInit{
     this.agenceSelectionnee = event.value;
   }
 
-  //Fonction pour recupérer une agence immobilière par responsable d'agence immobilière
+  //Fonction pour recupérer les agences immobilières par responsable d'agence immobilière
   listeAgenceImmobilieresResponsable(){
     this.agenceImmobiliereService.findAgencesByResponsable().subscribe(
       (response) => {
@@ -180,7 +188,7 @@ export class AgentsImmobiliersComponent implements OnInit{
   listerAffectationsAgentsImmobiliers(): void {
     this.affectationAgentAgenceService.getAll().subscribe(
       (response) => {
-        this.affectationsAgentAgenceAdmin = response;
+        this.affectationsAgentAgence = response;
       }
     )
   }
@@ -189,18 +197,14 @@ export class AgentsImmobiliersComponent implements OnInit{
   listerAffectationsAgentsParAgence(): void {
     this.affectationAgentAgenceService.getAgentsOfAgence().subscribe(
       (response) => {
-        this.affectationsAgentAgenceResponsable = response;
+        this.affectationsAgentAgence = response;
       }
     )
   }
 
   // Récupération des agents immobiliers de la page courante
   get affectationsAgentAgenceParPage(): any[] {
-    if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      return this.affectationsAgentAgenceResponsable.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
-    } else {
-      return this.affectationsAgentAgenceAdmin.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
-    }
+    return this.affectationsAgentAgence.slice(this.pageActuelle, this.elementsParPage + this.pageActuelle);
   }
 
   pagination(event: any) {
@@ -222,6 +226,12 @@ export class AgentsImmobiliersComponent implements OnInit{
     this.affectationAgentAgenceForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
+  }
+
+  annuler(): void {
+    this.affectationAgentAgenceForm.reset();
+    this.affichage = 0;
+    this.visibleAddForm = 1;
   }
 
   detailAgentImmobilier(id: number): void {
@@ -357,7 +367,6 @@ export class AgentsImmobiliersComponent implements OnInit{
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.personneService.activerCompte(id).subscribe(response=>{
-          //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été activé avec succès !";
           this.messageService.add({
@@ -395,6 +404,81 @@ export class AgentsImmobiliersComponent implements OnInit{
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.personneService.desactiverCompte(id).subscribe(response=>{
+          this.voirListe();
+          this.messageSuccess = "Le compte a été désactivé avec succès.";
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Désactivaction de compte confirmée',
+            detail: this.messageSuccess
+          });
+        });
+
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Désactivation de compte rejetée',
+              detail: 'Vous avez rejeté la désactivation de ce compte !'
+            });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({
+              severity: 'warn', summary: 'Désactivation de compte annulée',
+              detail: 'Vous avez annulé la désactivation de ce compte !'
+            });
+            break;
+        }
+      }
+    });
+  }
+
+  activerCompteAgentAgence(id: number): void {
+    this.confirmationService.confirm({
+      message: 'Vous êtes sûr de vouloir activer ce compte ?',
+      header: "Activation de compte",
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.affectationAgentAgenceService.activerCompteAgentAgence(id).subscribe(response=>{
+          console.log(response);
+          this.voirListe();
+          this.messageSuccess = "Le compte a été activé avec succès !";
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Activation de compte confirmée',
+            detail: this.messageSuccess })
+        });
+
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Activation de compte rejetée',
+              detail: "Vous avez rejeté l'activation de ce compte !"
+            });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Activation de compte annulée',
+              detail: "Vous avez annulé l'activation de ce compte !"
+            });
+            break;
+        }
+      }
+    });
+  }
+
+  desactiverCompteAgentAgence(id: number): void{
+    this.confirmationService.confirm({
+      message: 'Vous êtes sûr de vouloir désactiver ce compte ?',
+      header: "Désactivation de compte",
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.affectationAgentAgenceService.desactiverCompteAgentAgence(id).subscribe(response=>{
           //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le compte a été désactivé avec succès.";

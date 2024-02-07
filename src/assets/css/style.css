@@ -56,7 +56,7 @@ Tag: advanced search, agency, agent, classified, directory, house, listing, prop
 ==================================*/
 /* Variables */
 :root {
-  --title-font-family: "Poppins", sans-serif;
+  --title-font-family: "DM Sans", sans-serif;
   --body-font-family: "DM Sans", sans-serif;
   --icon-font-family: "Font Awesome 6 Pro";
   --icon-font-family2: "Flaticon";
@@ -93,10 +93,7 @@ a,
   -o-transition: all ease 0.4s;
   transition: all ease 0.4s;
 }
-a:hover,
-.btn:hover {
-  color: #db6b15;
-}
+
 a:active, a:focus, a:hover, a:visited,
 .btn:active,
 .btn:focus,
@@ -6606,10 +6603,54 @@ textarea:focus {
   color: #ffffff;
 }
 
-.btn-thm4 {
-  background-color: #0d7915;
+.btn-retour {
   color: #ffffff;
+  background: #3B82F6;
+  border: 1px solid #3B82F6;
 }
+
+.btn-modifier {
+  color: #ffffff;
+  background: #f97316;
+  border: 1px solid #f97316;
+}
+
+.btn-annuler {
+  color: #ffffff;
+  background: #64748B;
+  border: 1px solid #64748B;
+}
+
+.btn-valider {
+  color: #ffffff;
+  background: #22C55E;
+  border: 1px solid #22C55E;
+}
+
+.btn-retour:hover {
+  color: #ffffff;
+  background: #2563EB;
+  border-color: 1px solid #2563EB;
+}
+
+.btn-modifier:hover {
+  color: #ffffff;
+  background: #EA580C;
+  border-color: 1px solid #EA580C;
+}
+
+.btn-annuler:hover {
+  color: #ffffff;
+  background: #475569;
+  border-color: 1px solid #475569;
+}
+
+.btn-valider:hover {
+  color: #ffffff;
+  background: #16A34A;
+  border-color: 4px solid #16A34A;
+}
+
 
 .btn-dark {
   background-color: var(--headings-color);
@@ -6617,7 +6658,6 @@ textarea:focus {
   color: #ffffff;
 }
 
-.ud-btn:before,
 .btn-gray:before,
 .btn-dark:before,
 .btn-thm:before,
@@ -6646,6 +6686,7 @@ textarea:focus {
   transition: width 0.6s;
   transform-origin: top left;
 }
+
 .ud-btn:hover,
 .btn-gray:hover,
 .btn-dark:hover,
@@ -6659,6 +6700,7 @@ textarea:focus {
 .btn-transparent2:hover {
   color: #ffffff;
 }
+
 .ud-btn:hover:before,
 .btn-gray:hover:before,
 .btn-dark:hover:before,

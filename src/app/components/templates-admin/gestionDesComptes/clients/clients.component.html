@@ -34,7 +34,7 @@
             <table class="table-style3 table at-savesearch">
               <thead class="t-head">
                 <tr>
-                  <th scope="col">ID</th>
+                  <th scope="col">#</th>
                   <th scope="col">Nom</th>
                   <th scope="col">Prénom(s)</th>
                   <th scope="col">Etat compte</th>
@@ -96,6 +96,11 @@
           <h4>Détails d'un client</h4>
         </div>
       </div>
+      <div class="col-xxl-9">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-xl-12">
@@ -118,21 +123,25 @@
               <p>{{ client.username }}</p>
             </div>
             <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
-              <p>{{ client.email }}</p>
+              <p class="fw600 mb10 ff-heading dark-color">Matricule</p>
+              <p>{{ client.matricule }}</p>
             </div>
 
             <p-divider></p-divider>
+            <div class="form-group col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+              <p>{{ client.email }}</p>
+            </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
               <p>{{ client.telephone }}</p>
             </div>
+
+            <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Profil</p>
               <p>{{ client.role.libelle }}</p>
             </div>
-
-            <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
               <p>
@@ -145,7 +154,7 @@
           </div>
 
           <div class="text-end">
-            <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
+            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
           </div>
         </div>
       </div>

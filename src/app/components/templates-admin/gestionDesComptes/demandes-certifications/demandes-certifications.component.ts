@@ -123,6 +123,19 @@ export class DemandesCertificationsComponent implements OnInit {
     this.carteCfe = ''
   }
 
+  annuler(): void {
+    if (this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
+      this.affichage = 1;
+      this.visibleAddForm = 0;
+      this.documentJustificatif = '';
+    } else {
+      this.demandeCertificationForm.reset();
+      this.affichage = 1;
+      this.visibleAddForm = 0;
+      this.documentJustificatif = '';
+    }
+  }
+
   afficherFormulaireAjouter(): void {
     this.affichage = 0;
     this.visibleAddForm = 1;

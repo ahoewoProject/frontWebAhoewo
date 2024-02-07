@@ -63,6 +63,11 @@ export class ProfilComponent implements OnInit{
     this.affichage = 1;
   }
 
+  annuler(): void {
+    this.userForm.reset();
+    this.affichage = 2;
+  }
+
   get nom() {
     return this.userForm.get('nom');
   }

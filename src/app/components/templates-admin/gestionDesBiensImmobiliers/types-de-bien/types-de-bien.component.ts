@@ -67,6 +67,19 @@ export class TypesDeBienComponent implements OnInit {
     this.visibleUpdateForm = 0;
   }
 
+  annuler(): void {
+    this.typeDeBienForm.reset();
+    if (this.visibleAddForm == 1) {
+      this.affichage = 0;
+      this.visibleAddForm = 1;
+      this.visibleUpdateForm = 0;
+    } else {
+      this.affichage = 0;
+      this.visibleUpdateForm = 1;
+      this.visibleAddForm = 0;
+    }
+  }
+
   afficherFormulaireAjouter(): void {
     this.affichage = 0;
     this.visibleAddForm = 1;
@@ -128,7 +141,7 @@ export class TypesDeBienComponent implements OnInit {
   modifierTypeDeBien(): void {
     this.typeDeBienService.updateTypeDeBien(this.typeDeBien.id, this.typeDeBien).subscribe(
       (response) => {
-        if(response.id > 0) {
+        if (response.id > 0) {
           this.voirListe();
           this.messageSuccess = "Le type de bien a été modifié avec succès.";
           this.messageService.add({
@@ -205,7 +218,8 @@ export class TypesDeBienComponent implements OnInit {
       header: "Désactivaction d'un type de bien",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.typeDeBienService.desactiverTypeDeBien(id).subscribe(response=>{
+        this.typeDeBienService.desactiverTypeDeBien(id).subscribe(
+          (response) => {
           //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le type de bien a été désactivé avec succès !";
@@ -246,7 +260,7 @@ export class TypesDeBienComponent implements OnInit {
       accept: () => {
         this.typeDeBienService.deleteById(id).subscribe(
           (response) => {
-            //console.log(response);
+            console.log(response);
             this.voirListe();
             this.messageSuccess = "Le type de bien a été supprimé avec succès !";
             this.messageService.add({

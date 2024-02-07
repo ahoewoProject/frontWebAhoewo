@@ -18,6 +18,11 @@
   cursor: pointer;
 }
 
+.p-checkbox .p-checkbox-box.p-highlight {
+  border-color: #42A948;
+  background: #42A948;
+}
+
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
   background: #ee944e;;
   color: white;

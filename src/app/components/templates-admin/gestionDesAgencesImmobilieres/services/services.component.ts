@@ -28,7 +28,6 @@ export class ServicesComponent implements OnInit {
   messageErreur: string = "";
   messageSuccess: string | null = null;
   serviceForm: any;
-  APIEndpoint: string;
 
   constructor(
     private _servicesService: ServicesService,
@@ -37,7 +36,6 @@ export class ServicesComponent implements OnInit {
     private personneService: PersonneService
   )
   {
-    this.APIEndpoint = environment.APIEndpoint;
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
     this.user = JSON.parse(utilisateurConnecte);
   }
@@ -68,6 +66,19 @@ export class ServicesComponent implements OnInit {
     this.affichage = 1;
     this.visibleAddForm = 0;
     this.visibleUpdateForm = 0;
+  }
+
+  annuler(): void {
+    this.serviceForm.reset();
+    if (this.visibleAddForm == 1) {
+      this.affichage = 0;
+      this.visibleAddForm = 1;
+      this.visibleUpdateForm = 0;
+    } else {
+      this.affichage = 0;
+      this.visibleUpdateForm = 1;
+      this.visibleAddForm = 0;
+    }
   }
 
   afficherFormulaireAjouter(): void {
@@ -116,7 +127,6 @@ export class ServicesComponent implements OnInit {
   ajouterService(): void {
     this._servicesService.addServices(this._service).subscribe(
       (response) => {
-        //console.log(error)(response)
         if (response.id > 0) {
           this.voirListe();
           this.messageSuccess = "Le service a été ajouté avec succès.";
@@ -137,8 +147,7 @@ export class ServicesComponent implements OnInit {
           });
         }
     },
-    (error) =>{
-      //console.log(error)(error)
+    (error) => {
       if (error.status == 409) {
         this.messageErreur = "Un service avec ce nom existe déjà !";
         this.messageService.add({
@@ -172,7 +181,6 @@ export class ServicesComponent implements OnInit {
         }
     },
     (error) =>{
-      //console.log(error)(error)
       if (error.status == 409) {
         this.messageErreur = "Le service avec ce nom existe déjà !";
         this.messageService.add({
@@ -191,8 +199,8 @@ export class ServicesComponent implements OnInit {
       header: "Activation d'un service",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this._servicesService.activerService(id).subscribe(response=>{
-          //console.log(error)(response);
+        this._servicesService.activerService(id).subscribe(
+        (response) => {
           this.voirListe();
           this.messageSuccess = "Le service a été activé avec succès !";
           this.messageService.add({
@@ -230,8 +238,8 @@ export class ServicesComponent implements OnInit {
       header: "Désactivaction d'un service",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this._servicesService.desactiverService(id).subscribe(response=>{
-          //console.log(error)(response);
+        this._servicesService.desactiverService(id).subscribe(
+        (response) => {
           this.voirListe();
           this.messageSuccess = "Le service a été désactivé avec succès !";
           this.messageService.add({

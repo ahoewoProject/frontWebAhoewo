@@ -20,6 +20,8 @@ import { TemplatesAdminComponent } from 'src/app/components/templates-admin/temp
 import { TypesDeBienComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/types-de-bien/types-de-bien.component';
 import { VillesComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/villes/villes.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
+import { AutresServicesComponent } from 'src/app/components/templates-admin/gestionDesAgencesImmobilieres/autres-services/autres-services.component';
+import { NotificationsComponent } from 'src/app/components/templates-admin/notifications/notifications.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -37,11 +39,13 @@ const routes: Routes = [
       { path: 'profil', component: ProfilComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres', component: AgencesImmobilieresComponent, canActivate: [AuthGuard] },
       { path: 'services', component: ServicesComponent, canActivate: [AuthGuard] },
+      { path: 'autres-services', component: AutresServicesComponent, canActivate: [AuthGuard] },
       { path: 'pays', component: PaysComponent, canActivate: [AuthGuard] },
       { path: 'regions', component: RegionsComponent, canActivate: [AuthGuard] },
       { path: 'villes', component: VillesComponent, canActivate: [AuthGuard] },
       { path: 'quartiers', component: QuartiersComponent, canActivate: [AuthGuard] },
       { path: 'types-de-bien', component: TypesDeBienComponent, canActivate: [AuthGuard] },
+      { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] }
     ]
   }
 ];

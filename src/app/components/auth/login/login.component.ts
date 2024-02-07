@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginForm } from 'src/app/models/auth/LoginForm';
+import { BehaviorService } from 'src/app/services/behavior.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 
 @Component({
@@ -23,7 +24,8 @@ export class LoginComponent implements OnInit{
   constructor(
     private personneService: PersonneService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private behaviorService: BehaviorService
   ) {}
 
   LoginForm: any;
@@ -133,49 +135,57 @@ export class LoginComponent implements OnInit{
       //console.log(this.message);
     } else {
       if (this.user.role.code === 'ROLE_ADMINISTRATEUR') {
-        localStorage.setItem('activeLink', '/admin/dashboard');
+        // localStorage.setItem('activeLink', '/admin/dashboard');
+        this.behaviorService.setActiveLink('/admin/dashboard');
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
         this.router.navigate(['/admin/dashboard'], { queryParams: { connexionReussie: true } })
       } else if (this.user.role.code === 'ROLE_NOTAIRE') {
-        localStorage.setItem('activeLink', '/notaire/dashboard');
+        // localStorage.setItem('activeLink', '/notaire/dashboard');
+        this.behaviorService.setActiveLink('/notaire/dashboard');
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
         this.router.navigate(['/notaire/dashboard'], { queryParams: { connexionReussie: true } })
       } else if (this.user.role.code === 'ROLE_GERANT') {
-        localStorage.setItem('activeLink', '/gerant/dashboard');
+        // localStorage.setItem('activeLink', '/gerant/dashboard');
+        this.behaviorService.setActiveLink('/gerant/dashboard');
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
         this.router.navigate(['/gerant/dashboard'], { queryParams: { connexionReussie: true } })
       } else if (this.user.role.code === 'ROLE_AGENTIMMOBILIER') {
-        localStorage.setItem('activeLink', '/agent-immobilier/dashboard');
+        // localStorage.setItem('activeLink', '/agent-immobilier/dashboard');
+        this.behaviorService.setActiveLink('/agent-immobilier/dashboard');
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
         this.router.navigate(['/agent-immobilier/dashboard'], { queryParams: { connexionReussie: true } })
       } else if (this.user.role.code === 'ROLE_CLIENT') {
-        localStorage.setItem('activeLink', '/client/dashboard');
+        // localStorage.setItem('activeLink', '/client/dashboard');
+        this.behaviorService.setActiveLink('/client/dashboard');
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
         this.router.navigate(['/client/dashboard'], { queryParams: { connexionReussie: true } })
       } else if (this.user.role.code === 'ROLE_PROPRIETAIRE') {
-        localStorage.setItem('activeLink', '/proprietaire/dashboard');
+        // localStorage.setItem('activeLink', '/proprietaire/dashboard');
+        this.behaviorService.setActiveLink('/proprietaire/dashboard');
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
         this.router.navigate(['/proprietaire/dashboard'], { queryParams: { connexionReussie: true } })
       } else if (this.user.role.code === 'ROLE_RESPONSABLE') {
-        localStorage.setItem('activeLink', '/responsable/dashboard');
+        // localStorage.setItem('activeLink', '/responsable/dashboard');
+        this.behaviorService.setActiveLink('/responsable/dashboard');
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
         this.router.navigate(['/responsable/dashboard'], { queryParams: { connexionReussie: true } })
       } else if (this.user.role.code === 'ROLE_DEMARCHEUR') {
-        localStorage.setItem('activeLink', '/demarcheur/dashboard');
+        // localStorage.setItem('activeLink', '/demarcheur/dashboard');
+        this.behaviorService.setActiveLink('/demarcheur/dashboard');
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
@@ -192,7 +202,7 @@ export class LoginComponent implements OnInit{
     this.loginData.delete('password');
 
     if (error.status === 401) {
-      this.message = "Username ou mot de passe incorrect. Veuillez réessayer.";
+      this.message = "Nom d'utilisateur ou mot de passe incorrect. Veuillez réessayer.";
       setTimeout(() => {
         this.connexionNonReussie = false;
         this.message = '';

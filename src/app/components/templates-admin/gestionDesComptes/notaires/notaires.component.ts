@@ -83,6 +83,12 @@ export class NotairesComponent implements OnInit{
     this.visibleAddForm = 0;
   }
 
+  annuler(): void {
+    this.notaireForm.reset();
+    this.affichage = 0;
+    this.visibleAddForm = 1;
+  }
+
   afficherFormulaireAjouter(): void {
     this.affichage = 0;
     this.visibleAddForm = 1;

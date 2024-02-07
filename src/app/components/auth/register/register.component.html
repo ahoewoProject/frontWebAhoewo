@@ -10,7 +10,7 @@
 
             <div class="text-center mb40">
               <a routerLink="/" class="logo"><img class="mb25 img" src="assets/images/ahoe-min.png" width="145" height="38" alt=""></a>
-              <h3 class="heading">Création de compte</h3>
+              <h4 class="heading">Création de compte</h4>
               <p class="text">Pour avoir accès aux fonctionnalités qu'offrent notre plateforme, créer un compte !</p>
             </div>
 
@@ -31,7 +31,7 @@
                   <div class="mb20">
                     <label class="form-label fw600 dark-color">Prénom(s)</label>
                     <input type="text" class="form-control" placeholder="Entrer votre prénom(s)" id="prenom" name="prenom" formControlName="prenom" [(ngModel)]="registerForm.prenom" required>
-                    <div class="error" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le prénom est obligatoire</div>
+                    <div class="error" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le(s) prénom(s) est obligatoire</div>
                   </div>
                 </div>
 
@@ -72,7 +72,8 @@
                       class="select" emptyFilterMessage="Aucun résultat trouvé"
                       [options]="roles" placeholder="Choisissez votre profil"
                       formControlName="role" [filter]="true" filterBy="libelle"
-                      [showClear]="true" (onChange)="profilChoisi($event)" optionLabel="libelle">
+                      [showClear]="true" (onChange)="profilChoisi($event)"
+                      optionLabel="libelle">
                     </p-dropdown>
                     <div class="error" [hidden]="!role?.hasError('required') || !role.touched">La selection du profil est obligatoire</div>
                   </div>

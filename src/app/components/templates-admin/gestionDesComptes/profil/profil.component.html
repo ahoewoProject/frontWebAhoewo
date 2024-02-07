@@ -36,6 +36,11 @@
             </h6>
           </div>
         </div>
+        <div *ngIf="affichage == 2" class="col-xxl-4">
+          <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+            <a class="ud-btn btn-retour" type="button" (click)="retour()">Retour</a>
+          </div>
+        </div>
       </div>
       <p-toast></p-toast>
       <div class="row" *ngIf="affichage == 1">
@@ -46,7 +51,7 @@
             <div class="row">
               <p-divider></p-divider>
               <div class="form-group col-md-6">
-                <p class="fw600 mb10 ff-heading dark-color">Nom & Pénom(s)</p>
+                <p class="fw600 mb10 ff-heading dark-color">Nom & Prénom(s)</p>
                 <p>{{ personne.nom }} {{ personne.prenom }} <i *ngIf="personne.estCertifie && (personne.role.code == 'ROLE_RESPONSABLE' || personne.role.code == 'ROLE_AGENTIMMOBILIER' || personne.role.code == 'ROLE_PROPRIETAIRE' || personne.role.code == 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
               </div>
               <div class="form-group col-md-6">
@@ -56,23 +61,24 @@
 
               <p-divider></p-divider>
               <div class="form-group col-md-6">
-                <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
-                <p>{{ personne.email }}</p>
+                <p class="fw600 mb10 ff-heading dark-color">Matricule</p>
+                <p>{{ personne.matricule }}</p>
               </div>
               <div class="form-group col-md-6">
-                <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
-                <p>{{ personne.telephone }}</p>
+                <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+                <p>{{ personne.email }}</p>
               </div>
 
               <p-divider></p-divider>
               <div class="form-group col-md-6">
+                <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
+                <p>{{ personne.telephone }}</p>
+              </div>
+              <div class="form-group col-md-6">
                 <p class="fw600 mb10 ff-heading dark-color">Profil</p>
                 <p>{{ personne.role.libelle }}</p>
               </div>
-              <div class="form-group col-md-6">
-                <p class="fw600 mb10 ff-heading dark-color">Matricule</p>
-                <p>{{ personne.matricule }}</p>
-              </div>
+
 
               <p-divider></p-divider>
               <div class="form-group col-md-6">
@@ -92,7 +98,7 @@
             </div>
 
             <div class="text-end">
-              <a class="ud-btn btn-thm" (click)="afficherFormulaireModifier()" type="button">Modifier</a>
+              <a class="ud-btn btn-modifier" (click)="afficherFormulaireModifier()" type="button">Modifier</a>
             </div>
           </div>
         </div>
@@ -104,28 +110,28 @@
             <div class="col-sm-6 col-xl-4">
               <div class="mb20">
                 <label class="heading-color ff-heading fw600 mb10">Nom</label>
-                <input type="text" class="form-control" placeholder="Votre nom" formControlName="nom" id="nom" name="nom" [ngModel]="personne.nom" required>
+                <input type="text" class="form-control" placeholder="Le nouveau nom" formControlName="nom" id="nom" name="nom" [ngModel]="personne.nom" required>
                 <div class="text-danger" [hidden]="nom.valid || nom.pristine && !nom.touched ">Le nom est obligatoire</div>
               </div>
             </div>
             <div class="col-sm-6 col-xl-4">
               <div class="mb20">
-                <label class="heading-color ff-heading fw600 mb10">Prénom</label>
-                <input type="text" class="form-control" placeholder="Votre prenom" formControlName="prenom" id="prenom" name="prenom" [ngModel]="personne.prenom" required>
+                <label class="heading-color ff-heading fw600 mb10">Prénom(s)</label>
+                <input type="text" class="form-control" placeholder="Le nouveau prénom(s)" formControlName="prenom" id="prenom" name="prenom" [ngModel]="personne.prenom" required>
                 <div class="text-danger" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le prénom est obligatoire</div>
               </div>
             </div>
             <div class="col-sm-6 col-xl-4">
               <div class="mb20">
                 <label class="heading-color ff-heading fw600 mb10">Nom d'utilisateur</label>
-                <input type="text" class="form-control"  placeholder="Votre nom d'utilisateur" formControlName="username" id="username" name="username" [ngModel]="personne.username" required>
+                <input type="text" class="form-control"  placeholder="Le nouveau nom d'utilisateur" formControlName="username" id="username" name="username" [ngModel]="personne.username" required>
                 <div class="text-danger" [hidden]="username.valid || username.pristine && !username.touched ">Le nom d'utilisateur est obligatoire</div>
               </div>
             </div>
             <div class="col-sm-6 col-xl-4">
               <div class="mb20">
                 <label class="heading-color ff-heading fw600 mb10">Email</label>
-                <input type="email" class="form-control"  placeholder="Votre email" formControlName="email" id="email" name="email" [ngModel]="personne.email" required>
+                <input type="email" class="form-control"  placeholder="La nouvelle adresse e-mail" formControlName="email" id="email" name="email" [ngModel]="personne.email" required>
                 <div class="text-danger" [hidden]="!email?.hasError('required') || !email.touched">
                   L'adresse e-mail est obligatoire
                 </div>
@@ -137,7 +143,7 @@
             <div class="col-sm-6 col-xl-4">
               <div class="mb20">
                 <label class="heading-color ff-heading fw600 mb10">Mot de passe</label>
-                <input type="{{ voirMotDePasse ? 'text' : 'password' }}" class="form-control" id="motDePasse" name="motDePasse" formControlName="motDePasse" [(ngModel)]="personne.motDePasse" required>
+                <input type="{{ voirMotDePasse ? 'text' : 'password' }}" placeholder="Le nouveau mot de passe" class="form-control" id="motDePasse" name="motDePasse" formControlName="motDePasse" [(ngModel)]="personne.motDePasse" required>
                 <i alt="show" class="pi pi-eye icon-voir-mot-passe"
                   (click)="voirMotDePasse = !voirMotDePasse"
                   [class.hide]="voirMotDePasse">
@@ -161,8 +167,9 @@
             <br>
             <div class="col-md-12">
               <div class="text-end">
-                <button pButton (click)="retour()" pRipple label="Annuler" class="p-button-secondary"></button>
-                <button pButton [ngClass]="{ 'disabled-link': userForm.invalid }" pRipple label="Modifier" type="submit" class="p-button-warning"></button>
+                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
+                &nbsp;
+                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': userForm.invalid }" type="submit">Modifier</button>
               </div>
             </div>
           </div>

@@ -15,6 +15,11 @@
           <h4>Demande de la certification de compte</h4>
         </div>
       </div>
+      <div class="col-xxl-7">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+        </div>
+      </div>
     </div>
     <div class="row">
       <p-toast></p-toast>
@@ -44,9 +49,9 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="text-end">
-                  <!---->
-                  <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
-                  <button pButton  [ngClass]="{ 'disabled-link': documentJustificatif == null }" type="button" (click)="ajouterDemandeCertificationCompte()" pRipple label="Envoyer" type="submit" class="p-button-success"></button>
+                  <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
+                  &nbsp;
+                  <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': documentJustificatif == null }" type="button" (click)="ajouterDemandeCertificationCompte()">Ajouter</button>
                 </div>
               </div>
             </div>
@@ -60,6 +65,11 @@
       <div class="col-xxl-5">
         <div class="dashboard_title_area">
           <h4>Demande de la certification d'une agence</h4>
+        </div>
+      </div>
+      <div class="col-xxl-7">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
         </div>
       </div>
     </div>
@@ -125,8 +135,9 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="text-end">
-                  <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
-                  <button pButton [ngClass]="{ 'disabled-link': demandeCertificationForm.invalid || (documentJustificatif == null && carteCfe == null) }" type="submit" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
+                  <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
+                  &nbsp;
+                  <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': demandeCertificationForm.invalid || (documentJustificatif == null && carteCfe == null) }" type="submit">Ajouter</button>
                 </div>
               </div>
             </div>
@@ -176,7 +187,7 @@
             <table class="table-style3 table at-savesearch">
               <thead class="t-head">
                 <tr>
-                  <th scope="col">ID</th>
+                  <th scope="col">#</th>
                   <th scope="col">Date demande</th>
                   <th scope="col">Demandeur</th>
                   <th scope="col">Statut demande</th>
@@ -194,11 +205,12 @@
                   </td>
                   <td class="vam">
                     <div class="d-flex">
-                      <a type="button" (click)="afficherPageDetail(demandeCertif.id)" class="icon" pTooltip="Détails" tooltipPosition="top"><i class="pi pi-eye" style="font-size: 1rem"></i></a>
-                      <a *ngIf="demandeCertif.statutDemande == 0 && user.role.code == 'ROLE_NOTAIRE' && demandeCertif.agenceImmobiliere == null" type="button" class="icon" (click)="certifierCompte(demandeCertif.personne.id, demandeCertif.id)" pTooltip="Certifier le compte du demandeur" tooltipPosition="left"><i class="pi pi-verified"></i></a>
-                      <a *ngIf="demandeCertif.statutDemande == 0 && user.role.code == 'ROLE_NOTAIRE' && demandeCertif.agenceImmobiliere" type="button" class="icon" (click)="certifierAgence(demandeCertif.agenceImmobiliere.id, demandeCertif.id)" pTooltip="Certifier l'agence immobilière" tooltipPosition="left"><i class="pi pi-verified"></i></a>
-                      <a *ngIf="demandeCertif.agenceImmobiliere == null" href="{{this.APIEndpoint+'api/cni/demande-certification/'+demandeCertif.id}}" class="icon" pTooltip="Télécharger la cni du demandeur" tooltipPosition="left"><i class="pi pi-download"></i></a>
-                      <a *ngIf="demandeCertif.agenceImmobiliere" href="{{this.APIEndpoint+'api/carte-cfe/demande-certification/'+demandeCertif.id}}" class="icon" pTooltip="Télécharger la carte cfe du demandeur" tooltipPosition="left"><i class="pi pi-download"></i></a>
+
+                      <a pButton class="p-button-text p-button-info" type="button" (click)="afficherPageDetail(demandeCertif.id)" pTooltip="Détails" tooltipPosition="top" icon="pi pi-eye"></a>
+                      <a pButton class="p-button-text p-button-info" *ngIf="demandeCertif.statutDemande == 0 && user.role.code == 'ROLE_NOTAIRE' && demandeCertif.agenceImmobiliere == null" type="button" (click)="certifierCompte(demandeCertif.personne.id, demandeCertif.id)" pTooltip="Certifier le compte du demandeur" tooltipPosition="left" icon="pi pi-verified"></a>
+                      <a pButton class="p-button-text p-button-info" *ngIf="demandeCertif.statutDemande == 0 && user.role.code == 'ROLE_NOTAIRE' && demandeCertif.agenceImmobiliere" type="button" (click)="certifierAgence(demandeCertif.agenceImmobiliere.id, demandeCertif.id)" pTooltip="Certifier l'agence immobilière" tooltipPosition="left" icon="pi pi-verified"></a>
+                      <a pButton class="p-button-text p-button-info" *ngIf="demandeCertif.agenceImmobiliere == null" href="{{this.APIEndpoint+'api/cni/demande-certification/'+demandeCertif.id}}" pTooltip="Télécharger la cni du demandeur" tooltipPosition="left" icon="pi pi-download"></a>
+                      <a pButton class="p-button-text p-button-info" *ngIf="demandeCertif.agenceImmobiliere" href="{{this.APIEndpoint+'api/carte-cfe/demande-certification/'+demandeCertif.id}}" pTooltip="Télécharger la carte cfe du demandeur" tooltipPosition="left" icon="pi pi-download"></a>
                     </div>
                   </td>
                 </tr>
@@ -238,7 +250,12 @@
       <div class="col-xxl-6">
         <div class="dashboard_title_area">
           <h4 *ngIf="user.role.code == 'ROLE_NOTAIRE'">Détails d'une demande de certification</h4>
-          <h4 *ngIf="user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_DEMARCHEUR' ">Détails de votre demande de certification</h4>
+          <h4 *ngIf="user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_DEMARCHEUR' ">Détails de la demande de certification</h4>
+        </div>
+      </div>
+      <div class="col-xxl-6">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
         </div>
       </div>
     </div>
@@ -249,7 +266,7 @@
           <div class="row">
 
             <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Nom & prénom du demandeur</p>
+              <p class="fw600 mb10 ff-heading dark-color">Nom & prénom(s) du demandeur</p>
               <p>{{ demandeCertification.personne.nom }} {{ demandeCertification.personne.prenom }} <i *ngIf="demandeCertification.personne.estCertifie && (demandeCertification.personne.role.code == 'ROLE_RESPONSABLE' || demandeCertification.personne.role.code == 'ROLE_PROPRIETAIRE' || demandeCertification.personne.role.code == 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
             </div>
             <div class="form-group col-md-6">
@@ -292,12 +309,11 @@
                 <p-tag *ngIf="demandeCertification.statutDemande == 0" severity="warning" value="En attente"></p-tag>
               </p>
             </div>
-            <p-divider></p-divider>
 
           </div>
 
           <div class="text-end">
-            <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
+            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
           </div>
         </div>
       </div>

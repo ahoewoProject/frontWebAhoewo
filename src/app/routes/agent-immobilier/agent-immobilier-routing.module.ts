@@ -7,6 +7,7 @@ import { DelegationsGestionsComponent } from 'src/app/components/templates-admin
 import { ProfilComponent } from 'src/app/components/templates-admin/gestionDesComptes/profil/profil.component';
 import { TemplatesAdminComponent } from 'src/app/components/templates-admin/templates-admin.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
+import { NotificationsComponent } from 'src/app/components/templates-admin/notifications/notifications.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -15,7 +16,8 @@ const routes: Routes = [
       { path: 'profil', component: ProfilComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres', component: AgencesImmobilieresComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/biens-immobiliers', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
-      { path: 'agences-immobilieres/delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] }
+      { path: 'agences-immobilieres/delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
+      { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] }
     ]
   }
 ];

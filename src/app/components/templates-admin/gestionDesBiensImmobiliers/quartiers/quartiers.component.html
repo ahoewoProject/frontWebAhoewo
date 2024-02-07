@@ -15,6 +15,11 @@
           <h4>Ajout d'un quartier</h4>
         </div>
       </div>
+      <div class="col-xxl-9">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-xl-12">
@@ -31,6 +36,7 @@
                     [options]="villes" placeholder="Choisir une ville"
                     formControlName="ville" [filter]="true" filterBy="libelle"
                     filterPlaceholder="Rechercher"
+                    [(ngModel)]="villeSelectionnee"
                     [showClear]="true" (onChange)="villeChoisie($event)" optionLabel="libelle">
                   </p-dropdown>
                   <div class="error" [hidden]="!ville?.hasError('required') || !ville.touched">La selection de la ville est obligatoire</div>
@@ -47,8 +53,9 @@
             <br>
             <div class="col-md-12">
               <div class="text-end">
-                <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
-                <button pButton [ngClass]="{ 'disabled-link': quartierForm.invalid }" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
+                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
+                &nbsp;
+                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': quartierForm.invalid }" type="submit">Ajouter</button>
               </div>
             </div>
           </form>
@@ -66,10 +73,15 @@
           <h4>Modification d'un quartier</h4>
         </div>
       </div>
+      <div class="col-xxl-9">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
           <form [formGroup]="quartierForm" (ngSubmit)="modifierQuartier()" class="form-style1">
             <div class="row">
               <div class="form-group col-md-6">
@@ -98,8 +110,9 @@
             <br>
             <div class="col-md-12">
               <div class="text-end">
-                <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
-                <button pButton [ngClass]="{ 'disabled-link': quartierForm.invalid }" pRipple label="Modifier" type="submit" class="p-button-warning"></button>
+                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
+                &nbsp;
+                <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': quartierForm.invalid }" type="submit">Modifier</button>
               </div>
             </div>
           </form>
@@ -138,7 +151,8 @@
             <table class="table-style3 table at-savesearch">
               <thead class="t-head">
                 <tr>
-                  <th scope="col">ID</th>
+                  <th scope="col">#</th>
+                  <th scope="col">Code</th>
                   <th scope="col">Libelle</th>
                   <th scope="col">Ville</th>
                   <th scope="col">Etat</th>
@@ -148,6 +162,7 @@
               <tbody class="t-body">
                   <tr *ngFor="let quartier of quartiers.content | genericFilter: recherche; let i = index;">
                     <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
+                    <td class="vam">{{ quartier.codeQuartier }}</td>
                     <td class="vam">{{ quartier.libelle }}</td>
                     <td class="vam">{{ quartier.ville.libelle }}</td>
                     <td class="vam">

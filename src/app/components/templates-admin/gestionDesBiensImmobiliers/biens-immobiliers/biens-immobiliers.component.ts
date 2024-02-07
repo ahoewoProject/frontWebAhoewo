@@ -4,28 +4,27 @@ import { Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
+import { BienImmobilierAssocie } from 'src/app/models/gestionDesBiensImmobiliers/BienImmAssocie';
 import { BienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/BienImmobilier';
-import { Confort } from 'src/app/models/gestionDesBiensImmobiliers/Confort';
-import { DelegationGestionRequest } from 'src/app/models/gestionDesBiensImmobiliers/DelegationGestionRequest';
-import { Divertissement } from 'src/app/models/gestionDesBiensImmobiliers/Divertissement';
+import { Caracteristiques } from 'src/app/models/gestionDesBiensImmobiliers/Caracteristiques';
+import { DelegationGestionForm1 } from 'src/app/models/gestionDesBiensImmobiliers/DelegationGestionForm1';
 import { ImagesBienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/ImagesBienImmobilier';
 import { Pays } from 'src/app/models/gestionDesBiensImmobiliers/Pays';
 import { Quartier } from 'src/app/models/gestionDesBiensImmobiliers/Quartier';
 import { Region } from 'src/app/models/gestionDesBiensImmobiliers/Region';
 import { TypeDeBien } from 'src/app/models/gestionDesBiensImmobiliers/TypeDeBien';
-import { Utilitaire } from 'src/app/models/gestionDesBiensImmobiliers/Utilitaire';
 import { Ville } from 'src/app/models/gestionDesBiensImmobiliers/Ville';
+import { BehaviorService } from 'src/app/services/behavior.service';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
+import { BienImmAssocieService } from 'src/app/services/gestionDesBiensImmobiliers/bien-imm-associe.service';
 import { BienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/bien-immobilier.service';
-import { ConfortService } from 'src/app/services/gestionDesBiensImmobiliers/confort.service';
+import { CaracteristiquesService } from 'src/app/services/gestionDesBiensImmobiliers/caracteristiques.service';
 import { DelegationGestionService } from 'src/app/services/gestionDesBiensImmobiliers/delegation-gestion.service';
-import { DivertissementService } from 'src/app/services/gestionDesBiensImmobiliers/divertissement.service';
 import { ImagesBienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/images-bien-immobilier.service';
 import { PaysService } from 'src/app/services/gestionDesBiensImmobiliers/pays.service';
 import { QuartierService } from 'src/app/services/gestionDesBiensImmobiliers/quartier.service';
 import { RegionService } from 'src/app/services/gestionDesBiensImmobiliers/region.service';
 import { TypeDeBienService } from 'src/app/services/gestionDesBiensImmobiliers/type-de-bien.service';
-import { UtilitaireService } from 'src/app/services/gestionDesBiensImmobiliers/utilitaire.service';
 import { VilleService } from 'src/app/services/gestionDesBiensImmobiliers/ville.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { environment } from 'src/environments/environment';
@@ -37,55 +36,57 @@ import { environment } from 'src/environments/environment';
 })
 export class BiensImmobiliersComponent implements OnInit {
 
-  image: any;
   listeDesChoix: any[] | undefined;
+  listeDesCategories: string[] = [];
   checked: string | undefined;
   menus: MenuItem[] | undefined;
   imagesBienImmobilier: any[] = [];
   responsiveOptions: any[] | undefined;
   agenceSelectionnee = new AgenceImmobiliere();
+  bienImmobilierSelectionne = new BienImmobilier();
   typeDeBienSelectionne = new TypeDeBien();
+  categorieSelectionnee = '';
   paysSelectionne = new Pays();
   regionSelectionnee = new Region();
   villeSelectionnee = new Ville();
   quartierSelectionne = new Quartier();
-  confort = new Confort();
-  divertissement = new Divertissement();
-  utilitaire = new Utilitaire();
   recherche: string = '';
   affichage = 1;
   user : any;
+  imgURLs: any[] = [];
   activeIndex: number = 0;
 
-  elementsParPage = 5; // Nombre d'éléments par page
-  numeroDeLaPage = 0; // Page actuelle
+  elementsParPage = 5;
+  numeroDeLaPage = 0;
 
   bienImmobilier = this.bienImmobilierService.bienImmobilier;
-  delegationGestionRequest = new DelegationGestionRequest();
+  bienImmAssocie = this.bienImmAssocieService.bienImmobilierAssocie;
+  caracteristiqueBien: Caracteristiques = new Caracteristiques();
+  caracteristiqueBienAssocie: Caracteristiques = new Caracteristiques();
   agencesImmobilieres: AgenceImmobiliere[] = [];
   biensImmobiliers!: Page<BienImmobilier>;
+  biensImmAssocies!: Page<BienImmobilier>;
   images: ImagesBienImmobilier[] = [];
-  typesDeBien: TypeDeBien[] = [];
+  typesDeBienToStart: TypeDeBien[] = [];
+  typesDeBienPourMaison: TypeDeBien[] = [];
+  typesDeBienPourImmeuble: TypeDeBien[] = [];
+  typesDeBienPourVilla: TypeDeBien[] = [];
   listeDesPays: Pays[] = [];
   regions: Region[] = [];
-  regionsFiltrees: Region[] = [];
   villes: Ville[] = [];
-  villesFiltrees: Ville[] = [];
   quartiers: Quartier[] = [];
-  quartiersFiltres: Quartier[] = [];
   messageErreur: string = "";
   messageSuccess: string | null = null;
-  bienImmobilierForm: any;
-  delegationGestionForm: any;
+  bienStep1Form: any;
+  bienStep2Form: any;
+  bienImmAssocieForm: any;
+  delegationGestionForm:  any;
   APIEndpoint: string;
   bienImmobilierData: FormData = new  FormData();
+  bienImmAssocieData: FormData = new  FormData();
+  delegationGestionForm1 = new DelegationGestionForm1();
 
-  constructor(
-    private personneService: PersonneService,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private bienImmobilierService: BienImmobilierService,
-    private delegationGestionService: DelegationGestionService,
+  constructor(private caracteristiqueService: CaracteristiquesService,
     private router: Router,
     private typeDeBienService: TypeDeBienService,
     private paysService: PaysService,
@@ -94,11 +95,14 @@ export class BiensImmobiliersComponent implements OnInit {
     private quartierService: QuartierService,
     private agenceImmobiliereService: AgenceImmobiliereService,
     private imagesBienImmobilierService: ImagesBienImmobilierService,
-    private confortService: ConfortService,
-    private divertissementService: DivertissementService,
-    private utilitaireService: UtilitaireService
-  )
-  {
+    private personneService: PersonneService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private bienImmobilierService: BienImmobilierService,
+    private bienImmAssocieService: BienImmAssocieService,
+    private behaviorService: BehaviorService,
+    private delegationGestionService: DelegationGestionService
+  ) {
     this.APIEndpoint = environment.APIEndpoint;
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
     this.user = JSON.parse(utilisateurConnecte);
@@ -120,27 +124,25 @@ export class BiensImmobiliersComponent implements OnInit {
       }
     ];
 
-    this.menus = [
-      {
-          label: '1. Description',
-          command: (event: any) => this.messageService.add({severity:'info', summary:'1ère étape', detail: event.item.label})
-      },
-      {
-          label: '2. Caractéristiques',
-          command: (event: any) => this.messageService.add({severity:'info', summary:'2ème étape', detail: event.item.label})
-      }
-    ];
+    this.menusOfTerrain();
 
-    this.initBienImmobilierForm();
+    this.initBienStep1Form();
+    this.initBienStep2Form();
+
     this.initDelegationGestionForm();
-    this.listeTypesDeBienActifs();
+
     this.listePaysActifs();
     this.listeRegionsActives();
     this.listeVillesActives();
     this.listeQuartiersActifs();
 
+    this.listeTypeDeBienToStart();
+    this.listeTypeDeBienPourMaison();
+    this.listeTypeDeBienPourImmeuble();
+    this.listeTypeDeBienPourVilla();
+
     if (this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
-      this.listeBiensImmobiliersParProprietaire(this.numeroDeLaPage, this.elementsParPage);
+      this.listeBiensParProprietaire(this.numeroDeLaPage, this.elementsParPage);
     } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
       this.listeAgencesImmobilieresParResponsable();
       this.listeBiensParAgencesResponsable(this.numeroDeLaPage, this.elementsParPage);
@@ -150,97 +152,63 @@ export class BiensImmobiliersComponent implements OnInit {
     }
   }
 
+  menusOfTerrain(): void {
+    this.menus = [
+      {
+          label: 'Description',
+          command: (event: any) => this.messageService.add({severity:'info', summary:'1ère étape', detail: event.item.label})
+      },
+      {
+          label: 'Localisation',
+          command: (event: any) => this.messageService.add({severity:'info', summary:'2ème étape', detail: event.item.label})
+      },
+      {
+          label: 'Confirmation',
+          command: (event: any) => this.messageService.add({severity:'info', summary:'3ème étape', detail: event.item.label})
+      },
+    ];
+  }
+
+  menusOfMaisonImmeubleAndVilla(): void {
+    this.menus = [
+      {
+          label: 'Description',
+          command: (event: any) => this.messageService.add({severity:'info', summary:'1ère étape', detail: event.item.label})
+      },
+      {
+          label: 'Localisation',
+          command: (event: any) => this.messageService.add({severity:'info', summary:'2ème étape', detail: event.item.label})
+      },
+      {
+          label: 'Caractéristiques',
+          command: (event: any) => this.messageService.add({severity:'info', summary:'3ème étape', detail: event.item.label})
+      },
+      {
+          label: 'Confirmation',
+          command: (event: any) => this.messageService.add({severity:'info', summary:'4ème étape', detail: event.item.label})
+      },
+    ];
+  }
+
+  menusOfOtherTypeDeBien(): void {
+    this.menus = [
+      {
+          label: 'Description',
+          command: (event: any) => this.messageService.add({severity:'info', summary:'1ère étape', detail: event.item.label})
+      },
+      {
+          label: 'Caractéristiques',
+          command: (event: any) => this.messageService.add({severity:'info', summary:'2ème étape', detail: event.item.label})
+      },
+      {
+          label: 'Confirmation',
+          command: (event: any) => this.messageService.add({severity:'info', summary:'3ème étape', detail: event.item.label})
+      },
+    ];
+  }
+
   onActiveIndexChange(event: number) {
     this.activeIndex = event;
-  }
-
-  premiereImageDuBien(bienId: any) {
-    this.bienImmobilierService.getPremiereImage(bienId).subscribe(
-      (response: any) => {
-        this.image = response;
-      },
-      (error) => {
-        if (error.status == 404) {
-          this.image = null;
-        }
-      }
-    );
-  }
-
-  //Fonction pour recupérer les images associées à un bien immobilier
-  getImagesBienImmobilier(id: number): void {
-    this.imagesBienImmobilierService.getImagesByBienImmobilier(id).subscribe(
-      (response) => {
-        this.images = response;
-        ////console.log(error)(error)(response);
-      }
-    );
-  }
-
-  //Fonction pour recupérer la liste des agences immobilieres par agent immobilier
-  listeAgencesImmobilieresParAgent(): void {
-    this.agenceImmobiliereService.findAgencesByAgent().subscribe(
-      (response) => {
-        this.agencesImmobilieres = response;
-      }
-    );
-  }
-
-  //Fonction pour recupérer la liste des agences immobilieres par responsable
-  listeAgencesImmobilieresParResponsable(): void {
-    this.agenceImmobiliereService.findAgencesByResponsable().subscribe(
-      (response) => {
-        this.agencesImmobilieres = response;
-      }
-    );
-  }
-
-  //Fonction pour recupérer la liste des biens immobiliers par propriétaire
-  listeBiensImmobiliersParProprietaire(numeroDeLaPage: number, elementsParPage: number) {
-    this.bienImmobilierService.getAllByProprietairePagines(numeroDeLaPage, elementsParPage).subscribe(
-      (response) => {
-        //console.log(error)(response);
-        this.biensImmobiliers = response;
-        this.biensImmobiliers.content.forEach((bien) => {
-          this.premiereImageDuBien(bien.id);
-        });
-      }
-    );
-  }
-
-  //Fonction pour recupérer la liste des biens immobiliers d'une agence d'un responsable
-  listeBiensParAgencesResponsable(numeroDeLaPage: number, elementsParPage: number) {
-    this.bienImmobilierService.getBiensOfAgencesByResponsablePagines(numeroDeLaPage, elementsParPage).subscribe(
-      (response) => {
-        //console.log(error)(response);
-        this.biensImmobiliers = response;
-        this.biensImmobiliers.content.forEach((bien) => {
-          this.premiereImageDuBien(bien.id);
-        });
-      }
-    );
-  }
-
-  //Fonction pour recupérer la liste des biens immobiliers d'une agence d'un agent immobilier
-  listeBiensParAgencesAgent(numeroDeLaPage: number, elementsParPage: number) {
-    this.bienImmobilierService.getBiensOfAgencesByAgentPagines(numeroDeLaPage, elementsParPage).subscribe(
-      (response) => {
-        //console.log(error)(response);
-        this.biensImmobiliers = response;
-        this.biensImmobiliers.content.forEach((bien) => {
-          this.premiereImageDuBien(bien.id);
-        });
-      }
-    );
-  }
-
-  //Fonction pour recupérer la liste des types de bien actifs
-  listeTypesDeBienActifs(): void {
-    this.typeDeBienService.getTypeDeBienActifs().subscribe(
-      (response) => {
-        this.typesDeBien = response;
-      }
-    );
   }
 
   //Fonction pour recupérer la liste des pays actifs
@@ -279,28 +247,109 @@ export class BiensImmobiliersComponent implements OnInit {
     );
   }
 
-  //Fonction pour pagination de la page des biens immobiliers
-  pagination(event: any) {
-    this.numeroDeLaPage = event.first / event.rows;
-    this.elementsParPage = event.rows;
-    if (this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
-      this.listeBiensImmobiliersParProprietaire(this.numeroDeLaPage, this.elementsParPage);
-    } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.listeBiensParAgencesResponsable(this.numeroDeLaPage, this.elementsParPage);
-    } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.listeBiensParAgencesAgent(this.numeroDeLaPage, this.elementsParPage);
-    }
+  //Liste des types de bien to start
+  listeTypeDeBienToStart(): void {
+    this.typeDeBienService.getTypeDeBienToStart().subscribe(
+      (response) => {
+        this.typesDeBienToStart = response;
+      }
+    )
+  }
+
+  //Liste des types de bien pour maison
+  listeTypeDeBienPourMaison(): void {
+    this.typeDeBienService.getTypeDeBienPourMaison().subscribe(
+      (response) => {
+        this.typesDeBienPourMaison = response;
+      }
+    );
+  }
+
+  //Liste des types de bien pour immeuble
+  listeTypeDeBienPourImmeuble(): void {
+    this.typeDeBienService.getTypeDeBienPourImmeuble().subscribe(
+      (response) => {
+        this.typesDeBienPourImmeuble = response;
+      }
+    );
+  }
+
+  //Liste des types de bien pour villa
+  listeTypeDeBienPourVilla(): void {
+    this.typeDeBienService.getTypeDeBienPourVilla().subscribe(
+      (response) => {
+        this.typesDeBienPourVilla = response;
+      }
+    );
+  }
+
+  //Fonction pour recupérer les images associées à un bien immobilier
+  getImagesBienImmobilier(id: number): void {
+    this.imagesBienImmobilierService.getImagesByBienImmobilier(id).subscribe(
+      (response) => {
+        this.images = response;
+      }
+    );
+  }
+
+  //Fonction pour recupérer la liste des agences immobilieres par agent immobilier
+  listeAgencesImmobilieresParAgent(): void {
+    this.agenceImmobiliereService.findAgencesByAgent().subscribe(
+      (response) => {
+        this.agencesImmobilieres = response;
+      }
+    );
+  }
+
+  //Fonction pour recupérer la liste des agences immobilieres par responsable
+  listeAgencesImmobilieresParResponsable(): void {
+    this.agenceImmobiliereService.findAgencesByResponsable().subscribe(
+      (response) => {
+        this.agencesImmobilieres = response;
+      }
+    );
+  }
+
+  //Fonction pour recupérer la liste des biens immobiliers par propriétaire
+  listeBiensParProprietaire(numeroDeLaPage: number, elementsParPage: number) {
+    this.bienImmobilierService.getBiensPaginesByProprietaire(numeroDeLaPage, elementsParPage).subscribe(
+      (response) => {
+        this.biensImmobiliers = response;
+      }
+    );
+  }
+
+  //Fonction pour recupérer la liste des biens immobiliers des agences d'un responsable
+  listeBiensParAgencesResponsable(numeroDeLaPage: number, elementsParPage: number) {
+    this.bienImmobilierService.getBiensPaginesOfAgencesByResponsable(numeroDeLaPage, elementsParPage).subscribe(
+      (response) => {
+        this.biensImmobiliers = response;
+      }
+    );
+  }
+
+  //Fonction pour recupérer la liste des biens immobiliers des agences d'un agent immobilier
+  listeBiensParAgencesAgent(numeroDeLaPage: number, elementsParPage: number) {
+    this.bienImmobilierService.getBiensPaginesOfAgencesByAgent(numeroDeLaPage, elementsParPage).subscribe(
+      (response) => {
+        this.biensImmobiliers = response;
+      }
+    );
   }
 
   //Fonction pour retourner à la liste des biens immobiliers
-  voirListe(): void {
-    localStorage.removeItem('bienImmobilier');
-    localStorage.removeItem('/proprietaire/delegations-gestions');
+  voirListeBiens(): void {
+    localStorage.removeItem('idBienImmobilier');
+    this.bienImmobilierData.delete('images');
+    this.bienImmobilierData.delete('caracteristiquesJson');
+    this.bienImmobilierData.delete('bienImmobilierJson');
     this.imagesBienImmobilier = [];
-    this.bienImmobilierForm.reset();
+    this.bienStep1Form.reset();
+    this.bienStep2Form.reset();
     this.delegationGestionForm.reset();
+    this.caracteristiqueBien = new Caracteristiques();
     if (this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
-      this.listeBiensImmobiliersParProprietaire(this.numeroDeLaPage, this.elementsParPage);
+      this.listeBiensParProprietaire(this.numeroDeLaPage, this.elementsParPage);
     } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
       this.listeBiensParAgencesResponsable(this.numeroDeLaPage, this.elementsParPage);
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
@@ -309,135 +358,98 @@ export class BiensImmobiliersComponent implements OnInit {
     this.affichage = 1;
   }
 
-  //Fonction pour afficher les détails d'un bien immobilier
+  paginationListeBiens(event: any) {
+    this.numeroDeLaPage = event.first / event.rows;
+    this.elementsParPage = event.rows;
+    if (this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
+      this.listeBiensParProprietaire(this.numeroDeLaPage, this.elementsParPage);
+    } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
+      this.listeBiensParAgencesResponsable(this.numeroDeLaPage, this.elementsParPage);
+    } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
+      this.listeBiensParAgencesAgent(this.numeroDeLaPage, this.elementsParPage);
+    }
+  }
+
+
+  //Détails d'un bien immobilier
   detailBienImmobilier(id: number): void {
-    //console.log(error)(id)
     this.bienImmobilierService.findById(id).subscribe(
       (response) => {
         this.bienImmobilier = response;
-        //console.log(error)(this.bienImmobilier)
-        if (response.typeDeBien.designation !== 'Terrains') {
-          this.detailConfortParBienImmobilier(id);
-          this.detailDivertissementParBienImmobilier(id);
-          this.detailUtilitaireParBienImmobilier(id);
+        this.typeDeBienSelectionne = response.typeDeBien;
+        if (this.typeDeBienSelectionne.designation !== 'Terrain') {
+          this.detailCaracteristiquesBien(id);
         }
       }
     );
   }
 
-  detailConfortParBienImmobilier(id: number): void {
-    this.confortService.getConfortByBienImmobilier(id).subscribe(
+  //Détails d'un bien immobilier associé
+  detailBienImmAssocie(id: number): void {
+    this.bienImmAssocieService.findById(id).subscribe(
       (response) => {
-        this.confort = response;
+        this.bienImmAssocie = response;
+        this.typeDeBienSelectionne = response.typeDeBien;
+        this.detailCaracteristiquesBienAssocie(id);
       }
     );
   }
 
-  detailDivertissementParBienImmobilier(id: number): void {
-    this.divertissementService.getDivertissementByBienImmobilier(id).subscribe(
+  //Détails caracteristiques d'un bien
+  detailCaracteristiquesBien(id: number) {
+    this.caracteristiqueService.getCaracteristiquesOfBienImmobilier(id).subscribe(
       (response) => {
-        this.divertissement = response;
+        this.caracteristiqueBien = response;
       }
     );
   }
 
-  detailUtilitaireParBienImmobilier(id: number): void {
-    this.utilitaireService.getUtilitaireByBienImmobilier(id).subscribe(
+  //Détails caracteristiques d'un bien associé
+  detailCaracteristiquesBienAssocie(id: number) {
+    this.caracteristiqueService.getCaracteristiquesOfBienImmobilier(id).subscribe(
       (response) => {
-        this.utilitaire = response;
+        this.caracteristiqueBienAssocie = response;
       }
     );
-  }
-
-  //Fonction pour afficher la page de détails d'un bien immobilier
-  afficherPageDetail(id: number): void {
-    this.detailBienImmobilier(id);
-    this.getImagesBienImmobilier(id);
-    this.affichage = 4;
-  }
-
-  //Fonction pour téléchager les images associés à un bien immobilier
-  telechargerImagesBienImmobilier(event: any) {
-    for(let file of event.files) {
-      this.imagesBienImmobilier.push(file);
-    }
-    //console.log(error)(this.imagesBienImmobilier)
-    this.messageSuccess = "Les images du bien immobilier ont été téléchargé avec succès.";
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Téléchargement réussi',
-      detail: this.messageSuccess
-    });
-  }
-
-  //Fonction pour initialiser le formulaire d'ajout d'un bien immobilier
-  initBienImmobilierForm(): void {
-    this.bienImmobilierForm = new FormGroup({
-      typeDeBien: new FormControl('', [Validators.required]),
-      agenceImmobiliere: new FormControl('', [Validators.required]),
-      pays: new FormControl('', [Validators.required]),
-      region: new FormControl('', [Validators.required]),
-      ville: new FormControl('', [Validators.required]),
-      quartier: new FormControl('', [Validators.required]),
-      adresse: new FormControl('', [Validators.required]),
-      surface: new FormControl('', [Validators.required, Validators.min(0)]),
-      description: new FormControl('', [Validators.required]),
-    })
-  }
-
-  get typeDeBien() {
-    return this.bienImmobilierForm.get('typeDeBien');
-  }
-
-  get agenceImmobiliere() {
-    return this.bienImmobilierForm.get('agenceImmobiliere');
-  }
-
-  get pays() {
-    return this.bienImmobilierForm.get('pays');
-  }
-
-  get region() {
-    return this.bienImmobilierForm.get('region');
-  }
-
-  get ville() {
-    return this.bienImmobilierForm.get('ville');
-  }
-
-  get quartier() {
-    return this.bienImmobilierForm.get('quartier');
-  }
-
-  get adresse() {
-    return this.bienImmobilierForm.get('adresse');
-  }
-
-  get surface() {
-    return this.bienImmobilierForm.get('surface');
-  }
-
-  get description() {
-    return this.bienImmobilierForm.get('description');
   }
 
   //Fonction pour sélectionner une agence immobiliere
   agenceChoisie(event: any) {
     this.agenceSelectionnee = event.value;
-    //console.log(error)(this.agenceSelectionnee)
   }
 
   //Fonction pour sélectionner un type de bien
   typeDeBienChoisi(event: any) {
     this.typeDeBienSelectionne = event.value;
-    //console.log(error)(this.typeDeBienSelectionne)
+    if  (this.typeDeBienSelectionne.designation == 'Terrain') {
+      this.menusOfTerrain();
+    } else if (this.typeDeBienSelectionne.designation == 'Maison' || this.typeDeBienSelectionne.designation == 'Immeuble' || this.typeDeBienSelectionne.designation == 'Villa') {
+      this.menusOfMaisonImmeubleAndVilla();
+    } else {
+      this.menusOfOtherTypeDeBien();
+    }
+
+    if (this.typeDeBienSelectionne.designation == 'Immeuble' || this.typeDeBienSelectionne.designation == 'Appartement' || this.typeDeBienSelectionne.designation == 'Bureau') {
+      this.listeDesCategories = ['non meublé','meublé'];
+    } else if (this.typeDeBienSelectionne.designation == 'Chambre' || this.typeDeBienSelectionne.designation == 'Chambre salon' || this.typeDeBienSelectionne.designation == 'Villa' || this.typeDeBienSelectionne.designation == 'Maison') {
+      this.listeDesCategories = ['non meublée', 'meublée'];
+    }
+    this.validateForm();
+  }
+
+  //Fonction pour sélectionner une catégorie pour un type de bien
+  categorieChoisie(event: any) {
+    this.categorieSelectionnee = event.value;
   }
 
   //Fonction pour sélectionner un pays
   paysChoisi(event: any) {
     this.paysSelectionne = event.value;
-    //console.log(error)(this.paysSelectionne);
-    this.regionsFiltrees = this.regions.filter((region) => region.pays.id == this.paysSelectionne.id);
+    this.regionService.getRegionsByPaysId(this.paysSelectionne.id).subscribe(
+      (response) => {
+        this.regions = response;
+      }
+    );
     this.regionSelectionnee = new Region();
     this.villeSelectionnee = new Ville();
     this.quartierSelectionne = new Quartier();
@@ -446,8 +458,11 @@ export class BiensImmobiliersComponent implements OnInit {
   //Fonction pour sélectionner une région
   regionChoisie(event: any) {
     this.regionSelectionnee = event.value;
-    //console.log(error)(this.regionSelectionnee)
-    this.villesFiltrees = this.villes.filter((ville) => ville.region.id == this.regionSelectionnee.id);
+    this.villeService.getVillesByRegionId(this.regionSelectionnee.id).subscribe(
+      (response) => {
+        this.villes = response;
+      }
+    );
     this.villeSelectionnee = new Ville();
     this.quartierSelectionne = new Quartier();
   }
@@ -455,100 +470,179 @@ export class BiensImmobiliersComponent implements OnInit {
   //Fonction pour sélectionner une ville
   villeChoisie(event: any) {
     this.villeSelectionnee = event.value;
-    //console.log(error)(this.villeSelectionnee)
-    this.quartiersFiltres = this.quartiers.filter((quartier) => quartier.ville.id == this.villeSelectionnee.id);
+    this.quartierService.getQuartiersByVilleId(this.villeSelectionnee.id).subscribe(
+      (response) => {
+        this.quartiers = response;
+      }
+    );
     this.quartierSelectionne = new Quartier();
   }
 
   //Fonction pour sélectionner un quartier
   quartierChoisi(event: any) {
     this.quartierSelectionne = event.value;
-    //console.log(error)(this.quartierSelectionne)
+  }
+
+  //Fonction pour afficher la page de détails d'un bien immobilier
+  afficherPageDetailBienImmobilier(id: number): void {
+    this.detailBienImmobilier(id);
+    this.getImagesBienImmobilier(id);
+    this.affichage = 2;
+  }
+
+  //Fonction pour téléchager les images d'un bien immobilier
+  async telechargerImagesBienImmobilier(event: any) {
+    for (let file of event.files) {
+      this.imagesBienImmobilier.push(file);
+      await this.readFileAsDataURL(file);
+    }
+    this.messageSuccess = "Les images ont été téléchargées avec succès.";
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Opération de téléchargement réussie',
+      detail: this.messageSuccess
+    });
+  }
+
+  readFileAsDataURL(file: File): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (_event) => {
+        this.imgURLs.push(reader.result as string);
+        console.log(this.imgURLs);
+        resolve();
+      };
+      reader.onerror = (_event) => {
+        reject(reader.error);
+      };
+    });
+  }
+
+  //Fonction pour initialiser le formulaire d'un bien immobilier
+  initBienStep1Form(): void {
+    this.bienStep1Form = new FormGroup({
+      typeDeBien: new FormControl('', [Validators.required]),
+      categorie: new FormControl('', [Validators.required]),
+      agenceImmobiliere: new FormControl('', [Validators.required]),
+      surface: new FormControl(''),
+      description: new FormControl(''),
+    })
+  }
+
+  initBienStep2Form(): void {
+    this.bienStep2Form = new FormGroup({
+      pays: new FormControl('', [Validators.required]),
+      region: new FormControl('', [Validators.required]),
+      ville: new FormControl('', [Validators.required]),
+      quartier: new FormControl('', [Validators.required]),
+      adresse: new FormControl('')
+    })
+  }
+
+  get typeDeBien() {
+    return this.bienStep1Form.get('typeDeBien');
+  }
+
+  get categorie() {
+    return this.bienStep1Form.get('categorie');
+  }
+
+  get agenceImmobiliere() {
+    return this.bienStep1Form.get('agenceImmobiliere');
+  }
+
+  get surface() {
+    return this.bienStep1Form.get('surface');
+  }
+
+  get description() {
+    return this.bienStep1Form.get('description');
+  }
+
+  get pays() {
+    return this.bienStep2Form.get('pays');
+  }
+
+  get region() {
+    return this.bienStep2Form.get('region');
+  }
+
+  get ville() {
+    return this.bienStep2Form.get('ville');
+  }
+
+  get quartier() {
+    return this.bienStep2Form.get('quartier');
+  }
+
+  get adresse() {
+    return this.bienStep2Form.get('adresse');
   }
 
   //Fonction pour afficher le formulaire d'ajout d'un bien immobilier
   afficherFormulaireAjoutBienImmobilier(): void {
-    this.validerFormulaire();
-    this.typeDeBienSelectionne = this.typesDeBien[5];
+    this.activeIndex = 0;
+    this.typeDeBienSelectionne = this.typesDeBienToStart[0];
+    this.paysSelectionne = this.listeDesPays[0];
+    this.validateForm();
     this.bienImmobilier = new BienImmobilier();
-    this.affichage = 2;
-  }
-
-  //Fonction pour afficher le formulaire de modification d'un bien immobilier
-  afficherFormulaireModifierBienImmobilier(id: number): void {
-    this.validerFormulaire();
-    this.detailBienImmobilier(id);
     this.affichage = 3;
   }
 
-  //Fonction pour ajouter un bien immobilier
-  ajouterBienImmobilier(): void {
-    if (this.typeDeBienSelectionne.designation == 'Terrains') {
-      this.ajouterBienImmobilierTerrain();
+  ajouterTypeDeBienTerrain(): void {
+    if (this.isUserProprietaireOrDemarcheur()) {
+      this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
+      this.bienImmobilier.pays = this.paysSelectionne;
+      this.bienImmobilier.region = this.regionSelectionnee;
+      this.bienImmobilier.ville = this.villeSelectionnee;
+      this.bienImmobilier.quartier = this.quartierSelectionne;
+
+      for (const image of this.imagesBienImmobilier) {
+        this.bienImmobilierData.append('images', image);
+      }
+
+      this.bienImmobilierData.append('bienImmobilierJson', JSON.stringify(this.bienImmobilier));
+
+      this.bienImmobilierService.addBienImmobilier(this.bienImmobilierData).subscribe(
+        (response) => {
+          console.log(response)
+          if (response.id > 0) {
+            this.bienImmobilierData.delete('images');
+            this.bienImmobilierData.delete('bienImmobilierJson');
+            this.voirListeBiens();
+            this.messageSuccess = "Le bien a été ajouté avec succès.";
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Ajout réussi',
+              detail: this.messageSuccess
+            });
+          } else {
+            this.bienImmobilierData.delete('images');
+            this.bienImmobilierData.delete('bienImmobilierJson');
+            this.messageErreur = "Erreur lors de l'ajout du bien !"
+            this.afficherFormulaireAjoutBienImmobilier();
+            this.bienImmobilier.adresse = response.adresse;
+            this.bienImmobilier.surface = response.surface;
+            this.bienImmobilier.description = response.description;
+            this.messageService.add({
+              severity: 'error',
+              summary: "Erreur d'ajout",
+              detail: this.messageErreur
+            });
+          }
+      },
+      (error) => {
+        this.bienImmobilierData.delete('images');
+        this.bienImmobilierData.delete('bienImmobilierJson');
+        this.messageErreur = "Une erreur s'est produite lors de l'ajout !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'ajout",
+          detail: this.messageErreur
+        });
+      })
     } else {
-      this.ajouterBienImmobilierDifferentDeTerrain();
-    }
-  }
-
-  ajouterBienImmobilierTerrain(): void {
-    if (this.estRoleProprietaireOuDemarcheur()) {
-
-      this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
-      this.bienImmobilier.pays = this.paysSelectionne;
-      this.bienImmobilier.region = this.regionSelectionnee;
-      this.bienImmobilier.ville = this.villeSelectionnee;
-      this.bienImmobilier.quartier = this.quartierSelectionne;
-
-      for (const image of this.imagesBienImmobilier) {
-        this.bienImmobilierData.append('images', image);
-      }
-
-      this.bienImmobilierData.append('bienImmobilierJson', JSON.stringify(this.bienImmobilier));
-
-      this.bienImmobilierService.addBienImmobilier(this.bienImmobilierData).subscribe(
-        (response) => {
-          if (response.id > 0) {
-            this.bienImmobilierData.delete('images');
-            this.bienImmobilierData.delete('bienImmobilierJson');
-            this.voirListe();
-            this.messageSuccess = "Le bien immobilier a été ajouté avec succès.";
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Ajout réussi',
-              detail: this.messageSuccess
-            });
-          } else {
-            this.bienImmobilierData.delete('images');
-            this.bienImmobilierData.delete('bienImmobilierJson');
-            this.messageErreur = "Erreur lors de l'ajout du bien immobilier !"
-            this.afficherFormulaireAjoutBienImmobilier();
-            this.bienImmobilier.typeDeBien = response.typeDeBien;
-            this.bienImmobilier.adresse = response.adresse;
-            this.bienImmobilier.ville = response.ville;
-            this.bienImmobilier.surface = response.surface;
-            this.bienImmobilier.description = response.description;
-            this.messageService.add({
-              severity: 'error',
-              summary: "Erreur d'ajout",
-              detail: this.messageErreur
-            });
-          }
-      },
-      (error) => {
-        this.bienImmobilierData.delete('images');
-        this.bienImmobilierData.delete('bienImmobilierJson');
-        //console.log(error)(error)
-        if (error.status == 409) {
-          this.messageErreur = "Erreur lors de l'ajout du bien immobilier !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: "Erreur d'ajout",
-            detail: this.messageErreur
-          });
-        }
-      })
-    } else if (this.estRoleResponsableOuAgentImmo()) {
-
       this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
       this.bienImmobilier.agenceImmobiliere = this.agenceSelectionnee;
       this.bienImmobilier.pays = this.paysSelectionne;
@@ -567,8 +661,8 @@ export class BiensImmobiliersComponent implements OnInit {
           if (response.id > 0) {
             this.bienImmobilierData.delete('images');
             this.bienImmobilierData.delete('bienImmobilierJson');
-            this.voirListe();
-            this.messageSuccess = "Le bien immobilier a été ajouté avec succès.";
+            this.voirListeBiens();
+            this.messageSuccess = "Le bien a été ajouté avec succès.";
             this.messageService.add({
               severity: 'success',
               summary: 'Ajout réussi',
@@ -577,11 +671,9 @@ export class BiensImmobiliersComponent implements OnInit {
           } else {
             this.bienImmobilierData.delete('images');
             this.bienImmobilierData.delete('bienImmobilierJson');
-            this.messageErreur = "Erreur lors de l'ajout du bien immobilier !"
+            this.messageErreur = "Erreur lors de l'ajout du bien !"
             this.afficherFormulaireAjoutBienImmobilier();
-            this.bienImmobilier.typeDeBien = response.typeDeBien;
             this.bienImmobilier.adresse = response.adresse;
-            this.bienImmobilier.ville = response.ville;
             this.bienImmobilier.surface = response.surface;
             this.bienImmobilier.description = response.description;
             this.messageService.add({
@@ -594,28 +686,20 @@ export class BiensImmobiliersComponent implements OnInit {
       (error) => {
         this.bienImmobilierData.delete('images');
         this.bienImmobilierData.delete('bienImmobilierJson');
-        //console.log(error)(error)
-        if (error.status == 409) {
-          this.messageErreur = "Un bien immobilier avec ce nom existe déjà !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: "Erreur d'ajout",
-            detail: this.messageErreur
-          });
-        }
+        this.messageErreur = "Une erreur s'est produite lors de l'ajout !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'ajout",
+          detail: this.messageErreur
+        });
       })
     }
   }
 
-  ajouterBienImmobilierDifferentDeTerrain(): void {
-
-    this.verifierProprietesUtilitaires();
-    this.verifierProprietesConforts();
-    this.verifierProprietesConforts();
-
-    if (this.estRoleProprietaireOuDemarcheur()) {
-
+  ajouterOtherTypeDeBien(): void {
+    if (this.isUserProprietaireOrDemarcheur()) {
       this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
+      this.bienImmobilier.categorie = this.categorieSelectionnee;
       this.bienImmobilier.pays = this.paysSelectionne;
       this.bienImmobilier.region = this.regionSelectionnee;
       this.bienImmobilier.ville = this.villeSelectionnee;
@@ -626,20 +710,16 @@ export class BiensImmobiliersComponent implements OnInit {
       }
 
       this.bienImmobilierData.append('bienImmobilierJson', JSON.stringify(this.bienImmobilier));
-      this.bienImmobilierData.append('confortJson', JSON.stringify(this.confort));
-      this.bienImmobilierData.append('utilitaireJson', JSON.stringify(this.utilitaire));
-      this.bienImmobilierData.append('divertissementJson', JSON.stringify(this.divertissement));
+      this.bienImmobilierData.append('caracteristiquesJson', JSON.stringify(this.caracteristiqueBien));
 
       this.bienImmobilierService.addBienImmobilier(this.bienImmobilierData).subscribe(
         (response) => {
           if (response.id > 0) {
             this.bienImmobilierData.delete('images');
             this.bienImmobilierData.delete('bienImmobilierJson');
-            this.bienImmobilierData.delete('confortJson');
-            this.bienImmobilierData.delete('utilitaireJson');
-            this.bienImmobilierData.delete('divertissementJson');
-            this.voirListe();
-            this.messageSuccess = "Le bien immobilier a été ajouté avec succès.";
+            this.bienImmobilierData.delete('caracteristiquesJson');
+            this.voirListeBiens();
+            this.messageSuccess = "Le bien a été ajouté avec succès.";
             this.messageService.add({
               severity: 'success',
               summary: 'Ajout réussi',
@@ -648,14 +728,10 @@ export class BiensImmobiliersComponent implements OnInit {
           } else {
             this.bienImmobilierData.delete('images');
             this.bienImmobilierData.delete('bienImmobilierJson');
-            this.bienImmobilierData.delete('confortJson');
-            this.bienImmobilierData.delete('utilitaireJson');
-            this.bienImmobilierData.delete('divertissementJson');
-            this.messageErreur = "Erreur lors de l'ajout du bien immobilier !"
+            this.bienImmobilierData.delete('caracteristiquesJson');
+            this.messageErreur = "Erreur lors de l'ajout du bien !"
             this.afficherFormulaireAjoutBienImmobilier();
-            this.bienImmobilier.typeDeBien = response.typeDeBien;
             this.bienImmobilier.adresse = response.adresse;
-            this.bienImmobilier.ville = response.ville;
             this.bienImmobilier.surface = response.surface;
             this.bienImmobilier.description = response.description;
             this.messageService.add({
@@ -668,161 +744,17 @@ export class BiensImmobiliersComponent implements OnInit {
       (error) => {
         this.bienImmobilierData.delete('images');
         this.bienImmobilierData.delete('bienImmobilierJson');
-        this.bienImmobilierData.delete('confortJson');
-        this.bienImmobilierData.delete('utilitaireJson');
-        this.bienImmobilierData.delete('divertissementJson');
-        //console.log(error)(error)
-        if (error.status == 409) {
-          this.messageErreur = "Erreur lors de l'ajout du bien immobilier !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: "Erreur d'ajout",
-            detail: this.messageErreur
-          });
-        }
+        this.bienImmobilierData.delete('caracteristiquesJson');
+        this.messageErreur = "Une erreur s'est produite lors de l'ajout !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'ajout",
+          detail: this.messageErreur
+        });
       })
-    } else if (this.estRoleResponsableOuAgentImmo()) {
-
-      this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
-      this.bienImmobilier.agenceImmobiliere = this.agenceSelectionnee;
-      this.bienImmobilier.pays = this.paysSelectionne;
-      this.bienImmobilier.region = this.regionSelectionnee;
-      this.bienImmobilier.ville = this.villeSelectionnee;
-      this.bienImmobilier.quartier = this.quartierSelectionne;
-
-      for (const image of this.imagesBienImmobilier) {
-        this.bienImmobilierData.append('images', image);
-      }
-
-      this.bienImmobilierData.append('bienImmobilierJson', JSON.stringify(this.bienImmobilier));
-      this.bienImmobilierData.append('confortJson', JSON.stringify(this.confort));
-      this.bienImmobilierData.append('utilitaireJson', JSON.stringify(this.utilitaire));
-      this.bienImmobilierData.append('divertissementJson', JSON.stringify(this.divertissement));
-
-      this.bienImmobilierService.addBienImmobilier(this.bienImmobilierData).subscribe(
-        (response) => {
-          if (response.id > 0) {
-            this.bienImmobilierData.delete('images');
-            this.bienImmobilierData.delete('bienImmobilierJson');
-            this.bienImmobilierData.delete('confortJson');
-            this.bienImmobilierData.delete('utilitaireJson');
-            this.bienImmobilierData.delete('divertissementJson');
-            this.voirListe();
-            this.messageSuccess = "Le bien immobilier a été ajouté avec succès.";
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Ajout réussi',
-              detail: this.messageSuccess
-            });
-          } else {
-            this.bienImmobilierData.delete('images');
-            this.bienImmobilierData.delete('bienImmobilierJson');
-            this.bienImmobilierData.delete('confortJson');
-            this.bienImmobilierData.delete('utilitaireJson');
-            this.bienImmobilierData.delete('divertissementJson');
-            this.messageErreur = "Erreur lors de l'ajout du bien immobilier !"
-            this.afficherFormulaireAjoutBienImmobilier();
-            this.bienImmobilier.typeDeBien = response.typeDeBien;
-            this.bienImmobilier.adresse = response.adresse;
-            this.bienImmobilier.ville = response.ville;
-            this.bienImmobilier.surface = response.surface;
-            this.bienImmobilier.description = response.description;
-            this.messageService.add({
-              severity: 'error',
-              summary: "Erreur d'ajout",
-              detail: this.messageErreur
-            });
-          }
-      },
-      (error) => {
-        this.bienImmobilierData.delete('images');
-        this.bienImmobilierData.delete('bienImmobilierJson');
-        this.bienImmobilierData.delete('confortJson');
-        this.bienImmobilierData.delete('utilitaireJson');
-        this.bienImmobilierData.delete('divertissementJson');
-        //console.log(error)(error)
-        if (error.status == 409) {
-          this.messageErreur = "Erreur lors de l'ajout du bien immobilier !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: "Erreur d'ajout",
-            detail: this.messageErreur
-          });
-        }
-      })
-    }
-  }
-
-  //Fonction pour modifier un bien immobilier
-  modifierBienImmobilier(id: number): void {
-    //console.log(error)(this.bienImmobilier.typeDeBien.designation)
-    if (this.bienImmobilier.typeDeBien.designation == 'Terrains') {
-      this.modifierBienImmobilier(id);
     } else {
-      this.modifierBienImmobilierDifferentDeTerrain(id);
-    }
-  }
-
-  modifierBienImmobilierTerrain(id: number): void {
-    if (this.estRoleProprietaireOuDemarcheur()) {
-
       this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
-      this.bienImmobilier.pays = this.paysSelectionne;
-      this.bienImmobilier.region = this.regionSelectionnee;
-      this.bienImmobilier.ville = this.villeSelectionnee;
-      this.bienImmobilier.quartier = this.quartierSelectionne;
-
-      for (const image of this.imagesBienImmobilier) {
-        this.bienImmobilierData.append('images', image);
-      }
-
-      this.bienImmobilierData.append('bienImmobilierJson', JSON.stringify(this.bienImmobilier));
-
-      this.bienImmobilierService.updateBienImmobilier(id, this.bienImmobilierData).subscribe(
-        (response) => {
-          if (response.id > 0) {
-            this.bienImmobilierData.delete('images');
-            this.bienImmobilierData.delete('bienImmobilierJson');
-            this.voirListe();
-            this.messageSuccess = "Le bien immobilier a été modifié avec succès.";
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Modification réussie',
-              detail: this.messageSuccess
-            });
-          } else {
-            this.bienImmobilierData.delete('images');
-            this.bienImmobilierData.delete('bienImmobilierJson');
-            this.messageErreur = "Erreur lors de la modification du bien immobilier !"
-            this.afficherFormulaireModifierBienImmobilier(this.bienImmobilier.id);
-            this.bienImmobilier.typeDeBien = response.typeDeBien;
-            this.bienImmobilier.adresse = response.adresse;
-            this.bienImmobilier.ville = response.ville;
-            this.bienImmobilier.surface = response.surface;
-            this.bienImmobilier.description = response.description;
-            this.messageService.add({
-              severity: 'error',
-              summary: "Erreur de modification",
-              detail: this.messageErreur
-            });
-          }
-      },
-      (error) => {
-        this.bienImmobilierData.delete('images');
-        this.bienImmobilierData.delete('bienImmobilierJson');
-        //console.log(error)(error)
-        if (error.status == 409) {
-          this.messageErreur = "Erreur lors de la modification du bien immobilier !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: "Erreur de modification",
-            detail: this.messageErreur
-          });
-        }
-      })
-    } else if (this.estRoleResponsableOuAgentImmo()) {
-
-      this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
+      this.bienImmobilier.categorie = this.categorieSelectionnee;
       this.bienImmobilier.agenceImmobiliere = this.agenceSelectionnee;
       this.bienImmobilier.pays = this.paysSelectionne;
       this.bienImmobilier.region = this.regionSelectionnee;
@@ -834,32 +766,33 @@ export class BiensImmobiliersComponent implements OnInit {
       }
 
       this.bienImmobilierData.append('bienImmobilierJson', JSON.stringify(this.bienImmobilier));
+      this.bienImmobilierData.append('caracteristiquesJson', JSON.stringify(this.caracteristiqueBien));
 
-      this.bienImmobilierService.updateBienImmobilier(id, this.bienImmobilierData).subscribe(
+      this.bienImmobilierService.addBienImmobilier(this.bienImmobilierData).subscribe(
         (response) => {
           if (response.id > 0) {
             this.bienImmobilierData.delete('images');
             this.bienImmobilierData.delete('bienImmobilierJson');
-            this.voirListe();
-            this.messageSuccess = "Le bien immobilier a été modifié avec succès.";
+            this.bienImmobilierData.delete('caracteristiquesJson');
+            this.voirListeBiens();
+            this.messageSuccess = "Le bien a été ajouté avec succès.";
             this.messageService.add({
               severity: 'success',
-              summary: 'Modification réussie',
+              summary: 'Ajout réussi',
               detail: this.messageSuccess
             });
           } else {
             this.bienImmobilierData.delete('images');
             this.bienImmobilierData.delete('bienImmobilierJson');
-            this.messageErreur = "Erreur lors de la modification du bien immobilier !"
-            this.afficherFormulaireModifierBienImmobilier(this.bienImmobilier.id);
-            this.bienImmobilier.typeDeBien = response.typeDeBien;
+            this.bienImmobilierData.delete('caracteristiquesJson');
+            this.messageErreur = "Erreur lors de l'ajout du bien !"
+            this.afficherFormulaireAjoutBienImmobilier();
             this.bienImmobilier.adresse = response.adresse;
-            this.bienImmobilier.ville = response.ville;
             this.bienImmobilier.surface = response.surface;
             this.bienImmobilier.description = response.description;
             this.messageService.add({
               severity: 'error',
-              summary: "Erreur de modification",
+              summary: "Erreur d'ajout",
               detail: this.messageErreur
             });
           }
@@ -867,52 +800,53 @@ export class BiensImmobiliersComponent implements OnInit {
       (error) => {
         this.bienImmobilierData.delete('images');
         this.bienImmobilierData.delete('bienImmobilierJson');
-        //console.log(error)(error)
-        if (error.status == 409) {
-          this.messageErreur = "Erreur lors de la modification du bien immobilier !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: "Erreur de modification",
-            detail: this.messageErreur
-          });
-        }
+        this.bienImmobilierData.delete('caracteristiquesJson');
+        this.messageErreur = "Une erreur s'est produite lors de l'ajout !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'ajout",
+          detail: this.messageErreur
+        });
       })
     }
   }
 
-  modifierBienImmobilierDifferentDeTerrain(id: number): void {
+  //Fonction pour afficher le formulaire de modification d'un bien immobilier
+  afficherFormulaireModifierBienImmobilier(id: number, designation: string): void {
+    if (designation == 'Immeuble' || designation == 'Appartement' || designation == 'Bureau') {
+      this.listeDesCategories = ['non meublé','meublé'];
+    } else if (designation == 'Chambre' || designation == 'Chambre salon' || designation == 'Villa' || designation == 'Maison') {
+      this.listeDesCategories = ['non meublée', 'meublée'];
+    }
+    this.affichage = 4;
+    this.activeIndex = 0;
+    this.detailBienImmobilier(id);
+    if (this.bienImmobilier.typeDeBien.designation == 'Terrain') {
+      this.menusOfTerrain();
+    } else {
+      this.menusOfMaisonImmeubleAndVilla();
+    }
+    this.validateForm();
+  }
 
-    this.verifierProprietesUtilitaires();
-    this.verifierProprietesConforts();
-    this.verifierProprietesConforts();
-
-    if (this.estRoleProprietaireOuDemarcheur()) {
-
+  modifierTypeDeBienTerrain(id: number): void {
+    if (this.isUserProprietaireOrDemarcheur()) {
       this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
-      this.bienImmobilier.pays = this.paysSelectionne;
-      this.bienImmobilier.region = this.regionSelectionnee;
-      this.bienImmobilier.ville = this.villeSelectionnee;
-      this.bienImmobilier.quartier = this.quartierSelectionne;
 
       for (const image of this.imagesBienImmobilier) {
         this.bienImmobilierData.append('images', image);
       }
 
       this.bienImmobilierData.append('bienImmobilierJson', JSON.stringify(this.bienImmobilier));
-      this.bienImmobilierData.append('confortJson', JSON.stringify(this.confort));
-      this.bienImmobilierData.append('utilitaireJson', JSON.stringify(this.utilitaire));
-      this.bienImmobilierData.append('divertissementJson', JSON.stringify(this.divertissement));
 
       this.bienImmobilierService.updateBienImmobilier(id, this.bienImmobilierData).subscribe(
         (response) => {
+          console.log(response)
           if (response.id > 0) {
             this.bienImmobilierData.delete('images');
             this.bienImmobilierData.delete('bienImmobilierJson');
-            this.bienImmobilierData.delete('confortJson');
-            this.bienImmobilierData.delete('utilitaireJson');
-            this.bienImmobilierData.delete('divertissementJson');
-            this.voirListe();
-            this.messageSuccess = "Le bien immobilier a été modifié avec succès.";
+            this.voirListeBiens();
+            this.messageSuccess = "Le bien a été modifié avec succès.";
             this.messageService.add({
               severity: 'success',
               summary: 'Modification réussie',
@@ -921,14 +855,9 @@ export class BiensImmobiliersComponent implements OnInit {
           } else {
             this.bienImmobilierData.delete('images');
             this.bienImmobilierData.delete('bienImmobilierJson');
-            this.bienImmobilierData.delete('confortJson');
-            this.bienImmobilierData.delete('utilitaireJson');
-            this.bienImmobilierData.delete('divertissementJson');
-            this.messageErreur = "Erreur lors de la modification du bien immobilier !"
-            this.afficherFormulaireModifierBienImmobilier(this.bienImmobilier.id);
-            this.bienImmobilier.typeDeBien = response.typeDeBien;
+            this.messageErreur = "Erreur lors de la modification du bien !"
+            this.afficherFormulaireModifierBienImmobilier(id, response.typeDeBien.designation);
             this.bienImmobilier.adresse = response.adresse;
-            this.bienImmobilier.ville = response.ville;
             this.bienImmobilier.surface = response.surface;
             this.bienImmobilier.description = response.description;
             this.messageService.add({
@@ -941,47 +870,30 @@ export class BiensImmobiliersComponent implements OnInit {
       (error) => {
         this.bienImmobilierData.delete('images');
         this.bienImmobilierData.delete('bienImmobilierJson');
-        this.bienImmobilierData.delete('confortJson');
-        this.bienImmobilierData.delete('utilitaireJson');
-        this.bienImmobilierData.delete('divertissementJson');
-        //console.log(error)(error)
-        if (error.status == 409) {
-          this.messageErreur = "Erreur lors de la modification du bien immobilier !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: "Erreur de modification",
-            detail: this.messageErreur
-          });
-        }
+        this.messageErreur = "Une erreur s'est produite lors de modification !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur de modification",
+          detail: this.messageErreur
+        });
       })
-    } else if (this.estRoleResponsableOuAgentImmo()) {
-
+    } else {
       this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
       this.bienImmobilier.agenceImmobiliere = this.agenceSelectionnee;
-      this.bienImmobilier.pays = this.paysSelectionne;
-      this.bienImmobilier.region = this.regionSelectionnee;
-      this.bienImmobilier.ville = this.villeSelectionnee;
-      this.bienImmobilier.quartier = this.quartierSelectionne;
 
       for (const image of this.imagesBienImmobilier) {
         this.bienImmobilierData.append('images', image);
       }
 
       this.bienImmobilierData.append('bienImmobilierJson', JSON.stringify(this.bienImmobilier));
-      this.bienImmobilierData.append('confortJson', JSON.stringify(this.confort));
-      this.bienImmobilierData.append('utilitaireJson', JSON.stringify(this.utilitaire));
-      this.bienImmobilierData.append('divertissementJson', JSON.stringify(this.divertissement));
 
       this.bienImmobilierService.updateBienImmobilier(id, this.bienImmobilierData).subscribe(
         (response) => {
           if (response.id > 0) {
             this.bienImmobilierData.delete('images');
             this.bienImmobilierData.delete('bienImmobilierJson');
-            this.bienImmobilierData.delete('confortJson');
-            this.bienImmobilierData.delete('utilitaireJson');
-            this.bienImmobilierData.delete('divertissementJson');
-            this.voirListe();
-            this.messageSuccess = "Le bien immobilier a été modifié avec succès.";
+            this.voirListeBiens();
+            this.messageSuccess = "Le bien a été modifié avec succès.";
             this.messageService.add({
               severity: 'success',
               summary: 'Modification réussie',
@@ -990,14 +902,9 @@ export class BiensImmobiliersComponent implements OnInit {
           } else {
             this.bienImmobilierData.delete('images');
             this.bienImmobilierData.delete('bienImmobilierJson');
-            this.bienImmobilierData.delete('confortJson');
-            this.bienImmobilierData.delete('utilitaireJson');
-            this.bienImmobilierData.delete('divertissementJson');
-            this.messageErreur = "Erreur lors de la modification du bien immobilier !"
-            this.afficherFormulaireModifierBienImmobilier(this.bienImmobilier.id);
-            this.bienImmobilier.typeDeBien = response.typeDeBien;
+            this.messageErreur = "Erreur lors de la modification du bien !"
+            this.afficherFormulaireModifierBienImmobilier(id, response.typeDeBien.designation);
             this.bienImmobilier.adresse = response.adresse;
-            this.bienImmobilier.ville = response.ville;
             this.bienImmobilier.surface = response.surface;
             this.bienImmobilier.description = response.description;
             this.messageService.add({
@@ -1010,18 +917,545 @@ export class BiensImmobiliersComponent implements OnInit {
       (error) => {
         this.bienImmobilierData.delete('images');
         this.bienImmobilierData.delete('bienImmobilierJson');
-        this.bienImmobilierData.delete('confortJson');
-        this.bienImmobilierData.delete('utilitaireJson');
-        this.bienImmobilierData.delete('divertissementJson');
-        //console.log(error)(error)
-        if (error.status == 409) {
-          this.messageErreur = "Erreur lors de la modification du bien immobilier !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: "Erreur de modification",
-            detail: this.messageErreur
-          });
-        }
+        this.messageErreur = "Une erreur s'est produite lors de modification !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur de modification",
+          detail: this.messageErreur
+        });
+      })
+    }
+  }
+
+  modifierOtherTypeDeBien(id: number): void {
+    if (this.isUserProprietaireOrDemarcheur()) {
+      this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
+      // this.bienImmobilier.categorie = this.categorieSelectionnee;
+
+      for (const image of this.imagesBienImmobilier) {
+        this.bienImmobilierData.append('images', image);
+      }
+
+      this.bienImmobilierData.append('bienImmobilierJson', JSON.stringify(this.bienImmobilier));
+      this.bienImmobilierData.append('caracteristiquesJson', JSON.stringify(this.caracteristiqueBien));
+
+      this.bienImmobilierService.updateBienImmobilier(id, this.bienImmobilierData).subscribe(
+        (response) => {
+          if (response.id > 0) {
+            this.bienImmobilierData.delete('images');
+            this.bienImmobilierData.delete('bienImmobilierJson');
+            this.bienImmobilierData.delete('caracteristiquesJson');
+            this.voirListeBiens();
+            this.messageSuccess = "Le bien a été modifié avec succès.";
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Modification réussie',
+              detail: this.messageSuccess
+            });
+          } else {
+            this.bienImmobilierData.delete('images');
+            this.bienImmobilierData.delete('bienImmobilierJson');
+            this.bienImmobilierData.delete('caracteristiquesJson');
+            this.messageErreur = "Erreur lors de la modification du bien !"
+            this.afficherFormulaireModifierBienImmobilier(id, response.typeDeBien.designation);
+            this.bienImmobilier.adresse = response.adresse;
+            this.bienImmobilier.surface = response.surface;
+            this.bienImmobilier.description = response.description;
+            this.messageService.add({
+              severity: 'error',
+              summary: "Erreur de modification",
+              detail: this.messageErreur
+            });
+          }
+      },
+      (error) => {
+        this.bienImmobilierData.delete('images');
+        this.bienImmobilierData.delete('bienImmobilierJson');
+        this.bienImmobilierData.delete('caracteristiquesJson');
+        this.messageErreur = "Une erreur s'est produite lors de modification !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur de modification",
+          detail: this.messageErreur
+        });
+      })
+    } else {
+      this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
+      // this.bienImmobilier.categorie = this.categorieSelectionnee;
+      this.bienImmobilier.agenceImmobiliere = this.agenceSelectionnee;
+
+      for (const image of this.imagesBienImmobilier) {
+        this.bienImmobilierData.append('images', image);
+      }
+
+      this.bienImmobilierData.append('bienImmobilierJson', JSON.stringify(this.bienImmobilier));
+      this.bienImmobilierData.append('caracteristiquesJson', JSON.stringify(this.caracteristiqueBien));
+
+      this.bienImmobilierService.updateBienImmobilier(id, this.bienImmobilierData).subscribe(
+        (response) => {
+          if (response.id > 0) {
+            this.bienImmobilierData.delete('images');
+            this.bienImmobilierData.delete('bienImmobilierJson');
+            this.bienImmobilierData.delete('caracteristiquesJson');
+            this.voirListeBiens();
+            this.messageSuccess = "Le bien a été modifié avec succès.";
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Modification réussie',
+              detail: this.messageSuccess
+            });
+          } else {
+            this.bienImmobilierData.delete('images');
+            this.bienImmobilierData.delete('bienImmobilierJson');
+            this.bienImmobilierData.delete('caracteristiquesJson');
+            this.messageErreur = "Erreur lors de la modification du bien !"
+            this.afficherFormulaireModifierBienImmobilier(id, response.typeDeBien.designation);
+            this.bienImmobilier.adresse = response.adresse;
+            this.bienImmobilier.surface = response.surface;
+            this.bienImmobilier.description = response.description;
+            this.messageService.add({
+              severity: 'error',
+              summary: "Erreur de modification",
+              detail: this.messageErreur
+            });
+          }
+      },
+      (error) => {
+        this.bienImmobilierData.delete('images');
+        this.bienImmobilierData.delete('bienImmobilierJson');
+        this.bienImmobilierData.delete('caracteristiquesJson');
+        this.messageErreur = "Une erreur s'est produite lors de modification !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur de modification",
+          detail: this.messageErreur
+        });
+      })
+    }
+  }
+
+  afficherChampCategorie(designation: string): boolean {
+    return designation == 'Chambre' || designation == 'Chambre salon' || designation == 'Bureau' ||
+    designation == 'Appartement' || designation == 'Villa' || designation == 'Maison' ||
+    designation == 'Immeuble';
+  }
+
+  //Fonction pour afficher la deuxième étape d'un formulaire step by step
+  afficherFormStepSuivant(designation: string): boolean {
+    return designation !== 'Terrain';
+  }
+
+  //Fonction pour la non affichage de la deuxième étape d'un formulaire step by step
+  nePasAfficherFormStepSuivant(designation: string): boolean {
+    return designation == 'Terrain';
+  }
+
+  resetFormStep1(): void {
+    this.bienStep1Form.reset();
+    this.imagesBienImmobilier = [];
+    this.imgURLs = [];
+    if (this.affichage == 3) {
+      this.affichage = 3;
+    } else if (this.affichage == 4) {
+      this.affichage = 4;
+    }
+  }
+
+  etape1(): void {
+    this.activeIndex = 0;
+    this.onActiveIndexChange(this.activeIndex);
+  }
+
+  etape2(): void {
+    this.activeIndex = 1;
+    this.onActiveIndexChange(this.activeIndex);
+  }
+
+  etape3(): void {
+    this.activeIndex = 2;
+    this.onActiveIndexChange(this.activeIndex);
+  }
+
+  etape4(): void {
+    this.activeIndex = 3;
+    this.onActiveIndexChange(this.activeIndex);
+  }
+
+  check(): void {}
+
+
+  //Fonction pour valider le formulaire d'enregistrement et de modification d'un bien immobilier
+  validateForm(): void {
+    this.setTypeDeBienValidators();
+    this.setOtherValidatorsBasedOnRole();
+
+    this.typeDeBien.updateValueAndValidity();
+    this.categorie.updateValueAndValidity();
+    this.agenceImmobiliere.updateValueAndValidity();
+    this.pays.updateValueAndValidity();
+    this.region.updateValueAndValidity();
+    this.ville.updateValueAndValidity();
+    this.quartier.updateValueAndValidity();
+    this.adresse.updateValueAndValidity();
+    this.surface.updateValueAndValidity();
+    this.description.updateValueAndValidity();
+  }
+
+  private setTypeDeBienValidators(): void {
+    this.typeDeBien.setValidators([Validators.required]);
+    this.surface.clearValidators();
+    this.description.clearValidators();
+    this.adresse.clearValidators();
+
+    if (this.isTypeDeBienTerrain()) {
+      this.categorie.clearValidators();
+      this.pays.setValidators([Validators.required]);
+      this.region.setValidators([Validators.required]);
+      this.ville.setValidators([Validators.required]);
+      this.quartier.setValidators([Validators.required]);
+    } else if (this.isTypeDeBienBoutiqueOrMagasin()) {
+      this.categorie.clearValidators();
+      this.pays.clearValidators();
+      this.region.clearValidators();
+      this.ville.clearValidators();
+      this.quartier.clearValidators();
+    } else {
+      this.categorie.setValidators([Validators.required]);
+      this.pays.clearValidators();
+      this.region.clearValidators();
+      this.ville.clearValidators();
+      this.quartier.clearValidators();
+    }
+  }
+
+  private isTypeDeBienTerrain(): boolean {
+    return this.typeDeBienSelectionne.designation == 'Terrain';
+  }
+
+  private isTypeDeBienMaisonImmeubleOrVilla(): boolean {
+    return this.typeDeBienSelectionne.designation == 'Maison' ||
+    this.typeDeBienSelectionne.designation == 'Immeuble' ||
+    this.typeDeBienSelectionne.designation == 'Villa';
+  }
+
+  private isTypeDeBienBoutiqueOrMagasin(): boolean {
+    return this.typeDeBienSelectionne.designation == 'Boutique' || this.typeDeBienSelectionne.designation == 'Magasin';
+  }
+
+  private setOtherValidatorsBasedOnRole(): void {
+    if (this.isUserProprietaireOrDemarcheur()) {
+      this.agenceImmobiliere.clearValidators();
+    } else {
+      if (this.isTypeDeBienMaisonImmeubleOrVilla() || this.isTypeDeBienTerrain()) {
+        this.agenceImmobiliere.setValidators([Validators.required]);
+      } else {
+        this.agenceImmobiliere.clearValidators();
+      }
+    }
+  }
+
+  private isUserProprietaireOrDemarcheur(): boolean {
+    return this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR';
+  }
+
+  listeBiensAssocies(id: number, numeroDeLaPage: number, elementsParPage: number): void {
+    this.bienImmAssocieService.getBiensAssociesPaginesByBienImmobilier(id, numeroDeLaPage, elementsParPage).subscribe(
+      (response) => {
+        this.biensImmAssocies = response;
+      }
+    );
+  }
+
+  voirListeBiensAssocies(): void {
+    const id = JSON.parse(localStorage.getItem('idBienImmobilier')!);
+    this.bienImmobilierData.delete('images');
+    this.bienImmobilierData.delete('caracteristiquesJson');
+    this.bienImmobilierData.delete('bienImmAssocieJson');
+    this.imagesBienImmobilier = [];
+    this.bienStep1Form.reset();
+    this.delegationGestionForm.reset();
+    this.caracteristiqueBienAssocie = new Caracteristiques();
+    this.listeBiensAssocies(id, this.numeroDeLaPage, this.elementsParPage);
+    this.affichage = 5
+  }
+
+  paginationListeBiensAssocies(event: any) {
+    this.numeroDeLaPage = event.first / event.rows;
+    this.elementsParPage = event.rows;
+    this.listeBiensAssocies(this.bienImmobilier.id, this.numeroDeLaPage, this.elementsParPage);
+  }
+
+  afficherListeBiensAssocies(id: number): void {
+    localStorage.setItem('idBienImmobilier', JSON.stringify(id));
+    this.detailBienImmobilier(id)
+    this.listeBiensAssocies(id, this.numeroDeLaPage, this.elementsParPage);
+    this.affichage = 5;
+  }
+
+  //Fonction pour afficher la page de détails d'un bien associé
+  afficherPageDetailBienImmAssocie(id: number): void {
+    this.detailBienImmAssocie(id);
+    this.getImagesBienImmobilier(id);
+    this.affichage = 6;
+  }
+
+  //Fonction pour afficher le formulaire d'ajout d'un bien associé
+  afficherFormulaireAjoutBienAssocie(): void {
+    this.activeIndex = 0;
+    this.validateForm();
+    this.bienImmAssocie = new BienImmobilierAssocie();
+    this.menusOfOtherTypeDeBien();
+    this.affichage = 7;
+  }
+
+  //Formulaire d'ajout d'un bien associé
+  ajouterBienImmAssocie(): void {
+
+    if (this.isUserProprietaireOrDemarcheur()) {
+      this.bienImmAssocie.typeDeBien = this.typeDeBienSelectionne;
+      this.bienImmAssocie.categorie = this.categorieSelectionnee;
+      this.bienImmAssocie.bienImmobilier = this.bienImmobilier;
+      this.bienImmAssocie.pays = this.bienImmobilier.pays;
+      this.bienImmAssocie.region = this.bienImmobilier.region;
+      this.bienImmAssocie.ville = this.bienImmobilier.ville;
+      this.bienImmAssocie.quartier = this.bienImmobilier.quartier;
+      this.bienImmAssocie.adresse = this.bienImmobilier.adresse;
+
+      for (const image of this.imagesBienImmobilier) {
+        this.bienImmobilierData.append('images', image);
+      }
+
+      this.bienImmobilierData.append('bienImmAssocieJson', JSON.stringify(this.bienImmAssocie));
+      this.bienImmobilierData.append('caracteristiquesJson', JSON.stringify(this.caracteristiqueBienAssocie));
+
+      this.bienImmAssocieService.addBienImmAssocie(this.bienImmobilierData).subscribe(
+        (response) => {
+          if (response.id > 0) {
+            this.bienImmobilierData.delete('images');
+            this.bienImmobilierData.delete('bienImmAssocieJson');
+            this.bienImmobilierData.delete('caracteristiquesJson');
+            this.voirListeBiensAssocies();
+            this.messageSuccess = "Le bien a été ajouté avec succès.";
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Ajout réussi',
+              detail: this.messageSuccess
+            });
+          } else {
+            this.bienImmobilierData.delete('images');
+            this.bienImmobilierData.delete('bienImmAssocieJson');
+            this.bienImmobilierData.delete('caracteristiquesJson');
+            this.messageErreur = "Erreur lors de l'ajout du bien !"
+            this.afficherFormulaireAjoutBienImmobilier();
+            this.bienImmAssocie.surface = response.surface;
+            this.bienImmAssocie.description = response.description;
+            this.messageService.add({
+              severity: 'error',
+              summary: "Erreur d'ajout",
+              detail: this.messageErreur
+            });
+          }
+      },
+      (error) => {
+        this.bienImmobilierData.delete('images');
+        this.bienImmobilierData.delete('bienImmAssocieJson');
+        this.bienImmobilierData.delete('caracteristiquesJson');
+        this.messageErreur = "Une erreur s'est produite lors de l'ajout !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'ajout",
+          detail: this.messageErreur
+        });
+      })
+    } else {
+      this.bienImmAssocie.typeDeBien = this.typeDeBienSelectionne;
+      this.bienImmAssocie.agenceImmobiliere = this.bienImmobilier.agenceImmobiliere;
+      this.bienImmAssocie.categorie = this.categorieSelectionnee;
+      this.bienImmAssocie.bienImmobilier = this.bienImmobilier;
+      this.bienImmAssocie.pays = this.bienImmobilier.pays;
+      this.bienImmAssocie.region = this.bienImmobilier.region;
+      this.bienImmAssocie.ville = this.bienImmobilier.ville;
+      this.bienImmAssocie.quartier = this.bienImmobilier.quartier;
+      this.bienImmAssocie.adresse = this.bienImmobilier.adresse;
+
+      for (const image of this.imagesBienImmobilier) {
+        this.bienImmobilierData.append('images', image);
+      }
+
+      this.bienImmobilierData.append('bienImmAssocieJson', JSON.stringify(this.bienImmAssocie));
+      this.bienImmobilierData.append('caracteristiquesJson', JSON.stringify(this.caracteristiqueBienAssocie));
+
+      this.bienImmAssocieService.addBienImmAssocie(this.bienImmobilierData).subscribe(
+        (response) => {
+          if (response.id > 0) {
+            this.bienImmobilierData.delete('images');
+            this.bienImmobilierData.delete('bienImmAssocieJson');
+            this.bienImmobilierData.delete('caracteristiquesJson');
+            this.voirListeBiensAssocies();
+            this.messageSuccess = "Le bien a été ajouté avec succès.";
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Ajout réussi',
+              detail: this.messageSuccess
+            });
+          } else {
+            this.bienImmobilierData.delete('images');
+            this.bienImmobilierData.delete('bienImmAssocieJson');
+            this.bienImmobilierData.delete('caracteristiquesJson');
+            this.messageErreur = "Erreur lors de l'ajout du bien !"
+            this.afficherFormulaireAjoutBienImmobilier();
+            this.bienImmAssocie.surface = response.surface;
+            this.bienImmAssocie.description = response.description;
+            this.messageService.add({
+              severity: 'error',
+              summary: "Erreur d'ajout",
+              detail: this.messageErreur
+            });
+          }
+      },
+      (error) => {
+        this.bienImmobilierData.delete('images');
+        this.bienImmobilierData.delete('bienImmAssocieJson');
+        this.bienImmobilierData.delete('caracteristiquesJson');
+        this.messageErreur = "Une erreur s'est produite lors de l'ajout !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'ajout",
+          detail: this.messageErreur
+        });
+      })
+    }
+  }
+
+  //Fonction pour afficher le formulaire de modification d'un bien associé
+  afficherFormulaireModifierBienImmAssocie(id: number, designation: string): void {
+    if (designation == 'Appartement' || designation == 'Bureau') {
+      this.listeDesCategories = ['non meublé','meublé'];
+    } else if (designation == 'Chambre' || designation == 'Chambre salon') {
+      this.listeDesCategories = ['non meublée', 'meublée'];
+    }
+    this.affichage = 8;
+    this.activeIndex = 0;
+    this.detailBienImmAssocie(id);
+    this.menusOfOtherTypeDeBien();
+    this.validateForm();
+  }
+
+  //Formulaire modification d'un bien associé
+  modifierBienImmAssocie(id: number): void {
+
+    if (this.isUserProprietaireOrDemarcheur()) {
+      this.bienImmAssocie.typeDeBien = this.typeDeBienSelectionne;
+      // this.bienImmAssocie.categorie = this.categorieSelectionnee;
+      this.bienImmAssocie.bienImmobilier = this.bienImmobilier;
+      this.bienImmAssocie.pays = this.bienImmobilier.pays;
+      this.bienImmAssocie.region = this.bienImmobilier.region;
+      this.bienImmAssocie.ville = this.bienImmobilier.ville;
+      this.bienImmAssocie.quartier = this.bienImmobilier.quartier;
+      this.bienImmAssocie.adresse = this.bienImmobilier.adresse;
+
+      for (const image of this.imagesBienImmobilier) {
+        this.bienImmobilierData.append('images', image);
+      }
+
+      this.bienImmobilierData.append('bienImmAssocieJson', JSON.stringify(this.bienImmAssocie));
+      this.bienImmobilierData.append('caracteristiquesJson', JSON.stringify(this.caracteristiqueBienAssocie));
+
+      this.bienImmAssocieService.updateBienImmAssocie(id, this.bienImmobilierData).subscribe(
+        (response) => {
+          if (response.id > 0) {
+            this.bienImmobilierData.delete('images');
+            this.bienImmobilierData.delete('bienImmAssocieJson');
+            this.bienImmobilierData.delete('caracteristiquesJson');
+            this.voirListeBiensAssocies();
+            this.messageSuccess = "Le bien a été modifié avec succès.";
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Modification réussie',
+              detail: this.messageSuccess
+            });
+          } else {
+            this.bienImmobilierData.delete('images');
+            this.bienImmobilierData.delete('bienImmAssocieJson');
+            this.bienImmobilierData.delete('caracteristiquesJson');
+            this.messageErreur = "Erreur lors de la modification du bien !"
+            this.afficherFormulaireModifierBienImmobilier(id, response.typeDeBien.designation);
+            this.bienImmAssocie.surface = response.surface;
+            this.bienImmAssocie.description = response.description;
+            this.messageService.add({
+              severity: 'error',
+              summary: "Erreur de modification",
+              detail: this.messageErreur
+            });
+          }
+      },
+      (error) => {
+        this.bienImmobilierData.delete('images');
+        this.bienImmobilierData.delete('bienImmAssocieJson');
+        this.bienImmobilierData.delete('caracteristiquesJson');
+        this.messageErreur = "Une erreur s'est produite lors de modification !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur de modification",
+          detail: this.messageErreur
+        });
+      })
+    } else {
+      this.bienImmAssocie.typeDeBien = this.typeDeBienSelectionne;
+      // this.bienImmAssocie.categorie = this.categorieSelectionnee;
+      this.bienImmAssocie.agenceImmobiliere = this.agenceSelectionnee;
+      this.bienImmAssocie.bienImmobilier = this.bienImmobilier;;
+      this.bienImmAssocie.pays = this.bienImmobilier.pays;
+      this.bienImmAssocie.region = this.bienImmobilier.region;
+      this.bienImmAssocie.ville = this.bienImmobilier.ville;
+      this.bienImmAssocie.quartier = this.bienImmobilier.quartier;
+      this.bienImmAssocie.adresse = this.bienImmobilier.adresse;
+
+      for (const image of this.imagesBienImmobilier) {
+        this.bienImmobilierData.append('images', image);
+      }
+
+      this.bienImmobilierData.append('bienImmAssocieJson', JSON.stringify(this.bienImmAssocie));
+      this.bienImmobilierData.append('caracteristiquesJson', JSON.stringify(this.caracteristiqueBienAssocie));
+
+      this.bienImmAssocieService.updateBienImmAssocie(id, this.bienImmobilierData).subscribe(
+        (response) => {
+          if (response.id > 0) {
+            this.bienImmobilierData.delete('images');
+            this.bienImmobilierData.delete('bienImmAssocieJson');
+            this.bienImmobilierData.delete('caracteristiquesJson');
+            this.voirListeBiensAssocies();
+            this.messageSuccess = "Le bien a été modifié avec succès.";
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Modification réussie',
+              detail: this.messageSuccess
+            });
+          } else {
+            this.bienImmobilierData.delete('images');
+            this.bienImmobilierData.delete('bienImmAssocieJson');
+            this.bienImmobilierData.delete('caracteristiquesJson');
+            this.messageErreur = "Erreur lors de la modification du bien !"
+            this.afficherFormulaireModifierBienImmobilier(id, response.typeDeBien.designation);
+            this.bienImmAssocie.surface = response.surface;
+            this.bienImmAssocie.description = response.description;
+            this.messageService.add({
+              severity: 'error',
+              summary: "Erreur de modification",
+              detail: this.messageErreur
+            });
+          }
+      },
+      (error) => {
+        this.bienImmobilierData.delete('images');
+        this.bienImmobilierData.delete('bienImmAssocieJson');
+        this.bienImmobilierData.delete('caracteristiquesJson');
+        this.messageErreur = "Une erreur s'est produite lors de modification !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur de modification",
+          detail: this.messageErreur
+        });
       })
     }
   }
@@ -1033,9 +1467,13 @@ export class BiensImmobiliersComponent implements OnInit {
       header: "Activation d'un bien immobilier",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.bienImmobilierService.activerBienImmobilier(id).subscribe(response=>{
-          //console.log(error)(response);
-          this.voirListe();
+        this.bienImmobilierService.activerBienImmobilier(id).subscribe(
+        (response) => {
+          if (this.affichage == 1) {
+            this.voirListeBiens();
+          } else if (this.affichage == 5) {
+            this.voirListeBiensAssocies()
+          }
           this.messageSuccess = "Le bien immobilier a été activé avec succès !";
           this.messageService.add({
             severity: 'success',
@@ -1073,9 +1511,13 @@ export class BiensImmobiliersComponent implements OnInit {
       header: "Désactivation d'un bien immobilier",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.bienImmobilierService.desactiverBienImmobilier(id).subscribe(response=>{
-          //console.log(error)(response);
-          this.voirListe();
+        this.bienImmobilierService.desactiverBienImmobilier(id).subscribe(
+        (response)=> {
+          if (this.affichage == 1) {
+            this.voirListeBiens();
+          } else if (this.affichage == 5) {
+            this.voirListeBiensAssocies()
+          }
           this.messageSuccess = "Le bien immobilier a été désactivé avec succès.";
           this.messageService.add({
             severity: 'success',
@@ -1106,237 +1548,19 @@ export class BiensImmobiliersComponent implements OnInit {
     });
   }
 
-  estRoleProprietaireOuDemarcheur(): boolean {
-    return (
-      this.user.role.code == 'ROLE_PROPRIETAIRE' ||
-      this.user.role.code == 'ROLE_DEMARCHEUR'
-    );
-  }
-
-  estRoleResponsableOuAgentImmo(): boolean {
-    return (
-      this.user.role.code == 'ROLE_RESPONSABLE' ||
-      this.user.role.code == 'ROLE_AGENTIMMOBILIER'
-    );
-  }
-
-  afficherNombreAppartements(designation: string): boolean {
-    return designation == 'Immeubles'
-  }
-
-  afficherNombreChambres(designation: string): boolean {
-    return designation == 'Immeubles' || designation == 'Appartements' ||
-          designation == 'Appartements meublés' || designation == 'Villas' ||
-          designation == 'Villas meublées' || designation == 'Maisons'
-  }
-
-  afficherNombrePieces(designation: string): boolean {
-    return designation == 'Magasins' || designation == 'Immeubles' || designation == 'Bureaux' ||
-        designation == 'Bureaux meublés' || designation == 'Villas' ||
-        designation == 'Villas meublées' || designation == 'Chambres' ||
-        designation == 'Appartements' || designation == 'Appartements meublés' ||
-        designation == 'Maisons'
-  }
-
-  afficherNombreLits(designation: string): boolean {
-    return designation == 'Villas meublées' || designation == 'Appartements meublés'
-  }
-
-  afficherNombreSallesDeBains(designation: string): boolean {
-    return designation == 'Immeubles' ||  designation == 'Villas' || designation == 'Villas meublées' ||
-        designation == 'Maisons' || designation == 'Chambres' || designation == 'Appartements' ||
-        designation == 'Appartements meublés'
-  }
-
-  afficherNombreFauteuils(designation: string): boolean {
-    return designation == 'Appartements meublés' || designation == 'Bureaux meublés'
-  }
-
-  afficherNombreGarages(designation: string): boolean {
-    return designation == 'Maisons' || designation == 'Villas' ||
-          designation == 'Villas meublées' || designation == 'Immeubles'
-  }
-
-  ///Fonction pour afficher la deuxième étape d'un formulaire step by step
-  afficherFormStep2(designation: string): boolean {
-    return designation !== 'Terrains';
-  }
-
-  //Fonction pour la non affichage de la deuxième étape d'un formulaire step by step
-  nePasAfficherFormStep2(designation: string): boolean {
-    return designation == 'Terrains';
-  }
-
-
-  afficherSectionAutresDetails(utilitaire: Utilitaire, confort: Confort): boolean {
-    return utilitaire.nombreGarages > 0 ||
-           utilitaire.nombreChambres > 0 ||
-           utilitaire.nombrePieces > 0 ||
-           confort.nombreLits > 0;
-  }
-
-  afficherSectionCaracteristiques(utilitaire: Utilitaire, confort: Confort, divertissement: Divertissement): boolean {
-    return utilitaire.wifi || utilitaire.laveLinge || utilitaire.cuisine ||
-      utilitaire.refrigirateur || utilitaire.toilette || confort.secheCheveux ||
-      utilitaire.ferARepasser || utilitaire.espaceDeTravail || utilitaire.eau ||
-      utilitaire.electricite || utilitaire.parking || confort.climatisation ||
-      confort.chauffage || divertissement.piscine || divertissement.jardin ||
-      divertissement.salleDeSport;
-  }
-
-
-  precedent(): void {
-    this.activeIndex = 0;
-    this.onActiveIndexChange(this.activeIndex);
-  }
-
-  suivant(): void {
-    this.activeIndex = 1;
-    this.onActiveIndexChange(this.activeIndex);
-  }
-
-  verifierProprietesUtilitaires(): void {
-    if (this.utilitaire.nombreAppartements) {
-      this.utilitaire.nombreAppartements
-    }
-
-    if (this.utilitaire.nombreChambres) {
-      this.utilitaire.nombreChambres
-    }
-
-    if (this.utilitaire.nombrePieces) {
-      this.utilitaire.nombrePieces
-    }
-
-    if (this.utilitaire.nombreSallesDeBains) {
-      this.utilitaire.nombreSallesDeBains
-    }
-
-    if (this.utilitaire.nombreGarages) {
-      this.utilitaire.nombreSallesDeBains
-    }
-
-    if (this.utilitaire.wifi) {
-      this.utilitaire.wifi
-    }
-
-    if (this.utilitaire.laveLinge) {
-      this.utilitaire.laveLinge
-    }
-
-    if (this.utilitaire.cuisine) {
-      this.utilitaire.cuisine
-    }
-
-    if (this.utilitaire.refrigirateur) {
-      this.utilitaire.refrigirateur
-    }
-
-    if (this.utilitaire.eau) {
-      this.utilitaire.eau
-    }
-
-    if (this.utilitaire.electricite) {
-      this.utilitaire.electricite
-    }
-
-    if (this.utilitaire.ferARepasser) {
-      this.utilitaire.ferARepasser
-    }
-
-    if (this.utilitaire.espaceDeTravail) {
-      this.utilitaire.espaceDeTravail
-    }
-
-    if (this.utilitaire.parking) {
-      this.utilitaire.parking
-    }
-  }
-
-  verifierProprietesConforts(): void {
-    if (this.confort.nombreLits) {
-      this.confort.nombreLits
-    }
-
-    if (this.confort.nombreFauteuils) {
-      this.confort.nombreFauteuils
-    }
-
-    if (this.confort.chauffage) {
-      this.confort.chauffage
-    }
-
-    if (this.confort.climatisation) {
-      this.confort.climatisation
-    }
-
-    if (this.confort.secheCheveux) {
-      this.confort.secheCheveux
-    }
-  }
-
-  verifierProprietesDivertissements(): void {
-    if (this.divertissement.television) {
-      this.divertissement.television
-    }
-
-    if (this.divertissement.piscine) {
-      this.divertissement.piscine
-    }
-
-    if (this.divertissement.jardin) {
-      this.divertissement.jardin
-    }
-
-    if (this.divertissement.salleDeSport) {
-      this.divertissement.salleDeSport
-    }
-  }
-
-  //Fonction pour valider le formulaire d'enregistrement et de modification d'un bien immobilier
-  validerFormulaire(): void {
-    if ((this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR')) {
-      this.typeDeBien.setValidators([Validators.required]);
-      this.agenceImmobiliere.clearValidators();
-      this.pays.setValidators([Validators.required]);
-      this.region.setValidators([Validators.required]);
-      this.ville.setValidators([Validators.required]);
-      this.quartier.setValidators([Validators.required]);
-      this.adresse.setValidators([Validators.required]);
-      this.surface.setValidators([Validators.required]);
-      this.description.setValidators([Validators.required]);
-    } else if ((this.user.role == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_AGENTIMMOBILIER')) {
-      this.typeDeBien.setValidators([Validators.required]);
-      this.agenceImmobiliere.setValidators([Validators.required]);
-      this.pays.setValidators([Validators.required]);
-      this.region.setValidators([Validators.required]);
-      this.ville.setValidators([Validators.required]);
-      this.quartier.setValidators([Validators.required]);
-      this.adresse.setValidators([Validators.required]);
-      this.surface.setValidators([Validators.required]);
-      this.description.setValidators([Validators.required]);
-    }
-    this.typeDeBien.updateValueAndValidity();
-    this.agenceImmobiliere.updateValueAndValidity();
-    this.pays.updateValueAndValidity();
-    this.region.updateValueAndValidity();
-    this.ville.updateValueAndValidity();
-    this.quartier.updateValueAndValidity();
-    this.adresse.updateValueAndValidity();
-    this.surface.updateValueAndValidity();
-    this.description.updateValueAndValidity();
-  }
-
-  check(): void {}
-
-  afficherFormulaireDelegationGestion(bien: BienImmobilier): void {
+  afficherFormulaireDelegationGestionBien(id: number): void {
     this.listeDesChoix = [ 'Gérant', 'Démarcheur', 'Agence immobilière'];
     this.checked = this.listeDesChoix[0];
-    localStorage.setItem('bienImmobilier', JSON.stringify(bien));
-    localStorage.setItem('activeLink', '/proprietaire/delegations-gestions');
+    this.detailBienImmobilier(id);
     const event = {value: this.checked};
     this.onChoixChange(event);
-    this.affichage = 5;
+    this.affichage = 9;
+  }
+
+  //Fonction pour savoir sur quel fonction de retour appeler
+  callBackListe(designation: string): boolean {
+    return designation == 'Terrain' || designation == 'Maison'
+    || designation == 'Immeuble' || designation == 'Villa';
   }
 
   //Fonction pour initialiser le formulaire de délégation de gestion d'un bien
@@ -1370,19 +1594,23 @@ export class BiensImmobiliersComponent implements OnInit {
     this.codeAgence.updateValueAndValidity();
   }
 
+  annulerDelegationGestion(): void {
+    this.delegationGestionForm.reset;
+  }
+
   //Fonction pour ajouter une délégation de gestion
   ajouterDelegationGestion(): void {
     if (this.checked == 'Gérant' ||  this.checked == 'Démarcheur') {
-      this.delegationGestionRequest.bienImmobilier = JSON.parse(localStorage.getItem('bienImmobilier')!);
-      this.delegationGestionService.addDelegationGestionMatricule(this.delegationGestionRequest).subscribe(
+      this.delegationGestionForm1.bienImmobilier = this.bienImmobilier;
+      // console.log(this.delegationGestionForm1);
+      this.delegationGestionService.addDelegationGestionMatricule(this.delegationGestionForm1).subscribe(
         (response) => {
-          //console.log(error)(response);
-          localStorage.removeItem('bienImmobilier');
           if (response.id > 0) {
+            this.behaviorService.setActiveLink('/proprietaire/delegations-gestions');
             this.router.navigate(['/proprietaire/delegations-gestions'], { queryParams: { delegationReussie: true } })
           } else {
             this.messageErreur = "Erreur lors de la délégation de gestion !"
-            this.afficherFormulaireDelegationGestion(response.bienImmobilier);
+            this.afficherFormulaireDelegationGestionBien(response.bienImmobilier.id);
             this.messageService.add({
               severity: 'error',
               summary: "Erreur",
@@ -1390,16 +1618,29 @@ export class BiensImmobiliersComponent implements OnInit {
             });
           }
       },
-      (error) =>{
-        //console.log(error)(error.status)
-        if (error.status == 409) {
+      (error) => {
+        if (error.error == "Ce bien immobilier a été déjà délégué à ce gestionnaire !") {
+          this.messageErreur = "Ce bien immobilier a été déjà délégué à ce gestionnaire !";
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Délégation de gestion non réussi',
+            detail:  this.messageErreur
+          });
+        } else if (error.error == "Ce bien immobilier a été déjà délégué à un gestionnaire !") {
           this.messageErreur = "Ce bien immobilier a été déjà délégué à un gestionnaire !";
           this.messageService.add({
             severity: 'warn',
             summary: 'Délégation de gestion non réussi',
             detail:  this.messageErreur
           });
-        } else if (error.status == 404 ) {
+        } else if (error.error == "Un bien immobilier se trouvant dans cette propriété a été déjà délégué à un gestionnaire !" ) {
+          this.messageErreur = "Un bien immobilier se trouvant dans cette propriété a été déjà délégué à un gestionnaire !";
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Délégation de gestion non réussi',
+            detail:  this.messageErreur
+          });
+        } else {
           this.messageErreur = "La matricule du gestionnaire est introuvable !";
           this.messageService.add({
             severity: 'warn',
@@ -1409,16 +1650,15 @@ export class BiensImmobiliersComponent implements OnInit {
         }
       })
     } else {
-      this.delegationGestionRequest.bienImmobilier = JSON.parse(localStorage.getItem('bienImmobilier')!);
-      this.delegationGestionService.addDelegationGestionCodeAgence(this.delegationGestionRequest).subscribe(
+      this.delegationGestionForm1.bienImmobilier = this.bienImmobilier;
+      this.delegationGestionService.addDelegationGestionCodeAgence(this.delegationGestionForm1).subscribe(
         (response) => {
-          //console.log(error)(response);
-          localStorage.removeItem('bienImmobilier');
           if (response.id > 0) {
+            this.behaviorService.setActiveLink('/proprietaire/delegations-gestions');
             this.router.navigate(['/proprietaire/delegations-gestions'], { queryParams: { delegationReussie: true } })
           } else {
             this.messageErreur = "Erreur lors de la délégation de gestion !"
-            this.afficherFormulaireDelegationGestion(response.bienImmobilier);
+            this.afficherFormulaireDelegationGestionBien(response.bienImmobilier.id);
             this.messageService.add({
               severity: 'error',
               summary: "Erreur",
@@ -1426,10 +1666,23 @@ export class BiensImmobiliersComponent implements OnInit {
             });
           }
       },
-      (error) =>{
-        //console.log(error)(error)
-        if (error.status == 409) {
+      (error) => {
+        if (error.error == "Ce bien immobilier a été déjà délégué à cette agence immobilière !") {
+          this.messageErreur = "Ce bien immobilier a été déjà délégué à cette agence immobilière !";
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Délégation de gestion non réussi',
+            detail: this.messageErreur
+          });
+        } else if (error.error == "Ce bien immobilier a été déjà délégué à une agence immobilière !") {
           this.messageErreur = "Ce bien immobilier a été déjà délégué à une agence immobilière !";
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Délégation de gestion non réussi',
+            detail: this.messageErreur
+          });
+        } else if (error.error == "Un bien immobilier se trouvant dans cette propriété a été déjà délégué à une agence immobilière !") {
+          this.messageErreur = "Un bien immobilier se trouvant dans cette propriété a été déjà délégué à une agence immobilière !"
           this.messageService.add({
             severity: 'warn',
             summary: 'Délégation de gestion non réussi',
@@ -1447,4 +1700,19 @@ export class BiensImmobiliersComponent implements OnInit {
     }
   }
 
+  afficherRegion(libelle: string): string {
+    if (libelle === 'Maritime') {
+        return 'Région Maritime';
+    } else if (libelle === 'Plateaux') {
+        return 'Région des Plateaux';
+    } else if (libelle === 'Centrale') {
+        return 'Région Centrale';
+    } else if (libelle === 'Kara') {
+        return 'Région de la Kara';
+    } else if (libelle === 'Savanes') {
+        return 'Région des Savanes';
+    } else {
+        return 'Région inconnue';
+    }
+  }
 }

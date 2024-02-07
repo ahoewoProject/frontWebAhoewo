@@ -86,7 +86,21 @@ export class RegionsComponent implements OnInit {
     this.visibleUpdateForm = 0;
   }
 
+  annuler(): void {
+    this.regionForm.reset();
+    if (this.visibleAddForm == 1) {
+      this.affichage = 0;
+      this.visibleAddForm = 1;
+      this.visibleUpdateForm = 0;
+    } else {
+      this.affichage = 0;
+      this.visibleUpdateForm = 1;
+      this.visibleAddForm = 0;
+    }
+  }
+
   afficherFormulaireAjouter(): void {
+    this.paysSelectionne = this.ListePays[0];
     this.affichage = 0;
     this.visibleAddForm = 1;
     this.visibleUpdateForm = 0;
@@ -143,7 +157,7 @@ export class RegionsComponent implements OnInit {
     (error) =>{
       //console.log(error)
       if (error.status == 409) {
-        this.messageErreur = "Une région avec ce libelle existe déjà !";
+        this.messageErreur = "Une région avec ce libelle existe déjà dans ce pays !";
         this.messageService.add({
           severity: 'warn',
           summary: "Erreur d'ajout",
@@ -178,7 +192,7 @@ export class RegionsComponent implements OnInit {
     (error) =>{
       //console.log(error)
       if (error.status == 409) {
-        this.messageErreur = "Une région avec ce libelle existe déjà !";
+        this.messageErreur = "Une région avec ce libelle existe déjà dans ce pays !";
         this.messageService.add({
           severity: 'warn',
           summary: 'Modification non réussie',

@@ -15,7 +15,7 @@ export class PersonneService {
   public personne: Personne = new Personne();
   url!: string;
 
-  constructor(private httpClient: HttpClient,private router: Router) {
+  constructor(private httpClient: HttpClient, private router: Router) {
     const APIEndpoint = environment.APIEndpoint;
     this.url = APIEndpoint + 'api/';
   }

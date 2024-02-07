@@ -105,6 +105,12 @@ export class GerantsComponent implements OnInit{
     this.visibleAddForm = 0;
   }
 
+  annuler(): void {
+    this.gerantForm.reset();
+    this.affichage = 0;
+    this.visibleAddForm = 1;
+  }
+
   afficherFormulaireAjouter(): void {
     this.affichage = 0;
     this.visibleAddForm = 1;

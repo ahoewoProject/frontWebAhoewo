@@ -6,7 +6,10 @@ export class AffectationResponsableAgence extends EntiteDeBase {
 
   id: number;
   responsableAgenceImmobiliere!: ResponsableAgenceImmobiliere;
-  agenceImmobiliere!: AgenceImmobiliere
+  agenceImmobiliere!: AgenceImmobiliere;
+  dateDebut!: Date;
+  dateFin!: Date;
+  actif!: boolean;
 
   constructor(){
     super();

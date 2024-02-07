@@ -4,6 +4,7 @@ import { Ville } from "./Ville";
 export class Quartier extends EntiteDeBase {
 
   id: number;
+  codeQuartier!: string;
   libelle: string;
   ville!: Ville;
   etat: Boolean;

@@ -61,5 +61,4 @@ export class RoleService {
   countRoles(): Observable<number>{
     return this.httpClient.get<number>(this.url + 'count/roles');
   };
-
 }

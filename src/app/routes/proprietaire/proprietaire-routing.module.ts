@@ -8,6 +8,7 @@ import { GerantsComponent } from 'src/app/components/templates-admin/gestionDesC
 import { ProfilComponent } from 'src/app/components/templates-admin/gestionDesComptes/profil/profil.component';
 import { TemplatesAdminComponent } from 'src/app/components/templates-admin/templates-admin.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
+import { NotificationsComponent } from 'src/app/components/templates-admin/notifications/notifications.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -17,7 +18,8 @@ const routes: Routes = [
       { path: 'profil', component: ProfilComponent, canActivate: [AuthGuard] },
       { path: 'demandes-certifications', component: DemandesCertificationsComponent, canActivate: [AuthGuard] },
       { path: 'biens-immobiliers', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
-      { path: 'delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] }
+      { path: 'delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
+      { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] }
     ]
   }
 ];

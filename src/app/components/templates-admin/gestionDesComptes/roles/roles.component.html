@@ -15,6 +15,11 @@
           <h4>Ajout d'un rôle</h4>
         </div>
       </div>
+      <div class="col-xxl-9">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-xl-12">
@@ -35,8 +40,9 @@
             <br>
             <div class="col-md-12">
               <div class="text-end">
-                <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
-                <button pButton [ngClass]="{ 'disabled-link': roleForm.invalid }" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
+                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
+                &nbsp;
+                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': roleForm.invalid }" type="submit">Ajouter</button>
               </div>
             </div>
           </form>
@@ -52,6 +58,11 @@
       <div class="col-xxl-3">
         <div class="dashboard_title_area">
           <h4>Modification d'un rôle</h4>
+        </div>
+      </div>
+      <div class="col-xxl-9">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a type="button" (click)="voirListe()" class="ud-btn btn-retour">Retour</a>
         </div>
       </div>
     </div>
@@ -74,8 +85,9 @@
             <br>
             <div class="col-md-12">
               <div class="text-end">
-                <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
-                <button pButton [ngClass]="{ 'disabled-link': roleForm.invalid }" pRipple label="Modifier" type="submit" class="p-button-warning"></button>
+                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
+                &nbsp;
+                <button class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': roleForm.invalid }" type="submit">Modifier</button>
               </div>
             </div>
           </form>
@@ -113,7 +125,7 @@
             <table class="table-style3 table at-savesearch">
               <thead class="t-head">
                 <tr>
-                  <th scope="col">ID</th>
+                  <th scope="col">#</th>
                   <th scope="col">Code</th>
                   <th scope="col">Libelle</th>
                   <th scope="col">Actions</th>

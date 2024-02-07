@@ -16,13 +16,18 @@
           <p class="text"></p>
         </div>
       </div>
+      <div class="col-xxl-9">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
           <form [formGroup]="adminForm" (ngSubmit)="ajouterAdmin()" class="form-style1">
             <div class="row">
-              <p class="error">Les identifiants de connexion seront envoyés à l'adresse e-mail de l'administrateur une fois l'opération de l'enregistrement terminée.</p>
+              <p class="error">Les identifiants de connexion seront envoyés à l'adresse e-mail saisie une fois l'opération de l'enregistrement terminée.</p>
               <div class="col-lg-6">
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Nom</label>
@@ -34,7 +39,7 @@
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Prénom(s)</label>
                   <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Le(s) prénom(s) de l'administrateur" formControlName="prenom" [(ngModel)]="admin.prenom" required>
-                  <div class="error" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le prénom de l'administrateur est obligatoire</div>
+                  <div class="error" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le(s) prénom(s) de l'administrateur est obligatoire</div>
                 </div>
               </div>
               <div class="col-lg-6">
@@ -59,8 +64,9 @@
             </div>
             <div class="col-md-12">
               <div class="text-end">
-                <button pButton (click)="voirListe()" pRipple label="Annuler" class="p-button-secondary"></button>
-                <button pButton [ngClass]="{ 'disabled-link': adminForm.invalid }" pRipple label="Ajouter" type="submit" class="p-button-success"></button>
+                <button class="ud-btn btn-annuler" (click)="annuler()">Annuler</button>
+                &nbsp;
+                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': adminForm.invalid }" type="submit">Ajouter</button>
               </div>
             </div>
           </form>
@@ -99,7 +105,7 @@
             <table class="table-style3 table at-savesearch">
               <thead class="t-head">
                 <tr>
-                  <th scope="col">ID</th>
+                  <th scope="col">#</th>
                   <th scope="col">Nom</th>
                   <th scope="col">Prénom(s)</th>
                   <th scope="col">Etat compte</th>
@@ -161,6 +167,11 @@
           <p class="text"></p>
         </div>
       </div>
+      <div class="col-xxl-9">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-xl-12">
@@ -214,7 +225,7 @@
           </div>
 
           <div class="text-end">
-            <a class="ud-btn btn-thm" (click)="voirListe()"  type="button">Retour</a>
+            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
           </div>
         </div>
       </div>

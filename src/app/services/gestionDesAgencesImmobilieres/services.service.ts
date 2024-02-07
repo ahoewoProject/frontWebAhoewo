@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
+import { MotifRejetServiceForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetServiceForm';
 import { Services } from 'src/app/models/gestionDesAgencesImmobilieres/Services';
 import { environment } from 'src/environments/environment';
 
@@ -32,6 +33,14 @@ export class ServicesService {
     return this.httpClient.get<Page<Services>>(this.url + 'services/pagines', {params: params});
   }
 
+  // Affichage de toutes les occurrences de services (inexistants) avec pagination;
+  getAutresServicesPagines(numeroDeLaPage: number, elementsParPage: number): Observable<Page<Services>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<Services>>(this.url + 'autres-services/pagines', {params: params});
+  }
+
   // Affichage de toutes les occurrences des services;
   // url: http://localhost:4040/api/types-de-bien
   getServicesActifs(): Observable<Array<Services>>{
@@ -57,14 +66,26 @@ export class ServicesService {
   }
 
   // Activation d'un service;
-  // url: http://localhost:4040/api/activer/service/{id}
+  // url: http://localhost:4040/api/activer/services/{id}
   activerService(id: number): Observable<any>{
     return this.httpClient.get<any>(this.url + 'activer/services/' + id);
   }
 
   // Désactivation d'un service;
-  // url: http://localhost:4040/api/desactiver/service/{id}
+  // url: http://localhost:4040/api/desactiver/services/{id}
   desactiverService(id: number): Observable<any>{
     return this.httpClient.get<any>(this.url + 'desactiver/services/' + id);
+  }
+
+  // Valider d'un service;
+  // url: http://localhost:4040/api/valider/services/{id}
+  validerServices(id: number): Observable<any>{
+    return this.httpClient.get<any>(this.url + 'valider/services/' + id);
+  }
+
+  // Rejet d'un service;
+  // url: http://localhost:4040/api/rejeter/services
+  rejeterServices(m: MotifRejetServiceForm): Observable<any>{
+    return this.httpClient.post<any>(this.url + 'rejeter/services', m);
   }
 }

@@ -85,7 +85,21 @@ export class VillesComponent implements OnInit {
     this.visibleUpdateForm = 0;
   }
 
+  annuler(): void {
+    this.villeForm.reset();
+    if (this.visibleAddForm == 1) {
+      this.affichage = 0;
+      this.visibleAddForm = 1;
+      this.visibleUpdateForm = 0;
+    } else {
+      this.affichage = 0;
+      this.visibleUpdateForm = 1;
+      this.visibleAddForm = 0;
+    }
+  }
+
   afficherFormulaireAjouter(): void {
+    this.regionSelectionnee = this.regions[0];
     this.affichage = 0;
     this.visibleAddForm = 1;
     this.visibleUpdateForm = 0;
@@ -142,7 +156,7 @@ export class VillesComponent implements OnInit {
     (error) =>{
       console.log(error)
       if (error.status == 409) {
-        this.messageErreur = "Une ville avec ce libelle existe déjà !";
+        this.messageErreur = "Une ville avec ce libelle existe déjà dans cette région !";
         this.messageService.add({
           severity: 'warn',
           summary: "Erreur d'ajout",
@@ -176,7 +190,7 @@ export class VillesComponent implements OnInit {
     (error) =>{
       //console.log(error)
       if (error.status == 409) {
-        this.messageErreur = "Une ville avec ce libelle existe déjà !";
+        this.messageErreur = "Une ville avec ce libelle existe déjà dans cette région !";
         this.messageService.add({
           severity: 'warn',
           summary: 'Modification non réussie',

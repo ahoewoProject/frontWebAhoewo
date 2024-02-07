@@ -61,4 +61,14 @@ export class AffectationAgentAgenceService {
   ajoutParMatriculeAgent(a: AffectationAgentAgenceRequest): Observable<AffectationAgentAgence>{
     return this.httpClient.post<AffectationAgentAgence>(this.url + 'affectation-matricule-agent-agence/ajouter', a);
   }
+
+  // url: http://localhost:4040/api/activer/agent-agence/{id}
+  activerCompteAgentAgence(id: number) {
+    return this.httpClient.get<AffectationResponsableAgence>(this.url + 'activer/agent-agence/' + id);
+  }
+
+  // url: http://localhost:4040/api/desactiver/agent-agence/{id}
+  desactiverCompteAgentAgence(id: number) {
+    return this.httpClient.get<AffectationResponsableAgence>(this.url + 'desactiver/agent-agence/' + id);
+  }
 }
