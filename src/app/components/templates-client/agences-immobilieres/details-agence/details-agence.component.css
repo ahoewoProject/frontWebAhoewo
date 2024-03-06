@@ -1,0 +1,12 @@
+.mg-top130 {
+    margin-top: -130px;
+}
+
+:host ::ng-deep .p-accordion-header {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.img {
+  text-align: center;
+  width: 10%;
+}

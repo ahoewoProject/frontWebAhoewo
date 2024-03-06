@@ -19,6 +19,15 @@ export class ServicesAgenceImmobiliereService {
     this.url = APIEndpoint + 'api/';
   }
 
+  //Affichage des services à partir du nom d'une agence
+  // url: http://localhost:4040/api/services/agence/{nomAgence}
+  getServicesByNomAgence(nomAgence: String, numeroDeLaPage: number, elementsParPage: number): Observable<Page<ServicesAgenceImmobiliere>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<ServicesAgenceImmobiliere>>(this.url + 'services/agence/' + nomAgence, {params: params});
+  }
+
   // Affichage de toutes les occurrences de services d'agence immobilière;
   // url: http://localhost:4040/api/services/agence-immobiliere/pagines
   getServicesOfAgencePagines(numeroDeLaPage: number, elementsParPage: number): Observable<Page<ServicesAgenceImmobiliere>>{

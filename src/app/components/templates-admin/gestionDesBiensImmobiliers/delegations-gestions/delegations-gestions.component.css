@@ -52,3 +52,11 @@
 :host ::ng-deep .checkboxLabel {
   font-size: 15px;
 }
+
+:host ::ng-deep .p-steps-title {
+  font-family: 'DM Sans', sans-serif;
+}
+
+:host ::ng-deep .p-message {
+  font-family: 'DM Sans', sans-serif;
+}

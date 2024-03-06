@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
@@ -12,7 +12,7 @@ import { VilleService } from 'src/app/services/gestionDesBiensImmobiliers/ville.
   templateUrl: './villes.component.html',
   styleUrls: ['./villes.component.css']
 })
-export class VillesComponent implements OnInit {
+export class VillesComponent implements OnInit, OnDestroy {
 
   recherche: string = '';
   regionSelectionnee!: Region;
@@ -154,7 +154,6 @@ export class VillesComponent implements OnInit {
         }
     },
     (error) =>{
-      console.log(error)
       if (error.status == 409) {
         this.messageErreur = "Une ville avec ce libelle existe déjà dans cette région !";
         this.messageService.add({
@@ -278,4 +277,9 @@ export class VillesComponent implements OnInit {
       }
     });
   }
+
+  ngOnDestroy(): void {
+
+  }
+
 }

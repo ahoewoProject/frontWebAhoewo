@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
@@ -12,7 +12,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
   templateUrl: './administrateurs.component.html',
   styleUrls: ['./administrateurs.component.css']
 })
-export class AdministrateursComponent implements OnInit {
+export class AdministrateursComponent implements OnInit, OnDestroy {
 
   affichage = 1;
   visibleAddForm = 0;
@@ -238,5 +238,9 @@ export class AdministrateursComponent implements OnInit {
         }
       }
     });
+  }
+
+  ngOnDestroy(): void {
+
   }
 }

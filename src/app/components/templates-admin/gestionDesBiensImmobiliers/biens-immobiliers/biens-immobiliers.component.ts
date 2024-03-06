@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MenuItem, MessageService } from 'primeng/api';
@@ -34,7 +34,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './biens-immobiliers.component.html',
   styleUrls: ['./biens-immobiliers.component.css']
 })
-export class BiensImmobiliersComponent implements OnInit {
+export class BiensImmobiliersComponent implements OnInit, OnDestroy {
 
   listeDesChoix: any[] | undefined;
   listeDesCategories: string[] = [];
@@ -430,9 +430,9 @@ export class BiensImmobiliersComponent implements OnInit {
     }
 
     if (this.typeDeBienSelectionne.designation == 'Immeuble' || this.typeDeBienSelectionne.designation == 'Appartement' || this.typeDeBienSelectionne.designation == 'Bureau') {
-      this.listeDesCategories = ['non meublé','meublé'];
+      this.listeDesCategories = ['Non meublé', 'Meublé'];
     } else if (this.typeDeBienSelectionne.designation == 'Chambre' || this.typeDeBienSelectionne.designation == 'Chambre salon' || this.typeDeBienSelectionne.designation == 'Villa' || this.typeDeBienSelectionne.designation == 'Maison') {
-      this.listeDesCategories = ['non meublée', 'meublée'];
+      this.listeDesCategories = ['Non meublée', 'Meublée'];
     }
     this.validateForm();
   }
@@ -814,9 +814,9 @@ export class BiensImmobiliersComponent implements OnInit {
   //Fonction pour afficher le formulaire de modification d'un bien immobilier
   afficherFormulaireModifierBienImmobilier(id: number, designation: string): void {
     if (designation == 'Immeuble' || designation == 'Appartement' || designation == 'Bureau') {
-      this.listeDesCategories = ['non meublé','meublé'];
+      this.listeDesCategories = ['Non meublé','Meublé'];
     } else if (designation == 'Chambre' || designation == 'Chambre salon' || designation == 'Villa' || designation == 'Maison') {
-      this.listeDesCategories = ['non meublée', 'meublée'];
+      this.listeDesCategories = ['Non meublée', 'Meublée'];
     }
     this.affichage = 4;
     this.activeIndex = 0;
@@ -1330,9 +1330,9 @@ export class BiensImmobiliersComponent implements OnInit {
   //Fonction pour afficher le formulaire de modification d'un bien associé
   afficherFormulaireModifierBienImmAssocie(id: number, designation: string): void {
     if (designation == 'Appartement' || designation == 'Bureau') {
-      this.listeDesCategories = ['non meublé','meublé'];
+      this.listeDesCategories = ['Non meublé','meublé'];
     } else if (designation == 'Chambre' || designation == 'Chambre salon') {
-      this.listeDesCategories = ['non meublée', 'meublée'];
+      this.listeDesCategories = ['Non meublée', 'meublée'];
     }
     this.affichage = 8;
     this.activeIndex = 0;
@@ -1714,5 +1714,9 @@ export class BiensImmobiliersComponent implements OnInit {
     } else {
         return 'Région inconnue';
     }
+  }
+
+  ngOnDestroy(): void {
+
   }
 }

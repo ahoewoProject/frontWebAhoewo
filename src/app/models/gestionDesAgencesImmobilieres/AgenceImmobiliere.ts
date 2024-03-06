@@ -1,5 +1,8 @@
 import { EntiteDeBase } from "../EntiteDeBase";
-import { ResponsableAgenceImmobiliere } from "../gestionDesComptes/ResponsableAgenceImmobiliere";
+import { Pays } from "../gestionDesBiensImmobiliers/Pays";
+import { Quartier } from "../gestionDesBiensImmobiliers/Quartier";
+import { Region } from "../gestionDesBiensImmobiliers/Region";
+import { Ville } from "../gestionDesBiensImmobiliers/Ville";
 
 export class AgenceImmobiliere extends EntiteDeBase {
 
@@ -7,11 +10,13 @@ export class AgenceImmobiliere extends EntiteDeBase {
   logoAgence: string;
   codeAgence: string;
   nomAgence: string;
+  quartier: Quartier;
   adresse: string;
   telephone: string;
   adresseEmail: string;
   heureOuverture!: string;
   heureFermeture!: string;
+  description!: Text;
   estCertifie: boolean;
   etatAgence: boolean;
 
@@ -21,6 +26,7 @@ export class AgenceImmobiliere extends EntiteDeBase {
     this.logoAgence = '';
     this.codeAgence = '';
     this.nomAgence = '';
+    this.quartier = new Quartier();
     this.adresse = '';
     this.telephone = '';
     this.adresseEmail = '';

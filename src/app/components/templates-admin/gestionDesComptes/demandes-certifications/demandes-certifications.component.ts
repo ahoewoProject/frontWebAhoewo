@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './demandes-certifications.component.html',
   styleUrls: ['./demandes-certifications.component.css']
 })
-export class DemandesCertificationsComponent implements OnInit {
+export class DemandesCertificationsComponent implements OnInit, OnDestroy {
 
   agenceSelectionne!: AgenceImmobiliere;
   recherche: string = '';
@@ -334,5 +334,9 @@ export class DemandesCertificationsComponent implements OnInit {
         }
       }
     });
+  }
+
+  ngOnDestroy(): void {
+
   }
 }

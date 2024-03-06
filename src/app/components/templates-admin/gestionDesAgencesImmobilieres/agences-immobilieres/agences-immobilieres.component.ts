@@ -1,13 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmEventType, ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
 import { AffectationResponsableAgence } from 'src/app/models/gestionDesAgencesImmobilieres/AffectationResponsableAgence';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
 import { ServicesAgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/ServicesAgenceImmobiliere';
+import { Pays } from 'src/app/models/gestionDesBiensImmobiliers/Pays';
+import { Quartier } from 'src/app/models/gestionDesBiensImmobiliers/Quartier';
+import { Region } from 'src/app/models/gestionDesBiensImmobiliers/Region';
+import { Ville } from 'src/app/models/gestionDesBiensImmobiliers/Ville';
 import { AffectationAgentAgenceService } from 'src/app/services/gestionDesAgencesImmobilieres/affectation-agent-agence.service';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { ServicesAgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/services-agence-immobiliere.service';
+import { PaysService } from 'src/app/services/gestionDesBiensImmobiliers/pays.service';
+import { QuartierService } from 'src/app/services/gestionDesBiensImmobiliers/quartier.service';
+import { RegionService } from 'src/app/services/gestionDesBiensImmobiliers/region.service';
+import { VilleService } from 'src/app/services/gestionDesBiensImmobiliers/ville.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { environment } from 'src/environments/environment';
 
@@ -16,13 +24,20 @@ import { environment } from 'src/environments/environment';
   templateUrl: './agences-immobilieres.component.html',
   styleUrls: ['./agences-immobilieres.component.css']
 })
-export class AgencesImmobilieresComponent implements OnInit {
+export class AgencesImmobilieresComponent implements OnInit, OnDestroy {
 
   recherche: string = '';
+  logoURL: any;
   affichage = 1;
   visibleAddForm = 0;
   visibleUpdateForm = 0;
   user: any;
+  menus: MenuItem[] | undefined;
+  activeIndex: number = 0;
+  paysSelectionne = new Pays();
+  regionSelectionnee = new Region();
+  villeSelectionnee = new Ville();
+  quartierSelectionne = new Quartier();
 
   elementsParPage = 5; // Nombre d'éléments par page
   numeroDeLaPage = 0; // Page actuelle
@@ -34,9 +49,14 @@ export class AgencesImmobilieresComponent implements OnInit {
   agencesOfAgent!: Page<AffectationResponsableAgence>;
   servicesAgenceImmobiliere!: Page<ServicesAgenceImmobiliere>;
   affectationResponsableAgence: AffectationResponsableAgence = new AffectationResponsableAgence();
+  listeDesPays: Pays[] = [];
+  regions: Region[] = [];
+  villes: Ville[] = [];
+  quartiers: Quartier[] = [];
   messageErreur: string = "";
   messageSuccess: string | null = null;
-  agenceImmobiliereForm: any;
+  agenceStep1Form: any;
+  agenceStep2Form: any;
   APIEndpoint: string;
   logoAgence: any;
   agenceImmobiliereData: FormData = new  FormData();
@@ -50,7 +70,11 @@ export class AgencesImmobilieresComponent implements OnInit {
     private servicesAgenceImmobiliereService: ServicesAgenceImmobiliereService,
     private personneService: PersonneService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private paysService: PaysService,
+    private regionService: RegionService,
+    private villeService: VilleService,
+    private quartierService: QuartierService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -66,7 +90,70 @@ export class AgencesImmobilieresComponent implements OnInit {
     } else {
       this.listeAgencesImmobilieres(this.numeroDeLaPage, this.elementsParPage);
     }
-    this.initAgenceImmobiliereForm();
+    this.listePaysActifs();
+    this.listeRegionsActives();
+    this.listeVillesActives();
+    this.listeQuartiersActifs();
+    this.initAgenceStep1Form();
+    this.initAgenceStep2Form();
+    this.menusOfAgence();
+  }
+
+  menusOfAgence(): void {
+    this.menus = [
+      {
+          label: 'Description',
+          command: (event: any) => this.messageService.add({severity:'info', summary:'1ère étape', detail: event.item.label})
+      },
+      {
+          label: 'Localisation',
+          command: (event: any) => this.messageService.add({severity:'info', summary:'2ème étape', detail: event.item.label})
+      },
+      {
+          label: 'Confirmation',
+          command: (event: any) => this.messageService.add({severity:'info', summary:'3ème étape', detail: event.item.label})
+      },
+    ];
+  }
+
+  onActiveIndexChange(event: number) {
+    this.activeIndex = event;
+  }
+
+  //Fonction pour recupérer la liste des pays actifs
+  listePaysActifs(): void {
+    this.paysService.getPaysActifs().subscribe(
+      (response) => {
+        this.listeDesPays = response;
+      }
+    );
+  }
+
+  //Fonction pour recupérer la liste des régions actives
+  listeRegionsActives(): void {
+    this.regionService.getRegionsActives().subscribe(
+      (response) => {
+        this.regions = response;
+      }
+    );
+  }
+
+  //Fonction pour recupérer la liste des villes actives
+  listeVillesActives(): void {
+    this.villeService.getVillesActives().subscribe(
+      (response) => {
+        this.villes = response;
+      }
+    );
+  }
+
+  //Fonction pour recupérer la liste des quartiers actifs
+  listeQuartiersActifs(): void {
+    this.quartierService.getQuartiersActifs().subscribe(
+      (response) => {
+        this.quartiers = response;
+      }
+    );
   }
 
   //Fonction pour recupérer la liste des agences immobilières
@@ -117,12 +204,17 @@ export class AgencesImmobilieresComponent implements OnInit {
 
   telecharger(event: any) {
     const uploadedFile: File = event.files[0];
-    //console.log(error)(uploadedFile)
     this.logoAgence = uploadedFile;
+
+    var reader = new FileReader();
+    reader.readAsDataURL(uploadedFile);
+    reader.onload = (_event)=>{
+    this.logoURL = reader.result;
+    }
     this.messageSuccess = "Le logo de l'agence immobilière a été téléchargé avec succès.";
     this.messageService.add({
       severity: 'info',
-      summary: 'Téléchargement réussi',
+      summary: 'Opération de téléchargement réussie',
       detail: this.messageSuccess
     });
   }
@@ -135,24 +227,14 @@ export class AgencesImmobilieresComponent implements OnInit {
     } else {
       this.listeAgencesImmobilieres(this.numeroDeLaPage, this.elementsParPage);
     }
-    this.agenceImmobiliereForm.reset();
+    this.logoAgence = '';
+    this.agenceImmobiliereData.delete('logoAgence');
+    this.agenceImmobiliereData.delete('agenceImmobiliereJson');
+    this.agenceStep1Form.reset();
+    this.agenceStep2Form.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
     this.visibleUpdateForm = 0;
-  }
-
-  annuler(): void {
-    this.logoAgence = '';
-    this.agenceImmobiliereForm.reset();
-    if (this.visibleAddForm == 1) {
-      this.affichage = 0;
-      this.visibleAddForm = 1;
-      this.visibleUpdateForm = 0;
-    } else {
-      this.affichage = 0;
-      this.visibleAddForm = 0;
-      this.visibleUpdateForm = 1;
-    }
   }
 
   listeServices(id: number, numeroDeLaPage: number, elementsParPage: number): void {
@@ -210,15 +292,67 @@ export class AgencesImmobilieresComponent implements OnInit {
     this.affichage = 2;
   }
 
-  initAgenceImmobiliereForm(): void {
+
+  //Fonction pour sélectionner un pays
+  paysChoisi(event: any) {
+    this.paysSelectionne = event.value;
+    this.regionService.getRegionsByPaysId(this.paysSelectionne.id).subscribe(
+      (response) => {
+        this.regions = response;
+      }
+    );
+    this.regionSelectionnee = new Region();
+    this.villeSelectionnee = new Ville();
+    this.quartierSelectionne = new Quartier();
+  }
+
+  //Fonction pour sélectionner une région
+  regionChoisie(event: any) {
+    this.regionSelectionnee = event.value;
+    this.villeService.getVillesByRegionId(this.regionSelectionnee.id).subscribe(
+      (response) => {
+        this.villes = response;
+      }
+    );
+    this.villeSelectionnee = new Ville();
+    this.quartierSelectionne = new Quartier();
+  }
+
+  //Fonction pour sélectionner une ville
+  villeChoisie(event: any) {
+    this.villeSelectionnee = event.value;
+    this.quartierService.getQuartiersByVilleId(this.villeSelectionnee.id).subscribe(
+      (response) => {
+        this.quartiers = response;
+      }
+    );
+    this.quartierSelectionne = new Quartier();
+  }
+
+  //Fonction pour sélectionner un quartier
+  quartierChoisi(event: any) {
+    this.quartierSelectionne = event.value;
+  }
+
+  initAgenceStep2Form(): void {
+    this.agenceStep2Form = new FormGroup({
+      pays: new FormControl('', [Validators.required]),
+      region: new FormControl('', [Validators.required]),
+      ville: new FormControl('', [Validators.required]),
+      quartier: new FormControl('', [Validators.required]),
+      adresse: new FormControl('')
+    });
+  }
+
+  initAgenceStep1Form(): void {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    this.agenceImmobiliereForm = new FormGroup({
-      nomAgence: new FormControl(this.agenceImmobiliere.nomAgence, [Validators.required]),
-      adresse: new FormControl(this.agenceImmobiliere.adresse, [Validators.required]),
-      telephone: new FormControl(this.agenceImmobiliere.telephone, [Validators.required]),
-      adresseEmail: new FormControl(this.agenceImmobiliere.adresseEmail, [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
+    this.agenceStep1Form = new FormGroup({
+      nomAgence: new FormControl('', [Validators.required]),
+      telephone: new FormControl('', [Validators.required]),
+      adresseEmail: new FormControl('', [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
       heureOuverture: new FormControl('', [Validators.required]),
       heureFermeture: new FormControl('', [Validators.required]),
+      description: new FormControl('')
     }, [
         this.validateurHeureOuverture("heureOuverture"),
         this.validateurHeureFermeture("heureFermeture"),
@@ -227,29 +361,69 @@ export class AgencesImmobilieresComponent implements OnInit {
   }
 
   get nomAgence() {
-    return this.agenceImmobiliereForm.get('nomAgence');
-  }
-
-  get adresse() {
-    return this.agenceImmobiliereForm.get('adresse');
+    return this.agenceStep1Form.get('nomAgence');
   }
 
   get telephone() {
-    return this.agenceImmobiliereForm.get('telephone');
+    return this.agenceStep1Form.get('telephone');
   }
 
   get adresseEmail() {
-    return this.agenceImmobiliereForm.get('adresseEmail')
+    return this.agenceStep1Form.get('adresseEmail')
   }
 
+  get description() {
+    return this.agenceStep1Form.get('description');
+  }
 
   get heureOuverture() {
-    return this.agenceImmobiliereForm.get('heureOuverture');
+    return this.agenceStep1Form.get('heureOuverture');
   }
 
   get heureFermeture() {
-    return this.agenceImmobiliereForm.get('heureFermeture');
+    return this.agenceStep1Form.get('heureFermeture');
   }
+
+  get pays() {
+    return this.agenceStep2Form.get('pays');
+  }
+
+  get region() {
+    return this.agenceStep2Form.get('region');
+  }
+
+  get ville() {
+    return this.agenceStep2Form.get('ville');
+  }
+
+  get quartier() {
+    return this.agenceStep2Form.get('quartier');
+  }
+
+  get adresse() {
+    return this.agenceStep2Form.get('adresse');
+  }
+
+  resetAgenceStep1Form(): void {
+    this.logoAgence = '';
+    this.agenceStep1Form.reset();
+  }
+
+  etape1(): void {
+    this.activeIndex = 0;
+    this.onActiveIndexChange(this.activeIndex);
+  }
+
+  etape2(): void {
+    this.activeIndex = 1;
+    this.onActiveIndexChange(this.activeIndex);
+  }
+
+  etape3(): void {
+    this.activeIndex = 2;
+    this.onActiveIndexChange(this.activeIndex);
+  }
+
 
   validateurHeureOuverture(heureOuverture: string) {
     return function (control: AbstractControl) {
@@ -374,6 +548,7 @@ export class AgencesImmobilieresComponent implements OnInit {
   }
 
   afficherFormulaireAjouter(): void {
+    this.activeIndex = 0;
     this.affichage = 0;
     this.visibleAddForm = 1;
     this.visibleUpdateForm = 0;
@@ -381,6 +556,7 @@ export class AgencesImmobilieresComponent implements OnInit {
   }
 
   afficherFormulaireModifier(id: number): void {
+    this.activeIndex = 0;
     this.detailAgenceImmobiliere(id);
     this.affichage = 0;
     this.visibleAddForm = 0;
@@ -388,6 +564,8 @@ export class AgencesImmobilieresComponent implements OnInit {
   }
 
   ajouterAgenceImmobiliere(): void {
+
+    this.agenceImmobiliere.quartier = this.quartierSelectionne;
 
     this.agenceImmobiliereData.append('logoAgence', this.logoAgence);
     this.agenceImmobiliereData.append('agenceImmobiliereJson', JSON.stringify(this.agenceImmobiliere));
@@ -404,13 +582,6 @@ export class AgencesImmobilieresComponent implements OnInit {
           });
         } else {
           this.messageErreur = "Erreur lors de l'ajout de votre agence immobilière !"
-          this.afficherFormulaireAjouter();
-          this.agenceImmobiliere.nomAgence = response.nomAgence;
-          this.agenceImmobiliere.adresse = response.adresse;
-          this.agenceImmobiliere.telephone = response.telephone;
-          this.agenceImmobiliere.adresseEmail = response.adresseEmail;
-          this.agenceImmobiliere.heureOuverture = response.heureOuverture;
-          this.agenceImmobiliere.heureFermeture = response.heureFermeture;
           this.messageService.add({
             severity: 'error',
             summary: "Erreur d'ajout",
@@ -419,7 +590,6 @@ export class AgencesImmobilieresComponent implements OnInit {
         }
     },
     (error) => {
-      //console.log(error)(error)
       if (error.status == 409) {
         this.messageErreur = "Une agence immobilière avec ce nom existe déjà !";
         this.messageService.add({
@@ -453,11 +623,9 @@ export class AgencesImmobilieresComponent implements OnInit {
             summary: 'Erreur modification',
             detail: this.messageErreur
           });
-          this.afficherFormulaireModifier(id);
         }
     },
     (error) => {
-      //console.log(error)(error)
       if (error.status == 409) {
         this.messageErreur = "Une agence immobilière avec ce nom existe déjà !";
         this.messageService.add({
@@ -465,7 +633,6 @@ export class AgencesImmobilieresComponent implements OnInit {
           summary: 'Modification non réussie',
           detail: this.messageErreur
         });
-        this.afficherFormulaireModifier(id);
       }
     })
   }
@@ -476,8 +643,8 @@ export class AgencesImmobilieresComponent implements OnInit {
       header: "Activation d'une agence immobilière",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.agenceImmobiliereService.activerAgence(id).subscribe(response=>{
-          ////console.log(error)(error)(response);
+        this.agenceImmobiliereService.activerAgence(id).subscribe(
+        (response) => {
           this.voirListe();
           this.messageSuccess = "L'agence immobilière a été activé avec succès !";
           this.messageService.add({
@@ -515,8 +682,8 @@ export class AgencesImmobilieresComponent implements OnInit {
       header: "Désactivation d'une agence immobilière",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.agenceImmobiliereService.desactiverAgence(id).subscribe(response=>{
-          ////console.log(error)(error)(response);
+        this.agenceImmobiliereService.desactiverAgence(id).subscribe(
+        (response) => {
           this.voirListe();
           this.messageSuccess = "L'agence immobilière a été désactivé avec succès.";
           this.messageService.add({
@@ -546,5 +713,9 @@ export class AgencesImmobilieresComponent implements OnInit {
         }
       }
     });
+  }
+
+  ngOnDestroy(): void {
+
   }
 }

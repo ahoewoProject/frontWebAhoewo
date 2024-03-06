@@ -81,6 +81,12 @@ export class BienImmobilierService {
     return this.httpClient.get<Page<BienImmobilier>>(this.url + 'biens-immobiliers/agences/agent/pagines', {params: params});
   }
 
+  // Affichage des occurences des biens propres et délégués;
+  // url: http://localhost:4040/api/biens-immobiliers/propres-delegues
+  getBiensPropresDelegues(): Observable<Array<BienImmobilier>>{
+    return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers/propres-delegues');
+  }
+
   // url: http://localhost:4040/api/activer/bien-immobilier/{id}
   activerBienImmobilier(id: number): Observable<any> {
     return this.httpClient.get<any>(this.url + 'activer/bien-immobilier/' + id);

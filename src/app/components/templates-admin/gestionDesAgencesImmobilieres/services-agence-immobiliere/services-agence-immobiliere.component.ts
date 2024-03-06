@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
@@ -16,7 +16,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './services-agence-immobiliere.component.html',
   styleUrls: ['./services-agence-immobiliere.component.css']
 })
-export class ServicesAgenceImmobiliereComponent implements OnInit {
+export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
 
   serviceSelectionne!: Services;
   agenceSelectionnee!: AgenceImmobiliere;
@@ -428,4 +428,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+
+  }
 }

@@ -1,0 +1,151 @@
+.disabled-link {
+  pointer-events: none; /* Désactive les événements de pointage, rendant le lien non cliquable */
+  opacity: 0.5; /* Réduit l'opacité pour montrer qu'il est désactivé */
+  cursor: not-allowed; /* Affiche un curseur "non autorisé" */
+}
+
+.item-with-margin {
+  margin-right: 20px; /* Ajoutez la marge que vous souhaitez */
+  text-align: center;
+}
+
+.error {
+  color: #a94442;
+}
+
+/* .p-carousel-prev {
+  margin-bottom: 100px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: white;
+  text-align: center;
+  box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.09);
+}
+
+.p-carousel-next {
+  margin-bottom: 100px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: white;
+  text-align: center;
+  box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.09);
+}
+
+
+
+:host ::ng-deep .filtrerParVille  {
+  background-color: red;
+  color: white;
+} */
+
+:host ::ng-deep .filtrerParRegion .p-carousel-prev {
+  margin-bottom: 100px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: white;
+  text-align: center;
+  box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.09);
+}
+:host ::ng-deep .filtrerParRegion .p-carousel-next {
+  margin-bottom: 100px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: white;
+  text-align: center;
+  box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.09);
+}
+
+:host ::ng-deep .filtrerParRegion .p-carousel-container button:hover {
+  background-color: #ee944e;
+  color: white;
+}
+
+:host ::ng-deep .filtrerParTypeBien .p-carousel-prev {
+  margin-bottom: 50px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+}
+:host ::ng-deep .filtrerParTypeBien .p-carousel-next {
+  margin-bottom: 50px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  text-align: center;
+  color: white;
+}
+
+:host ::ng-deep .filtrerParTypeBien .p-carousel-container button:hover {
+  background-color: white;
+  color: #0d7915;
+}
+
+.img {
+  width: 40%;
+  height: 40%;
+  object-fit: cover;
+}
+
+.iconbox-style1.theme-style .img {
+  filter: invert(98%) sepia(0%) saturate(7500%) hue-rotate(24deg) brightness(104%) contrast(100%);
+}
+
+.iconbox-style1.theme-style:hover .img {
+  filter: invert(26%) sepia(74%) saturate(1959%) hue-rotate(109deg) brightness(88%) contrast(90%);
+}
+
+.iconbox-content {
+  margin-top: 35px;
+}
+
+/* .btn-plus {
+  color: #ffffff;
+  background: #ee944e;
+  border: 1px solid #ee944e;
+}
+
+
+.btn-plus:hover {
+  color: #ffffff;
+  background: #ee944e;
+  border-color: 1px solid #f08e43;
+} */
+
+:host ::ng-deep .select .p-dropdown {
+  width: 110%;
+  height: 55px;
+  /* border-radius: 8px; */
+  /* border: transparent; */
+}
+
+/* :host ::ng-deep .select2 .p-dropdown {
+  width: 100%;
+  height: 55px;
+  border-radius: 8px;
+} */
+
+:host ::ng-deep .select .p-dropdown-item {
+  margin-left: -10%;
+}
+
+/* :host ::ng-deep .select2 .p-dropdown-item {
+  margin-left: -3%;
+} */
+
+:host ::ng-deep .checkboxLabel {
+  font-size: 15px;
+}
+
+:host ::ng-deep .p-dialog-title {
+  font-family: 'DM Sans', sans-serif;
+}
+
+:host ::ng-deep .p-dialog {
+  border-radius: 100%;
+}

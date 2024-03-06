@@ -1071,11 +1071,12 @@ h2 {
   top: -40px;
 }
 .listing-style1 .list-tag {
-  background-color: #EB6753;
+  background-color: #ff003d;
   border-radius: 6px;
   color: #ffffff;
   font-family: var(--title-font-family);
   font-weight: 600;
+  font-size: 14px;
   left: 20px;
   opacity: 1;
   padding: 2px 12px;
@@ -1196,11 +1197,11 @@ h2 {
 .listing-style1:hover .list-title {
   text-decoration: underline;
 }
-.listing-style1:hover .list-tag {
-  opacity: 0;
-  visibility: hidden;
+/* .listing-style1:hover .list-tag {
+  /* opacity: 0;
+  visibility: hidden; */
   transform: translateY(50px);
-}
+} */
 .listing-style1:hover .list-thumb img {
   transform: scale(1.1) rotate(-1deg);
 }
@@ -3778,7 +3779,7 @@ h2 {
 
 /*Home 6 Banner*/
 .home-banner-style6 {
-  background-image: url(../images/home/home-6.jpg);
+  background-image: url(../images/home/home-9.jpg);
   background-position: center center;
   background-repeat: no-repeat;
   position: relative;
@@ -4798,8 +4799,6 @@ section {
 }
 
 .cta-banner3:before {
-  background-image: url(../images/about/cta-side-bg-1.jpg);
-  background-size: cover;
   content: "";
   position: absolute;
   right: 0;
@@ -5033,7 +5032,7 @@ section {
   color: #181A20;
 }
 .iconbox-style1.theme-style {
-  background-color: #EB6753;
+  background-color: #0d7915;
 }
 .iconbox-style1.theme-style .icon {
   background-color: rgba(255, 255, 255, 0.1);
@@ -5048,8 +5047,8 @@ section {
   background-color: #ffffff;
 }
 .iconbox-style1.theme-style:hover .icon {
-  background-color: rgba(235, 103, 83, 0.07);
-  color: #EB6753;
+  background-color: rgba(0, 0, 0, 0.09);
+  color: #0d7915;
 }
 .iconbox-style1.theme-style:hover .title,
 .iconbox-style1.theme-style:hover .text {
@@ -5554,7 +5553,7 @@ section {
   position: relative;
 }
 .why-chose-list .list-one .list-icon {
-  background-color: rgba(235, 103, 83, 0.07);
+  background-color: #edad7c;
   border-radius: 50%;
   color: #EB6753;
   display: block;
@@ -5574,7 +5573,7 @@ section {
   color: #ffffff;
 }
 .why-chose-list.style2 .list-one:hover .list-icon {
-  background-color: rgba(235, 103, 83, 0.6);
+  background-color: #ee944e;
   color: #ffffff;
 }
 .why-chose-list.style2 .list-icon {
@@ -6807,8 +6806,8 @@ textarea:focus {
   color: #ffffff;
 }
 .menu-btn:hover {
-  background-color: #EB6753;
-  border: 1px solid #EB6753;
+  background-color: #db6b15;
+  border: 1px solid #db6b15;
 }
 
 .signup-modal .btn-white i,
@@ -7319,8 +7318,8 @@ header.nav-homepage-style.stricky.stricky-fixed .btn-transparent2 {
   color: var(--headings-color);
 }
 header.nav-homepage-style.stricky.stricky-fixed .menu-btn:hover {
-  background-color: #EB6753;
-  border: 1px solid #EB6753;
+  background-color: #db6b15;
+  border: 1px solid #db6b15;
   color: #ffffff;
 }
 header.nav-homepage-style.at-home2, header.nav-homepage-style.at-home5 {
@@ -7345,6 +7344,7 @@ header.nav-homepage-style.at-home5 .ace-responsive-menu .megamenu_style a.list-i
 header.nav-homepage-style.at-home5 .ace-responsive-menu .visible_list a.list-item:hover {
   background-color: transparent;
 }
+
 header.nav-homepage-style.at-home5 .ace-responsive-menu .megamenu_style a.list-item:hover:before,
 header.nav-homepage-style.at-home5 .ace-responsive-menu .visible_list a.list-item:hover:before {
   width: 100%;
@@ -7364,9 +7364,10 @@ header.nav-homepage-style.at-home5 .ace-responsive-menu .visible_list a.list-ite
   -o-transition: all 0.4s ease;
   transition: all 0.4s ease;
 }
+
 header.nav-homepage-style.at-home5.stricky.stricky-fixed .ace-responsive-menu .megamenu_style a.list-item:before,
 header.nav-homepage-style.at-home5.stricky.stricky-fixed .ace-responsive-menu .visible_list a.list-item:before {
-  background-color: #181A20;
+  background-color: #0d7915;
 }
 
 /*== Mobile Menu Css ==*/
@@ -10011,6 +10012,10 @@ input:focus-visible {
   color: #EE4C34;
 }
 
+.scrollTypeDeBien {
+  background-color: #0d7915;
+}
+
 .bgc-thm {
   background-color: #EB6753;
 }
@@ -10032,7 +10037,7 @@ input:focus-visible {
 }
 
 .bgc-thm-light {
-  background-color: rgba(235, 103, 83, 0.05);
+  background-color: #eab993;
 }
 
 .bgc-thm3-light {

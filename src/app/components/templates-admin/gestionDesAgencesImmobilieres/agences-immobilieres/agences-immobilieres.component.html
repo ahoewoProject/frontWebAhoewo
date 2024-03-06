@@ -25,101 +25,268 @@
     <div class="row">
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-          <form [formGroup]="agenceImmobiliereForm" (ngSubmit)="ajouterAgenceImmobiliere()" class="form-style1">
+          <p-steps [model]="menus" [readonly]="false" [activeIndex]="activeIndex" (activeIndexChange)="onActiveIndexChange($event)"></p-steps>
+
+          <!-- Start Etape 1e -->
+          <div *ngIf="activeIndex == 0" class="ps-widget bgc-white bdrs12 p30 position-relative">
+            <form  [formGroup]="agenceStep1Form" class="form-style1">
+              <div class="row">
+
+                <div class="col-lg-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Nom</label>
+                    <input type="text" class="form-control" id="nomAgence" name="nomAgence" placeholder="Le nom de l'agence immobilière" formControlName="nomAgence" [(ngModel)]="agenceImmobiliere.nomAgence" required>
+                    <div class="error" [hidden]="nomAgence.valid || nomAgence.pristine && !nomAgence.touched ">Le nom de l'agence immobilière est obligatoire</div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Email</label>
+                    <input type="email" class="form-control" id="adresseEmail" name="adresseEmail" placeholder="L'adresse e-mail de l'agence" formControlName="adresseEmail" [(ngModel)]="agenceImmobiliere.adresseEmail" required>
+                    <div class="error" [hidden]="!adresseEmail?.hasError('required') || !adresseEmail.touched">
+                      L'adresse e-mail de l'agence est obligatoire
+                    </div>
+                    <div class="error" [hidden]="!adresseEmail?.hasError('email') || !adresseEmail.touched">
+                      L'adresse e-mail de l'agence n'est pas valide.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Heure ouverture</label>
+                    <input type="time" class="form-control" id="heureOuverture" name="heureOuverture" formControlName="heureOuverture" [(ngModel)]="agenceImmobiliere.heureOuverture" required>
+                    <div class="error" [hidden]="!heureOuverture?.hasError('required') || !heureOuverture.touched">L'heure d'ouverture de l'agence est obligatoire</div>
+                    <div class="error" *ngIf="agenceStep1Form.errors?.['heureOuvertureHorsPlage']">L'heure d'ouverture doit être comprise entre 6 heures et 0 heures.</div>
+                    <div class="error" *ngIf="agenceStep1Form.errors?.['heureOuvertureSuperieure']">L'heure d'ouverture ne doit pas être supérieure à l'heure de fermeture.</div>
+                    <div class="error" *ngIf="agenceStep1Form.errors?.['heureOuvertureEgale']">L'heure d'ouverture ne doit pas être égale à l'heure de fermeture.</div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Heure fermeture</label>
+                    <input type="time" class="form-control" id="heureFermeture" name="heureFermeture" formControlName="heureFermeture" [(ngModel)]="agenceImmobiliere.heureFermeture" required>
+                    <div class="error" [hidden]="!heureOuverture?.hasError('required') || !heureOuverture.touched">L'heure de fermeture de l'agence est obligatoire</div>
+                    <div class="error" *ngIf="agenceStep1Form.errors?.['heureFermetureHorsPlage']">L'heure de fermeture doit être comprise entre 6 heures et 0 heures.</div>
+                    <div class="error" *ngIf="agenceStep1Form.errors?.['heuureFermetureInferieure']">L'heure de fermeture ne doit pas être inférieure à l'heure d'ouverture.</div>
+                    <div class="error" *ngIf="agenceStep1Form.errors?.['heureFermetureEgale']">L'heure de fermeture ne doit pas être égale à l'heure d'ouverture.</div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Numéro de téléphone</label>
+                    <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Le numero de téléphone de l'agence" formControlName="telephone" [(ngModel)]="agenceImmobiliere.telephone" required>
+                    <div class="error" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numero de téléphone de l'agence immobilière est obligatoire</div>
+                  </div>
+                </div>
+
+                <div class="col-sm-12">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Description</label>
+                    <textarea id="description" name="description" placeholder="La description du bien immobilier" style="height: 160px;" [(ngModel)]="agenceImmobiliere.description" [ngModelOptions]="{standalone: true}"></textarea>
+                  </div>
+                </div>
+
+                <div class="col-sm-12">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Logo</label>
+                    <p-fileUpload
+                      chooseLabel="Sélectionner le logo"
+                      [auto]="true"
+                      url="https://www.primefaces.org/cdn/api/upload.php"
+                      (onUpload)="telecharger($event)" accept="image/*">
+                      <ng-template pTemplate="content">
+                        <ul *ngIf="logoAgence">
+                            <li>{{ logoAgence.name }}</li>
+                        </ul>
+                      </ng-template>
+                    </p-fileUpload>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="d-sm-flex justify-content-between">
+                    <button class="ud-btn btn-annuler" type="button" (click)="resetAgenceStep1Form()">Annuler</button>
+                    <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': agenceStep1Form.invalid }" (click)="etape2()">Suivant<i class="pi pi-arrow-right"></i></button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- End Etape 1e -->
+
+          <!-- Start Etape 2ème -->
+          <div *ngIf="activeIndex == 1" class="ps-widget bgc-white bdrs12 p30 position-relative">
+            <form  [formGroup]="agenceStep2Form" class="form-style1">
+              <div class="row">
+
+                <div class="col-sm-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Pays</label>
+                    <br>
+                    <p-dropdown
+                      class="select" emptyFilterMessage="Aucun résultat trouvé"
+                      emptyMessage="Aucun résultat trouvé"
+                      [options]="listeDesPays" placeholder="Choisir le pays"
+                      formControlName="pays" [filter]="true" filterBy="libelle"
+                      filterPlaceholder="Rechercher"
+                      (onChange)="paysChoisi($event)" [showClear]="true"
+                      optionLabel="libelle">
+                    </p-dropdown>
+                    <div class="error" [hidden]="!pays?.hasError('required') || !pays.touched">La selection du pays est obligatoire</div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Région</label>
+                    <br>
+                    <p-dropdown
+                      class="select" emptyFilterMessage="Aucun résultat trouvé"
+                      emptyMessage="Aucun résultat trouvé"
+                      [options]="regions" placeholder="Choisir la région"
+                      formControlName="region" [filter]="true" filterBy="libelle"
+                      filterPlaceholder="Rechercher"
+                      [showClear]="true" (onChange)="regionChoisie($event)" optionLabel="libelle">
+                    </p-dropdown>
+                    <div class="error" [hidden]="!region?.hasError('required') || !region.touched">La selection de la région est obligatoire</div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Ville</label>
+                    <br>
+                    <p-dropdown
+                      class="select" emptyFilterMessage="Aucun résultat trouvé"
+                      emptyMessage="Aucun résultat trouvé"
+                      [options]="villes" placeholder="Choisir la ville"
+                      formControlName="ville" [filter]="true" filterBy="libelle"
+                      filterPlaceholder="Rechercher"
+                      [showClear]="true" (onChange)="villeChoisie($event)" optionLabel="libelle">
+                    </p-dropdown>
+                    <div class="error" [hidden]="!ville?.hasError('required') || !ville.touched">La selection de la ville est obligatoire</div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Quartier</label>
+                    <br>
+                    <p-dropdown
+                      class="select" emptyFilterMessage="Aucun résultat trouvé"
+                      emptyMessage="Aucun résultat trouvé"
+                      [options]="quartiers" placeholder="Choisir le quartier"
+                      formControlName="quartier" [filter]="true" filterBy="libelle"
+                      filterPlaceholder="Rechercher"
+                      [showClear]="true" (onChange)="quartierChoisi($event)" optionLabel="libelle">
+                    </p-dropdown>
+                    <div class="error" [hidden]="!quartier?.hasError('required') || !quartier.touched">La selection du quartier est obligatoire</div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Adresse</label>
+                    <!-- <input type="text" class="form-control" id="adresse" name="adresse" placeholder="L'adresse du bien immobilier" [(ngModel)]="bienImmobilier.adresse" [ngModelOptions]="{standalone: true}"> -->
+                    <textarea id="adresse" name="adresse" placeholder="L'adresse du bien immobilier" style="height: 100px;" [(ngModel)]="agenceImmobiliere.adresse" [ngModelOptions]="{standalone: true}"></textarea>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="d-sm-flex justify-content-between">
+                    <button class="ud-btn btn-retour" type="button" (click)="etape1()"><i class="pi pi-arrow-left"></i> Précédent</button>
+                    <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': agenceStep1Form.invalid || agenceStep1Form.invalid }" (click)="etape3()">Suivant<i class="pi pi-arrow-right"></i></button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- End Etape 2 -->
+
+          <!-- Start Etape 3ème -->
+          <div *ngIf="activeIndex == 2" class="ps-widget bgc-white bdrs12 p30 position-relative">
             <div class="row">
-
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Nom</label>
-                  <input type="text" class="form-control" id="nomAgence" name="nomAgence" placeholder="Le nom de l'agence immbilière" formControlName="nomAgence" [(ngModel)]="agenceImmobiliere.nomAgence" required>
-                  <div class="error" [hidden]="nomAgence.valid || nomAgence.pristine && !nomAgence.touched ">Le nom de l'agence immobilière est obligatoire</div>
-                </div>
+              <div class="col-lg-4" *ngIf="logoURL">
+                <img class="img-fluid" width="360" [src]="logoURL"
+                  alt="Logo de l'agence">
               </div>
+              <div class="col-lg-{{ logoURL ? '8' : '12' }}">
+                <div class="row">
+                  <h4 class="title fz17 mb30" *ngIf="agenceImmobiliere.description">Description</h4>
+                  <p *ngIf="agenceImmobiliere.description">
+                      {{ agenceImmobiliere.description }}
+                  </p>
 
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Adresse</label>
-                  <input type="text" class="form-control" id="adresse" name="adresse" placeholder="L'adresse de l'agence immobilière" formControlName="adresse" [(ngModel)]="agenceImmobiliere.adresse" required>
-                  <div class="error" [hidden]="adresse.valid || adresse.pristine && !adresse.touched ">L'adresse de l'agence immobilière est obligatoire</div>
-                </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">E-mail</label>
-                  <input type="email" class="form-control" id="adresseEmail" name="adresseEmail" placeholder="L'adresse e-mail de l'agence" formControlName="adresseEmail" [(ngModel)]="agenceImmobiliere.adresseEmail" required>
-                  <div class="error" [hidden]="!adresseEmail?.hasError('required') || !adresseEmail.touched">
-                    L'adresse e-mail de l'agence est obligatoire
+                  <p-divider *ngIf="agenceImmobiliere.description"></p-divider>
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Nom</p>
+                    <p>{{ agenceImmobiliere.nomAgence }} <i *ngIf="agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
                   </div>
-                  <div class="error" [hidden]="!adresseEmail?.hasError('email') || !adresseEmail.touched">
-                    L'adresse e-mail de l'agence n'est pas valide.
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
+                    <p>{{ agenceImmobiliere.telephone }}</p>
+                  </div>
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+                    <p>{{ agenceImmobiliere.adresseEmail }}</p>
+                  </div>
+
+                  <p-divider></p-divider>
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
+                    <p>{{ agenceImmobiliere.heureOuverture }}</p>
+                  </div>
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Heure Fermeture</p>
+                    <p>{{ agenceImmobiliere.heureFermeture }}</p>
+                  </div>
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Pays</p>
+                    <p>{{ paysSelectionne.libelle }}</p>
+                  </div>
+
+                  <p-divider></p-divider>
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Région</p>
+                    <p>{{ regionSelectionnee.libelle }}</p>
+                  </div>
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Ville</p>
+                    <p>{{ villeSelectionnee.libelle }}</p>
+                  </div>
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Quartier</p>
+                    <p>{{ quartierSelectionne.libelle }}</p>
+                  </div>
+
+                  <p-divider *ngIf="agenceImmobiliere.adresse"></p-divider>
+                  <div class="col-sm-6 col-xl-4" *ngIf="agenceImmobiliere.adresse">
+                    <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
+                    <p>{{ agenceImmobiliere.adresse }}</p>
                   </div>
                 </div>
               </div>
 
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Numéro de téléphone</label>
-                  <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Le numero de téléphone de l'agence" formControlName="telephone" [(ngModel)]="agenceImmobiliere.telephone" required>
-                  <div class="error" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le nom de téléphone de l'agence immobilière est obligatoire</div>
+              <div class="col-md-12 mt30">
+                <div class="d-sm-flex justify-content-between">
+                  <button class="ud-btn btn-retour" type="button" (click)="etape2()"><i class="pi pi-arrow-left"></i> Précédent</button>
+                  <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': agenceStep1Form.invalid || agenceStep2Form.invalid }" (click)="ajouterAgenceImmobiliere()">Ajouter</button>
                 </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Heure ouverture</label>
-                  <input type="time" class="form-control" id="heureOuverture" name="heureOuverture" formControlName="heureOuverture" [(ngModel)]="agenceImmobiliere.heureOuverture" required>
-                  <div class="error" [hidden]="!heureOuverture?.hasError('required') || !heureOuverture.touched">L'heure d'ouverture de l'agence est obligatoire</div>
-                  <div class="error" *ngIf="agenceImmobiliereForm.errors?.['heureOuvertureHorsPlage']">L'heure d'ouverture doit être comprise entre 6 heures et 0 heures.</div>
-                  <div class="error" *ngIf="agenceImmobiliereForm.errors?.['heureOuvertureSuperieure']">L'heure d'ouverture ne doit pas être supérieure à l'heure de fermeture.</div>
-                  <div class="error" *ngIf="agenceImmobiliereForm.errors?.['heureOuvertureEgale']">L'heure d'ouverture ne doit pas être égale à l'heure de fermeture.</div>
-                </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Heure fermeture</label>
-                  <input type="time" class="form-control" id="heureFermeture" name="heureFermeture" formControlName="heureFermeture" [(ngModel)]="agenceImmobiliere.heureFermeture" required>
-                  <div class="error" [hidden]="!heureOuverture?.hasError('required') || !heureOuverture.touched">L'heure de fermeture de l'agence est obligatoire</div>
-                  <div class="error" *ngIf="agenceImmobiliereForm.errors?.['heureFermetureHorsPlage']">L'heure de fermeture doit être comprise entre 6 heures et 0 heures.</div>
-                  <div class="error" *ngIf="agenceImmobiliereForm.errors?.['heuureFermetureInferieure']">L'heure de fermeture ne doit pas être inférieure à l'heure d'ouverture.</div>
-                  <div class="error" *ngIf="agenceImmobiliereForm.errors?.['heureFermetureEgale']">L'heure de fermeture ne doit pas être égale à l'heure d'ouverture.</div>
-                </div>
-              </div>
-
-              <div>
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Logo</label>
-                  <p-fileUpload
-                    chooseLabel="Sélectionner le logo"
-                    [auto]="true"
-                    url="https://www.primefaces.org/cdn/api/upload.php"
-                    (onUpload)="telecharger($event)" accept="image/*">
-                    <ng-template pTemplate="content">
-                      <ul *ngIf="logoAgence">
-                          <li>{{ logoAgence.name }}</li>
-                      </ul>
-                    </ng-template>
-                  </p-fileUpload>
-                </div>
-              </div>
-
-            </div>
-            <div class="col-md-12">
-              <div class="text-end">
-                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
-                &nbsp;
-                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': agenceImmobiliereForm.invalid }" type="submit">Modifier</button>
               </div>
             </div>
-          </form>
+          </div>
+          <!-- End Etape 3 -->
         </div>
       </div>
     </div>
   </div>
   <!-- End Formulaire d'ajout d'une agence immobilière - Vue Responsable -->
 
-  <!-- Formulaire de modification d'une agence immobilière - Vue Responsable -->
+ <!-- Formulaire de modification d'une agence immobilière - Vue Responsable -->
   <div *ngIf="visibleUpdateForm == 1">
     <div class="row align-items-center pb40">
       <div class="col-xxl-5">
@@ -137,93 +304,261 @@
     <div class="row">
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-          <form [formGroup]="agenceImmobiliereForm" (ngSubmit)="modifierAgenceImmobiliere(agenceImmobiliere.id)" class="form-style1">
+          <p-steps [model]="menus" [readonly]="false" [activeIndex]="activeIndex" (activeIndexChange)="onActiveIndexChange($event)"></p-steps>
+
+          <!-- Start Etape 1e -->
+          <div *ngIf="activeIndex == 0" class="ps-widget bgc-white bdrs12 p30 position-relative">
+            <form  [formGroup]="agenceStep1Form" class="form-style1">
+              <div class="row">
+
+                <div class="col-lg-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Nom</label>
+                    <input type="text" class="form-control" id="nomAgence" name="nomAgence" placeholder="Le nom de l'agence immobilière" formControlName="nomAgence" [(ngModel)]="agenceImmobiliere.nomAgence" required>
+                    <div class="error" [hidden]="nomAgence.valid || nomAgence.pristine && !nomAgence.touched ">Le nom de l'agence immobilière est obligatoire</div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Email</label>
+                    <input type="email" class="form-control" id="adresseEmail" name="adresseEmail" placeholder="L'adresse e-mail de l'agence" formControlName="adresseEmail" [(ngModel)]="agenceImmobiliere.adresseEmail" required>
+                    <div class="error" [hidden]="!adresseEmail?.hasError('required') || !adresseEmail.touched">
+                      L'adresse e-mail de l'agence est obligatoire
+                    </div>
+                    <div class="error" [hidden]="!adresseEmail?.hasError('email') || !adresseEmail.touched">
+                      L'adresse e-mail de l'agence n'est pas valide.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Heure ouverture</label>
+                    <input type="time" class="form-control" id="heureOuverture" name="heureOuverture" formControlName="heureOuverture" [(ngModel)]="agenceImmobiliere.heureOuverture" required>
+                    <div class="error" [hidden]="!heureOuverture?.hasError('required') || !heureOuverture.touched">L'heure d'ouverture de l'agence est obligatoire</div>
+                    <div class="error" *ngIf="agenceStep1Form.errors?.['heureOuvertureHorsPlage']">L'heure d'ouverture doit être comprise entre 6 heures et 0 heures.</div>
+                    <div class="error" *ngIf="agenceStep1Form.errors?.['heureOuvertureSuperieure']">L'heure d'ouverture ne doit pas être supérieure à l'heure de fermeture.</div>
+                    <div class="error" *ngIf="agenceStep1Form.errors?.['heureOuvertureEgale']">L'heure d'ouverture ne doit pas être égale à l'heure de fermeture.</div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Heure fermeture</label>
+                    <input type="time" class="form-control" id="heureFermeture" name="heureFermeture" formControlName="heureFermeture" [(ngModel)]="agenceImmobiliere.heureFermeture" required>
+                    <div class="error" [hidden]="!heureOuverture?.hasError('required') || !heureOuverture.touched">L'heure de fermeture de l'agence est obligatoire</div>
+                    <div class="error" *ngIf="agenceStep1Form.errors?.['heureFermetureHorsPlage']">L'heure de fermeture doit être comprise entre 6 heures et 0 heures.</div>
+                    <div class="error" *ngIf="agenceStep1Form.errors?.['heuureFermetureInferieure']">L'heure de fermeture ne doit pas être inférieure à l'heure d'ouverture.</div>
+                    <div class="error" *ngIf="agenceStep1Form.errors?.['heureFermetureEgale']">L'heure de fermeture ne doit pas être égale à l'heure d'ouverture.</div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Numéro de téléphone</label>
+                    <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Le numero de téléphone de l'agence" formControlName="telephone" [(ngModel)]="agenceImmobiliere.telephone" required>
+                    <div class="error" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numero de téléphone de l'agence immobilière est obligatoire</div>
+                  </div>
+                </div>
+
+                <div class="col-sm-12">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Description</label>
+                    <textarea id="description" name="description" placeholder="La description du bien immobilier" style="height: 160px;" [(ngModel)]="agenceImmobiliere.description" [ngModelOptions]="{standalone: true}"></textarea>
+                  </div>
+                </div>
+
+                <div class="col-sm-12">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Logo</label>
+                    <p-fileUpload
+                      chooseLabel="Sélectionner le logo"
+                      [auto]="true"
+                      url="https://www.primefaces.org/cdn/api/upload.php"
+                      (onUpload)="telecharger($event)" accept="image/*">
+                      <ng-template pTemplate="content">
+                        <ul *ngIf="logoAgence">
+                            <li>{{ logoAgence.name }}</li>
+                        </ul>
+                      </ng-template>
+                    </p-fileUpload>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="d-sm-flex justify-content-between">
+                    <button class="ud-btn btn-annuler" type="button" (click)="resetAgenceStep1Form()">Annuler</button>
+                    <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': agenceStep1Form.invalid }" (click)="etape2()">Suivant<i class="pi pi-arrow-right"></i></button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- End Etape 1e -->
+
+          <!-- Start Etape 2ème -->
+          <div *ngIf="activeIndex == 1" class="ps-widget bgc-white bdrs12 p30 position-relative">
+            <form  [formGroup]="agenceStep2Form" class="form-style1">
+              <div class="row">
+
+                <div class="col-sm-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Pays</label>
+                    <br>
+                    <p-dropdown
+                      class="select" emptyFilterMessage="Aucun résultat trouvé"
+                      emptyMessage="Aucun résultat trouvé"
+                      [options]="listeDesPays" placeholder="Choisir le pays"
+                      formControlName="pays" [filter]="true" filterBy="libelle"
+                      filterPlaceholder="Rechercher" [(ngModel)]="agenceImmobiliere.quartier.ville.region.pays"
+                      (onChange)="paysChoisi($event)" [showClear]="true"
+                      optionLabel="libelle">
+                    </p-dropdown>
+                    <div class="error" [hidden]="!pays?.hasError('required') || !pays.touched">La selection du pays est obligatoire</div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Région</label>
+                    <br>
+                    <p-dropdown
+                      class="select" emptyFilterMessage="Aucun résultat trouvé"
+                      emptyMessage="Aucun résultat trouvé"
+                      [options]="regions" placeholder="Choisir la région"
+                      formControlName="region" [filter]="true" filterBy="libelle"
+                      filterPlaceholder="Rechercher" [(ngModel)]="agenceImmobiliere.quartier.ville.region"
+                      [showClear]="true" (onChange)="regionChoisie($event)" optionLabel="libelle">
+                    </p-dropdown>
+                    <div class="error" [hidden]="!region?.hasError('required') || !region.touched">La selection de la région est obligatoire</div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Ville</label>
+                    <br>
+                    <p-dropdown
+                      class="select" emptyFilterMessage="Aucun résultat trouvé"
+                      emptyMessage="Aucun résultat trouvé"
+                      [options]="villes" placeholder="Choisir la ville"
+                      formControlName="ville" [filter]="true" filterBy="libelle"
+                      filterPlaceholder="Rechercher" [(ngModel)]="agenceImmobiliere.quartier.ville"
+                      [showClear]="true" (onChange)="villeChoisie($event)" optionLabel="libelle">
+                    </p-dropdown>
+                    <div class="error" [hidden]="!ville?.hasError('required') || !ville.touched">La selection de la ville est obligatoire</div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Quartier</label>
+                    <br>
+                    <p-dropdown
+                      class="select" emptyFilterMessage="Aucun résultat trouvé"
+                      emptyMessage="Aucun résultat trouvé"
+                      [options]="quartiers" placeholder="Choisir le quartier"
+                      formControlName="quartier" [filter]="true" filterBy="libelle"
+                      filterPlaceholder="Rechercher" [(ngModel)]="agenceImmobiliere.quartier"
+                      [showClear]="true" (onChange)="quartierChoisi($event)" optionLabel="libelle">
+                    </p-dropdown>
+                    <div class="error" [hidden]="!quartier?.hasError('required') || !quartier.touched">La selection du quartier est obligatoire</div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Adresse</label>
+                    <!-- <input type="text" class="form-control" id="adresse" name="adresse" placeholder="L'adresse du bien immobilier" [(ngModel)]="bienImmobilier.adresse" [ngModelOptions]="{standalone: true}"> -->
+                    <textarea id="adresse" name="adresse" placeholder="L'adresse du bien immobilier" style="height: 100px;" [(ngModel)]="agenceImmobiliere.adresse" [ngModelOptions]="{standalone: true}"></textarea>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="d-sm-flex justify-content-between">
+                    <button class="ud-btn btn-retour" type="button" (click)="etape1()"><i class="pi pi-arrow-left"></i> Précédent</button>
+                    <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': agenceStep1Form.invalid || agenceStep1Form.invalid }" (click)="etape3()">Suivant<i class="pi pi-arrow-right"></i></button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- End Etape 2 -->
+
+          <!-- Start Etape 3ème -->
+          <div *ngIf="activeIndex == 2" class="ps-widget bgc-white bdrs12 p30 position-relative">
             <div class="row">
-
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Nom</label>
-                  <input type="text" class="form-control" id="nomAgence" name="nomAgence" placeholder="Le nom de l'agence immbilière" formControlName="nomAgence" [(ngModel)]="agenceImmobiliere.nomAgence" required>
-                  <div class="error" [hidden]="nomAgence.valid || nomAgence.pristine && !nomAgence.touched ">Le nom de l'agence immobilière est obligatoire</div>
-                </div>
+              <div class="col-lg-4" *ngIf="logoURL || agenceImmobiliere.logoAgence !== ''">
+                <img class="img-fluid" width="360" [src]="logoURL ? logoURL : APIEndpoint+'api/logo/agence-immobiliere/'+agenceImmobiliere.id"
+                  alt="Logo de l'agence">
               </div>
+              <div class="col-lg-{{ logoURL || agenceImmobiliere.logoAgence !== '' ? '8' : '12' }}">
+                <div class="row">
+                  <h4 class="title fz17 mb30" *ngIf="agenceImmobiliere.description">Description</h4>
+                  <p *ngIf="agenceImmobiliere.description">
+                      {{ agenceImmobiliere.description }}
+                  </p>
 
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Adresse</label>
-                  <input type="text" class="form-control" id="adresse" name="adresse" placeholder="L'adresse de l'agence immobilière" formControlName="adresse" [(ngModel)]="agenceImmobiliere.adresse" required>
-                  <div class="error" [hidden]="adresse.valid || adresse.pristine && !adresse.touched ">L'adresse de l'agence immobilière est obligatoire</div>
-                </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">E-mail</label>
-                  <input type="email" class="form-control" id="adresseEmail" name="adresseEmail" placeholder="L'adresse e-mail de l'agence" formControlName="adresseEmail" [(ngModel)]="agenceImmobiliere.adresseEmail" required>
-                  <div class="error" [hidden]="!adresseEmail?.hasError('required') || !adresseEmail.touched">
-                    L'adresse e-mail de l'agence est obligatoire
+                  <p-divider *ngIf="agenceImmobiliere.description"></p-divider>
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Nom</p>
+                    <p>{{ agenceImmobiliere.nomAgence }} <i *ngIf="agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
                   </div>
-                  <div class="error" [hidden]="!adresseEmail?.hasError('email') || !adresseEmail.touched">
-                    L'adresse e-mail de l'agence n'est pas valide.
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
+                    <p>{{ agenceImmobiliere.telephone }}</p>
+                  </div>
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+                    <p>{{ agenceImmobiliere.adresseEmail }}</p>
+                  </div>
+
+                  <p-divider></p-divider>
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
+                    <p>{{ agenceImmobiliere.heureOuverture }}</p>
+                  </div>
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Heure Fermeture</p>
+                    <p>{{ agenceImmobiliere.heureFermeture }}</p>
+                  </div>
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Pays</p>
+                    <p>{{ agenceImmobiliere.quartier.ville.region.pays.libelle }}</p>
+                  </div>
+
+                  <p-divider></p-divider>
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Région</p>
+                    <p>{{ agenceImmobiliere.quartier.ville.region.libelle }}</p>
+                  </div>
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Ville</p>
+                    <p>{{ agenceImmobiliere.quartier.ville.libelle }}</p>
+                  </div>
+                  <div class="col-sm-6 col-xl-4">
+                    <p class="fw600 mb10 ff-heading dark-color">Quartier</p>
+                    <p>{{ agenceImmobiliere.quartier.libelle }}</p>
+                  </div>
+
+                  <p-divider *ngIf="agenceImmobiliere.adresse"></p-divider>
+                  <div class="col-sm-6 col-xl-4" *ngIf="agenceImmobiliere.adresse">
+                    <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
+                    <p>{{ agenceImmobiliere.adresse }}</p>
                   </div>
                 </div>
               </div>
 
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Numéro de téléphone</label>
-                  <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Le numero de téléphone de l'agence" formControlName="telephone" [(ngModel)]="agenceImmobiliere.telephone" required>
-                  <div class="error" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le nom de téléphone de l'agence immobilière est obligatoire</div>
-                </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Heure ouverture</label>
-                  <input type="time" class="form-control" id="heureOuverture" name="heureOuverture" formControlName="heureOuverture" [(ngModel)]="agenceImmobiliere.heureOuverture" required>
-                  <div class="error" [hidden]="!heureOuverture?.hasError('required') || !heureOuverture.touched">L'heure d'ouverture de l'agence est obligatoire</div>
-                  <div class="error" *ngIf="agenceImmobiliereForm.errors?.['heureOuvertureHorsPlage']">L'heure d'ouverture doit être comprise entre 6 heures et 0 heures.</div>
-                  <div class="error" *ngIf="agenceImmobiliereForm.errors?.['heureOuvertureSuperieure']">L'heure d'ouverture ne doit pas être supérieure à l'heure de fermeture.</div>
-                  <div class="error" *ngIf="agenceImmobiliereForm.errors?.['heureOuvertureEgale']">L'heure d'ouverture ne doit pas être égale à l'heure de fermeture.</div>
-                </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Heure fermeture</label>
-                  <input type="time" class="form-control" id="heureFermeture" name="heureFermeture" formControlName="heureFermeture" [(ngModel)]="agenceImmobiliere.heureFermeture" required>
-                  <div class="error" [hidden]="!heureOuverture?.hasError('required') || !heureOuverture.touched">L'heure de fermeture de l'agence est obligatoire</div>
-                  <div class="error" *ngIf="agenceImmobiliereForm.errors?.['heureFermetureHorsPlage']">L'heure de fermeture doit être comprise entre 6 heures et 0 heures.</div>
-                  <div class="error" *ngIf="agenceImmobiliereForm.errors?.['heuureFermetureInferieure']">L'heure de fermeture ne doit pas être inférieure à l'heure d'ouverture.</div>
-                  <div class="error" *ngIf="agenceImmobiliereForm.errors?.['heureFermetureEgale']">L'heure de fermeture ne doit pas être égale à l'heure d'ouverture.</div>
-                </div>
-              </div>
-
-              <div>
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Logo</label>
-                  <p-fileUpload
-                    chooseLabel="Choisir le logo"
-                    [auto]="true"
-                    url="https://www.primefaces.org/cdn/api/upload.php"
-                    (onUpload)="telecharger($event)" accept="image/*">
-                    <ng-template pTemplate="content">
-                      <ul *ngIf="logoAgence">
-                          <li>{{ logoAgence.name }}</li>
-                      </ul>
-                    </ng-template>
-                  </p-fileUpload>
+              <div class="col-md-12 mt30">
+                <div class="d-sm-flex justify-content-between">
+                  <button class="ud-btn btn-retour" type="button" (click)="etape2()"><i class="pi pi-arrow-left"></i> Précédent</button>
+                  <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': agenceStep1Form.invalid || agenceStep2Form.invalid }" (click)="modifierAgenceImmobiliere(agenceImmobiliere.id)">Modifier</button>
                 </div>
               </div>
             </div>
-            <div class="col-md-12">
-              <div class="text-end">
-                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
-                &nbsp;
-                <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': agenceImmobiliereForm.invalid }" type="submit">Modifier</button>
-              </div>
-            </div>
-          </form>
+          </div>
+          <!-- End Etape 3 -->
         </div>
       </div>
     </div>
@@ -266,6 +601,7 @@
                   <th scope="col">#</th>
                   <th scope="col">Logo</th>
                   <th scope="col">Nom</th>
+                  <th scope="col">Ville</th>
                   <th scope="col">Etat</th>
                   <th scope="col">Actions</th>
                 </tr>
@@ -285,6 +621,7 @@
                     </div>
                   </th>
                   <td class="vam">{{ agenceImmobiliere.nomAgence }} <i *ngIf="agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
+                  <td class="vam">{{ agenceImmobiliere.quartier.ville.libelle }} </td>
                   <td class="vam">
                     <p-tag *ngIf="agenceImmobiliere.etatAgence == true" severity="success" value="Activé"></p-tag>
                     <p-tag *ngIf="agenceImmobiliere.etatAgence == false" severity="danger" value="Désactivé"></p-tag>
@@ -351,6 +688,12 @@
             </div>
             <div class="col-lg-8">
               <div class="row">
+                <h4 class="title fz17 mb30" *ngIf="agenceImmobiliere.description">Description</h4>
+                <p *ngIf="agenceImmobiliere.description">
+                    {{ agenceImmobiliere.description }}
+                </p>
+
+                <p-divider *ngIf="agenceImmobiliere.description"></p-divider>
                 <div class="col-sm-6 col-xl-4">
                   <p class="fw600 mb10 ff-heading dark-color">Code agence</p>
                   <p>{{ agenceImmobiliere.codeAgence }}</p>
@@ -360,15 +703,11 @@
                   <p>{{ agenceImmobiliere.nomAgence }} <i *ngIf="agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
                 </div>
                 <div class="col-sm-6 col-xl-4">
-                  <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
-                  <p>{{ agenceImmobiliere.adresse }}</p>
-                </div>
-
-                <p-divider></p-divider>
-                <div class="col-sm-6 col-xl-4">
                   <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
                   <p>{{ agenceImmobiliere.adresseEmail }}</p>
                 </div>
+
+                <p-divider></p-divider>
                 <div class="col-sm-6 col-xl-4">
                   <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
                   <p>{{ agenceImmobiliere.telephone }}</p>
@@ -377,11 +716,33 @@
                   <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
                   <p>{{ agenceImmobiliere.heureOuverture }}</p>
                 </div>
-
-                <p-divider></p-divider>
                 <div class="col-sm-6 col-xl-4">
                   <p class="fw600 mb10 ff-heading dark-color">Heure Fermeture</p>
                   <p>{{ agenceImmobiliere.heureFermeture }}</p>
+                </div>
+
+                <p-divider></p-divider>
+                <div class="col-sm-6 col-xl-4">
+                  <p class="fw600 mb10 ff-heading dark-color">Pays</p>
+                  <p>{{ agenceImmobiliere.quartier.ville.region.pays.libelle }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4">
+                  <p class="fw600 mb10 ff-heading dark-color">Région</p>
+                  <p>{{ agenceImmobiliere.quartier.ville.region.libelle }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4">
+                  <p class="fw600 mb10 ff-heading dark-color">Ville</p>
+                  <p>{{ agenceImmobiliere.quartier.ville.libelle }}</p>
+                </div>
+
+                <p-divider></p-divider>
+                <div class="col-sm-6 col-xl-4">
+                  <p class="fw600 mb10 ff-heading dark-color">Quartier</p>
+                  <p>{{ agenceImmobiliere.quartier.libelle }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="agenceImmobiliere.adresse">
+                  <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
+                  <p>{{ agenceImmobiliere.adresse }}</p>
                 </div>
                 <div class="col-sm-6 col-xl-4">
                   <p class="fw600 mb10 ff-heading dark-color">Etat</p>
@@ -390,6 +751,8 @@
                     <p-tag *ngIf="agenceImmobiliere.etatAgence == false" severity="danger" value="Désactivé"></p-tag>
                   </p>
                 </div>
+
+                <p-divider></p-divider>
                 <div class="col-sm-6 col-xl-4">
                   <p class="fw600 mb10 ff-heading dark-color">Est certifiée</p>
                   <p>
@@ -440,6 +803,7 @@
                   <th scope="col">Logo</th>
                   <th scope="col">Nom</th>
                   <th scope="col">Responsable</th>
+                  <th scope="col">Ville</th>
                   <th scope="col">Etat</th>
                   <th scope="col">Actions</th>
                 </tr>
@@ -460,6 +824,7 @@
                   </th>
                   <td class="vam">{{ agenceOfAgent.agenceImmobiliere.nomAgence }} <i *ngIf="agenceOfAgent.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
                   <td class="vam">{{ agenceOfAgent.responsableAgenceImmobiliere.nom }} {{ agenceOfAgent.responsableAgenceImmobiliere.prenom }} </td>
+                  <td class="vam">{{ agenceOfAgent.agenceImmobiliere.quartier.ville.libelle }}  </td>
                   <td class="vam">
                     <p-tag *ngIf="agenceOfAgent.agenceImmobiliere.etatAgence == true" severity="success" value="Activé"></p-tag>
                     <p-tag *ngIf="agenceOfAgent.agenceImmobiliere.etatAgence == false" severity="danger" value="Désactivé"></p-tag>
@@ -529,6 +894,12 @@
 
             <div class="col-lg-8">
               <div class="row">
+                <p class="fw600 mb10 ff-heading dark-color" *ngIf="affectationResponsableAgence.agenceImmobiliere.description">Description</p>
+                <p *ngIf="affectationResponsableAgence.agenceImmobiliere.description">
+                    {{ affectationResponsableAgence.agenceImmobiliere.description }}
+                </p>
+
+                <p-divider *ngIf="affectationResponsableAgence.agenceImmobiliere.description"></p-divider>
                 <div class="form-group col-md-6">
                   <p class="fw600 mb10 ff-heading dark-color">Code agence</p>
                   <p>{{ affectationResponsableAgence.agenceImmobiliere.codeAgence }}</p>
@@ -540,32 +911,12 @@
 
                 <p-divider></p-divider>
                 <div class="form-group col-md-6">
-                  <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
-                  <p>{{ affectationResponsableAgence.agenceImmobiliere.adresse }}</p>
-                </div>
-                <div class="form-group col-md-6">
-                  <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Email de l'agence</p>
                   <p>{{ affectationResponsableAgence.agenceImmobiliere.adresseEmail }}</p>
-                </div>
-
-                <p-divider></p-divider>
-                <div class="form-group col-md-6">
-                  <p class="fw600 mb10 ff-heading dark-color">Responsable</p>
-                  <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.nom }} {{ affectationResponsableAgence.responsableAgenceImmobiliere.prenom }} <i *ngIf="affectationResponsableAgence.responsableAgenceImmobiliere && affectationResponsableAgence.responsableAgenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></p>
                 </div>
                 <div class="form-group col-md-6">
                   <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
                   <p>{{ affectationResponsableAgence.agenceImmobiliere.telephone }}</p>
-                </div>
-
-                <p-divider></p-divider>
-                <div class="form-group col-md-6">
-                  <p class="fw600 mb10 ff-heading dark-color">E-mail du responsable</p>
-                  <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.email }}</p>
-                </div>
-                <div class="form-group col-md-6">
-                  <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
-                  <p>{{ affectationResponsableAgence.agenceImmobiliere.heureOuverture }}</p>
                 </div>
               </div>
             </div>
@@ -574,8 +925,50 @@
           <div class="row">
             <p-divider></p-divider>
             <div class="col-sm-6 col-xl-4">
+              <p class="fw600 mb10 ff-heading dark-color">Responsable</p>
+              <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.nom }} {{ affectationResponsableAgence.responsableAgenceImmobiliere.prenom }} <i *ngIf="affectationResponsableAgence.responsableAgenceImmobiliere && affectationResponsableAgence.responsableAgenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></p>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+              <p class="fw600 mb10 ff-heading dark-color">Téléphone du responsable</p>
+              <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.telephone }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+              <p class="fw600 mb10 ff-heading dark-color">Email du responsable</p>
+              <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.email }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="col-sm-6 col-xl-4">
+              <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.heureOuverture }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Heure fermeture</p>
               <p>{{ affectationResponsableAgence.agenceImmobiliere.heureFermeture }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+              <p class="fw600 mb10 ff-heading dark-color">Pays</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.region.pays.libelle }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="col-sm-6 col-xl-4">
+              <p class="fw600 mb10 ff-heading dark-color">Region</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.region.libelle }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+              <p class="fw600 mb10 ff-heading dark-color">Ville</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.libelle }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+              <p class="fw600 mb10 ff-heading dark-color">Quartier</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.quartier.libelle }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="col-sm-6 col-xl-4" *ngIf="affectationResponsableAgence.agenceImmobiliere.adresse">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.adresse }}</p>
             </div>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Etat</p>
@@ -632,6 +1025,7 @@
                   <th scope="col">Logo</th>
                   <th scope="col">Nom</th>
                   <th scope="col">Responsable</th>
+                  <th scope="col">Ville</th>
                   <th scope="col">Etat</th>
                   <th scope="col">Actions</th>
                 </tr>
@@ -652,6 +1046,7 @@
                   </th>
                   <td class="vam">{{ affectationResponsableAgence.agenceImmobiliere.nomAgence }} <i *ngIf="affectationResponsableAgence.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
                   <td class="vam">{{ affectationResponsableAgence.responsableAgenceImmobiliere.nom }} {{ affectationResponsableAgence.responsableAgenceImmobiliere.prenom }} </td>
+                  <td class="vam">{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.libelle }} </td>
                   <td class="vam">
                     <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == true" severity="success" value="Activé"></p-tag>
                     <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.etatAgence == false" severity="danger" value="Désactivé"></p-tag>
@@ -728,6 +1123,12 @@
 
             <div class="col-lg-8">
               <div class="row">
+                <p class="fw600 mb10 ff-heading dark-color" *ngIf="affectationResponsableAgence.agenceImmobiliere.description">Description</p>
+                <p *ngIf="affectationResponsableAgence.agenceImmobiliere.description">
+                    {{ affectationResponsableAgence.agenceImmobiliere.description }}
+                </p>
+
+                <p-divider *ngIf="affectationResponsableAgence.agenceImmobiliere.description"></p-divider>
                 <div class="form-group col-md-6">
                   <p class="fw600 mb10 ff-heading dark-color">Code agence</p>
                   <p>{{ affectationResponsableAgence.agenceImmobiliere.codeAgence }}</p>
@@ -739,32 +1140,12 @@
 
                 <p-divider></p-divider>
                 <div class="form-group col-md-6">
-                  <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
-                  <p>{{ affectationResponsableAgence.agenceImmobiliere.adresse }}</p>
-                </div>
-                <div class="form-group col-md-6">
-                  <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Email de l'agence</p>
                   <p>{{ affectationResponsableAgence.agenceImmobiliere.adresseEmail }}</p>
-                </div>
-
-                <p-divider></p-divider>
-                <div class="form-group col-md-6">
-                  <p class="fw600 mb10 ff-heading dark-color">Responsable</p>
-                  <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.nom }} {{ affectationResponsableAgence.responsableAgenceImmobiliere.prenom }} <i *ngIf="affectationResponsableAgence.responsableAgenceImmobiliere && affectationResponsableAgence.responsableAgenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></p>
                 </div>
                 <div class="form-group col-md-6">
                   <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
                   <p>{{ affectationResponsableAgence.agenceImmobiliere.telephone }}</p>
-                </div>
-
-                <p-divider></p-divider>
-                <div class="form-group col-md-6">
-                  <p class="fw600 mb10 ff-heading dark-color">E-mail du responsable</p>
-                  <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.email }}</p>
-                </div>
-                <div class="form-group col-md-6">
-                  <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
-                  <p>{{ affectationResponsableAgence.agenceImmobiliere.heureOuverture }}</p>
                 </div>
               </div>
             </div>
@@ -773,8 +1154,51 @@
           <div class="row">
             <p-divider></p-divider>
             <div class="col-sm-6 col-xl-4">
+              <p class="fw600 mb10 ff-heading dark-color">Responsable</p>
+              <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.nom }} {{ affectationResponsableAgence.responsableAgenceImmobiliere.prenom }} <i *ngIf="affectationResponsableAgence.responsableAgenceImmobiliere && affectationResponsableAgence.responsableAgenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></p>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+              <p class="fw600 mb10 ff-heading dark-color">Téléphone du responsable</p>
+              <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.telephone }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+              <p class="fw600 mb10 ff-heading dark-color">Email du responsable</p>
+              <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.email }}</p>
+            </div>
+
+
+            <p-divider></p-divider>
+            <div class="col-sm-6 col-xl-4">
+              <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.heureOuverture }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Heure fermeture</p>
               <p>{{ affectationResponsableAgence.agenceImmobiliere.heureFermeture }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+              <p class="fw600 mb10 ff-heading dark-color">Pays</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.region.pays.libelle }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="col-sm-6 col-xl-4">
+              <p class="fw600 mb10 ff-heading dark-color">Region</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.region.libelle }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+              <p class="fw600 mb10 ff-heading dark-color">Ville</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.libelle }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+              <p class="fw600 mb10 ff-heading dark-color">Quartier</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.quartier.libelle }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="col-sm-6 col-xl-4" *ngIf="affectationResponsableAgence.agenceImmobiliere.adresse">
+              <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
+              <p>{{ affectationResponsableAgence.agenceImmobiliere.adresse }}</p>
             </div>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Etat</p>

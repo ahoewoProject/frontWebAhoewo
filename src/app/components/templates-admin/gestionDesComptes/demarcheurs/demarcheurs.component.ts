@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
 import { Demarcheur } from 'src/app/models/gestionDesComptes/Demarcheur';
@@ -10,7 +10,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
   templateUrl: './demarcheurs.component.html',
   styleUrls: ['./demarcheurs.component.css']
 })
-export class DemarcheursComponent implements OnInit{
+export class DemarcheursComponent implements OnInit, OnDestroy {
 
   recherche: string = '';
   affichage = 1;
@@ -156,5 +156,9 @@ export class DemarcheursComponent implements OnInit{
         }
       }
     });
+  }
+
+  ngOnDestroy(): void {
+
   }
 }

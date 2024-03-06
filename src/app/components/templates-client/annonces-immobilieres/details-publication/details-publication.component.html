@@ -1,0 +1,554 @@
+<!-- Section Titre -->
+<section class="home-banner-style6 mt-100">
+</section>
+<!-- Section Titre End -->
+
+<!-- Détails Propriété -->
+<section class="pt60 pb90 bgc-f7">
+  <div class="container">
+
+    <!-- Libelle And More Info Propriété Start -->
+    <div class="row mb30 wow fadeInUp" data-wow-delay="100ms">
+      <div class="col-lg-8">
+        <div class="single-property-content mb30-md">
+          <h2 class="sp-lg-title">{{publication.libelle}}</h2>
+          <div class="pd-meta mb15 d-md-flex align-items-center">
+            <div class="bdrr1 pr10 badge-details-publication"><span style="background-color: #ff003d" class="span-badge-details-publication">{{ publication.typeDeTransaction === 'Location' ? 'À louer' : 'À vendre' }}</span></div>
+            <p class="text fz15 mb-0 bdrr1 pr10  ml0-sm ml100">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+            <p class="text fz15 mb-0 bdrr1 pr10  ml0-sm ml10" href="#"><i class="far fa-clock pe-2"></i>{{getElapsedTime(publication.datePublication)}}</p>
+          </div>
+          <!-- <div class="property-meta d-flex align-items-center">
+            <a class="text fz15" href="#"><i class="flaticon-bed pe-2 align-text-top"></i>3 bed</a>
+            <a class="text ml20 fz15" href="#"><i class="flaticon-shower pe-2 align-text-top"></i>4 bath</a>
+            <a class="text ml20 fz15" href="#"><i class="flaticon-expand pe-2 align-text-top"></i>1200 sqft</a>
+          </div> -->
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="single-property-content">
+          <div class="property-action text-lg-end">
+            <!-- <div class="d-flex mb20 mb10-md align-items-center justify-content-lg-end">
+              <a class="icon mr10" href="#"><span class="flaticon-like"></span></a>
+              <a class="icon mr10" href="#"><span class="flaticon-new-tab"></span></a>
+              <a class="icon mr10" href="#"><span class="flaticon-share-1"></span></a>
+              <a class="icon" href="#"><span class="flaticon-printer"></span></a>
+            </div> -->
+            <h3 class="price mb-0" *ngIf="publication.typeDeTransaction === 'Location'">{{ publication.prixDuBien | number }} FCFA / par mois</h3>
+            <h3 class="price mb-0" *ngIf="publication.typeDeTransaction === 'Vente'">{{ publication.prixDuBien | number }} FCFA</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Libelle And More Info Propriété End -->
+
+    <div class="row wow fadeInUp" data-wow-delay="500ms">
+      <div class="col-lg-8">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <div class="text-center" *ngIf="images.length == 0">
+            <p-image class="w-100" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
+          </div>
+
+          <div *ngIf="images.length !== 0">
+            <p-galleria
+              #galleria
+              [value]="images"
+              [(activeIndex)]="activeIndex"
+              [numVisible]="5"
+              [showThumbnails]="showThumbnails"
+              [showItemNavigators]="true"
+              [showItemNavigatorsOnHover]="true"
+              [circular]="true"
+              [autoPlay]="true"
+              [transitionInterval]="3000"
+              [containerStyle]="{ 'max-width': '800px', 'margin': '0 auto' }"
+              [containerClass]="galleriaClass()"
+            >
+              <ng-template pTemplate="item" let-item>
+                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" [ngStyle]="{ width: !fullscreen ? '100%' : '', display: !fullscreen ? 'block' : '' }" />
+              </ng-template>
+              <ng-template pTemplate="thumbnail" let-item>
+                  <div class="grid grid-nogutter justify-content-center">
+                      <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%;" />
+                  </div>
+              </ng-template>
+              <ng-template pTemplate="footer" let-item>
+                  <div class="custom-galleria-footer">
+                      <button type="button" pButton *ngIf="images.length > 4" icon="pi pi-list" (click)="onThumbnailButtonClick()"></button>
+                      <span *ngIf="images" class="title-container">
+                          <span>{{ activeIndex + 1 }}/{{ images.length }}</span>
+                      </span>
+                      <button type="button" pButton [icon]="fullScreenIcon()" (click)="toggleFullScreen()" class="fullscreen-button"></button>
+                  </div>
+              </ng-template>
+            </p-galleria>
+          </div>
+        </div>
+        <!-- <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <h4 class="title fz17 mb30">Overview</h4>
+          <div class="row">
+            <div class="col-sm-6 col-lg-4">
+              <div class="overview-element mb25 d-flex align-items-center">
+                <span class="icon flaticon-bed"></span>
+                <div class="ml15">
+                  <h6 class="mb-0">Bedroom</h6>
+                  <p class="text mb-0 fz15">3</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+              <div class="overview-element mb25 d-flex align-items-center">
+                <span class="icon flaticon-shower"></span>
+                <div class="ml15">
+                  <h6 class="mb-0">Bath</h6>
+                  <p class="text mb-0 fz15">2</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+              <div class="overview-element mb25 d-flex align-items-center">
+                <span class="icon flaticon-event"></span>
+                <div class="ml15">
+                  <h6 class="mb-0">Year Built</h6>
+                  <p class="text mb-0 fz15">2022</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+              <div class="overview-element mb25-xs d-flex align-items-center">
+                <span class="icon flaticon-garage"></span>
+                <div class="ml15">
+                  <h6 class="mb-0">Garage</h6>
+                  <p class="text mb-0 fz15">2</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+              <div class="overview-element mb25-xs d-flex align-items-center">
+                <span class="icon flaticon-expand"></span>
+                <div class="ml15">
+                  <h6 class="mb-0">Sqft</h6>
+                  <p class="text mb-0 fz15">1200</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+              <div class="overview-element d-flex align-items-center">
+                <span class="icon flaticon-home-1"></span>
+                <div class="ml15">
+                  <h6 class="mb-0">Property Type</h6>
+                  <p class="text mb-0 fz15">Apartment</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- Description End Détails Propriété Start -->
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <h4 class="title fz17 mb30">Description</h4>
+          <p class="text mb10">{{publication.bienImmobilier.description}}</p>
+          <h4 class="title fz17 mb30 mt40">Détails</h4>
+          <div class="row">
+            <div class="col-md-6 col-xl-4">
+              <div class="d-flex justify-content-between">
+                <div class="pd-list">
+                  <p class="fw600 mb10 ff-heading dark-color">Type de bien</p>
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="publication.bienImmobilier.surface">Surface</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Prix {{ publication.typeDeTransaction === 'Location' ? 'mensuel' : '' }} </p>
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="publication.caution">Caution</p>
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="publication.commission">Commission</p>
+                </div>
+                <div class="pd-list">
+                  <p class="text mb10">{{ publication.bienImmobilier.typeDeBien.designation }}</p>
+                  <p class="text mb10" *ngIf="publication.bienImmobilier.surface">{{ publication.bienImmobilier.surface }} m²</p>
+                  <p class="text mb10">{{ publication.prixDuBien | number }} FCFA</p>
+                  <p class="text mb10" *ngIf="publication.caution">{{ publication.caution }} mois</p>
+                  <p class="text mb10" *ngIf="publication.commission">{{ publication.commission }} {{ publication.typeDeTransaction === 'Location' ? 'mois de loyer' : '%' }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4 offset-xl-2">
+              <div class="d-flex justify-content-between">
+                <div class="pd-list">
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="afficherCategorie()">Catégorie </p>
+                  <p class="fw600 mb10 ff-heading dark-color">Type de transaction</p>
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="publication.avance">Avance</p>
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="publication.fraisDeVisite">Frais de visite</p>
+                </div>
+                <div class="pd-list">
+                  <p class="text mb10" *ngIf="afficherCategorie()">{{ publication.bienImmobilier.categorie }}</p>
+                  <p class="text mb10">{{ publication.typeDeTransaction }}</p>
+                  <p class="text mb10" *ngIf="publication.avance">{{ publication.avance }} mois</p>
+                  <p class="text mb10" *ngIf="publication.fraisDeVisite">{{ publication.fraisDeVisite | number }} FCFA</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Description End Détails Propriété End -->
+
+        <!-- Localisation Start -->
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <h4 class="title fz17 mb30">Localisation</h4>
+          <div class="row">
+            <div class="col-md-6 col-xl-4">
+              <div class="d-flex justify-content-between">
+                <div class="pd-list">
+                  <p class="fw600 mb10 ff-heading dark-color">Pays</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Ville</p>
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="publication.bienImmobilier.adresse">Adresse</p>
+                </div>
+                <div class="pd-list">
+                  <p class="text mb10">{{ publication.bienImmobilier.quartier.ville.region.pays.libelle }}</p>
+                  <p class="text mb10">{{ publication.bienImmobilier.quartier.ville.libelle }}</p>
+                  <p class="text mb10" *ngIf="publication.bienImmobilier.adresse">{{ publication.bienImmobilier.adresse }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4 offset-xl-2">
+              <div class="d-flex justify-content-between">
+                <div class="pd-list">
+                  <p class="fw600 mb10 ff-heading dark-color">Région</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Quartier</p>
+                </div>
+                <div class="pd-list">
+                  <p class="text mb10">{{ publication.bienImmobilier.quartier.ville.region.libelle }}</p>
+                  <p class="text mb10">{{ publication.bienImmobilier.quartier.libelle }}</p>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Localisation End -->
+
+        <!-- Start Caracteristiques Propriété -->
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative"
+            *ngIf="publication.bienImmobilier.typeDeBien.designation != 'Terrain'">
+          <h4 class="title fz17 mb30">Caractéristiques</h4>
+          <div class="row">
+            <div class="col-md-6 col-xl-4">
+              <div class="d-flex justify-content-between">
+                <div class="pd-list">
+                  <p *ngIf="caracteristique.nombreChambres" class="fw600 mb10 ff-heading dark-color">Nombre de chambres</p>
+                  <p *ngIf="caracteristique.nombreChambresSalon" class="fw600 mb10 ff-heading dark-color">Nombre de chambres salon</p>
+                  <p *ngIf="caracteristique.nombreBureaux" class="fw600 mb10 ff-heading dark-color">Nombre de bureaux</p>
+                  <p *ngIf="caracteristique.nombreBoutiques" class="fw600 mb10 ff-heading dark-color">Nombre de boutiques</p>
+                  <p *ngIf="caracteristique.nombreBoutiques" class="fw600 mb10 ff-heading dark-color">Nombre de magasions</p>
+                  <p *ngIf="caracteristique.nombreAppartements" class="fw600 mb10 ff-heading dark-color">Nombre d'appartements</p>
+                  <p *ngIf="caracteristique.nombreEtages" class="fw600 mb-0 ff-heading dark-color">Nombre d'étages</p>
+                </div>
+                <div class="pd-list">
+                  <p *ngIf="caracteristique.nombreChambres" class="text mb10">{{ caracteristique.nombreChambres }}</p>
+                  <p *ngIf="caracteristique.nombreChambresSalon" class="text mb10">{{ caracteristique.nombreChambresSalon }}</p>
+                  <p *ngIf="caracteristique.nombreBureaux" class="text mb10">{{ caracteristique.nombreBureaux }}</p>
+                  <p *ngIf="caracteristique.nombreBoutiques" class="text mb10">{{ caracteristique.nombreBoutiques }}</p>
+                  <p *ngIf="caracteristique.nombreBoutiques" class="text mb10">{{ caracteristique.nombreBoutiques }}</p>
+                  <p *ngIf="caracteristique.nombreAppartements" class="text mb10">{{ caracteristique.nombreAppartements }}</p>
+                  <p *ngIf="caracteristique.nombreEtages" class="text mb-0">{{ caracteristique.nombreEtages }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4 offset-xl-2">
+              <div class="d-flex justify-content-between">
+                <div class="pd-list">
+                  <p *ngIf="caracteristique.nombreGarages" class="fw600 mb10 ff-heading dark-color">Nombre de garages</p>
+                  <p *ngIf="caracteristique.nombreCuisineInterne" class="fw600 mb10 ff-heading dark-color">Nombre de cusine interne</p>
+                  <p *ngIf="caracteristique.nombreCuisineExterne" class="fw600 mb10 ff-heading dark-color">Nombre de cuisine externe</p>
+                  <p *ngIf="caracteristique.nombreWCDoucheInterne" class="fw600 mb10 ff-heading dark-color">Nombre de WC-Douche interne</p>
+                  <p *ngIf="caracteristique.nombreWCDoucheExterne" class="fw600 mb10 ff-heading dark-color">Nombre de WC-Douche externe</p>
+                  <p *ngIf="caracteristique.nombreSalons" class="fw600 mb10 ff-heading dark-color">Nombre de salons</p>
+                  <p *ngIf="caracteristique.nombrePlacards" class="fw600 mb-0 ff-heading dark-color">Nombre de placards</p>
+                </div>
+                <div class="pd-list">
+                  <p *ngIf="caracteristique.nombreGarages" class="text mb10">{{ caracteristique.nombreGarages }}</p>
+                  <p *ngIf="caracteristique.nombreCuisineInterne" class="text mb10">{{ caracteristique.nombreCuisineInterne }}</p>
+                  <p *ngIf="caracteristique.nombreCuisineExterne" class="text mb10">{{ caracteristique.nombreCuisineExterne }}</p>
+                  <p *ngIf="caracteristique.nombreWCDoucheInterne" class="text mb10">{{ caracteristique.nombreWCDoucheInterne }}</p>
+                  <p *ngIf="caracteristique.nombreWCDoucheExterne" class="text mb10">{{ caracteristique.nombreWCDoucheExterne }}</p>
+                  <p *ngIf="caracteristique.nombreSalons" class="text mb10">{{ caracteristique.nombreSalons }}</p>
+                  <p *ngIf="caracteristique.nombrePlacards" class="text mb-0">{{ caracteristique.nombrePlacards }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-sm-6 col-md-4">
+              <div class="pd-list mb10-sm">
+                <p *ngIf="caracteristique.parking" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Parking</p>
+                <p *ngIf="caracteristique.eauTde" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau TDE</p>
+                <p *ngIf="caracteristique.compteurEau" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur d'eau</p>
+                <p *ngIf="caracteristique.wifi" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Wifi</p>
+                <p *ngIf="caracteristique.placard" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Placards</p>
+                <p *ngIf="caracteristique.cuisineInterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine interne</p>
+                <p *ngIf="caracteristique.wcDoucheInterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche interne</p>
+                <p *ngIf="caracteristique.balcon" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Balcon</p>
+                <p *ngIf="caracteristique.garage" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Garage</p>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <div class="pd-list">
+                <p *ngIf="caracteristique.eauForage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
+                <p *ngIf="caracteristique.electriciteCeet" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
+                <p *ngIf="caracteristique.ascenseur" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
+                <p *ngIf="caracteristique.aLetage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
+                <p *ngIf="caracteristique.dalle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
+                <p *ngIf="caracteristique.cuisineExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
+                <p *ngIf="caracteristique.wcDoucheExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
+                <p *ngIf="caracteristique.climatisation" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <div class="pd-list">
+                <p *ngIf="caracteristique.plafonne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Plafonné</p>
+                <p *ngIf="caracteristique.baieVitree" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Baie vitrée</p>
+                <p *ngIf="caracteristique.solCarelle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Sol carellé</p>
+                <p *ngIf="caracteristique.cashPowerPersonnel" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cash power personnel</p>
+                <p *ngIf="caracteristique.compteurAdditionnel" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur additionnel</p>
+                <p *ngIf="caracteristique.jardin" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Jardin</p>
+                <p *ngIf="caracteristique.piscine" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Piscine</p>
+                <p *ngIf="caracteristique.terrasse" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Terrasse<p></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Caractéristiques Propriété -->
+
+        <!-- Start Annonces similaires -->
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+          <h4 class="title fz17 mb30">Annonces similaires</h4>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="navtab-style1">
+                <nav>
+                  <div class="nav nav-tabs mb20" id="nav-tab2" role="tablist">
+                    <button class="nav-link fw600 active" id="nav-item1-tab" data-bs-toggle="tab" data-bs-target="#nav-item1" type="button" role="tab" (click)="filtrePublications(0)" aria-controls="nav-item1" aria-selected="true">Tout</button>
+                    <button class="nav-link fw600" id="nav-item2-tab" data-bs-toggle="tab" data-bs-target="#nav-item2" type="button" role="tab" (click)="filtrePublications(1)" aria-controls="nav-item2" aria-selected="false">À louer</button>
+                    <button class="nav-link fw600" id="nav-item3-tab" data-bs-toggle="tab" data-bs-target="#nav-item3" type="button" role="tab" (click)="filtrePublications(2)" aria-controls="nav-item3" aria-selected="false">À vendre</button>
+                  </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                  <div class="tab-pane fade fz15 active show" id="nav-item1" role="tabpanel" aria-labelledby="nav-item1-tab">
+                    <div class="row text-center" *ngIf="loading">
+                      <div class="text-center">
+                        <img class="img mt5" src="assets/images/loading.gif">
+                        <h6 class="mt10">Traitement de la recherche en cours !</h6>
+                      </div>
+                    </div>
+
+                    <div class="row" *ngIf="!loading">
+                      <div class="col-md-6" *ngFor="let publication of publications.content">
+                        <div class="listing-style1">
+                          <div class="list-thumb">
+                            <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
+                            <div class="badge"><span style="background-color: #ff003d" class="span-badge">{{ publication.typeDeTransaction === 'Location' ? 'À louer' : 'À vendre' }}</span></div>
+                            <div *ngIf="publication.typeDeTransaction === 'Location'" class="list-price">{{ publication.prixDuBien | number }} FCFA / <span>mois</span></div>
+                            <div *ngIf="publication.typeDeTransaction === 'Vente'" class="list-price">{{ publication.prixDuBien | number }} FCFA </div>
+                          </div>
+                          <div class="list-content">
+                            <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
+                            <p class="list-text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+                            <!-- <div class="list-meta d-flex align-items-center">
+                              <a href="#"><span class="flaticon-bed"></span>3 bed</a>
+                              <a href="#"><span class="flaticon-shower"></span>4 bath</a>
+                              <a href="#"><span class="flaticon-expand"></span>1200 sqft</a>
+                            </div>
+                            <hr class="mt-2 mb-2"> -->
+                            <!-- <div class="list-meta2 d-flex justify-content-between align-items-center">
+                              <span class="for-what">For Rent</span>
+                              <div class="icons d-flex align-items-center">
+                                <a href="#"><span class="flaticon-fullscreen"></span></a>
+                                <a href="#"><span class="flaticon-new-tab"></span></a>
+                                <a href="#"><span class="flaticon-like"></span></a>
+                              </div>
+                            </div> -->
+                          </div>
+                        </div>
+                      </div>
+
+                      <div *ngIf="publications.content.length !== 0" class="mbp_pagination text-center">
+                        <p-paginator
+                          (onPageChange)="pagination($event)" [rows]="publications.size"
+                          [totalRecords]="publications.totalElements"
+                          [showPageLinks]="true" [showFirstLastIcon]="true">
+                        </p-paginator>
+                      </div>
+                      <div *ngIf="publications.content.length == 0" class="text-center">
+                        <img class="img mt5" src="assets/images/icons/no-results.png">
+                        <h6 class="mt10">Aucune annonce similaire correspondant à votre recherche n'a été trouvée !</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade fz15" id="nav-item2" role="tabpanel" aria-labelledby="nav-item2-tab">
+                    <div class="row text-center" *ngIf="loading">
+                      <div class="text-center">
+                        <img class="img mt5" src="assets/images/loading.gif">
+                        <h6 class="mt10">Traitement de la recherche en cours !</h6>
+                      </div>
+                    </div>
+
+                    <div class="row" *ngIf="!loading">
+                      <div class="col-md-6" *ngFor="let publication of publications.content">
+                        <div class="listing-style1">
+                          <div class="list-thumb">
+                            <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
+                            <div class="badge"><span style="background-color: #ff003d" class="span-badge">À LOUER</span></div>
+                            <div class="list-price">{{ publication.prixDuBien | number }} FCFA / <span>mois</span></div>
+                          </div>
+                          <div class="list-content">
+                            <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
+                            <p class="list-text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+                            <!-- <div class="list-meta d-flex align-items-center">
+                              <a href="#"><span class="flaticon-bed"></span>3 bed</a>
+                              <a href="#"><span class="flaticon-shower"></span>4 bath</a>
+                              <a href="#"><span class="flaticon-expand"></span>1200 sqft</a>
+                            </div>
+                            <hr class="mt-2 mb-2"> -->
+                            <!-- <div class="list-meta2 d-flex justify-content-between align-items-center">
+                              <span class="for-what">For Rent</span>
+                              <div class="icons d-flex align-items-center">
+                                <a href="#"><span class="flaticon-fullscreen"></span></a>
+                                <a href="#"><span class="flaticon-new-tab"></span></a>
+                                <a href="#"><span class="flaticon-like"></span></a>
+                              </div>
+                            </div> -->
+                          </div>
+                        </div>
+                      </div>
+
+                      <div *ngIf="publications.content.length !== 0" class="mbp_pagination text-center">
+                        <p-paginator
+                          (onPageChange)="pagination($event)" [rows]="publications.size"
+                          [totalRecords]="publications.totalElements"
+                          [showPageLinks]="true" [showFirstLastIcon]="true">
+                        </p-paginator>
+                      </div>
+                      <div *ngIf="publications.content.length == 0" class="text-center">
+                        <img class="img mt5" src="assets/images/icons/no-results.png">
+                        <h6 class="mt10">Aucune annonce similaire correspondant à votre recherche n'a été trouvée !</h6>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade fz15" id="nav-item3" role="tabpanel" aria-labelledby="nav-item3-tab">
+                    <div class="row text-center" *ngIf="loading">
+                      <div class="text-center">
+                        <img class="img mt5" src="assets/images/loading.gif">
+                        <h6 class="mt10">Traitement de la recherche en cours !</h6>
+                      </div>
+                    </div>
+
+                    <div class="row" *ngIf="!loading">
+                      <div class="col-md-6" *ngFor="let publication of publications.content">
+                        <div class="listing-style1">
+                          <div class="list-thumb">
+                            <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
+                            <div class="badge"><span style="background-color: #ff003d" class="span-badge">À VENDRE</span></div>
+                            <div class="list-price">{{ publication.prixDuBien | number }} FCFA </div>
+                          </div>
+                          <div class="list-content">
+                            <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
+                            <p class="list-text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div *ngIf="publications.content.length !== 0" class="mbp_pagination text-center">
+                        <p-paginator
+                          (onPageChange)="pagination($event)" [rows]="publications.size"
+                          [totalRecords]="publications.totalElements"
+                          [showPageLinks]="true" [showFirstLastIcon]="true">
+                        </p-paginator>
+                      </div>
+                      <div *ngIf="publications.content.length == 0" class="text-center">
+                        <img class="img mt5" src="assets/images/icons/no-results.png">
+                        <h6 class="mt10">Aucune annonce similaire correspondant à votre recherche n'a été trouvée !</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Annonces similaires -->
+      </div>
+
+      <div class="col-lg-4">
+
+        <!-- Info Annonceur Start -->
+        <div class="agen-personal-info position-relative bgc-white default-box-shadow2 bdrs12 p30 mb30">
+          <div class="widget-wrapper mb-0">
+            <h6 class="title fz17 mb30 text-center">Informations de l'annonceur</h6>
+            <div *ngIf="publication.agenceImmobiliere" class="agent-single d-sm-flex align-items-center pb25">
+              <div class="single-img mb30-sm">
+                <img class="w90" [src]="publication.agenceImmobiliere.logoAgence !== '' ? (this.APIEndpoint+'api/logo/agence-immobiliere/'+publication.agenceImmobiliere.id) : 'assets/images/team/logo_par_defaut.jpg'" alt="">
+              </div>
+              <div class="single-contant ml20 ml0-xs">
+                <h6 class="title mb-1">{{ publication.agenceImmobiliere.nomAgence }} <i *ngIf="publication.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6; font-size: smaller;"></i></h6>
+                <div class="agent-meta mb10 d-md-flex align-items-center">
+                  <a class="text fz15"><i class="flaticon-call pe-1"></i>{{ publication.agenceImmobiliere.telephone }}</a>
+                </div>
+                <a [routerLink]="['/annonces-immobilieres']" [queryParams]="{ nomAgence: publication.agenceImmobiliere.nomAgence }" class="text-decoration-underline fw600">Voir les annonces</a>
+              </div>
+            </div>
+            <div *ngIf="!publication.agenceImmobiliere" class="agent-single d-sm-flex align-items-center pb25">
+              <div class="single-img mb30-sm">
+                <img class="w90" src="assets/images/user.jpg" alt="">
+              </div>
+              <div class="single-contant ml20 ml0-xs">
+                <h6 class="title mb-1">{{ publication.personne.nom }} {{ publication.personne.prenom }} <i *ngIf="publication.personne.estCertifie" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6; font-size: smaller;"></i></h6>
+                <div class="agent-meta mb10 d-md-flex align-items-center">
+                  <a class="text fz15"><i class="flaticon-call pe-1"></i>{{ publication.personne.telephone }}</a>
+                </div>
+                <a [routerLink]="['/annonces-immobilieres']" [queryParams]="{ email: publication.personne.email }" class="text-decoration-underline fw600">Voir les annonces</a>
+              </div>
+            </div>
+            <div *ngIf="publication.agenceImmobiliere" class="d-grid">
+              <a target="_blank" href="https://wa.me/{{publication.agenceImmobiliere.telephone}}?text=Bonjour, Je suis interessé par votre publication de *{{publication.libelle}}*" class="ud-btn btn-thm3"><i class="pi pi-whatsapp"></i> WhatsApp</a>
+            </div>
+            <div *ngIf="!publication.agenceImmobiliere" class="d-grid">
+              <a target="_blank" href="https://wa.me/{{publication.personne.telephone}}?text=Bonjour, Je suis interessé par votre publication de *{{publication.libelle}}*" class="ud-btn btn-thm3"><i class="pi pi-whatsapp"></i> WhatsApp</a>
+            </div>
+          </div>
+        </div>
+        <!-- Info Annonceur End -->
+
+        <!-- Start Contact Form -->
+        <div class="default-box-shadow2 bdrs12 bdr1 p30 mb30 bgc-white position-relative">
+          <h4 class="form-title mb25">Contactez l'annonceur</h4>
+          <form class="form-style1">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="mb20">
+                  <input type="text" class="form-control" placeholder="Nom et prénom(s)">
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <div class="mb20">
+                  <input type="text" class="form-control" placeholder="Numéro de téléphone">
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="mb20">
+                  <input type="email" class="form-control" placeholder="Adresse e-mail">
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="mb10">
+                  <textarea cols="30" rows="4" placeholder="Message"></textarea>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="d-grid">
+                  <a class="ud-btn btn-thm mb15" href="page-contact.html">Envoyer le message</a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- Contact Form End -->
+      </div>
+    </div>
+
+  </div>
+</section>

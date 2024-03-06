@@ -12,6 +12,7 @@ import { BiensImmobiliersComponent } from 'src/app/components/templates-admin/ge
 import { DelegationsGestionsComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/delegations-gestions.component';
 import { ResponsablesAgenceImmobiliereComponent } from 'src/app/components/templates-admin/gestionDesComptes/responsables-agence-immobiliere/responsables-agence-immobiliere.component';
 import { NotificationsComponent } from 'src/app/components/templates-admin/notifications/notifications.component';
+import { PublicationsComponent } from 'src/app/components/templates-admin/gestionDesPublications/publications/publications.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -25,7 +26,8 @@ const routes: Routes = [
       { path: 'agences-immobilieres/services', component: ServicesAgenceImmobiliereComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/biens-immobiliers', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
-      { path: 'agences-immobilieres/notifications', component: NotificationsComponent, canActivate: [AuthGuard] }
+      { path: 'agences-immobilieres/notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/publications',  component: PublicationsComponent, canActivate: [AuthGuard] },
     ]
   }
 ];

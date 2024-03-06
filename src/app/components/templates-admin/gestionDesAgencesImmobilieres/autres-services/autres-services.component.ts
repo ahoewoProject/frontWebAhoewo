@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
 import { MotifRejetServiceForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetServiceForm';
@@ -10,7 +10,7 @@ import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/
   templateUrl: './autres-services.component.html',
   styleUrls: ['./autres-services.component.css']
 })
-export class AutresServicesComponent {
+export class AutresServicesComponent implements OnInit, OnDestroy {
 
   recherche: string = '';
   affichage = 1;
@@ -141,5 +141,9 @@ export class AutresServicesComponent {
   afficherDialogue(id: number): void {
     this.serviceId = id;
     this.dialogVisible = true;
+  }
+
+  ngOnDestroy(): void {
+
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DemandeCertification } from 'src/app/models/gestionDesComptes/DemandeCertification';
@@ -10,7 +10,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
   templateUrl: './profil.component.html',
   styleUrls: ['./profil.component.css']
 })
-export class ProfilComponent implements OnInit{
+export class ProfilComponent implements OnInit, OnDestroy {
 
   user: any;
   affichage = 1;
@@ -150,4 +150,7 @@ export class ProfilComponent implements OnInit{
     })
   }
 
+  ngOnDestroy(): void {
+
+  }
 }

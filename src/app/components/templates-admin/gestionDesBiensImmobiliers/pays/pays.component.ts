@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
@@ -10,7 +10,7 @@ import { PaysService } from 'src/app/services/gestionDesBiensImmobiliers/pays.se
   templateUrl: './pays.component.html',
   styleUrls: ['./pays.component.css']
 })
-export class PaysComponent implements OnInit {
+export class PaysComponent implements OnInit, OnDestroy {
 
   recherche: string = '';
 
@@ -252,5 +252,9 @@ export class PaysComponent implements OnInit {
         }
       }
     });
+  }
+
+  ngOnDestroy(): void {
+
   }
 }

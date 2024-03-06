@@ -120,6 +120,10 @@
       <a routerLink="/notaire/demandes-certifications" [class.-is-active]="activeLink == '/notaire/demandes-certifications'"
       (click)="setActiveLink('/notaire/demandes-certifications')" class="items-center"><i class="pi pi-verified mr15"></i>&nbsp;Certifications</a>
     </div>
+    <div class="sidebar_list_item">
+      <a routerLink="/notaire/notifications" [class.-is-active]="activeLink == '/notaire/notifications'"
+      (click)="setActiveLink('/notaire/notifications')" class="items-center"><i class="flaticon-bell mr15"></i>&nbsp;Certifications</a>
+    </div>
     <!-- End Menu Gestion des comptes -->
   </div>
   <!-- End Menu Notaire -->
@@ -169,7 +173,8 @@
       <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-share-all mr15"></i>Publication des biens</a>
+      <a class="items-center" routerLink="/proprietaire/publications" [class.-is-active]="activeLink == '/proprietaire/publications'"
+      (click)="setActiveLink('/proprietaire/publications')"><i class="fa-light fa-share-all mr15"></i>Publication des biens</a>
     </div>
     <!-- End Menu Gestion de la publication des biens -->
 
@@ -234,7 +239,8 @@
       <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-share-all mr15"></i>Publication des biens</a>
+      <a class="items-center" routerLink="/gerant/publications" [class.-is-active]="activeLink == '/gerant/publications'"
+      (click)="setActiveLink('/gerant/publications')"><i class="fa-light fa-share-all mr15"></i>Publication des biens</a>
     </div>
     <!-- End Menu Gestion de la publication des biens -->
 
@@ -336,7 +342,8 @@
       <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-share-all mr15"></i>Publication des biens</a>
+      <a class="items-center" routerLink="/responsable/agences-immobilieres/publications" [class.-is-active]="activeLink == '/responsable/agences-immobilieres/publications'"
+      (click)="setActiveLink('/responsable/agences-immobilieres/publications')"><i class="fa-light fa-share-all mr15"></i>Publication des biens</a>
     </div>
     <!-- End Menu Gestion de la publication des biens -->
 
@@ -416,7 +423,8 @@
       <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-share-all mr15"></i>Publication des biens</a>
+      <a class="items-center" routerLink="/agent-immobilier/agences-immobilieres/publications" [class.-is-active]="activeLink == '/agent-immobilier/agences-immobilieres/publications'"
+      (click)="setActiveLink('/agent-immobilier/agences-immobilieres/publications')"><i class="fa-light fa-share-all mr15"></i>Publication des biens</a>
     </div>
     <!-- End Menu Gestion de la publication des biens -->
 
@@ -496,7 +504,8 @@
       <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-share-all mr15"></i>Publication des biens</a>
+      <a class="items-center" routerLink="/demarcheur/publications" [class.-is-active]="activeLink == '/demarcheur/publications'"
+      (click)="setActiveLink('/demarcheur/publications')"><i class="fa-light fa-share-all mr15"></i>Publication des biens</a>
     </div>
     <!-- End Menu Gestion de la publication des biens -->
 

@@ -24,7 +24,7 @@
 }
 
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-  background: #ee944e;;
+  background: #ee944e;
   color: white;
 }
 
@@ -56,5 +56,24 @@
   margin-right: 3.5px;
 } */
 
+.badge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  margin-top: -5px;
+  font-size: 0;
+  z-index: 2
+}
 
+.span-badge {
+  display: inline-block;
+  color: #fff;
+  background-color: #222;
+  padding: 2px 10px;
+  font-size: 14px;
+  line-height: 20px;
+  text-transform: uppercase;
+  text-align: center;
+  border-radius: 4px;
+}
 

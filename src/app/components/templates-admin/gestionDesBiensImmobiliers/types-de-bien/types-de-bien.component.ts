@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
@@ -10,7 +10,7 @@ import { TypeDeBienService } from 'src/app/services/gestionDesBiensImmobiliers/t
   templateUrl: './types-de-bien.component.html',
   styleUrls: ['./types-de-bien.component.css']
 })
-export class TypesDeBienComponent implements OnInit {
+export class TypesDeBienComponent implements OnInit, OnDestroy {
 
   recherche: string = '';
 
@@ -308,5 +308,9 @@ export class TypesDeBienComponent implements OnInit {
         }
       }
     });
+  }
+
+  ngOnDestroy(): void {
+
   }
 }

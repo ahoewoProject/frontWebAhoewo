@@ -1,0 +1,117 @@
+<!-- Section Titre -->
+<section class="home-banner-style6 mt-50">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcumb-style1">
+          <h2 class="title text-white mt50 text-center">Agences immobilières</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section - Liste des agences -->
+<section class="our-agents bgc-white pt-0">
+  <div class="container">
+    <div class="row align-items-center wow fadeInUp" data-wow-delay="100ms">
+      <div class="col-xl-12 mt40">
+        <div class="d-flex align-items-center justify-content-between">
+          <h6 class="heading-color ff-heading fw600 mb10">Trier par : </h6>
+          <a class="ud-btn btn-modifier" type="button" (click)="rafraichir()">Rafraîchir<i class="pi pi-refresh"></i></a>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="mb20">
+              <label class="heading-color ff-heading fw600 mb10">Nom de l'agence</label>
+              <input type="text" (input)="applyFilter($event)" class="form-control" placeholder="Entrer le nom de l'agence">
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="mb20">
+              <label class="heading-color ff-heading fw600 mb10">Région</label>
+              <br>
+              <p-dropdown
+                class="select" emptyFilterMessage="Aucun résultat trouvé"
+                emptyMessage="Aucun résultat trouvé" [options]="regions"
+                placeholder="Choisir une région" [filter]="true"
+                filterBy="libelle" [showClear]="true"
+                filterPlaceholder="Rechercher" (onChange)="regionChoisie($event)"
+                optionLabel="libelle">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="mb20">
+              <label class="heading-color ff-heading fw600 mb10">Ville</label>
+              <br>
+              <p-dropdown
+                class="select" emptyFilterMessage="Aucun résultat trouvé"
+                emptyMessage="Aucun résultat trouvé" [options]="villes"
+                placeholder="Choisir une ville" [filter]="true"
+                filterBy="libelle" [showClear]="true"
+                filterPlaceholder="Rechercher" (onChange)="villeChoisie($event)"
+                optionLabel="libelle">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="mb20">
+              <label class="heading-color ff-heading fw600 mb10">Quartier</label>
+              <br>
+              <p-dropdown
+                class="select" emptyFilterMessage="Aucun résultat trouvé"
+                emptyMessage="Aucun résultat trouvé" [options]="quartiers"
+                placeholder="Choisir un quartier" [filter]="true"
+                filterBy="libelle" [showClear]="true"
+                filterPlaceholder="Rechercher" (onChange)="quartierChoisi($event)"
+                optionLabel="libelle">
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row wow fadeInUp mt15" data-wow-delay="300ms" *ngFor="let agenceImmobiliere of agencesImmobilieres.content">
+      <div class="col-md-6 col-lg-4">
+        <div class="agency-style1 p30 bdrs12 bdr1 mb30">
+          <div class="agency-img">
+            <a  [routerLink]="['/agence-immobiliere', agenceImmobiliere.nomAgence]">
+              <img class="w-100" loading="lazy"
+              [src]="agenceImmobiliere.logoAgence !== '' ? (this.APIEndpoint+'api/logo/agence-immobiliere/'+agenceImmobiliere.id) : 'assets/images/team/logo_par_defaut.jpg'"
+               alt="agences">
+            </a>
+
+            <div class="badge">
+              <span style="background-color: #ff003d" class="span-badge" *ngIf="fermetureOrOuvertureAgence(agenceImmobiliere.heureOuverture, agenceImmobiliere.heureFermeture) == false">Fermé	</span>
+              <span style="background-color: #42A948" class="span-badge" *ngIf="fermetureOrOuvertureAgence(agenceImmobiliere.heureOuverture, agenceImmobiliere.heureFermeture) == true">Ouvert	</span>
+            </div>
+          </div>
+          <p-divider></p-divider>
+          <div class="agency-details">
+            <a  [routerLink]="['/agence-immobiliere', agenceImmobiliere.nomAgence]">
+              <h6 class="agency-title mb-1">{{agenceImmobiliere.nomAgence}} <i *ngIf="agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></h6>
+            </a>
+            <p class="fz15">{{agenceImmobiliere.adresse}}, {{agenceImmobiliere.quartier.libelle}}, {{agenceImmobiliere.quartier.ville.libelle}} - {{agenceImmobiliere.quartier.ville.region.pays.libelle}}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="row justify-content-center">
+      <div *ngIf="agencesImmobilieres.totalElements !== 0" class="mbp_pagination text-center">
+        <p-paginator
+          (onPageChange)="pagination($event)" [rows]="agencesImmobilieres.size"
+          [totalRecords]="agencesImmobilieres.totalElements" [rowsPerPageOptions]="[6, 12, 18]"
+          [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true"
+          currentPageReportTemplate="{first} au {last} des {totalRecords} agences disponibles">
+        </p-paginator>
+      </div>
+      <div *ngIf="agencesImmobilieres.totalElements == 0" class="text-center">
+        <img class="img mt5" src="assets/images/icons/no-results.png">
+        <h6 class="mt10">Aucune agence immobilière correspondant à votre recherche n'a été trouvée !</h6>
+      </div>
+    </div>
+  </div>
+</section>

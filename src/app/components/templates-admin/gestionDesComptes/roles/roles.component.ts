@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
@@ -10,7 +10,7 @@ import { RoleService } from 'src/app/services/gestionDesComptes/role.service';
   templateUrl: './roles.component.html',
   styleUrls: ['./roles.component.css']
 })
-export class RolesComponent implements OnInit{
+export class RolesComponent implements OnInit, OnDestroy {
 
   recherche: string = '';
 
@@ -202,5 +202,9 @@ export class RolesComponent implements OnInit{
         });
       }
     );
+  }
+
+  ngOnDestroy(): void {
+
   }
 }

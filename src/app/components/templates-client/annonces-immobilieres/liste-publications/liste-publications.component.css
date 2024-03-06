@@ -1,0 +1,35 @@
+.disabled-link {
+  pointer-events: none; /* Désactive les événements de pointage, rendant le lien non cliquable */
+  opacity: 0.5; /* Réduit l'opacité pour montrer qu'il est désactivé */
+  cursor: not-allowed; /* Affiche un curseur "non autorisé" */
+}
+
+.error {
+  color: #a94442;
+}
+
+:host ::ng-deep .select .p-dropdown {
+  width: 110%;
+  height: 55px;
+  /* border-radius: 8px; */
+  /* border: transparent; */
+}
+
+
+:host ::ng-deep .select .p-dropdown-item {
+  margin-left: -10%;
+}
+
+:host ::ng-deep .checkboxLabel {
+  font-size: 15px;
+}
+
+.img {
+  text-align: center;
+  width: 10%;
+}
+
+:host ::ng-deep .p-dialog-title {
+  font-family: 'DM Sans', sans-serif;
+}
+

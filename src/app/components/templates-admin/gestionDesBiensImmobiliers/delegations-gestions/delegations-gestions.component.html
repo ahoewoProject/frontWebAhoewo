@@ -155,15 +155,15 @@
           </div>
 
           <div *ngIf="images.length !== 0">
-            <p-galleria [value]="images" [showThumbnails]="true" [circular]="true" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '800px', 'margin': '0 auto' }" [numVisible]="5">
+            <p-galleria [value]="images" [showIndicators]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px', 'margin': '0 auto' }" [numVisible]="5">
 
               <ng-template pTemplate="item" let-item>
-                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}"  style="width: 100%;" />
+                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}"  style="width: 100%;" loading="lazy"/>
               </ng-template>
 
-              <ng-template pTemplate="thumbnail" *ngIf="images.length > 1" let-item>
+              <ng-template pTemplate="thumbnail" *ngIf="images.length > 4" let-item>
                 <div class="grid grid-nogutter justify-content-center">
-                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%;" />
+                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%;" loading="lazy"/>
                 </div>
               </ng-template>
 
@@ -177,14 +177,14 @@
               <div class="d-flex justify-content-between">
                 <div class="pd-list">
                   <p class="fw600 mb10 ff-heading dark-color">Gestionnaire</p>
-                  <p class="fw600 mb-0 ff-heading dark-color">Date</p>
-                  <p class="fw600 mb-0 ff-heading dark-color" *ngIf="delegationGestion.statutDelegation == 1">Etat</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Date</p>
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="delegationGestion.statutDelegation == 1">Etat</p>
                 </div>
                 <div class="pd-list">
                   <p class="text mb10" *ngIf="delegationGestion.gestionnaire">{{ delegationGestion.gestionnaire.nom }} {{ delegationGestion.gestionnaire.prenom }}</p>
                   <p class="text mb10" *ngIf="delegationGestion.agenceImmobiliere">{{ delegationGestion.agenceImmobiliere.nomAgence }}</p>
-                  <p class="text mb-0">{{ delegationGestion.dateDelegation | date: "dd-MM-yyyy" }}</p>
-                  <p class="text mb-0">
+                  <p class="text mb10">{{ delegationGestion.dateDelegation | date: "dd-MM-yyyy" }}</p>
+                  <p class="text mb10">
                     <p-tag *ngIf="delegationGestion.etatDelegation == true && delegationGestion.statutDelegation == 1" severity="success" value="Activé"></p-tag>
                     <p-tag *ngIf="delegationGestion.etatDelegation == false && delegationGestion.statutDelegation == 1" severity="danger" value="Désactivé"></p-tag>
                   </p>
@@ -195,12 +195,12 @@
               <div class="d-flex justify-content-between">
                 <div class="pd-list">
                   <p class="fw600 mb10 ff-heading dark-color">Téléphone du gestionnaire</p>
-                  <p class="fw600 mb-0 ff-heading dark-color">Statut</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Statut</p>
                 </div>
                 <div class="pd-list">
                   <p class="text mb10" *ngIf="delegationGestion.gestionnaire">{{ delegationGestion.gestionnaire.telephone }}</p>
                   <p class="text mb10" *ngIf="delegationGestion.agenceImmobiliere">{{ delegationGestion.agenceImmobiliere.telephone }}</p>
-                  <p class="text mb-0">
+                  <p class="text mb10">
                     <p-tag *ngIf="delegationGestion.statutDelegation == 0" severity="warning" value="En attente"></p-tag>
                     <p-tag *ngIf="delegationGestion.statutDelegation == 1" severity="success" value="Acceptée"></p-tag>
                     <p-tag *ngIf="delegationGestion.statutDelegation == 2" severity="danger" value="Refusée"></p-tag>
@@ -210,16 +210,21 @@
             </div>
           </div>
 
-          <div class="row" *ngIf="user.role.code === 'ROLE_RESPONSABLE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR'">
+          <div class="row" *ngIf="user.role.code === 'ROLE_RESPONSABLE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR' || user.role.code =='ROLE_GERANT'">
             <div class="col-md-6 col-xl-4">
               <div class="d-flex justify-content-between">
                 <div class="pd-list">
                   <p class="fw600 mb10 ff-heading dark-color">Propriétaire</p>
-                  <p class="fw600 mb-0 ff-heading dark-color">Date</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Date</p>
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="delegationGestion.statutDelegation == 1">Etat</p>
                 </div>
                 <div class="pd-list">
                   <p class="text mb10">{{ delegationGestion.bienImmobilier.personne.nom }} {{ delegationGestion.bienImmobilier.personne.prenom }}</p>
-                  <p class="text mb-0">{{ delegationGestion.dateDelegation | date: "dd-MM-yyyy" }}</p>
+                  <p class="text mb10">{{ delegationGestion.dateDelegation | date: "dd-MM-yyyy" }}</p>
+                  <p class="text mb10">
+                    <p-tag *ngIf="delegationGestion.etatDelegation == true && delegationGestion.statutDelegation == 1" severity="success" value="Activé"></p-tag>
+                    <p-tag *ngIf="delegationGestion.etatDelegation == false && delegationGestion.statutDelegation == 1" severity="danger" value="Désactivé"></p-tag>
+                  </p>
                 </div>
               </div>
             </div>
@@ -227,11 +232,11 @@
               <div class="d-flex justify-content-between">
                 <div class="pd-list">
                   <p class="fw600 mb10 ff-heading dark-color">Téléphone du propriétaire</p>
-                  <p class="fw600 mb-0 ff-heading dark-color">Statut</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Statut</p>
                 </div>
                 <div class="pd-list">
                   <p class="text mb10">{{ delegationGestion.bienImmobilier.personne.telephone }}</p>
-                  <p class="text mb-0">
+                  <p class="text mb10">
                     <p-tag *ngIf="delegationGestion.statutDelegation == 0" severity="warning" value="En attente"></p-tag>
                     <p-tag *ngIf="delegationGestion.statutDelegation == 1" severity="success" value="Acceptée"></p-tag>
                     <p-tag *ngIf="delegationGestion.statutDelegation == 2" severity="danger" value="Refusée"></p-tag>
@@ -325,15 +330,15 @@
           </div>
 
           <div *ngIf="images.length !== 0">
-            <p-galleria [value]="images" [showThumbnails]="true" [circular]="true" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '800px', 'margin': '0 auto' }" [numVisible]="5">
+            <p-galleria [value]="images" [showIndicators]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px', 'margin': '0 auto' }" [numVisible]="5">
 
               <ng-template pTemplate="item" let-item>
-                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}"  style="width: 100%;" />
+                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}"  style="width: 100%;" loading="lazy"/>
               </ng-template>
 
-              <ng-template pTemplate="thumbnail" *ngIf="images.length > 1" let-item>
+              <ng-template pTemplate="thumbnail" *ngIf="images.length > 4" let-item>
                 <div class="grid grid-nogutter justify-content-center">
-                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%;" />
+                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%;" loading="lazy"/>
                 </div>
               </ng-template>
 
@@ -347,14 +352,14 @@
               <div class="d-flex justify-content-between">
                 <div class="pd-list">
                   <p class="fw600 mb10 ff-heading dark-color">Gestionnaire</p>
-                  <p class="fw600 mb-0 ff-heading dark-color">Date</p>
-                  <p class="fw600 mb-0 ff-heading dark-color" *ngIf="delegationGestion.statutDelegation == 1">Etat</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Date</p>
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="delegationGestion.statutDelegation == 1">Etat</p>
                 </div>
                 <div class="pd-list">
                   <p class="text mb10" *ngIf="delegationGestion.gestionnaire">{{ delegationGestion.gestionnaire.nom }} {{ delegationGestion.gestionnaire.prenom }}</p>
                   <p class="text mb10" *ngIf="delegationGestion.agenceImmobiliere">{{ delegationGestion.agenceImmobiliere.nomAgence }}</p>
-                  <p class="text mb-0">{{ delegationGestion.dateDelegation | date: "dd-MM-yyyy" }}</p>
-                  <p class="text mb-0">
+                  <p class="text mb10">{{ delegationGestion.dateDelegation | date: "dd-MM-yyyy" }}</p>
+                  <p class="text mb10">
                     <p-tag *ngIf="delegationGestion.etatDelegation == true && delegationGestion.statutDelegation == 1" severity="success" value="Activé"></p-tag>
                     <p-tag *ngIf="delegationGestion.etatDelegation == false && delegationGestion.statutDelegation == 1" severity="danger" value="Désactivé"></p-tag>
                   </p>
@@ -365,12 +370,12 @@
               <div class="d-flex justify-content-between">
                 <div class="pd-list">
                   <p class="fw600 mb10 ff-heading dark-color">Téléphone du gestionnaire</p>
-                  <p class="fw600 mb-0 ff-heading dark-color">Statut</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Statut</p>
                 </div>
                 <div class="pd-list">
                   <p class="text mb10" *ngIf="delegationGestion.gestionnaire">{{ delegationGestion.gestionnaire.telephone }}</p>
                   <p class="text mb10" *ngIf="delegationGestion.agenceImmobiliere">{{ delegationGestion.agenceImmobiliere.telephone }}</p>
-                  <p class="text mb-0">
+                  <p class="text mb10">
                     <p-tag *ngIf="delegationGestion.statutDelegation == 0" severity="warning" value="En attente"></p-tag>
                     <p-tag *ngIf="delegationGestion.statutDelegation == 1" severity="success" value="Acceptée"></p-tag>
                     <p-tag *ngIf="delegationGestion.statutDelegation == 2" severity="danger" value="Refusée"></p-tag>
@@ -380,16 +385,21 @@
             </div>
           </div>
 
-          <div class="row" *ngIf="user.role.code === 'ROLE_RESPONSABLE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR'">
+          <div class="row" *ngIf="user.role.code === 'ROLE_RESPONSABLE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT'">
             <div class="col-md-6 col-xl-4">
               <div class="d-flex justify-content-between">
                 <div class="pd-list">
                   <p class="fw600 mb10 ff-heading dark-color">Propriétaire</p>
-                  <p class="fw600 mb-0 ff-heading dark-color">Date</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Date</p>
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="delegationGestion.statutDelegation == 1">Etat</p>
                 </div>
                 <div class="pd-list">
                   <p class="text mb10">{{ delegationGestion.bienImmobilier.personne.nom }} {{ delegationGestion.bienImmobilier.personne.prenom }}</p>
-                  <p class="text mb-0">{{ delegationGestion.dateDelegation | date: "dd-MM-yyyy" }}</p>
+                  <p class="text mb10">{{ delegationGestion.dateDelegation | date: "dd-MM-yyyy" }}</p>
+                  <p class="text mb10">
+                    <p-tag *ngIf="delegationGestion.etatDelegation == true && delegationGestion.statutDelegation == 1" severity="success" value="Activé"></p-tag>
+                    <p-tag *ngIf="delegationGestion.etatDelegation == false && delegationGestion.statutDelegation == 1" severity="danger" value="Désactivé"></p-tag>
+                  </p>
                 </div>
               </div>
             </div>
@@ -397,11 +407,11 @@
               <div class="d-flex justify-content-between">
                 <div class="pd-list">
                   <p class="fw600 mb10 ff-heading dark-color">Téléphone du propriétaire</p>
-                  <p class="fw600 mb-0 ff-heading dark-color">Statut</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Statut</p>
                 </div>
                 <div class="pd-list">
                   <p class="text mb10">{{ delegationGestion.bienImmobilier.personne.telephone }}</p>
-                  <p class="text mb-0">
+                  <p class="text mb10">
                     <p-tag *ngIf="delegationGestion.statutDelegation == 0" severity="warning" value="En attente"></p-tag>
                     <p-tag *ngIf="delegationGestion.statutDelegation == 1" severity="success" value="Acceptée"></p-tag>
                     <p-tag *ngIf="delegationGestion.statutDelegation == 2" severity="danger" value="Refusée"></p-tag>
@@ -592,15 +602,15 @@
           </div>
 
           <div *ngIf="images.length !== 0">
-            <p-galleria [value]="images" [showThumbnails]="true" [circular]="true" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '800px', 'margin': '0 auto' }" [numVisible]="5">
+            <p-galleria [value]="images" [showIndicators]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px', 'margin': '0 auto' }" [numVisible]="5">
 
               <ng-template pTemplate="item" let-item>
-                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}"  style="width: 100%;" />
+                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}"  style="width: 100%;" loading="lazy"/>
               </ng-template>
 
-              <ng-template pTemplate="thumbnail" *ngIf="images.length > 1" let-item>
+              <ng-template pTemplate="thumbnail" *ngIf="images.length > 4" let-item>
                 <div class="grid grid-nogutter justify-content-center">
-                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%;" />
+                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%;" loading="lazy"/>
                 </div>
               </ng-template>
 
@@ -614,14 +624,14 @@
               <div class="d-flex justify-content-between">
                 <div class="pd-list">
                   <p class="fw600 mb10 ff-heading dark-color">Gestionnaire</p>
-                  <p class="fw600 mb-0 ff-heading dark-color">Date</p>
-                  <p class="fw600 mb-0 ff-heading dark-color" *ngIf="delegationGestion.statutDelegation == 1">Etat</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Date</p>
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="delegationGestion.statutDelegation == 1">Etat</p>
                 </div>
                 <div class="pd-list">
                   <p class="text mb10" *ngIf="delegationGestion.gestionnaire">{{ delegationGestion.gestionnaire.nom }} {{ delegationGestion.gestionnaire.prenom }}</p>
                   <p class="text mb10" *ngIf="delegationGestion.agenceImmobiliere">{{ delegationGestion.agenceImmobiliere.nomAgence }}</p>
-                  <p class="text mb-0">{{ delegationGestion.dateDelegation | date: "dd-MM-yyyy" }}</p>
-                  <p class="text mb-0">
+                  <p class="text mb10">{{ delegationGestion.dateDelegation | date: "dd-MM-yyyy" }}</p>
+                  <p class="text mb10">
                     <p-tag *ngIf="delegationGestion.etatDelegation == true && delegationGestion.statutDelegation == 1" severity="success" value="Activé"></p-tag>
                     <p-tag *ngIf="delegationGestion.etatDelegation == false && delegationGestion.statutDelegation == 1" severity="danger" value="Désactivé"></p-tag>
                   </p>
@@ -632,12 +642,12 @@
               <div class="d-flex justify-content-between">
                 <div class="pd-list">
                   <p class="fw600 mb10 ff-heading dark-color">Téléphone du gestionnaire</p>
-                  <p class="fw600 mb-0 ff-heading dark-color">Statut</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Statut</p>
                 </div>
                 <div class="pd-list">
                   <p class="text mb10" *ngIf="delegationGestion.gestionnaire">{{ delegationGestion.gestionnaire.telephone }}</p>
                   <p class="text mb10" *ngIf="delegationGestion.agenceImmobiliere">{{ delegationGestion.agenceImmobiliere.telephone }}</p>
-                  <p class="text mb-0">
+                  <p class="text mb10">
                     <p-tag *ngIf="delegationGestion.statutDelegation == 0" severity="warning" value="En attente"></p-tag>
                     <p-tag *ngIf="delegationGestion.statutDelegation == 1" severity="success" value="Acceptée"></p-tag>
                     <p-tag *ngIf="delegationGestion.statutDelegation == 2" severity="danger" value="Refusée"></p-tag>
@@ -647,16 +657,21 @@
             </div>
           </div>
 
-          <div class="row" *ngIf="user.role.code === 'ROLE_RESPONSABLE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR'">
+          <div class="row" *ngIf="user.role.code === 'ROLE_RESPONSABLE' || user.role.code === 'ROLE_AGENTIMMOBILIER' || user.role.code === 'ROLE_DEMARCHEUR' || user.role.code === 'ROLE_GERANT'">
             <div class="col-md-6 col-xl-4">
               <div class="d-flex justify-content-between">
                 <div class="pd-list">
                   <p class="fw600 mb10 ff-heading dark-color">Propriétaire</p>
-                  <p class="fw600 mb-0 ff-heading dark-color">Date</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Date</p>
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="delegationGestion.statutDelegation == 1">Etat</p>
                 </div>
                 <div class="pd-list">
                   <p class="text mb10">{{ delegationGestion.bienImmobilier.personne.nom }} {{ delegationGestion.bienImmobilier.personne.prenom }}</p>
-                  <p class="text mb-0">{{ delegationGestion.dateDelegation | date: "dd-MM-yyyy" }}</p>
+                  <p class="text mb10">{{ delegationGestion.dateDelegation | date: "dd-MM-yyyy" }}</p>
+                  <p class="text mb10">
+                    <p-tag *ngIf="delegationGestion.etatDelegation == true && delegationGestion.statutDelegation == 1" severity="success" value="Activé"></p-tag>
+                    <p-tag *ngIf="delegationGestion.etatDelegation == false && delegationGestion.statutDelegation == 1" severity="danger" value="Désactivé"></p-tag>
+                  </p>
                 </div>
               </div>
             </div>
@@ -664,11 +679,11 @@
               <div class="d-flex justify-content-between">
                 <div class="pd-list">
                   <p class="fw600 mb10 ff-heading dark-color">Téléphone du propriétaire</p>
-                  <p class="fw600 mb-0 ff-heading dark-color">Statut</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Statut</p>
                 </div>
                 <div class="pd-list">
                   <p class="text mb10">{{ delegationGestion.bienImmobilier.personne.telephone }}</p>
-                  <p class="text mb-0">
+                  <p class="text mb10">
                     <p-tag *ngIf="delegationGestion.statutDelegation == 0" severity="warning" value="En attente"></p-tag>
                     <p-tag *ngIf="delegationGestion.statutDelegation == 1" severity="success" value="Acceptée"></p-tag>
                     <p-tag *ngIf="delegationGestion.statutDelegation == 2" severity="danger" value="Refusée"></p-tag>

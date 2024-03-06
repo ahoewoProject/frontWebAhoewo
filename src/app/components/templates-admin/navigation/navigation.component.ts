@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { interval, switchMap } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { Notification } from 'src/app/models/Notification';
 import { BehaviorService } from 'src/app/services/behavior.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
-import { RoleService } from 'src/app/services/gestionDesComptes/role.service';
 import { NotificationsService } from 'src/app/services/notifications.service';
+import { ServiceWorkerService } from 'src/app/services/service-worker.service';
 
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.css'],
 })
-export class NavigationComponent implements OnInit {
+export class NavigationComponent implements OnInit, OnDestroy {
 
   user: any;
   elementsParPage = 1; // Nombre d'éléments par page
@@ -21,12 +21,14 @@ export class NavigationComponent implements OnInit {
   notifications!: Page<Notification>;
   notificationsNonLues: Notification[] = [];
   activeLink: any;
+  notificationsDejaAffichees: number[] = [];
 
   constructor(
     private personneService: PersonneService,
     private router: Router,
     private behaviorService: BehaviorService,
     private notificationService: NotificationsService,
+    private serviceWorker: ServiceWorkerService
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -34,26 +36,37 @@ export class NavigationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.serviceWorker.requestPermission();
+
     this.behaviorService.activeLink$.subscribe((donnee) => {
       this.activeLink = donnee;
     });
-    interval(1000) // Exécution toutes les 1 seconde
-    .pipe(
-      switchMap(() => {
-        this.notificationService.initListeNotificationsNonLues();
-        return this.notificationService.notificationsNonLuesEvent;
-      })
-    )
-    .subscribe((data: Notification[]) => {
-      this.notificationsNonLues = data;
-      this.initListeNotifications();
-    });
-    this.notificationService.initListeNotificationsNonLues();
-    this.notificationService.notificationsNonLuesEvent.subscribe(
-      (data: Notification[]) => {
+    if (this.user) {
+      interval(1000)
+      .pipe(
+        switchMap(() => {
+          this.notificationService.initListeNotificationsNonLues();
+          return this.notificationService.notificationsNonLuesEvent;
+        })
+      )
+      .subscribe((data: Notification[]) => {
         this.notificationsNonLues = data;
-    });
-    this.initListeNotifications();
+        this.notificationsNonLues.forEach((notification) => {
+          if (!this.notificationsDejaAffichees.includes(notification.id)) {
+            this.afficherNotification(notification.titre, notification.message);
+            this.notificationsDejaAffichees.push(notification.id);
+          }
+        });
+        this.initListeNotifications();
+      });
+
+      this.notificationService.initListeNotificationsNonLues();
+      this.notificationService.notificationsNonLuesEvent.subscribe(
+        (data: Notification[]) => {
+          this.notificationsNonLues = data;
+      });
+      this.initListeNotifications();
+    }
   }
 
   getElapsedTime(dateNotification: Date): string {
@@ -194,4 +207,12 @@ export class NavigationComponent implements OnInit {
     }
   }
 
+  afficherNotification(titre: string, message: string) {
+    const iconUrl = 'assets/images/house.ico';
+    this.serviceWorker.showNotification(titre, message, iconUrl);
+  }
+
+  ngOnDestroy(): void {
+
+  }
 }

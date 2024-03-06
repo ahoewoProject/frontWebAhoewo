@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
@@ -12,7 +12,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
   templateUrl: './notaires.component.html',
   styleUrls: ['./notaires.component.css']
 })
-export class NotairesComponent implements OnInit{
+export class NotairesComponent implements OnInit, OnDestroy {
 
   recherche: string = '';
   affichage = 1;
@@ -258,5 +258,9 @@ export class NotairesComponent implements OnInit{
         }
       }
     });
+  }
+
+  ngOnDestroy(): void {
+
   }
 }

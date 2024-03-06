@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
@@ -12,7 +12,7 @@ import { VilleService } from 'src/app/services/gestionDesBiensImmobiliers/ville.
   templateUrl: './quartiers.component.html',
   styleUrls: ['./quartiers.component.css']
 })
-export class QuartiersComponent implements OnInit {
+export class QuartiersComponent implements OnInit, OnDestroy {
 
   recherche: string = '';
   villeSelectionnee!: Ville;
@@ -208,7 +208,8 @@ export class QuartiersComponent implements OnInit {
       header: "Activation d'un quartier",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.quartierService.activerQuartier(id).subscribe(response=>{
+        this.quartierService.activerQuartier(id).subscribe(
+          (response) => {
           //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le quartier a été activé avec succès !";
@@ -225,7 +226,7 @@ export class QuartiersComponent implements OnInit {
           case ConfirmEventType.REJECT:
             this.messageService.add({
               severity: 'error',
-              summary: 'Activation ddu quartier rejetée',
+              summary: 'Activation du quartier rejetée',
               detail: "Vous avez rejeté l'activation de ce quartier !"
             });
             break;
@@ -247,7 +248,8 @@ export class QuartiersComponent implements OnInit {
       header: "Désactivaction d'un quartier",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.quartierService.desactiverQuartier(id).subscribe(response=>{
+        this.quartierService.desactiverQuartier(id).subscribe(
+          (response) =>{
           //console.log(response);
           this.voirListe();
           this.messageSuccess = "Le quartier a été désactivé avec succès !";
@@ -278,5 +280,9 @@ export class QuartiersComponent implements OnInit {
         }
       }
     });
+  }
+
+  ngOnDestroy(): void {
+
   }
 }

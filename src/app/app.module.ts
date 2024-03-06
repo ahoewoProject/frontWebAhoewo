@@ -6,6 +6,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './components/auth/register/register.component';
@@ -49,7 +50,7 @@ import { TokenInterceptorProvider } from './helpers/token.interceptor';
 import { AgencesImmobilieresComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/agences-immobilieres/agences-immobilieres.component';
 import { ServicesComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/services/services.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { TypesDeBienComponent } from './components/templates-admin/gestionDesBiensImmobiliers/types-de-bien/types-de-bien.component';
 import { BiensImmobiliersComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-immobiliers.component';
 import { DelegationsGestionsComponent } from './components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/delegations-gestions.component';
@@ -74,7 +75,18 @@ import { BadgeModule } from 'primeng/badge';
 import { AutresServicesComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/autres-services/autres-services.component';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
+import { CarouselModule } from 'primeng/carousel';
 import { NotificationsComponent } from './components/templates-admin/notifications/notifications.component';
+import { AccueilComponent } from './components/templates-client/accueil/accueil.component';
+import { NavigationSiteComponent } from './components/templates-client/navigation-site/navigation-site.component';
+import { PiedDePageSiteComponent } from './components/templates-client/pied-de-page-site/pied-de-page-site.component';
+import { ListeAgencesComponent } from './components/templates-client/agences-immobilieres/liste-agences/liste-agences.component';
+import { DetailsAgenceComponent } from './components/templates-client/agences-immobilieres/details-agence/details-agence.component';
+import { FilterService } from 'primeng/api';
+import { MenuModule } from 'primeng/menu';
+import { PublicationsComponent } from './components/templates-admin/gestionDesPublications/publications/publications.component';
+import { ListePublicationsComponent } from './components/templates-client/annonces-immobilieres/liste-publications/liste-publications.component';
+import { DetailsPublicationComponent } from './components/templates-client/annonces-immobilieres/details-publication/details-publication.component';
 
 @NgModule({
   declarations: [
@@ -113,7 +125,15 @@ import { NotificationsComponent } from './components/templates-admin/notificatio
     RegionsComponent,
     QuartiersComponent,
     AutresServicesComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    AccueilComponent,
+    NavigationSiteComponent,
+    PiedDePageSiteComponent,
+    ListeAgencesComponent,
+    DetailsAgenceComponent,
+    PublicationsComponent,
+    ListePublicationsComponent,
+    DetailsPublicationComponent,
   ],
   imports: [
     BrowserModule,
@@ -121,6 +141,7 @@ import { NotificationsComponent } from './components/templates-admin/notificatio
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    CarouselModule,
     BrowserAnimationsModule,
     AvatarModule,
     ButtonModule,
@@ -153,12 +174,17 @@ import { NotificationsComponent } from './components/templates-admin/notificatio
     TabViewModule,
     StepsModule,
     InputTextModule,
-    MessagesModule
+    MessagesModule,
+    MenuModule,
+    CommonModule
   ],
   providers: [
     MessageService,
     ConfirmationService,
     TokenInterceptorProvider,
+    DatePipe,
+    DecimalPipe,
+    FilterService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent]

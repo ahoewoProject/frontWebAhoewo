@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
@@ -12,7 +12,7 @@ import { RegionService } from 'src/app/services/gestionDesBiensImmobiliers/regio
   templateUrl: './regions.component.html',
   styleUrls: ['./regions.component.css']
 })
-export class RegionsComponent implements OnInit {
+export class RegionsComponent implements OnInit, OnDestroy {
 
   recherche: string = '';
   paysSelectionne!: Pays;
@@ -209,15 +209,15 @@ export class RegionsComponent implements OnInit {
       header: "Activation d'une région",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.regionService.activerRegion(id).subscribe(response=>{
-          //console.log(response);
-          this.voirListe();
-          this.messageSuccess = "La région a été activé avec succès !";
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Activation de la région confirmée',
-            detail: this.messageSuccess
-          })
+        this.regionService.activerRegion(id).subscribe(
+          (response) => {
+            this.voirListe();
+            this.messageSuccess = "La région a été activé avec succès !";
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Activation de la région confirmée',
+              detail: this.messageSuccess
+            })
         });
 
       },
@@ -248,15 +248,15 @@ export class RegionsComponent implements OnInit {
       header: "Désactivaction d'une région",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.regionService.desactiverRegion(id).subscribe(response=>{
-          //console.log(response);
-          this.voirListe();
-          this.messageSuccess = "La région a été désactivé avec succès !";
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Désactivation de la région confirmée',
-            detail: this.messageSuccess
-          })
+        this.regionService.desactiverRegion(id).subscribe(
+          (response) => {
+            this.voirListe();
+            this.messageSuccess = "La région a été désactivé avec succès !";
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Désactivation de la région confirmée',
+              detail: this.messageSuccess
+            })
         });
 
       },
@@ -279,5 +279,9 @@ export class RegionsComponent implements OnInit {
         }
       }
     });
+  }
+
+  ngOnDestroy(): void {
+
   }
 }

@@ -1,0 +1,672 @@
+<!-- Modal - Recherche Avancée - Start -->
+<div class="card flex justify-content-center">
+  <p-dialog header="Filtre avancée" [(visible)]="visible" [modal]="true" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [dismissableMask]="true" [draggable]="false" [resizable]="false">
+    <div class="modal-body pb-0">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Prix minimum</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="prixMin" name="prixMin" placeholder="Prix minimum" [(ngModel)]="rechercheAvanceePublicationForm.prixMin"
+                     #prixMinInput="ngModel" [max]="rechercheAvanceePublicationForm.prixMax">
+              <div *ngIf="prixMinInput.invalid && (prixMinInput.dirty || prixMinInput.touched)"
+                   class="error">
+                <div *ngIf="prixMinInput.errors && prixMinInput.errors['max']">Le prix minimum ne doit pas être supérieur le prix maximum.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Prix maximum</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="prixMax" name="prixMax" placeholder="Prix maximun" [(ngModel)]="rechercheAvanceePublicationForm.prixMax"
+                     #prixMaxInput="ngModel" [min]="rechercheAvanceePublicationForm.prixMin">
+              <div *ngIf="prixMaxInput.invalid && (prixMaxInput.dirty || prixMaxInput.touched)"
+                   class="error">
+                <div *ngIf="prixMaxInput.errors && prixMaxInput.errors['min']">Le prix maximum ne doit pas être inférieur au prix minimum.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" *ngIf="afficherAvanceEtCaution()">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Avance en nombre de mois</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="avance" name="avance" placeholder="Avance en nombre de mois" [(ngModel)]="rechercheAvanceePublicationForm.avance"
+                    #avanceInput="ngModel" [max]="12">
+              <div *ngIf="avanceInput.invalid && (avanceInput.dirty || avanceInput.touched)"
+                   class="error">
+                <div *ngIf="avanceInput.errors && avanceInput.errors['max']">L'avance ne doit pas dépasser 12 mois</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" *ngIf="afficherAvanceEtCaution()">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Caution en nombre de mois</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="caution" name="caution" placeholder="Caution en nombre de mois" [(ngModel)]="rechercheAvanceePublicationForm.caution"
+                    #cautionInput="ngModel" [max]="12">
+                <div *ngIf="cautionInput.invalid && (cautionInput.dirty || cautionInput.touched)"
+                    class="error">
+                 <div *ngIf="cautionInput.errors && cautionInput.errors['max']">La caution ne doit pas dépasser 12 mois</div>
+               </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Commission {{ typeDeTransactionSelectionne === 'Location' ? 'en nombre de mois' : 'en pourcentage' }}</h6>
+            <div class="form-style2">
+              <input *ngIf="typeDeTransactionSelectionne == 'Location'" type="number" class="form-control" id="commission" name="commission" placeholder="La commission en nombre de mois" [(ngModel)]="rechercheAvanceePublicationForm.commission">
+              <input *ngIf="typeDeTransactionSelectionne == 'Vente'" type="number" class="form-control" id="commission" name="commission" placeholder="La commission en pourcentage" [(ngModel)]="rechercheAvanceePublicationForm.commission" [disabled]="isCommissionDisabled()">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Frais de visite</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="fraisDeVisite" name="fraisDeVisite" placeholder="Frais de visite" [(ngModel)]="rechercheAvanceePublicationForm.fraisDeVisite">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="typeDeBienSelectionne.designation != 'Terrain'">
+        <!-- <div class="col-lg-12">
+          <div class="widget-wrapper mb0">
+            <h6 class="list-title mb10">Caractéristiques</h6>
+          </div>
+        </div> -->
+        <div class="col-sm-6" *ngIf="afficherNombreChambre()">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Nombre de chambres</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="nombreChambres" name="nombreChambres" placeholder="Nombre de chambres" [(ngModel)]="rechercheAvanceePublicationForm.nombreChambres">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" *ngIf="afficherNombreSalon()">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Nombre de salons</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="nombreSalons" name="nombreSalons" placeholder="nombre de salons" [(ngModel)]="rechercheAvanceePublicationForm.nombreSalons">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" *ngIf="afficherNombreChambreSalon()">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Nombre de chambres salon</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="nombreChambresSalon" name="nombreChambresSalon" placeholder="Nombre de chambres salon" [(ngModel)]="rechercheAvanceePublicationForm.nombreChambresSalon">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" *ngIf="afficherNombreAppartement()">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Nombre d'appartements</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="nombreAppartements" name="nombreAppartements" placeholder="Nombre d'appartements" [(ngModel)]="rechercheAvanceePublicationForm.nombreAppartements">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" *ngIf="afficherNombreBureau()">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Nombre de bureaux</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="nombreBureaux" name="nombreBureaux" placeholder="Nombre de bureaux" [(ngModel)]="rechercheAvanceePublicationForm.nombreBureaux">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" *ngIf="afficherNombreBoutique()">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Nombre de boutiques</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="nombreBoutiques" name="nombreBoutiques" placeholder="Nombre de boutiques" [(ngModel)]="rechercheAvanceePublicationForm.nombreBoutiques">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" *ngIf="afficherNombreMagasin()">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Nombre de magasins</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="nombreMagasins" name="nombreMagasins" placeholder="Nombre de magasins" [(ngModel)]="rechercheAvanceePublicationForm.nombreMagasins">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" *ngIf="afficherNombreEtage()">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Nombre d'étages</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="nombreEtages" name="nombreEtages" placeholder="Nombre d'étages" [(ngModel)]="rechercheAvanceePublicationForm.nombreEtages">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" *ngIf="afficherNombreGarage()">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Nombre de garages</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="nombreGarages" name="nombreGarages" placeholder="Nombre de garages" [(ngModel)]="rechercheAvanceePublicationForm.nombreGarages">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" *ngIf="afficherNombreCuisine()">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Nombre de cuisine interne</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="nombreCuisineInterne" name="nombreCuisineInterne" placeholder="Nombre de cuisine interne" [(ngModel)]="rechercheAvanceePublicationForm.nombreCuisineInterne">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" *ngIf="afficherNombreCuisine()">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Nombre de cuisine externe</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="nombreCuisineExterne" name="nombreCuisineExterne" placeholder="Nombre de cuisine externe" [(ngModel)]="rechercheAvanceePublicationForm.nombreCuisineExterne">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" *ngIf="afficherNombreWCDouche()">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Nombre de WC-Douche interne</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="nombreWCDoucheInterne" name="nombreWCDoucheInterne" placeholder="Nombre de WC-Douche interne" [(ngModel)]="rechercheAvanceePublicationForm.nombreWCDoucheInterne">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6" *ngIf="afficherNombreWCDouche()">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Nombre de WC-Douche externe</h6>
+            <div class="form-style2">
+              <input type="number" class="form-control" id="nombreWCDoucheExterne" name="nombreWCDoucheExterne" placeholder="nombre de WC-Douche externe" [(ngModel)]="rechercheAvanceePublicationForm.nombreWCDoucheExterne">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="typeDeBienSelectionne.designation !='Terrain'">
+        <div class="col-sm-6 col-xl-4">
+          <div class="checkbox-style1" *ngIf="afficherParking()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Parking" [(ngModel)]="rechercheAvanceePublicationForm.parking">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Eau TDE" [(ngModel)]="rechercheAvanceePublicationForm.eauTde">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Compteur d'eau" [(ngModel)]="rechercheAvanceePublicationForm.compteurEau">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1" *ngIf="afficherCuisineInterne()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Cuisine interne" [(ngModel)]="rechercheAvanceePublicationForm.cuisineInterne">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1" *ngIf="afficherWCDoucheExterne()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="WC-Douche externe" [(ngModel)]="rechercheAvanceePublicationForm.wcDoucheExterne">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1" *ngIf="afficherBalcon()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Balcon" [(ngModel)]="rechercheAvanceePublicationForm.balcon">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Climatisation" [(ngModel)]="rechercheAvanceePublicationForm.climatisation">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1" *ngIf="afficherDalle()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Dallé" [(ngModel)]="rechercheAvanceePublicationForm.dalle">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1" *ngIf="afficherToiletteVisiteur()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Toilette visiteur" [(ngModel)]="rechercheAvanceePublicationForm.toiletteVisiteur">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <div class="checkbox-style1" *ngIf="afficherJardin()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Jardin" [(ngModel)]="rechercheAvanceePublicationForm.jardin">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Eau Forage" [(ngModel)]="rechercheAvanceePublicationForm.eauForage">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1" *ngIf="afficherCompteurAdditionnel()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Compteur additionnel" [(ngModel)]="rechercheAvanceePublicationForm.compteurAdditionnel">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1" *ngIf="afficherCuisineExterne()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Cuisine externe" [(ngModel)]="rechercheAvanceePublicationForm.cuisineExterne">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Wifi" [(ngModel)]="rechercheAvanceePublicationForm.wifi">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1" *ngIf="afficherALEtage()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="À l'étage" [(ngModel)]="rechercheAvanceePublicationForm.aLetage">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1" *ngIf="afficherBaieVitree()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Baie vitrée" [(ngModel)]="rechercheAvanceePublicationForm.baieVitree">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1" *ngIf="afficherPlafonne()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Plafonné" [(ngModel)]="rechercheAvanceePublicationForm.plafonne">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1" *ngIf="afficherAscenseur()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Ascenceur" [(ngModel)]="rechercheAvanceePublicationForm.ascenseur">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-xl-4">
+          <div class="checkbox-style1" *ngIf="afficherPiscine()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Piscine" [(ngModel)]="rechercheAvanceePublicationForm.piscine">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Electricité CEET" [(ngModel)]="rechercheAvanceePublicationForm.electriciteCeet">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1" *ngIf="afficherCashPowerPersonnel()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Cash Power personnel" [(ngModel)]="rechercheAvanceePublicationForm.cashPowerPersonnel">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1" *ngIf="afficherWCDoucheInterne()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="WC-Douche interne" [(ngModel)]="rechercheAvanceePublicationForm.wcDoucheInterne">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1" *ngIf="afficherGarage()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Garage" [(ngModel)]="rechercheAvanceePublicationForm.garage">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1" *ngIf="afficherTerrasse()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Terrasse" [(ngModel)]="rechercheAvanceePublicationForm.terrasse">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1" *ngIf="afficherSolCarelle()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Sol carellé" [(ngModel)]="rechercheAvanceePublicationForm.solCarelle">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+          <div class="checkbox-style1" *ngIf="afficherPlacard()">
+            <div class="checkbox">
+              <div class="mb10">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="Placard" [(ngModel)]="rechercheAvanceePublicationForm.placard">
+                </p-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer justify-content-between">
+      <button class="ud-btn btn-annuler" (click)="reinitialiser()"><span class="pi pi-replay pr10"></span>Réinitialiser</button>
+      <div class="btn-area">
+        <button class="ud-btn btn-thm" (click)="rechercheAvanceeDePublication()" [ngClass]="{ 'disabled-link': prixMinInput.invalid || prixMaxInput.invalid || rechercheAvanceePublicationForm.avance > 12 || rechercheAvanceePublicationForm.caution > 12 }"><span class="pi pi-search-plus pr10"></span>Rechercher</button>
+      </div>
+    </div>
+  </p-dialog>
+</div>
+<!-- Modal - Recherche Avancée End -->
+
+<!-- UI Elements Sections -->
+<section class="home-banner-style6 mt-50">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcumb-style1">
+          <h2 class="title text-white mt50 text-center">Annonces immobilières</h2>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="advance-style4 at-home5 mx-auto animate-up-2">
+          <ul class="nav nav-tabs p-0 m-0" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true" (click)="typeDeTransactionChoisi('Location')">À Louer</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false" (click)="typeDeTransactionChoisi('Vente')">À Vendre</button>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+              <div class="advance-content-style3 at-home5">
+                <div class="row align-items-center">
+                  <!-- <div class="col-md-4 col-xl-3 bdrr1 bdrrn-sm">
+                    <label>Mot clé</label>
+                    <div class="advance-search-field position-relative text-start">
+                      <form action="#" method="get" class="form-search position-relative" accept-charset="utf-8">
+                        <div class="box-search">
+                          <input class="form-control bgc-f7 bdrs12 ps-0" type="text" name="search" placeholder="Entrer un mot clé">
+                        </div>
+                      </form>
+                    </div>
+                  </div> -->
+                  <div class="col-md-4 col-xl-2 bdrr1 bdrrn-sm px20 pl15-sm">
+                    <div class="mt-3 mt-md-0 px-0">
+                      <div class="bootselect-multiselect">
+                        <!-- <label class="fz14">Type de bien</label> -->
+                        <p-dropdown
+                          class="select" emptyFilterMessage="Aucun résultat trouvé"
+                          emptyMessage="Aucun résultat trouvé"
+                          [options]="typesDeBienPourLocation" placeholder="Type de bien"
+                          optionLabel="designation" (onChange)="typeDeBienChoisi($event)"
+                          [filter]="true" filterBy="designation"
+                          [(ngModel)]="typeDeBienSelectionne">
+                        </p-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-xl-2 bdrr1 bdrrn-sm px20 pl15-sm">
+                    <div class="mt-3 mt-md-0 px-0">
+                      <div class="bootselect-multiselect">
+                        <!-- <label class="fz14">Région</label> -->
+                        <p-dropdown
+                          class="select" emptyFilterMessage="Aucun résultat trouvé"
+                          emptyMessage="Aucun résultat trouvé"
+                          [options]="regions" placeholder="Région"
+                          optionLabel="libelle" (onChange)="regionChoisie($event)"
+                          [filter]="true" filterBy="libelle"
+                          [(ngModel)]="regionSelectionnee">
+                        </p-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-xl-2 bdrr1 bdrrn-sm px20 pl15-sm">
+                    <div class="mt-3 mt-md-0">
+                      <div class="bootselect-multiselect">
+                        <!-- <label class="fz14">Ville</label> -->
+                        <p-dropdown
+                          class="select" emptyFilterMessage="Aucun résultat trouvé"
+                          emptyMessage="Aucun résultat trouvé"
+                          [options]="villes" placeholder="Ville"
+                          optionLabel="libelle" (onChange)="villeChoisie($event)"
+                          [filter]="true" filterBy="libelle"
+                          [(ngModel)]="villeSelectionnee">
+                        </p-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-xl-2 bdrr1 bdrrn-sm px20 pl15-sm">
+                    <div class="mt-3 mt-md-0">
+                      <div class="bootselect-multiselect">
+                        <!-- <label class="fz14">Quartier</label> -->
+                        <p-dropdown
+                          class="select" emptyFilterMessage="Aucun résultat trouvé"
+                          emptyMessage="Aucun résultat trouvé"
+                          [options]="quartiers" placeholder="Quartier"
+                          optionLabel="libelle" (onChange)="quartierChoisi($event)"
+                          [filter]="true" filterBy="libelle"
+                          [(ngModel)]="quartierSelectionne">
+                        </p-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="d-flex align-items-center justify-content-start justify-content-lg-center mt-2 mt-md-0">
+                      <button class="advance-search-btn" type="button" (click)="showDialog()"><span class="pi pi-sliders-h"></span> Voir plus</button>
+                      <button class="ud-btn btn-thm ms-2" type="button" (click)="rechercheSimpleDePublication()">Rechercher</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+              <div class="advance-content-style3 at-home5">
+                <div class="row align-items-center">
+                  <!-- <div class="col-md-4 col-xl-3 bdrr1 bdrrn-sm">
+                    <label>Search</label>
+                    <div class="advance-search-field position-relative text-start">
+                      <form action="#" method="get" class="form-search position-relative" accept-charset="utf-8">
+                        <div class="box-search">
+                          <input class="form-control bgc-f7 bdrs12 ps-0" type="text" name="search" placeholder="Enter Keywords">
+                        </div>
+                      </form>
+                    </div>
+                  </div> -->
+                  <div class="col-md-4 col-xl-2 bdrr1 bdrrn-sm px20 pl15-sm">
+                    <div class="mt-3 mt-md-0 px-0">
+                      <div class="bootselect-multiselect">
+                        <!-- <label class="fz14">Type de bien</label> -->
+                        <p-dropdown
+                          class="select" emptyFilterMessage="Aucun résultat trouvé"
+                          emptyMessage="Aucun résultat trouvé"
+                          [options]="typesDeBienPourVente" placeholder="Type de bien"
+                          optionLabel="designation" (onChange)="typeDeBienChoisi($event)"
+                          [filter]="true" filterBy="designation"
+                          [(ngModel)]="typeDeBienSelectionne">
+                        </p-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-xl-2 bdrr1 bdrrn-sm px20 pl15-sm">
+                    <div class="mt-3 mt-md-0 px-0">
+                      <div class="bootselect-multiselect">
+                        <!-- <label class="fz14">Région</label> -->
+                        <p-dropdown
+                          class="select" emptyFilterMessage="Aucun résultat trouvé"
+                          emptyMessage="Aucun résultat trouvé"
+                          [options]="regions" placeholder="Région"
+                          optionLabel="libelle" (onChange)="regionChoisie($event)"
+                          [filter]="true" filterBy="libelle"
+                          [(ngModel)]="regionSelectionnee">
+                        </p-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-xl-2 bdrr1 bdrrn-sm px20 pl15-sm">
+                    <div class="mt-3 mt-md-0">
+                      <div class="bootselect-multiselect">
+                        <!-- <label class="fz14">Ville</label> -->
+                        <p-dropdown
+                          class="select" emptyFilterMessage="Aucun résultat trouvé"
+                          emptyMessage="Aucun résultat trouvé"
+                          [options]="villes" placeholder="Ville"
+                          optionLabel="libelle" (onChange)="villeChoisie($event)"
+                          [filter]="true" filterBy="libelle"
+                          [(ngModel)]="villeSelectionnee">
+                        </p-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-xl-2 bdrr1 bdrrn-sm px20 pl15-sm">
+                    <div class="mt-3 mt-md-0">
+                      <div class="bootselect-multiselect">
+                        <!-- <label class="fz14">Quartier</label> -->
+                        <p-dropdown
+                          class="select" emptyFilterMessage="Aucun résultat trouvé"
+                          emptyMessage="Aucun résultat trouvé"
+                          [options]="quartiers" placeholder="Quartier"
+                          optionLabel="libelle" (onChange)="quartierChoisi($event)"
+                          [filter]="true" filterBy="libelle"
+                          [(ngModel)]="quartierSelectionne">
+                        </p-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-lg-4 col-xl-3">
+                    <div class="d-flex align-items-center justify-content-start justify-content-lg-center mt-2 mt-md-0">
+                      <button class="advance-search-btn" type="button" (click)="showDialog()"><span class="pi pi-sliders-h"></span> Voir plus</button>
+                      <button class="ud-btn btn-thm ms-2" type="button" (click)="rechercheSimpleDePublication()"> Rechercher</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pt0 pb90 bgc-white mt-75">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-12 mt50">
+      </div>
+    </div>
+    <div class="row text-center" *ngIf="loading">
+      <div class="text-center">
+        <img class="img mt5" src="assets/images/loading.gif">
+        <h6 class="mt10">Traitement de la recherche en cours !</h6>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="!loading">
+      <div class="col-md-6 col-lg-4" *ngFor="let publication of publications.content">
+        <div class="listing-style1">
+          <div class="list-thumb">
+            <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
+            <!-- <div class="badge"><span style="background-color: #ff003d" class="span-badge">{{ publication.typeDeTransaction === 'Location' ? 'À louer' : 'À vendre' }}</span></div> -->
+            <div class="list-tag fz12 mr20">{{ publication.typeDeTransaction === 'Location' ? 'À LOUER' : 'À VENDRE' }}</div>
+            <div *ngIf="publication.typeDeTransaction === 'Location'" class="list-price">{{ publication.prixDuBien | number }} FCFA / <span>mois</span></div>
+            <div *ngIf="publication.typeDeTransaction === 'Vente'" class="list-price">{{ publication.prixDuBien | number }} FCFA </div>
+          </div>
+          <div class="list-content">
+            <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
+            <p class="list-text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+            <!-- <div class="list-meta d-flex align-items-center">
+              <a href="#"><span class="flaticon-bed"></span>3 bed</a>
+              <a href="#"><span class="flaticon-shower"></span>4 bath</a>
+              <a href="#"><span class="flaticon-expand"></span>1200 sqft</a>
+            </div>
+            <hr class="mt-2 mb-2"> -->
+            <!-- <div class="list-meta2 d-flex justify-content-between align-items-center">
+              <span class="for-what">For Rent</span>
+              <div class="icons d-flex align-items-center">
+                <a href="#"><span class="flaticon-fullscreen"></span></a>
+                <a href="#"><span class="flaticon-new-tab"></span></a>
+                <a href="#"><span class="flaticon-like"></span></a>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="publications.totalElements !== 0" class="mbp_pagination text-center">
+        <p-paginator
+          (onPageChange)="pagination($event)" [rows]="publications.size"
+          [totalRecords]="publications.totalElements" [rowsPerPageOptions]="[8, 16, 18]"
+          [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true"
+          currentPageReportTemplate="{first} au {last} des {totalRecords} annonces immobilières disponibles">
+        </p-paginator>
+      </div>
+      <div *ngIf="publications.totalElements == 0" class="text-center">
+        <img class="img mt5" src="assets/images/icons/no-results.png">
+        <h6 class="mt10">Aucune annonce immobilière correspondant à votre recherche n'a été trouvée !</h6>
+      </div>
+    </div>
+    <!-- <div class="row">
+
+    </div> -->
+  </div>
+</section>

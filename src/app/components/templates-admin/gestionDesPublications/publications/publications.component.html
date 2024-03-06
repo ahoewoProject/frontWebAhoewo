@@ -1,0 +1,573 @@
+<div class="dashboard__content property-page bgc-f7">
+  <div class="row pb40 d-block d-lg-none">
+    <!-- Menu responsive -->
+    <app-menu-responsive></app-menu-responsive>
+    <!-- End Menu responsive -->
+  </div>
+
+  <p-toast></p-toast>
+
+  <!-- Liste des publications -->
+  <div *ngIf="affichage == 1">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-3">
+        <div class="dashboard_title_area">
+          <h4>Liste des publications</h4>
+        </div>
+      </div>
+      <div class="col-xxl-9">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <div class="item1 mb15-sm">
+            <div class="search_area">
+              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
+              <label><span class="flaticon-search"></span></label>
+            </div>
+          </div>
+          &nbsp;
+          <a type="button" (click)="voirFormulaireAjouter()" class="ud-btn btn-thm">Ajouter une publication</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+          <div class="packages_table table-responsive">
+            <table class="table-style3 table at-savesearch">
+              <thead class="t-head">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Code du bien</th>
+                  <th scope="col">Type de bien</th>
+                  <th scope="col">Type de transaction</th>
+                  <!-- <th scope="col">Date</th> -->
+                  <th scope="col">Etat</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="t-body">
+                <tr *ngFor="let publication of publications.content | genericFilter: recherche; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td class="vam">{{ publication.bienImmobilier.codeBien }}</td>
+                  <td class="vam">{{ publication.bienImmobilier.typeDeBien.designation }}</td>
+                  <td class="vam">{{ publication.typeDeTransaction }}</td>
+                  <!-- <td class="vam">{{ publication.datePublication | date: 'dd-MM-yyyy' }}</td> -->
+                  <td class="vam">
+                    <p-tag *ngIf="publication.etat == true" severity="success" value="Activé"></p-tag>
+                    <p-tag *ngIf="publication.etat == false" severity="danger" value="Désactivé"></p-tag>
+                  </td>
+                  <td class="vam">
+                    <div class="d-flex">
+                      <button pButton type="button" icon="pi pi-eye"
+                        (click)="voirPageDetail(publication.id, publication.bienImmobilier.id)"
+                        pTooltip="Détails" tooltipPosition="top" class="p-button-text p-button-info">
+                      </button>
+
+                      <button
+                        pButton type="button" icon="pi pi-pencil pi-lg"
+                        (click)="voirFormulaireModifier(publication.id)"
+                        pTooltip="Modifier" tooltipPosition="top" class="p-button-text p-button-warning">
+                      </button>
+
+                      <button *ngIf="publication.etat == true"
+                        pButton type="button" icon="pi pi-lock pi-lg" (click)="desactiverPublication(publication.id)"
+                        pTooltip="Désactiver cette publication" tooltipPosition="right" class="p-button-text p-button-danger">
+                      </button>
+
+                      <button *ngIf="publication.etat == false"
+                        pButton type="button" icon="pi pi-lock-open" (click)="activerPublication(publication.id)"
+                        pTooltip="Activer cette publication" tooltipPosition="right" class="p-button-text p-button-success">
+                      </button>
+                    </div>
+                  </td>
+              </tbody>
+            </table>
+          </div>
+
+          <div *ngIf="publications.totalElements !== 0" class="mbp_pagination text-center mt30">
+            <p-paginator
+              (onPageChange)="pagination($event)" [rows]="publications.size"
+              [totalRecords]="publications.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
+              [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true"
+              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} publications">
+            </p-paginator>
+          </div>
+          <div *ngIf="publications.totalElements == 0" class="mbp_pagination text-center mt30">
+            <p class="mt10 pagination_page_count text-center">Aucune publication enregistré pour le moment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- End Liste des publications -->
+
+  <!-- Détails d'une publication -->
+  <div *ngIf="affichage == 2">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-5">
+        <div class="dashboard_title_area">
+          <h4>Détails d'une publication</h4>
+        </div>
+      </div>
+      <div class="col-xxl-7">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a type="button" (click)="voirListe()" class="ud-btn btn-retour">Retour</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+
+          <div class="text-center" *ngIf="images.length == 0">
+            <p-image class="w-100" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
+          </div>
+
+          <div *ngIf="images.length !== 0">
+            <p-galleria [value]="images" [showIndicators]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px', 'margin': '0 auto' }" [numVisible]="5">
+
+              <ng-template pTemplate="item" let-item>
+                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}"  style="width: 100%;" loading="lazy"/>
+              </ng-template>
+
+              <ng-template pTemplate="thumbnail" *ngIf="images.length > 4" let-item>
+                <div class="grid grid-nogutter justify-content-center">
+                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%;" loading="lazy"/>
+                </div>
+              </ng-template>
+
+            </p-galleria>
+          </div>
+
+          <p-divider></p-divider>
+          <h4 class="title fz17 mb30">Détails de la publication</h4>
+          <div class="d-flex">
+            <div class="pd-list">
+              <p class="fw600 mb10 ff-heading dark-color">Libelle de la publication</p>
+            </div>
+            <div class="pd-list">
+              <p class="text mb10 ml15">{{ publication.libelle }}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-xl-4">
+              <div class="d-flex justify-content-between">
+                <div class="pd-list">
+                  <p class="fw600 mb10 ff-heading dark-color">Code publication</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Type de transaction</p>
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="publication.typeDeTransaction == 'Location'">Avance</p>
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="publication.commission">Commission</p>
+                </div>
+                <div class="pd-list">
+                  <p class="text mb10">{{ publication.codePublication }}</p>
+                  <p class="text mb10">{{ publication.typeDeTransaction }}</p>
+                  <p class="text mb10" *ngIf="publication.typeDeTransaction == 'Location'">{{ publication.avance }} mois</p>
+                  <p class="text mb10" *ngIf="publication.commission">{{ publication.commission }} {{ publication.typeDeTransaction === 'Location' ? 'mois de loyer' : '%' }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-xl-4 offset-xl-2">
+              <div class="d-flex justify-content-between">
+                <div class="pd-list">
+                  <p class="fw600 mb10 ff-heading dark-color">Prix {{ publication.typeDeTransaction === 'Location' ? 'mensuel' : '' }} du bien</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Date de publication</p>
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="publication.typeDeTransaction == 'Location'">Caution</p>
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="publication.fraisDeVisite && (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR')">Frais de visite</p>
+                </div>
+                <div class="pd-list">
+                  <p class="text mb10">{{ publication.prixDuBien }} FCFA {{ publication.typeDeTransaction === 'Location' ? ' / par mois' : '' }}</p>
+                  <p class="text mb10">{{ publication.datePublication | date: "dd-MM-yyyy" }}</p>
+                  <p class="text mb10" *ngIf="publication.typeDeTransaction == 'Location'">{{ publication.caution }} mois</p>
+                  <p class="text mb10" *ngIf="publication.fraisDeVisite && (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR')">{{ publication.fraisDeVisite }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p-divider *ngIf="bienImm.description"></p-divider>
+          <h4 class="title fz17 mb30" *ngIf="bienImm.description">Description du bien</h4>
+          <p *ngIf="bienImm.description">
+              {{ bienImm.description }}
+          </p>
+
+          <p-divider></p-divider>
+          <h4 class="title fz17 mb30">Détails du bien</h4>
+          <div class="row">
+            <div class="col-md-6 col-xl-4">
+              <div class="d-flex justify-content-between">
+                <div class="pd-list">
+                  <p class="fw600 mb10 ff-heading dark-color">Code</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Type de bien</p>
+                  <p class="fw600 mb10 ff-heading dark-color" *ngIf="afficherCategorie()">Catégorie</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Pays</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Région</p>
+                  <p class="fw600 mb-0 ff-heading dark-color">Ville</p>
+                </div>
+                <div class="pd-list">
+                  <p class="text mb10">{{ bienImm.codeBien }}</p>
+                  <p class="text mb10">{{ bienImm.typeDeBien.designation }}</p>
+                  <p class="text mb10" *ngIf="afficherCategorie()">{{ bienImm.categorie }}</p>
+                  <p class="text mb10">{{ bienImm.pays.libelle }}</p>
+                  <p class="text mb10">{{ bienImm.region.libelle }}</p>
+                  <p class="text mb-0">{{ bienImm.ville.libelle }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4 offset-xl-2">
+              <div class="d-flex justify-content-between">
+                <div class="pd-list">
+                  <p class="fw600 mb10 ff-heading dark-color">Quartier</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Surface</p>
+                  <p class="fw600 mb10 ff-heading dark-color">Statut</p>
+                  <p class="fw600 mb-0 ff-heading dark-color">Etat</p>
+                </div>
+                <div class="pd-list">
+                  <p class="text mb10">{{ bienImm.quartier.libelle }}</p>
+                  <p class="text mb10" *ngIf="bienImm.adresse">{{ bienImm.adresse }}</p>
+                  <p class="text mb10" *ngIf="bienImm.surface">{{ bienImm.surface }} m²</p>
+                  <p class="text mb10">
+                    <p-tag *ngIf="bienImm.statutBien == 'Disponible'" severity="success" value="Disponible"></p-tag>
+                  </p>
+                  <p class="text mb-0">
+                    <p-tag *ngIf="bienImm.etatBien == true" severity="success" value="Activé"></p-tag>
+                    <p-tag *ngIf="bienImm.etatBien == false" severity="danger" value="Désactivé"></p-tag>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p-divider *ngIf="bienImm.typeDeBien.designation != 'Terrain'"></p-divider>
+          <h4 class="title fz17 mb30" *ngIf="bienImm.typeDeBien.designation != 'Terrain'">Caractéristiques du bien</h4>
+          <div class="row">
+            <div class="col-md-6 col-xl-4">
+              <div class="d-flex justify-content-between">
+                <div class="pd-list">
+                  <p *ngIf="caracteristique.nombreChambres" class="fw600 mb10 ff-heading dark-color">Nombre de chambres</p>
+                  <p *ngIf="caracteristique.nombreChambresSalon" class="fw600 mb10 ff-heading dark-color">Nombre de chambres salon</p>
+                  <p *ngIf="caracteristique.nombreBureaux" class="fw600 mb10 ff-heading dark-color">Nombre de bureaux</p>
+                  <p *ngIf="caracteristique.nombreBoutiques" class="fw600 mb10 ff-heading dark-color">Nombre de boutiques</p>
+                  <p *ngIf="caracteristique.nombreBoutiques" class="fw600 mb10 ff-heading dark-color">Nombre de magasions</p>
+                  <p *ngIf="caracteristique.nombreAppartements" class="fw600 mb10 ff-heading dark-color">Nombre d'appartements</p>
+                  <p *ngIf="caracteristique.nombreEtages" class="fw600 mb-0 ff-heading dark-color">Nombre d'étages</p>
+                </div>
+                <div class="pd-list">
+                  <p *ngIf="caracteristique.nombreChambres" class="text mb10">{{ caracteristique.nombreChambres }}</p>
+                  <p *ngIf="caracteristique.nombreChambresSalon" class="text mb10">{{ caracteristique.nombreChambresSalon }}</p>
+                  <p *ngIf="caracteristique.nombreBureaux" class="text mb10">{{ caracteristique.nombreBureaux }}</p>
+                  <p *ngIf="caracteristique.nombreBoutiques" class="text mb10">{{ caracteristique.nombreBoutiques }}</p>
+                  <p *ngIf="caracteristique.nombreBoutiques" class="text mb10">{{ caracteristique.nombreBoutiques }}</p>
+                  <p *ngIf="caracteristique.nombreAppartements" class="text mb10">{{ caracteristique.nombreAppartements }}</p>
+                  <p *ngIf="caracteristique.nombreEtages" class="text mb-0">{{ caracteristique.nombreEtages }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-4 offset-xl-2">
+              <div class="d-flex justify-content-between">
+                <div class="pd-list">
+                  <p *ngIf="caracteristique.nombreGarages" class="fw600 mb10 ff-heading dark-color">Nombre de garages</p>
+                  <p *ngIf="caracteristique.nombreCuisineInterne" class="fw600 mb10 ff-heading dark-color">Nombre de cusine interne</p>
+                  <p *ngIf="caracteristique.nombreCuisineExterne" class="fw600 mb10 ff-heading dark-color">Nombre de cuisine externe</p>
+                  <p *ngIf="caracteristique.nombreWCDoucheInterne" class="fw600 mb10 ff-heading dark-color">Nombre de WC-Douche interne</p>
+                  <p *ngIf="caracteristique.nombreWCDoucheExterne" class="fw600 mb10 ff-heading dark-color">Nombre de WC-Douche externe</p>
+                  <p *ngIf="caracteristique.nombreSalons" class="fw600 mb10 ff-heading dark-color">Nombre de salons</p>
+                  <p *ngIf="caracteristique.nombrePlacards" class="fw600 mb-0 ff-heading dark-color">Nombre de placards</p>
+                </div>
+                <div class="pd-list">
+                  <p *ngIf="caracteristique.nombreGarages" class="text mb10">{{ caracteristique.nombreGarages }}</p>
+                  <p *ngIf="caracteristique.nombreCuisineInterne" class="text mb10">{{ caracteristique.nombreCuisineInterne }}</p>
+                  <p *ngIf="caracteristique.nombreCuisineExterne" class="text mb10">{{ caracteristique.nombreCuisineExterne }}</p>
+                  <p *ngIf="caracteristique.nombreWCDoucheInterne" class="text mb10">{{ caracteristique.nombreWCDoucheInterne }}</p>
+                  <p *ngIf="caracteristique.nombreWCDoucheExterne" class="text mb10">{{ caracteristique.nombreWCDoucheExterne }}</p>
+                  <p *ngIf="caracteristique.nombreSalons" class="text mb10">{{ caracteristique.nombreSalons }}</p>
+                  <p *ngIf="caracteristique.nombrePlacards" class="text mb-0">{{ caracteristique.nombrePlacards }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-sm-6 col-md-4">
+              <div class="pd-list mb10-sm">
+                <p *ngIf="caracteristique.parking" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Parking</p>
+                <p *ngIf="caracteristique.eauTde" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau TDE</p>
+                <p *ngIf="caracteristique.compteurEau" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur d'eau</p>
+                <p *ngIf="caracteristique.wifi" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Wifi</p>
+                <p *ngIf="caracteristique.placard" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Placards</p>
+                <p *ngIf="caracteristique.cuisineInterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine interne</p>
+                <p *ngIf="caracteristique.wcDoucheInterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche interne</p>
+                <p *ngIf="caracteristique.balcon" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Balcon</p>
+                <p *ngIf="caracteristique.garage" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Garage</p>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <div class="pd-list">
+                <p *ngIf="caracteristique.eauForage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
+                <p *ngIf="caracteristique.electriciteCeet" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
+                <p *ngIf="caracteristique.ascenseur" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
+                <p *ngIf="caracteristique.aLetage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
+                <p *ngIf="caracteristique.dalle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
+                <p *ngIf="caracteristique.cuisineExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
+                <p *ngIf="caracteristique.wcDoucheExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
+                <p *ngIf="caracteristique.climatisation" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <div class="pd-list">
+                <p *ngIf="caracteristique.plafonne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Plafonné</p>
+                <p *ngIf="caracteristique.baieVitree" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Baie vitrée</p>
+                <p *ngIf="caracteristique.solCarelle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Sol carellé</p>
+                <p *ngIf="caracteristique.cashPowerPersonnel" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cash power personnel</p>
+                <p *ngIf="caracteristique.compteurAdditionnel" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur additionnel</p>
+                <p *ngIf="caracteristique.jardin" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Jardin</p>
+                <p *ngIf="caracteristique.piscine" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Piscine</p>
+                <p *ngIf="caracteristique.terrasse" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Terrasse<p></p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Détails d'une publication -->
+
+  <!-- Formulaire d'ajout d'une publication -->
+  <div *ngIf="affichage == 3">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-3">
+        <div class="dashboard_title_area">
+          <h4>Ajout d'une publication</h4>
+        </div>
+      </div>
+      <div class="col-xxl-9">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+          <form [formGroup]="publicationForm" (ngSubmit)="ajouterPublication()" class="form-style1">
+            <div class="row">
+              <div class="col-sm-7">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Propriété</label>
+                  <br>
+                  <p-dropdown
+                    class="select1" emptyFilterMessage="Aucun résultat trouvé"
+                    emptyMessage="Aucun résultat trouvé"
+                    [options]="biensImmobiliers" placeholder="Choisir la propriété"
+                    formControlName="bienImmobilier" [filter]="true" filterBy="codeBien, typeDeBien.designation, quartier.libelle, quartier.ville.libelle, quartier.ville.region.libelle, adresse"
+                    filterPlaceholder="Rechercher" [showClear]="true"
+                    (onChange)="bienChoisi($event)" optionLabel="codeBien">
+                    <ng-template let-bienImmobilier pTemplate="item">
+                      {{ bienImmobilier.codeBien }}/ {{bienImmobilier.typeDeBien.designation}}/ {{ bienImmobilier.adresse }}
+                    </ng-template>
+                  </p-dropdown>
+                  <div class="error" [hidden]="!bienImmobilier?.hasError('required') || !bienImmobilier.touched">La selection de la propriété est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-sm-5">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Type de transaction</label>
+                  <br>
+                  <p-dropdown
+                    class="select2" emptyFilterMessage="Aucun résultat trouvé"
+                    emptyMessage="Aucun résultat trouvé"
+                    [options]="typesDeTransactions" placeholder="Choisir le type de transaction"
+                    formControlName="typeDeTransaction" [filter]="true"
+                    filterPlaceholder="Rechercher" [(ngModel)]="typeDeTransactionSelectionne"
+                    [showClear]="true">
+                  </p-dropdown>
+                  <div class="error" [hidden]="!typeDeTransaction?.hasError('required') || !typeDeTransaction.touched">La selection du type de transaction est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Libelle</label>
+                  <input type="text" class="form-control" id="libelle" name="libelle" placeholder="Le libelle de la publication" formControlName="libelle" [(ngModel)]="publication.libelle" required>
+                  <!-- <textarea id="libelle" name="libelle" placeholder="Le libelle de la publication" formControlName="libelle" [(ngModel)]="publication.libelle" style="height: 100px;" required></textarea> -->
+                  <div class="error" [hidden]="libelle.valid || libelle.pristine && !libelle.touched ">Le libelle de la publication est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Prix {{ typeDeTransactionSelectionne === 'Location' ? 'mensuel' : '' }} du bien </label>
+                  <input type="number" class="form-control" id="prixDuBien" name="prixDuBien" placeholder="Le prix du bien" formControlName="prixDuBien" [(ngModel)]="publication.prixDuBien" required>
+                  <div class="error" [hidden]="prixDuBien.valid || prixDuBien.pristine && !prixDuBien.touched ">Le prix du bien est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-sm-6" *ngIf="afficherAvanceEtCaution()">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Avance en nombre de mois</label>
+                  <input type="number" class="form-control" id="avance" name="avance" placeholder="L'avance en nombre de mois" [(ngModel)]="publication.avance" formControlName="avance" [max]="12">
+                  <div *ngIf="avance.invalid && (avance.dirty || avance.touched)"
+                  class="error">
+                    <div *ngIf="avance.errors && avance.errors['max']">L'avance ne doit pas dépasser 12 mois</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6" *ngIf="afficherAvanceEtCaution()">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Caution en nombre de mois</label>
+                  <input type="number" class="form-control" id="caution" name="caution" placeholder="La caution en nombre de mois" [(ngModel)]="publication.caution" formControlName="caution" [max]="12">
+                  <div *ngIf="caution.invalid && (caution.dirty || caution.touched)"
+                   class="error">
+                    <div *ngIf="caution.errors && caution.errors['max']">La caution ne doit pas dépasser 12 mois</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6" *ngIf="afficherCommission()">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Commission {{ typeDeTransactionSelectionne === 'Location' ? 'en nombre de mois' : 'en pourcentage' }}</label>
+                  <input *ngIf="typeDeTransactionSelectionne == 'Location'" type="number" class="form-control" id="commission" name="commission" placeholder="La commission en nombre de mois" [(ngModel)]="publication.commission"  formControlName="commission" [max]="12">
+                  <div *ngIf="commission.invalid && (commission.dirty || commission.touched)"
+                   class="error">
+                    <div *ngIf="commission.errors && commission.errors['max']">La commission ne doit pas dépasser 12 mois</div>
+                  </div>
+                  <input *ngIf="typeDeTransactionSelectionne == 'Vente'" type="number" class="form-control" id="commission" name="commission" placeholder="La commission en pourcentage" formControlName="commission" [(ngModel)]="publication.commission">
+                </div>
+              </div>
+              <div class="col-sm-6" *ngIf="afficherFraisDeVisite()">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Frais de visite</label>
+                  <input type="number" class="form-control" id="fraisDeVisite" name="fraisDeVisite" placeholder="Le frais de visite" [(ngModel)]="publication.fraisDeVisite" [ngModelOptions]="{standalone: true}">
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="col-md-12">
+              <div class="text-end">
+                <button class="ud-btn btn-annuler" type="button" (click)="resetPublicationForm()">Annuler</button>
+                &nbsp;
+                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': publicationForm.invalid }" type="submit">Ajouter</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Formulaire d'ajout d'une publication -->
+
+  <!-- Formulaire de modification d'une publication -->
+  <div *ngIf="affichage == 4">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-4">
+        <div class="dashboard_title_area">
+          <h4>Modification d'une publication</h4>
+        </div>
+      </div>
+      <div class="col-xxl-8">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+          <form [formGroup]="publicationForm" (ngSubmit)="modifierPublication()" class="form-style1">
+            <div class="row">
+              <div class="col-sm-7">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Propriété</label>
+                  <br>
+                  <p-dropdown
+                    class="select1" emptyFilterMessage="Aucun résultat trouvé"
+                    emptyMessage="Aucun résultat trouvé"
+                    [options]="biensImmobiliers" placeholder="Choisir la propriété"
+                    formControlName="bienImmobilier" [filter]="true" filterBy="codeBien, typeDeBien.designation, quartier.libelle, quartier.ville.libelle, quartier.ville.region.libelle, adresse"
+                    filterPlaceholder="Rechercher" [showClear]="true" [(ngModel)]="publication.bienImmobilier"
+                    (onChange)="bienChoisi($event)" optionLabel="codeBien">
+                    <ng-template let-bienImmobilier pTemplate="item">
+                      {{ bienImmobilier.codeBien }}/ {{bienImmobilier.typeDeBien.designation}}/ {{ bienImmobilier.adresse }}
+                    </ng-template>
+                  </p-dropdown>
+                  <div class="error" [hidden]="!bienImmobilier?.hasError('required') || !bienImmobilier.touched">La selection de la propriété est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-sm-5">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Type de transaction</label>
+                  <br>
+                  <p-dropdown
+                    class="select2" emptyFilterMessage="Aucun résultat trouvé"
+                    emptyMessage="Aucun résultat trouvé"
+                    [options]="typesDeTransactions" placeholder="Choisir le type de transaction"
+                    formControlName="typeDeTransaction" [filter]="true"
+                    filterPlaceholder="Rechercher" [(ngModel)]="publication.typeDeTransaction"
+                    [showClear]="true">
+                  </p-dropdown>
+                  <div class="error" [hidden]="!typeDeTransaction?.hasError('required') || !typeDeTransaction.touched">La selection du type de transaction est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Libelle</label>
+                  <input type="text" class="form-control" id="libelle" name="libelle" placeholder="Le libelle de la publication" formControlName="libelle" [(ngModel)]="publication.libelle" required>
+                  <!-- <textarea id="libelle" name="libelle" placeholder="Le libelle de la publication" formControlName="libelle" [(ngModel)]="publication.libelle" style="height: 100px;" required></textarea> -->
+                  <div class="error" [hidden]="libelle.valid || libelle.pristine && !libelle.touched ">Le libelle de la publication est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Prix {{ typeDeTransactionSelectionne === 'Location' ? 'mensuel' : '' }} du bien </label>
+                  <input type="number" class="form-control" id="prixDuBien" name="prixDuBien" placeholder="Le prix du bien" formControlName="prixDuBien" [(ngModel)]="publication.prixDuBien" required>
+                  <div class="error" [hidden]="prixDuBien.valid || prixDuBien.pristine && !prixDuBien.touched ">Le prix du bien est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-sm-6" *ngIf="afficherAvanceEtCaution()">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Avance en nombre de mois</label>
+                  <input type="number" class="form-control" id="avance" name="avance" placeholder="L'avance en nombre de mois" [(ngModel)]="publication.avance" formControlName="avance" [max]="12">
+                  <div *ngIf="avance.invalid && (avance.dirty || avance.touched)"
+                  class="error">
+                    <div *ngIf="avance.errors && avance.errors['max']">L'avance ne doit pas dépasser 12 mois</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6" *ngIf="afficherAvanceEtCaution()">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Caution en nombre de mois</label>
+                  <input type="number" class="form-control" id="caution" name="caution" placeholder="La caution en nombre de mois" [(ngModel)]="publication.caution" formControlName="caution" [max]="12">
+                  <div *ngIf="caution.invalid && (caution.dirty || caution.touched)"
+                   class="error">
+                    <div *ngIf="caution.errors && caution.errors['max']">La caution ne doit pas dépasser 12 mois</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6" *ngIf="afficherCommission()">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Commission {{ typeDeTransactionSelectionne === 'Location' ? 'en nombre de mois' : 'en pourcentage' }}</label>
+                  <input *ngIf="typeDeTransactionSelectionne == 'Location'" type="number" class="form-control" id="commission" name="commission" placeholder="La commission en nombre de mois" [(ngModel)]="publication.commission" [ngModelOptions]="{standalone: true}">
+                  <input *ngIf="typeDeTransactionSelectionne == 'Vente'" type="number" class="form-control" id="commission" name="commission" placeholder="La commission en pourcentage" formControlName="commission" [(ngModel)]="publication.commission">
+                </div>
+              </div>
+              <div class="col-sm-6" *ngIf="afficherFraisDeVisite()">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Frais de visite</label>
+                  <input type="number" class="form-control" id="fraisDeVisite" name="fraisDeVisite" placeholder="Le frais de visite" [(ngModel)]="publication.fraisDeVisite" [ngModelOptions]="{standalone: true}">
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="col-md-12">
+              <div class="text-end">
+                <button class="ud-btn btn-annuler" type="button" (click)="resetPublicationForm()">Annuler</button>
+                &nbsp;
+                <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': publicationForm.invalid }" type="submit">Modifier</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Formulaire de modification d'une publication -->
+</div>

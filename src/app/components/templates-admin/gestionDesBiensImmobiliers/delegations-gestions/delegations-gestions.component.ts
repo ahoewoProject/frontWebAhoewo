@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, ConfirmEventType, MenuItem } from 'primeng/api';
@@ -32,7 +32,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './delegations-gestions.component.html',
   styleUrls: ['./delegations-gestions.component.css']
 })
-export class DelegationsGestionsComponent implements OnInit {
+export class DelegationsGestionsComponent implements OnInit, OnDestroy {
 
   listeDesChoix: any[] | undefined;
   checked: string | undefined;
@@ -491,10 +491,10 @@ export class DelegationsGestionsComponent implements OnInit {
     }
 
     if (this.typeDeBienSelectionne.designation == 'Immeuble' || this.typeDeBienSelectionne.designation == 'Appartement' || this.typeDeBienSelectionne.designation == 'Bureau') {
-      this.listeDesCategories = ['non meublé','meublé'];
+      this.listeDesCategories = ['Non meublé','Meublé'];
       this.categorieSelectionnee = this.listeDesCategories[0];
     } else if (this.typeDeBienSelectionne.designation == 'Chambre' || this.typeDeBienSelectionne.designation == 'Chambre salon' || this.typeDeBienSelectionne.designation == 'Villa' || this.typeDeBienSelectionne.designation == 'Maison') {
-      this.listeDesCategories = ['non meublée', 'meublée'];
+      this.listeDesCategories = ['Non meublée', 'Meublée'];
       this.categorieSelectionnee = this.listeDesCategories[0];
     }
     this.validateDelegationGestionForm();
@@ -1194,9 +1194,9 @@ export class DelegationsGestionsComponent implements OnInit {
       this.detailBienAssocie(id);
     }
     if (designation == 'Immeuble' || designation == 'Appartement' || designation == 'Bureau') {
-      this.listeDesCategories = ['non meublé','meublé'];
+      this.listeDesCategories = ['Non meublé','Meublé'];
     } else if (designation == 'Chambre' || designation == 'Chambre salon' || designation == 'Villa' || designation == 'Maison') {
-      this.listeDesCategories = ['non meublée', 'meublée'];
+      this.listeDesCategories = ['Non meublée', 'Meublée'];
     }
     if (designation == 'Terrain') {
       this.menusOfTerrain();
@@ -1398,5 +1398,9 @@ export class DelegationsGestionsComponent implements OnInit {
     } else {
         return 'Région inconnue';
     }
+  }
+
+  ngOnDestroy(): void {
+
   }
 }

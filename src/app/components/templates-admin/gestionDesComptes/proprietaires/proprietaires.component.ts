@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
 import { Proprietaire } from 'src/app/models/gestionDesComptes/Proprietaire';
@@ -10,7 +10,7 @@ import { ProprietaireService } from 'src/app/services/gestionDesComptes/propriet
   templateUrl: './proprietaires.component.html',
   styleUrls: ['./proprietaires.component.css']
 })
-export class ProprietairesComponent {
+export class ProprietairesComponent implements OnInit, OnDestroy {
 
   recherche: string = '';
   affichage = 1;
@@ -159,4 +159,7 @@ export class ProprietairesComponent {
     });
   }
 
+  ngOnDestroy(): void {
+
+  }
 }

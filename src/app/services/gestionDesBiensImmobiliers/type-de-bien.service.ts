@@ -80,6 +80,18 @@ export class TypeDeBienService {
     return this.httpClient.get<Array<TypeDeBien>>(this.url + 'types-de-bien/pour-villa');
   }
 
+  // Affichage des types de bien pour -type de transaction- location;
+  // url: http://localhost:4040/api/types-de-bien/location
+  getTypeDeBienByLocation(): Observable<Array<TypeDeBien>>{
+    return this.httpClient.get<Array<TypeDeBien>>(this.url + 'types-de-bien/location');
+  }
+
+  // Affichage des types de bien pour -type de transaction- vente;
+  // url: http://localhost:4040/api/types-de-bien/vente
+  getTypeDeBienByVente(): Observable<Array<TypeDeBien>>{
+    return this.httpClient.get<Array<TypeDeBien>>(this.url + 'types-de-bien/vente');
+  }
+
   // Activation d'un type de bien;
   // url: http://localhost:4040/api/activer/type-de-bien
   activerTypeDeBien(id: number): Observable<any> {

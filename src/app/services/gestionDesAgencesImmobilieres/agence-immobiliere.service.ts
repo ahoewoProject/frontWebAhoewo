@@ -19,6 +19,49 @@ export class AgenceImmobiliereService {
     this.url = APIEndpoint + 'api/';
   }
 
+  //Affichage des agences immobilières actives par region
+  // url: http://localhost:4040/api/agences/actives/region/{id}
+  getAgencesActivesByRegionId(id: number, numeroDeLaPage: number, elementsParPage: number): Observable<Page<AgenceImmobiliere>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<AgenceImmobiliere>>(this.url + 'agences/actives/region/' + id, {params: params});
+  }
+
+    //Affichage des agences immobilières actives par ville
+  // url: http://localhost:4040/api/agences/actives/ville/{id}
+  getAgencesActivesByVilleId(id: number, numeroDeLaPage: number, elementsParPage: number): Observable<Page<AgenceImmobiliere>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<AgenceImmobiliere>>(this.url + 'agences/actives/ville/' + id, {params: params});
+  }
+
+    //Affichage des agences immobilières actives par quartier
+  // url: http://localhost:4040/api/agences/actives/quartier/{id}
+  getAgencesActivesByQuartierId(id: number, numeroDeLaPage: number, elementsParPage: number): Observable<Page<AgenceImmobiliere>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<AgenceImmobiliere>>(this.url + 'agences/actives/quartier/' + id, {params: params});
+  }
+
+
+  //Affichage des agences immobilières actives
+  // url: http://localhost:4040/api/agences-immobilieres/actives
+  getAgencesActives(numeroDeLaPage: number, elementsParPage: number): Observable<Page<AgenceImmobiliere>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<AgenceImmobiliere>>(this.url + 'agences-immobilieres/actives', {params: params});
+  }
+
+  //Affiche d'une agence immobilière à partir de son nom;
+  // url: http://localhost:4040/api/agence/{nom}
+  findAgenceByNom(nomAgence: string): Observable<AgenceImmobiliere>{
+    return this.httpClient.get<AgenceImmobiliere>(this.url + 'agence/' + nomAgence);
+  }
+
   // Affichage de toutes les occurrences d'agence immobilière;
   // url: http://localhost:4040/api/agences-immobilieres
   getAll(): Observable<Array<AffectationResponsableAgence>>{

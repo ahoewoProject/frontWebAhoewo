@@ -1,0 +1,15 @@
+:host ::ng-deep .select .p-dropdown {
+  width: 100%;
+  height: 55px;
+  border-radius: 8px;
+}
+
+:host ::ng-deep .select .p-dropdown-item {
+  margin-left: -3%;
+}
+
+.img {
+  text-align: center;
+  width: 10%;
+
+}

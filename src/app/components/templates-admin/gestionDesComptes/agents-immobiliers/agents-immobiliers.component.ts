@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { AffectationAgentAgence } from 'src/app/models/gestionDesAgencesImmobilieres/AffectationAgentAgence';
@@ -21,7 +21,7 @@ interface AutoCompleteCompleteEvent {
   templateUrl: './agents-immobiliers.component.html',
   styleUrls: ['./agents-immobiliers.component.css']
 })
-export class AgentsImmobiliersComponent implements OnInit{
+export class AgentsImmobiliersComponent implements OnInit, OnDestroy {
 
   agenceSelectionnee!: AgenceImmobiliere;
   listeDesChoix: any[] | undefined;
@@ -508,5 +508,9 @@ export class AgentsImmobiliersComponent implements OnInit{
         }
       }
     });
+  }
+
+  ngOnDestroy(): void {
+
   }
 }

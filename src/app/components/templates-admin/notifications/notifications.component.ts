@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
@@ -12,7 +12,7 @@ import { NotificationsService } from 'src/app/services/notifications.service';
   templateUrl: './notifications.component.html',
   styleUrls: ['./notifications.component.css']
 })
-export class NotificationsComponent {
+export class NotificationsComponent implements OnInit, OnDestroy {
 
   recherche: string = '';
   user: any;
@@ -194,5 +194,9 @@ export class NotificationsComponent {
     }
 
     return redirectURL;
+  }
+
+  ngOnDestroy(): void {
+
   }
 }

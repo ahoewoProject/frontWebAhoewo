@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
@@ -12,7 +12,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
   templateUrl: './gerants.component.html',
   styleUrls: ['./gerants.component.css']
 })
-export class GerantsComponent implements OnInit{
+export class GerantsComponent implements OnInit, OnDestroy {
 
   recherche: string = '';
   user: any;
@@ -282,4 +282,7 @@ export class GerantsComponent implements OnInit{
     });
   }
 
+  ngOnDestroy(): void {
+
+  }
 }

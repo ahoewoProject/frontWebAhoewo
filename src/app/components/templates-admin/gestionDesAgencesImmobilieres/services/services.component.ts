@@ -1,18 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
 import { Services } from 'src/app/models/gestionDesAgencesImmobilieres/Services';
 import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/services.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-services',
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.css']
 })
-export class ServicesComponent implements OnInit {
+export class ServicesComponent implements OnInit, OnDestroy {
 
   recherche: string = '';
   affichage = 1;
@@ -181,15 +180,15 @@ export class ServicesComponent implements OnInit {
         }
     },
     (error) =>{
-      if (error.status == 409) {
-        this.messageErreur = "Le service avec ce nom existe déjà !";
-        this.messageService.add({
-          severity: 'warn',
-          summary: 'Modification non réussie',
-          detail: this.messageErreur
-        });
-        this.afficherFormulaireModifier(id);
-      }
+      // if (error.status == 409) {
+      //   this.messageErreur = "Le service avec ce nom existe déjà !";
+      //   this.messageService.add({
+      //     severity: 'warn',
+      //     summary: 'Modification non réussie',
+      //     detail: this.messageErreur
+      //   });
+      //   this.afficherFormulaireModifier(id);
+      // }
     })
   }
 
@@ -271,4 +270,7 @@ export class ServicesComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+
+  }
 }

@@ -247,13 +247,13 @@
           </div>
 
           <div *ngIf="images.length !== 0">
-            <p-galleria [value]="images" [showThumbnails]="true" [circular]="true" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '800px', 'margin': '0 auto' }" [numVisible]="5">
+            <p-galleria [value]="images" [showIndicators]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px', 'margin': '0 auto' }" [numVisible]="5">
 
               <ng-template pTemplate="item" let-item>
                   <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}"  style="width: 100%;" loading="lazy"/>
               </ng-template>
 
-              <ng-template pTemplate="thumbnail" *ngIf="images.length > 1"  let-item>
+              <ng-template pTemplate="thumbnail" *ngIf="images.length > 4" let-item>
                 <div class="grid grid-nogutter justify-content-center">
                   <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%;" loading="lazy"/>
                 </div>
@@ -465,8 +465,7 @@
                     <p-dropdown
                       class="select"
                       [options]="listeDesCategories" placeholder="Choisir une catégorie"
-                      formControlName="categorie" (onChange)="categorieChoisie($event)"
-                      >
+                      formControlName="categorie" (onChange)="categorieChoisie($event)">
                     </p-dropdown>
                     <div class="error" [hidden]="!categorie?.hasError('required') || !categorie.touched">La selection de la catégorie est obligatoire</div>
                   </div>
@@ -636,7 +635,7 @@
                       <img [src]="item" style="width: 100%;" loading="lazy"/>
                   </ng-template>
 
-                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 1"  let-item>
+                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4"  let-item>
                     <div class="grid grid-nogutter justify-content-center">
                       <img [src]="item" style="width: 100%;" loading="lazy"/>
                     </div>
@@ -903,7 +902,7 @@
                       <img [src]="item" style="width: 100%;" loading="lazy"/>
                   </ng-template>
 
-                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 1"  let-item>
+                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4"  let-item>
                     <div class="grid grid-nogutter justify-content-center">
                       <img [src]="item" style="width: 100%;" loading="lazy"/>
                     </div>
@@ -1283,7 +1282,7 @@
                       <img [src]="item" style="width: 100%;" loading="lazy"/>
                   </ng-template>
 
-                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 1"  let-item>
+                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4"  let-item>
                     <div class="grid grid-nogutter justify-content-center">
                       <img [src]="item" style="width: 100%;" loading="lazy"/>
                     </div>
@@ -1549,7 +1548,7 @@
                       <img [src]="item" style="width: 100%;" loading="lazy"/>
                   </ng-template>
 
-                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 1"  let-item>
+                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4"  let-item>
                     <div class="grid grid-nogutter justify-content-center">
                       <img [src]="item" style="width: 100%;" loading="lazy"/>
                     </div>
@@ -1739,11 +1738,10 @@
       </div>
       <p-messages severity="info">
         <ng-template pTemplate>
-          <div class="ml-2"><th scope="col">Bien support : {{bienImmobilier.typeDeBien.designation}} | {{afficherRegion(bienImmobilier.region.libelle)}} | {{bienImmobilier.ville.libelle}} | {{bienImmobilier.quartier.libelle}} | {{bienImmobilier.adresse}} | {{bienImmobilier.surface}} m²</th></div>
+          <div class="ml-2"><th scope="col">Bien support : {{bienImmobilier.typeDeBien.designation}} | {{bienImmobilier.region.libelle}} | {{bienImmobilier.ville.libelle}} | {{bienImmobilier.quartier.libelle}} | {{bienImmobilier.adresse}} | {{bienImmobilier.surface}} m²</th></div>
         </ng-template>
       </p-messages>
     </div>
-
 
     <div class="row">
       <p-toast></p-toast>
@@ -1852,13 +1850,13 @@
           </div>
 
           <div *ngIf="images.length !== 0">
-            <p-galleria [value]="images" [showThumbnails]="true" [circular]="true" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '800px', 'margin': '0 auto' }" [numVisible]="5">
+            <p-galleria [value]="images" [showIndicators]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px', 'margin': '0 auto' }" [numVisible]="5">
 
               <ng-template pTemplate="item" let-item>
                   <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}"  style="width: 100%;" loading="lazy"/>
               </ng-template>
 
-              <ng-template pTemplate="thumbnail" *ngIf="images.length > 1"  let-item>
+              <ng-template pTemplate="thumbnail" *ngIf="images.length > 4" let-item>
                 <div class="grid grid-nogutter justify-content-center">
                   <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%;" loading="lazy"/>
                 </div>
@@ -2389,7 +2387,7 @@
                       <img [src]="item" style="width: 100%;" loading="lazy"/>
                   </ng-template>
 
-                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 1"  let-item>
+                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4"  let-item>
                     <div class="grid grid-nogutter justify-content-center">
                       <img [src]="item" style="width: 100%;" loading="lazy"/>
                     </div>
@@ -2916,7 +2914,7 @@
                       <img [src]="item" style="width: 100%;" loading="lazy"/>
                   </ng-template>
 
-                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 1"  let-item>
+                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4"  let-item>
                     <div class="grid grid-nogutter justify-content-center">
                       <img [src]="item" style="width: 100%;" loading="lazy"/>
                     </div>

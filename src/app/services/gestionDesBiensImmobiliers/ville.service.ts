@@ -62,7 +62,6 @@ export class VilleService {
     return this.httpClient.get<Array<Ville>>(this.url + 'villes/region/' + id);
   }
 
-
   // Activation d'une ville;
   // url: http://localhost:4040/api/activer/ville/{id}
   activerVille(id: number): Observable<any>{
