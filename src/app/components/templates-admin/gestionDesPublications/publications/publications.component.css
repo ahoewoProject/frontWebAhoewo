@@ -15,6 +15,7 @@
 
 .error {
   color: #a94442;
+  font-family: 'Inter var', sans-serif;
 }
 
 :host ::ng-deep .select1 .p-dropdown {
@@ -38,5 +39,13 @@
 }
 
 :host ::ng-deep .image {
+  border-radius: 10px;
+}
+
+:host ::ng-deep .imageLength0 {
+  border-radius: 10px;
+}
+
+:host ::ng-deep .p-galleria-thumbnail-wrapper {
   border-radius: 10px;
 }

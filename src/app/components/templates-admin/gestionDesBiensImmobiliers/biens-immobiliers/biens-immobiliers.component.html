@@ -141,19 +141,19 @@
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
 
           <div class="text-center" *ngIf="images.length == 0">
-            <p-image class="w-100" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
+            <p-image class="w-100" imageClass="imageLength0" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
           </div>
 
           <div *ngIf="images.length !== 0">
             <p-galleria [value]="images" [showThumbnails]="true" [circular]="true" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '800px', 'margin': '0 auto' }" [numVisible]="5">
 
               <ng-template pTemplate="item" let-item>
-                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}"  style="width: 100%;" loading="lazy"/>
+                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}"  style="width: 100%; border-radius:10px;" loading="lazy"/>
               </ng-template>
 
               <ng-template pTemplate="thumbnail" *ngIf="images.length > 1" let-item>
                 <div class="grid grid-nogutter justify-content-center">
-                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%;" loading="lazy"/>
+                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%; border-radius:8px;" loading="lazy"/>
                 </div>
               </ng-template>
 
@@ -243,19 +243,19 @@
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
 
           <div class="text-center" *ngIf="images.length == 0">
-            <p-image class="w-100" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
+            <p-image class="w-100" imageClass="imageLength0" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
           </div>
 
           <div *ngIf="images.length !== 0">
             <p-galleria [value]="images" [showIndicators]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px', 'margin': '0 auto' }" [numVisible]="5">
 
               <ng-template pTemplate="item" let-item>
-                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}"  style="width: 100%;" loading="lazy"/>
+                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}"  style="width: 100%; border-radius:10px;" loading="lazy"/>
               </ng-template>
 
-              <ng-template pTemplate="thumbnail" *ngIf="images.length > 4" let-item>
+              <ng-template pTemplate="thumbnail" *ngIf="images.length > 4" style="border-radius:10px;" let-item>
                 <div class="grid grid-nogutter justify-content-center">
-                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%;" loading="lazy"/>
+                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%; border-radius:8px;" loading="lazy"/>
                 </div>
               </ng-template>
 
@@ -625,19 +625,19 @@
           <div *ngIf="activeIndex == 2" class="ps-widget bgc-white bdrs12 p30 position-relative">
             <div class="row" *ngIf="typeDeBienSelectionne.designation == 'Terrain'">
               <div class="text-center" *ngIf="imgURLs.length == 0">
-                <p-image class="w-100" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
+                <p-image class="w-100" imageClass="imageLength0" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
               </div>
 
               <div *ngIf="imgURLs.length !== 0">
                 <p-galleria [value]="imgURLs" [showThumbnails]="true" [circular]="true" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '800px', 'margin': '0 auto' }" [numVisible]="5">
 
                   <ng-template pTemplate="item" let-item>
-                      <img [src]="item" style="width: 100%;" loading="lazy"/>
+                      <img [src]="item" style="width: 100%; border-radius:10px;" loading="lazy"/>
                   </ng-template>
 
-                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4"  let-item>
+                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4" let-item>
                     <div class="grid grid-nogutter justify-content-center">
-                      <img [src]="item" style="width: 100%;" loading="lazy"/>
+                      <img [src]="item" style="width: 100%; border-radius:8px;" loading="lazy"/>
                     </div>
                   </ng-template>
 
@@ -892,19 +892,19 @@
           <div *ngIf="activeIndex == 3" class="ps-widget bgc-white bdrs12 p30 position-relative">
             <div class="row">
               <div class="text-center" *ngIf="imgURLs.length == 0">
-                <p-image class="w-100" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
+                <p-image class="w-100" imageClass="imageLength0" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
               </div>
 
               <div *ngIf="imgURLs.length !== 0">
                 <p-galleria [value]="imgURLs" [showThumbnails]="true" [circular]="true" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '800px', 'margin': '0 auto' }" [numVisible]="5">
 
                   <ng-template pTemplate="item" let-item>
-                      <img [src]="item" style="width: 100%;" loading="lazy"/>
+                      <img [src]="item" style="width: 100%; border-radius:10px;" loading="lazy"/>
                   </ng-template>
 
-                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4"  let-item>
+                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4" let-item>
                     <div class="grid grid-nogutter justify-content-center">
-                      <img [src]="item" style="width: 100%;" loading="lazy"/>
+                      <img [src]="item" style="width: 100%; border-radius:8px;" loading="lazy"/>
                     </div>
                   </ng-template>
 
@@ -1272,19 +1272,19 @@
           <div *ngIf="activeIndex == 2" class="ps-widget bgc-white bdrs12 p30 position-relative">
             <div class="row" *ngIf="typeDeBienSelectionne.designation == 'Terrain'">
               <div class="text-center" *ngIf="imgURLs.length == 0">
-                <p-image class="w-100" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
+                <p-image class="w-100" imageClass="imageLength0" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
               </div>
 
               <div *ngIf="imgURLs.length !== 0">
                 <p-galleria [value]="imgURLs" [showThumbnails]="true" [circular]="true" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '800px', 'margin': '0 auto' }" [numVisible]="5">
 
                   <ng-template pTemplate="item" let-item>
-                      <img [src]="item" style="width: 100%;" loading="lazy"/>
+                      <img [src]="item" style="width: 100%; border-radius:10px;" loading="lazy"/>
                   </ng-template>
 
-                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4"  let-item>
+                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4" let-item>
                     <div class="grid grid-nogutter justify-content-center">
-                      <img [src]="item" style="width: 100%;" loading="lazy"/>
+                      <img [src]="item" style="width: 100%; border-radius:8px;" loading="lazy"/>
                     </div>
                   </ng-template>
 
@@ -1538,19 +1538,19 @@
           <div *ngIf="activeIndex == 3" class="ps-widget bgc-white bdrs12 p30 position-relative">
             <div class="row">
               <div class="text-center" *ngIf="imgURLs.length == 0">
-                <p-image class="w-100" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
+                <p-image class="w-100" imageClass="imageLength0" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
               </div>
 
               <div *ngIf="imgURLs.length !== 0">
                 <p-galleria [value]="imgURLs" [showThumbnails]="true" [circular]="true" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '800px', 'margin': '0 auto' }" [numVisible]="5">
 
                   <ng-template pTemplate="item" let-item>
-                      <img [src]="item" style="width: 100%;" loading="lazy"/>
+                      <img [src]="item" style="width: 100%; border-radius:10px;" loading="lazy"/>
                   </ng-template>
 
-                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4"  let-item>
+                  <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4" let-item>
                     <div class="grid grid-nogutter justify-content-center">
-                      <img [src]="item" style="width: 100%;" loading="lazy"/>
+                      <img [src]="item" style="width: 100%; border-radius:8px;" loading="lazy"/>
                     </div>
                   </ng-template>
 
@@ -1846,19 +1846,19 @@
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
 
           <div class="text-center" *ngIf="images.length == 0">
-            <p-image class="w-100" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
+            <p-image class="w-100" imageClass="imageLength0" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
           </div>
 
           <div *ngIf="images.length !== 0">
             <p-galleria [value]="images" [showIndicators]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px', 'margin': '0 auto' }" [numVisible]="5">
 
               <ng-template pTemplate="item" let-item>
-                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}"  style="width: 100%;" loading="lazy"/>
+                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}"  style="width: 100%; border-radius:10px;" loading="lazy"/>
               </ng-template>
 
               <ng-template pTemplate="thumbnail" *ngIf="images.length > 4" let-item>
                 <div class="grid grid-nogutter justify-content-center">
-                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%;" loading="lazy"/>
+                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%; border-radius:8px;" loading="lazy"/>
                 </div>
               </ng-template>
 
@@ -2377,19 +2377,19 @@
           <div *ngIf="activeIndex == 2" class="ps-widget bgc-white bdrs12 p30 position-relative">
             <div class="row">
               <div class="text-center" *ngIf="imgURLs.length == 0">
-                <p-image class="w-100" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
+                <p-image class="w-100" imageClass="imageLength0" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
               </div>
 
               <div *ngIf="imgURLs.length !== 0">
                 <p-galleria [value]="imgURLs" [showThumbnails]="true" [circular]="true" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '800px', 'margin': '0 auto' }" [numVisible]="5">
 
                   <ng-template pTemplate="item" let-item>
-                      <img [src]="item" style="width: 100%;" loading="lazy"/>
+                      <img [src]="item" style="width: 100%; border-radius:10px;" loading="lazy"/>
                   </ng-template>
 
                   <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4"  let-item>
                     <div class="grid grid-nogutter justify-content-center">
-                      <img [src]="item" style="width: 100%;" loading="lazy"/>
+                      <img [src]="item" style="width: 100%; border-radius:8px;" loading="lazy"/>
                     </div>
                   </ng-template>
 
@@ -2904,19 +2904,19 @@
           <div *ngIf="activeIndex == 2" class="ps-widget bgc-white bdrs12 p30 position-relative">
             <div class="row">
               <div class="text-center" *ngIf="imgURLs.length == 0">
-                <p-image class="w-100" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
+                <p-image class="w-100" imageClass="imageLength0" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
               </div>
 
               <div *ngIf="imgURLs.length !== 0">
                 <p-galleria [value]="imgURLs" [showThumbnails]="true" [circular]="true" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '800px', 'margin': '0 auto' }" [numVisible]="5">
 
                   <ng-template pTemplate="item" let-item>
-                      <img [src]="item" style="width: 100%;" loading="lazy"/>
+                      <img [src]="item" style="width: 100%; border-radius:10px;" loading="lazy"/>
                   </ng-template>
 
                   <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4"  let-item>
                     <div class="grid grid-nogutter justify-content-center">
-                      <img [src]="item" style="width: 100%;" loading="lazy"/>
+                      <img [src]="item" style="width: 100%; border-radius:8px;" loading="lazy"/>
                     </div>
                   </ng-template>
 

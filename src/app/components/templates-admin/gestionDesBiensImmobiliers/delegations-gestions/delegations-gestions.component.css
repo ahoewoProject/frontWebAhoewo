@@ -47,6 +47,7 @@
 
 .error {
   color: #a94442;
+  font-family: 'Inter var', sans-serif;
 }
 
 :host ::ng-deep .checkboxLabel {
@@ -59,4 +60,12 @@
 
 :host ::ng-deep .p-message {
   font-family: 'DM Sans', sans-serif;
+}
+
+:host ::ng-deep .imageLength0 {
+  border-radius: 10px;
+}
+
+:host ::ng-deep .p-galleria-thumbnail-wrapper {
+  border-radius: 10px;
 }

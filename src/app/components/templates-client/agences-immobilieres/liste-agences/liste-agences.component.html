@@ -25,7 +25,22 @@
           <div class="col-sm-3">
             <div class="mb20">
               <label class="heading-color ff-heading fw600 mb10">Nom de l'agence</label>
-              <input type="text" (input)="applyFilter($event)" class="form-control" placeholder="Entrer le nom de l'agence">
+               <p-autoComplete
+                  emptySelectionMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé"
+                  class="autocomplexion p-fluid" [showEmptyMessage]="true" [showClear]="true"
+                  placeholder="Entrer le nom de l'agence"
+                  [suggestions]="agencesImmobilieresFiltrees" [group]="true"
+                  (completeMethod)="filtreAgenceImmobiliere($event)" field="nomAgence">
+                  <ng-template let-group pTemplate="group">
+                    <a [routerLink]="['/agence-immobiliere', group.nomAgence]">
+                      <div class="flex align-items-center">
+                        <img [src]="group.logoAgence !== '' ? (this.APIEndpoint+'api/logo/agence-immobiliere/'+group.id) : 'assets/images/team/logo_par_defaut.jpg'" [class]="'mr-2 flag flag-' + group.nomAgence" style="width: 50px" />
+                        <span>{{group.nomAgence}}</span>
+                      </div>
+                    </a>
+                </ng-template>
+                </p-autoComplete>
+              <!-- <input type="text" (input)="applyFilter($event)" class="form-control" placeholder="Entrer le nom de l'agence"> -->
             </div>
           </div>
           <div class="col-sm-3">
@@ -77,7 +92,7 @@
       <div class="col-md-6 col-lg-4">
         <div class="agency-style1 p30 bdrs12 bdr1 mb30">
           <div class="agency-img">
-            <a  [routerLink]="['/agence-immobiliere', agenceImmobiliere.nomAgence]">
+            <a [routerLink]="['/agence-immobiliere', agenceImmobiliere.nomAgence]">
               <img class="w-100" loading="lazy"
               [src]="agenceImmobiliere.logoAgence !== '' ? (this.APIEndpoint+'api/logo/agence-immobiliere/'+agenceImmobiliere.id) : 'assets/images/team/logo_par_defaut.jpg'"
                alt="agences">
@@ -90,7 +105,7 @@
           </div>
           <p-divider></p-divider>
           <div class="agency-details">
-            <a  [routerLink]="['/agence-immobiliere', agenceImmobiliere.nomAgence]">
+            <a [routerLink]="['/agence-immobiliere', agenceImmobiliere.nomAgence]">
               <h6 class="agency-title mb-1">{{agenceImmobiliere.nomAgence}} <i *ngIf="agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></h6>
             </a>
             <p class="fz15">{{agenceImmobiliere.adresse}}, {{agenceImmobiliere.quartier.libelle}}, {{agenceImmobiliere.quartier.ville.libelle}} - {{agenceImmobiliere.quartier.ville.region.pays.libelle}}</p>

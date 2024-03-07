@@ -12,6 +12,11 @@ import { RegionService } from 'src/app/services/gestionDesBiensImmobiliers/regio
 import { VilleService } from 'src/app/services/gestionDesBiensImmobiliers/ville.service';
 import { environment } from 'src/environments/environment';
 
+interface AutoCompleteCompleteEvent {
+  originalEvent: Event;
+  query: string;
+}
+
 @Component({
   selector: 'app-liste-agences',
   templateUrl: './liste-agences.component.html',
@@ -24,6 +29,7 @@ export class ListeAgencesComponent implements OnInit {
   regions: Region[] = [];
   villes: Ville[] = [];
   quartiers: Quartier[] = [];
+  agencesImmobilieresFiltrees: any[] = [];
   agencesImmobilieres!: Page<AgenceImmobiliere>;
   regionSelectionnee = new Region();
   villeSelectionnee = new Ville();
@@ -46,10 +52,16 @@ export class ListeAgencesComponent implements OnInit {
     this.listeAgencesActives(this.numeroDeLaPage, this.elementsParPage);
   }
 
-  applyFilter(event: any) {
-    // this.nomAgence = event.target.value;
-    // console.log(this.nomAgence)
-    // this.agencesImmobilieres.content = this.agencesImmobilieres.content.filter((agence) => agence.nomAgence == event.value);
+  filtreAgenceImmobiliere(event: AutoCompleteCompleteEvent) {
+    let filtres: any[] = [];
+    let query = event.query;
+    for (let i = 0; i < (this.agencesImmobilieres.content as any[]).length; i++) {
+        let agence = (this.agencesImmobilieres.content as any[])[i];
+        if (agence.nomAgence.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+          filtres.push(agence);
+        }
+    }
+    this.agencesImmobilieresFiltrees = filtres;
   }
 
   //Fonction pour recupérer la liste des régions actives

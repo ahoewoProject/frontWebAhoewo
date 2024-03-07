@@ -1,10 +1,14 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
+import { ContactezNousForm } from 'src/app/models/ContactezNousForm';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
 import { ServicesAgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/ServicesAgenceImmobiliere';
 import { Publication } from 'src/app/models/gestionDesPublications/Publication';
+import { ContactezNousService } from 'src/app/services/contactez-nous.service';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { ServicesAgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/services-agence-immobiliere.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
@@ -18,20 +22,27 @@ import { environment } from 'src/environments/environment';
 export class DetailsAgenceComponent implements OnInit {
 
   loading: boolean = false;
+  loadingMessage: string = 'Chargement du formulaire en cours !';
   activeIndex: number = 0;
 
   numeroDeLaPage = 0;
   elementsParPage = 6;
   agenceImmobiliere: AgenceImmobiliere = new AgenceImmobiliere();
+  contactezNousForm2: ContactezNousForm = new ContactezNousForm();
   APIEndpoint: string;
   nomAgence: any;
   servicesAgenceImmobiliere!: Page<ServicesAgenceImmobiliere>;
   publications!: Page<Publication>;
 
+  contactezNousForm1: any;
+
   constructor(private route: ActivatedRoute,
     private agenceImmobiliereService: AgenceImmobiliereService,
     private _serviceAgenceService: ServicesAgenceImmobiliereService,
-    private datePipe: DatePipe, private publicationService: PublicationService) {
+    private datePipe: DatePipe, private publicationService: PublicationService,
+    private contactezNousService: ContactezNousService, private messageService: MessageService
+  )
+  {
     this.APIEndpoint = environment.APIEndpoint;
 
     this.route.paramMap.subscribe(params => {
@@ -40,6 +51,7 @@ export class DetailsAgenceComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initContactezNousForm();
     this.detailAgenceImmobiliere();
     this.listeServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
   }
@@ -202,5 +214,50 @@ export class DetailsAgenceComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  initContactezNousForm(): void {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    this.contactezNousForm1 = new FormGroup({
+      nomPrenoms: new FormControl('', Validators.required),
+      telephone: new FormControl('', Validators.required),
+      emetteurEmail: new FormControl('', [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
+      message: new FormControl('', Validators.required)
+    })
+  }
+
+  get nomPrenoms() {
+    return this.contactezNousForm1.get('nomPrenoms');
+  }
+
+  get telephone() {
+    return this.contactezNousForm1.get('telephone');
+  }
+
+  get emetteurEmail() {
+    return this.contactezNousForm1.get('emetteurEmail');
+  }
+
+  get message() {
+    return this.contactezNousForm1.get('message');
+  }
+
+  resetContactezNousForm(): void {
+    this.contactezNousForm1.reset();
+  }
+
+  contactezNous(): void {
+    this.loading = true;
+    this.loadingMessage = 'Envoi du message de contact en cours !';
+    this.contactezNousForm2.recepteurEmail = this.agenceImmobiliere.adresseEmail;
+    setTimeout(() => {
+      this.contactezNousService.contactezNous(this.contactezNousForm2).subscribe(
+        (response) => {
+          this.loading = false;
+          this.messageService.add({severity:'success', summary: 'Message envoyé', detail: 'Votre message a été envoyé avec succès'});
+        }
+      );
+    }, 5000);
+    this.resetContactezNousForm();
   }
 }

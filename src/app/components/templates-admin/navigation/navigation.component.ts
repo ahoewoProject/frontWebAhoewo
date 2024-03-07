@@ -42,24 +42,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
       this.activeLink = donnee;
     });
     if (this.user) {
-      interval(1000)
-      .pipe(
-        switchMap(() => {
-          this.notificationService.initListeNotificationsNonLues();
-          return this.notificationService.notificationsNonLuesEvent;
-        })
-      )
-      .subscribe((data: Notification[]) => {
-        this.notificationsNonLues = data;
-        this.notificationsNonLues.forEach((notification) => {
-          if (!this.notificationsDejaAffichees.includes(notification.id)) {
-            this.afficherNotification(notification.titre, notification.message);
-            this.notificationsDejaAffichees.push(notification.id);
-          }
-        });
-        this.initListeNotifications();
-      });
-
+      this.loadNotification();
       this.notificationService.initListeNotificationsNonLues();
       this.notificationService.notificationsNonLuesEvent.subscribe(
         (data: Notification[]) => {
@@ -141,6 +124,26 @@ export class NavigationComponent implements OnInit, OnDestroy {
     this.personneService.deconnexion();
   }
 
+  loadNotification(): void {
+    interval(1000)
+    .pipe(
+      switchMap(() => {
+        this.notificationService.initListeNotificationsNonLues();
+        return this.notificationService.notificationsNonLuesEvent;
+      })
+    )
+    .subscribe((data: Notification[]) => {
+      this.notificationsNonLues = data;
+      this.notificationsNonLues.forEach((notification) => {
+        if (!this.notificationsDejaAffichees.includes(notification.id)) {
+          this.afficherNotification(notification.titre, notification.message);
+          this.notificationsDejaAffichees.push(notification.id);
+        }
+      });
+      this.initListeNotifications();
+    });
+  }
+
   redirectToNotificationPage(): string {
     let notificationUrl = '';
     if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
@@ -208,7 +211,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   afficherNotification(titre: string, message: string) {
-    const iconUrl = 'assets/images/house.ico';
+    const iconUrl = 'assets/images/apple-touch-icon-72x72.png';
     this.serviceWorker.showNotification(titre, message, iconUrl);
   }
 

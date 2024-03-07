@@ -69,4 +69,5 @@ margin-left: 0; /* Suppression de la marge négative */
 
 .error {
   color: #a94442;
+  font-family: 'Inter var', sans-serif;
 }

@@ -1,11 +1,15 @@
 import { DecimalPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { Galleria } from 'primeng/galleria';
 import { Page } from 'src/app/interfaces/Page';
+import { ContactezNousForm } from 'src/app/models/ContactezNousForm';
 import { Caracteristiques } from 'src/app/models/gestionDesBiensImmobiliers/Caracteristiques';
 import { ImagesBienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/ImagesBienImmobilier';
 import { Publication } from 'src/app/models/gestionDesPublications/Publication';
+import { ContactezNousService } from 'src/app/services/contactez-nous.service';
 import { CaracteristiquesService } from 'src/app/services/gestionDesBiensImmobiliers/caracteristiques.service';
 import { ImagesBienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/images-bien-immobilier.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
@@ -19,7 +23,11 @@ import { environment } from 'src/environments/environment';
 export class DetailsPublicationComponent implements OnInit, OnDestroy  {
 
   loading: boolean = false;
+  loadingContactForm: boolean = false;
+  loadingMessage: string = 'Chargement du formulaire en cours !';
   activeIndex: number = 0;
+  contactezNousForm1: any;
+  contactezNousForm2: ContactezNousForm = new ContactezNousForm();
 
   numeroDeLaPage = 0;
   elementsParPage = 2;
@@ -43,12 +51,29 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
 
   constructor(private publicationService: PublicationService,
     private route: ActivatedRoute, private imagesBienImmobilierService: ImagesBienImmobilierService,
-    private caracteristiquesServices: CaracteristiquesService, private cd: ChangeDetectorRef, private decimalPipe: DecimalPipe)
+    private caracteristiquesServices: CaracteristiquesService, private cd: ChangeDetectorRef,
+    private decimalPipe: DecimalPipe, private contactezNousService: ContactezNousService,
+    private messageService: MessageService
+  )
   {
     this.APIEndpoint = environment.APIEndpoint;
   }
 
   ngOnInit(): void {
+    this.initContactezNousForm();
+    this.initResponsiveOptions();
+    this.bindDocumentListeners();
+    this.route.paramMap.subscribe(params => {
+      const codePublication = params.get('codePublication');
+      console.log(codePublication);
+
+      if (codePublication) {
+        this.detailPublication(codePublication);
+      }
+    });
+  }
+
+  initResponsiveOptions(): void {
     this.responsiveOptions = [
       {
           breakpoint: '1024px',
@@ -63,15 +88,6 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
           numVisible: 1
       }
     ];
-    this.bindDocumentListeners();
-    this.route.paramMap.subscribe(params => {
-      const codePublication = params.get('codePublication');
-      console.log(codePublication);
-
-      if (codePublication) {
-        this.detailPublication(codePublication);
-      }
-    });
   }
 
   //Fonction pour recupérer les images associées à un bien immobilier
@@ -267,6 +283,57 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
     } else {
       return `Il y a ${elapsedSeconds} seconde${elapsedSeconds > 1 ? 's' : ''}`;
     }
+  }
+
+  initContactezNousForm(): void {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    this.contactezNousForm1 = new FormGroup({
+      nomPrenoms: new FormControl('', Validators.required),
+      telephone: new FormControl('', Validators.required),
+      emetteurEmail: new FormControl('', [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
+      message: new FormControl('', Validators.required)
+    })
+  }
+
+  get nomPrenoms() {
+    return this.contactezNousForm1.get('nomPrenoms');
+  }
+
+  get telephone() {
+    return this.contactezNousForm1.get('telephone');
+  }
+
+  get emetteurEmail() {
+    return this.contactezNousForm1.get('emetteurEmail');
+  }
+
+  get message() {
+    return this.contactezNousForm1.get('message');
+  }
+
+  resetContactezNousForm(): void {
+    this.contactezNousForm1.reset();
+  }
+
+  contactezNous(): void {
+    this.loadingContactForm = true;
+    this.loadingMessage = 'Envoi du message de contact en cours !';
+
+    if (this.publication.agenceImmobiliere) {
+      this.contactezNousForm2.recepteurEmail = this.publication.agenceImmobiliere.adresseEmail;
+    } else {
+      this.contactezNousForm2.recepteurEmail = this.publication.personne.email;
+    }
+    setTimeout(() => {
+      this.contactezNousService.contactezNous(this.contactezNousForm2).subscribe(
+        (response) => {
+          this.loadingContactForm = false;
+          this.messageService.add({severity:'success', summary: 'Message envoyé', detail: 'Votre message a été envoyé avec succès'});
+
+        }
+      );
+    }, 5000);
+    this.resetContactezNousForm();
   }
 
   onThumbnailButtonClick() {

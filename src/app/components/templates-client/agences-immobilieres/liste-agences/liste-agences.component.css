@@ -11,5 +11,19 @@
 .img {
   text-align: center;
   width: 10%;
-
 }
+
+:host ::ng-deep .autocomplexion .p-autocomplete {
+  width: 100%;
+  height: 55px;
+  border-radius: 10px;
+}
+
+:host ::ng-deep .autocomplexion .p-autocomplete-item {
+  margin-left: 0;
+}
+
+:host ::ng-deep .autocomplexion .p-autocomplete-items {
+  margin-left: 0;
+}
+

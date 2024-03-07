@@ -2,6 +2,7 @@
 <section class="home-banner-style6 mt-100">
 </section>
 <!-- Section Titre End -->
+<p-toast></p-toast>
 
 <!-- Détails Propriété -->
 <section class="pt60 pb90 bgc-f7">
@@ -33,7 +34,7 @@
               <a class="icon mr10" href="#"><span class="flaticon-share-1"></span></a>
               <a class="icon" href="#"><span class="flaticon-printer"></span></a>
             </div> -->
-            <h3 class="price mb-0" *ngIf="publication.typeDeTransaction === 'Location'">{{ publication.prixDuBien | number }} FCFA / par mois</h3>
+            <h3 class="price mb-0" *ngIf="publication.typeDeTransaction === 'Location'">{{ publication.prixDuBien | number }} FCFA / mois</h3>
             <h3 class="price mb-0" *ngIf="publication.typeDeTransaction === 'Vente'">{{ publication.prixDuBien | number }} FCFA</h3>
           </div>
         </div>
@@ -45,7 +46,7 @@
       <div class="col-lg-8">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
           <div class="text-center" *ngIf="images.length == 0">
-            <p-image class="w-100" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
+            <p-image class="w-100" imageClass="imageLength0" src="assets/images/home/house.jpg" alt="" width="100%" loading="lazy"></p-image>
           </div>
 
           <div *ngIf="images.length !== 0">
@@ -64,15 +65,15 @@
               [containerClass]="galleriaClass()"
             >
               <ng-template pTemplate="item" let-item>
-                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" [ngStyle]="{ width: !fullscreen ? '100%' : '', display: !fullscreen ? 'block' : '' }" />
+                  <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="border-radius:10px" [ngStyle]="{ width: !fullscreen ? '100%' : '', display: !fullscreen ? 'block' : '' }" />
               </ng-template>
               <ng-template pTemplate="thumbnail" let-item>
                   <div class="grid grid-nogutter justify-content-center">
-                      <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%;" />
+                      <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%; border-radius:8px" />
                   </div>
               </ng-template>
-              <ng-template pTemplate="footer" let-item>
-                  <div class="custom-galleria-footer">
+              <ng-template pTemplate="footer" let-item >
+                  <div class="custom-galleria-footer" style="border-radius:10px">
                       <button type="button" pButton *ngIf="images.length > 4" icon="pi pi-list" (click)="onThumbnailButtonClick()"></button>
                       <span *ngIf="images" class="title-container">
                           <span>{{ activeIndex + 1 }}/{{ images.length }}</span>
@@ -347,7 +348,7 @@
                           </div>
                           <div class="list-content">
                             <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
-                            <p class="list-text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+                            <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
                             <!-- <div class="list-meta d-flex align-items-center">
                               <a href="#"><span class="flaticon-bed"></span>3 bed</a>
                               <a href="#"><span class="flaticon-shower"></span>4 bath</a>
@@ -397,7 +398,7 @@
                           </div>
                           <div class="list-content">
                             <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
-                            <p class="list-text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+                            <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
                             <!-- <div class="list-meta d-flex align-items-center">
                               <a href="#"><span class="flaticon-bed"></span>3 bed</a>
                               <a href="#"><span class="flaticon-shower"></span>4 bath</a>
@@ -447,7 +448,7 @@
                           </div>
                           <div class="list-content">
                             <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
-                            <p class="list-text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+                            <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
                           </div>
                         </div>
                       </div>
@@ -478,36 +479,51 @@
         <!-- Info Annonceur Start -->
         <div class="agen-personal-info position-relative bgc-white default-box-shadow2 bdrs12 p30 mb30">
           <div class="widget-wrapper mb-0">
-            <h6 class="title fz17 mb30 text-center">Informations de l'annonceur</h6>
-            <div *ngIf="publication.agenceImmobiliere" class="agent-single d-sm-flex align-items-center pb25">
-              <div class="single-img mb30-sm">
-                <img class="w90" [src]="publication.agenceImmobiliere.logoAgence !== '' ? (this.APIEndpoint+'api/logo/agence-immobiliere/'+publication.agenceImmobiliere.id) : 'assets/images/team/logo_par_defaut.jpg'" alt="">
-              </div>
-              <div class="single-contant ml20 ml0-xs">
-                <h6 class="title mb-1">{{ publication.agenceImmobiliere.nomAgence }} <i *ngIf="publication.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6; font-size: smaller;"></i></h6>
-                <div class="agent-meta mb10 d-md-flex align-items-center">
-                  <a class="text fz15"><i class="flaticon-call pe-1"></i>{{ publication.agenceImmobiliere.telephone }}</a>
+            <h6 class="title fz17 mb30 text-center">Contact de l'annonceur</h6>
+            <div *ngIf="publication.agenceImmobiliere" class="align-items-center pb25">
+              <div class="row">
+                <div class="col-lg-12 text-center">
+                  <img class="w90" [src]="publication.agenceImmobiliere.logoAgence !== '' ? (this.APIEndpoint+'api/logo/agence-immobiliere/'+publication.agenceImmobiliere.id) : 'assets/images/team/logo_par_defaut.jpg'" alt="">
                 </div>
-                <a [routerLink]="['/annonces-immobilieres']" [queryParams]="{ nomAgence: publication.agenceImmobiliere.nomAgence }" class="text-decoration-underline fw600">Voir les annonces</a>
-              </div>
-            </div>
-            <div *ngIf="!publication.agenceImmobiliere" class="agent-single d-sm-flex align-items-center pb25">
-              <div class="single-img mb30-sm">
-                <img class="w90" src="assets/images/user.jpg" alt="">
-              </div>
-              <div class="single-contant ml20 ml0-xs">
-                <h6 class="title mb-1">{{ publication.personne.nom }} {{ publication.personne.prenom }} <i *ngIf="publication.personne.estCertifie" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6; font-size: smaller;"></i></h6>
-                <div class="agent-meta mb10 d-md-flex align-items-center">
-                  <a class="text fz15"><i class="flaticon-call pe-1"></i>{{ publication.personne.telephone }}</a>
+                <div class="col-lg-12 text-center">
+                  <h6 class="title mb-1">{{ publication.agenceImmobiliere.nomAgence }} <i *ngIf="publication.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6; font-size: smaller;"></i></h6>
+                  <a class="text fz15" href="tel:{{ publication.agenceImmobiliere.telephone }}"><i class="flaticon-call pe-1"></i>{{ publication.agenceImmobiliere.telephone }}</a>
                 </div>
-                <a [routerLink]="['/annonces-immobilieres']" [queryParams]="{ email: publication.personne.email }" class="text-decoration-underline fw600">Voir les annonces</a>
               </div>
             </div>
-            <div *ngIf="publication.agenceImmobiliere" class="d-grid">
-              <a target="_blank" href="https://wa.me/{{publication.agenceImmobiliere.telephone}}?text=Bonjour, Je suis interessé par votre publication de *{{publication.libelle}}*" class="ud-btn btn-thm3"><i class="pi pi-whatsapp"></i> WhatsApp</a>
+            <div *ngIf="!publication.agenceImmobiliere" class="align-items-center pb25">
+              <div class="row">
+                <div class="col-lg-12 text-center">
+                  <div class="mb20">
+                    <img class="w90" src="assets/images/user.jpg" alt="">
+                  </div>
+                </div>
+                <div class="col-lg-12 text-center">
+                  <h6 class="title mb-1">{{ publication.personne.nom }} {{ publication.personne.prenom }} <i *ngIf="publication.personne.estCertifie" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6; font-size: smaller;"></i></h6>
+                  <a class="text fz15" href="tel:{{ publication.personne.telephone }}"><i class="flaticon-call pe-1"></i>{{ publication.personne.telephone }}</a>
+                  <!-- <a [routerLink]="['/annonces-immobilieres']" [queryParams]="{ email: publication.personne.email }" class=" fw600">Lister ses annonces</a> -->
+                </div>
+              </div>
+
+
             </div>
-            <div *ngIf="!publication.agenceImmobiliere" class="d-grid">
-              <a target="_blank" href="https://wa.me/{{publication.personne.telephone}}?text=Bonjour, Je suis interessé par votre publication de *{{publication.libelle}}*" class="ud-btn btn-thm3"><i class="pi pi-whatsapp"></i> WhatsApp</a>
+            <div *ngIf="publication.agenceImmobiliere" class="row">
+              <div class="col-md-12">
+                <div class="d-grid">
+                  <a [routerLink]="['/annonces-immobilieres']" [queryParams]="{ nomAgence: publication.agenceImmobiliere.nomAgence }" class="ud-btn btn-thm3 mb10"><i class="pi pi-send mr15"></i> annonces</a>
+                  <a target="_blank" href="https://wa.me/{{publication.agenceImmobiliere.telephone}}?text=Bonjour Agence {{publication.agenceImmobiliere.nomAgence}}, Je suis interessé par votre publication de *{{publication.libelle}}*" class="ud-btn btn-thm3"><i class="pi pi-whatsapp m15"></i> WhatsApp</a>
+                </div>
+              </div>
+
+            </div>
+            <div *ngIf="!publication.agenceImmobiliere" class="row">
+              <div class="col-md-12">
+                <div class="d-grid">
+                  <a [routerLink]="['/annonces-immobilieres']" [queryParams]="{ email: publication.personne.email }" class="ud-btn btn-thm3 mb10"><i class="pi pi-send mr15"></i> Annonces</a>
+                  <a target="_blank" href="https://wa.me/{{publication.personne.telephone}}?text=Bonjour M./Mlle {{publication.personne.prenom}} {{publication.personne.nom}}, Je suis interessé par votre publication de *{{publication.libelle}}*" class="ud-btn btn-thm3"><i class="pi pi-whatsapp mr15"></i> WhatsApp</a>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -515,32 +531,47 @@
 
         <!-- Start Contact Form -->
         <div class="default-box-shadow2 bdrs12 bdr1 p30 mb30 bgc-white position-relative">
-          <h4 class="form-title mb25">Contactez l'annonceur</h4>
-          <form class="form-style1">
-            <div class="row">
+          <h4 class="form-title mb25 text-center">Contactez l'annonceur</h4>
+          <div *ngIf="loadingContactForm" class="row text-center">
+            <div class="text-center">
+              <img class="img mt5" src="assets/images/loading.gif">
+              <h6 class="mt10">{{ loadingMessage }}</h6>
+            </div>
+          </div>
+          <form *ngIf="!loadingContactForm" class="form-style1" [formGroup]="contactezNousForm1" (ngSubmit)="contactezNous()">
+            <div class="row" >
               <div class="col-lg-12">
                 <div class="mb20">
-                  <input type="text" class="form-control" placeholder="Nom et prénom(s)">
+                  <input type="text" id="nomPrenoms" name="nomPrenoms" class="form-control" placeholder="Nom et prénom(s)" formControlName="nomPrenoms" [(ngModel)]="contactezNousForm2.nomPrenoms" required>
+                  <div class="error" [hidden]="nomPrenoms.valid || nomPrenoms.pristine && !nomPrenoms.touched ">Le nom et prénom(s) est obligatoire</div>
                 </div>
               </div>
               <div class="col-lg-12">
                 <div class="mb20">
-                  <input type="text" class="form-control" placeholder="Numéro de téléphone">
+                  <input type="text" id="telephone" name="telephone" class="form-control" placeholder="Numéro de téléphone" formControlName="telephone" [(ngModel)]="contactezNousForm2.telephone" required>
+                  <div class="error" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numéro de téléphone est obligatoire</div>
                 </div>
               </div>
               <div class="col-md-12">
                 <div class="mb20">
-                  <input type="email" class="form-control" placeholder="Adresse e-mail">
+                  <input type="email" class="form-control" id="emetteurEmail" name="emetteurEmail" placeholder="Adresse e-mail" formControlName="emetteurEmail" [(ngModel)]="contactezNousForm2.emetteurEmail" required>
+                  <div class="error" [hidden]="!emetteurEmail?.hasError('required') || !emetteurEmail.touched">
+                    L'e-mail est obligatoire
+                  </div>
+                  <div class="error" [hidden]="!emetteurEmail?.hasError('email') || !emetteurEmail.touched">
+                    L'e-mail n'est pas valide.
+                  </div>
                 </div>
               </div>
               <div class="col-md-12">
                 <div class="mb10">
-                  <textarea cols="30" rows="4" placeholder="Message"></textarea>
+                  <textarea cols="30" rows="4" id="message" name="message" placeholder="Message" formControlName="message" [(ngModel)]="contactezNousForm2.message" required></textarea>
+                  <div class="error" [hidden]="message.valid || message.pristine && !message.touched ">Le message est obligatoire</div>
                 </div>
               </div>
               <div class="col-md-12">
                 <div class="d-grid">
-                  <a class="ud-btn btn-thm mb15" href="page-contact.html">Envoyer le message</a>
+                  <button class="ud-btn btn-thm mb15" [ngClass]="{ 'disabled-link': contactezNousForm1.invalid }" type="submit">Envoyer le message</button>
                 </div>
               </div>
             </div>

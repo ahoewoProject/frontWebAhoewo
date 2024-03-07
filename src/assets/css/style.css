@@ -58,6 +58,8 @@ Tag: advanced search, agency, agent, classified, directory, house, listing, prop
 :root {
   --title-font-family: "DM Sans", sans-serif;
   --body-font-family: "DM Sans", sans-serif;
+  --paragraph-font-family: "Inter var", sans-serif;
+  --text-font-family: "Inter var", sans-serif;
   --icon-font-family: "Font Awesome 6 Pro";
   --icon-font-family2: "Flaticon";
   --container-width: 1290px;
@@ -1198,8 +1200,7 @@ h2 {
   text-decoration: underline;
 }
 /* .listing-style1:hover .list-tag {
-  /* opacity: 0;
-  visibility: hidden; */
+
   transform: translateY(50px);
 } */
 .listing-style1:hover .list-thumb img {
@@ -4477,7 +4478,8 @@ section {
 .main-title .paragraph,
 .main-title2 .paragraph {
   color: var(--headings-color);
-  font-family: var(--title-font-family);
+  font-family: var(--paragraph-font-family);
+  font-size: 14px;
 }
 
 @media (max-width: 991.98px) {
@@ -5086,7 +5088,7 @@ section {
 }
 .iconbox-style2 .text {
   color: var(--headings-color);
-  font-family: var(--title-font-family);
+  font-family: var(--text-font-family);
   font-weight: 400;
   margin-bottom: 25px;
 }
@@ -5125,7 +5127,7 @@ section {
 }
 .iconbox-style3 .text {
   color: var(--headings-color);
-  font-family: var(--title-font-family);
+  font-family: var(--text-font-family);
   font-weight: 400;
   margin-bottom: 25px;
 }
@@ -5255,9 +5257,9 @@ section {
   top: 17px;
 }
 .iconbox-style6 .iconbox-text {
-  font-family: var(--title-font-family);
+  font-family: var(--text-font-family);
   font-weight: 400;
-  font-size: 13px;
+  font-size: 14px;
 }
 .iconbox-style6:hover {
   -webkit-box-shadow: 0px 10px 40px rgba(24, 26, 32, 0.05);
@@ -5351,7 +5353,7 @@ section {
 }
 .iconbox-style8 .text {
   color: var(--headings-color);
-  font-family: var(--title-font-family);
+  font-family: var(--text-font-family);
   font-weight: 400;
   margin-bottom: 25px;
 }
@@ -5517,7 +5519,7 @@ section {
 .feature-style2 .title,
 .feature-style2 .text {
   color: var(--headings-color);
-  font-family: var(--title-font-family);
+  font-family: var(--text-font-family);
 }
 .feature-style2:hover img {
   transform: scale(1.1) rotate(-1deg);
@@ -5618,7 +5620,7 @@ section {
 }
 .form-style1 .form-control::placeholder {
   color: #717171;
-  font-family: var(--title-font-family);
+  font-family: var(--text-font-family);
 }
 .form-style1 .form-control.active, .form-style1 .form-control:focus {
   border: 1px solid transparent;
@@ -6012,7 +6014,7 @@ textarea:focus {
   margin-bottom: 25px;
 }
 .testimonial-style1 .text {
-  font-family: var(--title-font-family);
+  font-family: var(--text-font-family);
   font-weight: 600;
   font-size: 14px;
   margin-bottom: 8px;
@@ -9818,7 +9820,7 @@ input:focus-visible {
 }
 .table-style2 .t-body th {
   color: var(--headings-color);
-  font-family: var(--title-font-family);
+  font-family: var(--text-font-family);
   font-weight: 600;
   font-size: 15px;
   line-height: 23px;
@@ -9831,7 +9833,7 @@ input:focus-visible {
 }
 .table-style2 .t-body td {
   color: var(--headings-color);
-  font-family: var(--title-font-family);
+  font-family: var(--text-font-family);
   font-weight: 400;
   padding-bottom: 30px;
   padding-top: 30px;
@@ -9881,14 +9883,14 @@ input:focus-visible {
 }
 .table-style3 .t-body th {
   color: var(--headings-color);
-  font-family: var(--title-font-family);
+  font-family: var(--text-font-family);
   font-weight: 600;
   font-size: 15px;
   padding: 20px 30px;
 }
 .table-style3 .t-body td {
   color: var(--headings-color);
-  font-family: var(--title-font-family);
+  font-family: var(--text-font-family);
   font-weight: 400;
   padding: 20px 30px;
 }
@@ -9967,7 +9969,7 @@ input:focus-visible {
 
 /* Essential utility classes */
 .ff-heading {
-  font-family: var(--title-font-family);
+  font-family: var(--text-font-family);
 }
 
 .text-white {
@@ -10413,8 +10415,9 @@ input:focus-visible {
 
 .text {
   color: var(--headings-color);
-  font-family: var(--title-font-family);
+  font-family: var(--text-font-family);
   font-weight: 400;
+  font-size: 14px;
 }
 
 .default-box-shadow1 {

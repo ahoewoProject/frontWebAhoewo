@@ -15,6 +15,7 @@
 
 .error {
   color: #a94442;
+  font-family: 'Inter var', sans-serif;
 }
 
 :host ::ng-deep .select .p-dropdown {

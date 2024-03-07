@@ -47,7 +47,7 @@ export class NotificationsService {
     );
   }
 
-   // Notifications non lues de l'Admin;
+  // Notifications non lues de l'Admin;
   // url: http://localhost:4040/api/notifications/non-lues/admin
   getNotificationsNonLuesByAdmin(): Observable<Array<Notification>>{
     return this.httpClient.get<Array<Notification>>(this.url + 'notifications/non-lues/admin');

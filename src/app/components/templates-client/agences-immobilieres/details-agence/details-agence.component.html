@@ -1,7 +1,7 @@
 <!-- Section Titre -->
 <section class="home-banner-style6 mt-100">
 </section>
-
+<p-toast></p-toast>
 <!-- Section - Détails d'une agence immobilière -->
 <section class="agent-single mg-top130">
   <div class="cta-agent bgc-thm-light mx-auto maxw1600 pt60 pb60 bdrs12 position-relative mx20-lg">
@@ -17,8 +17,8 @@
               <h2 class="title mb-0">{{agenceImmobiliere.nomAgence}} <i *ngIf="agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6; font-size: smaller;"></i></h2>
               <p class="fz15"><b>{{agenceImmobiliere.adresse}}, {{agenceImmobiliere.quartier.libelle}}, {{agenceImmobiliere.quartier.ville.region.libelle}}, {{agenceImmobiliere.quartier.ville.libelle}} - {{agenceImmobiliere.quartier.ville.region.pays.libelle}}</b></p>
               <div class="agent-meta mb15 d-md-flex align-items-center">
-                <a class="text fz15 pe-2 ps-2 bdrr1" href="#"><i class="flaticon-call pe-1"></i> {{agenceImmobiliere.telephone}}</a>
-                <a class="text fz15 ps-2" href="#"><i class="flaticon-email pe-1"></i> {{agenceImmobiliere.adresseEmail}}</a>
+                <a class="text fz15 pe-2 ps-2 bdrr1" href="tel:{{agenceImmobiliere.telephone}}"><i class="flaticon-call pe-1"></i> {{agenceImmobiliere.telephone}}</a>
+                <a class="text fz15 ps-2" href="mailto:{{agenceImmobiliere.adresseEmail}}"><i class="flaticon-email pe-1"></i> {{agenceImmobiliere.adresseEmail}}</a>
               </div>
               <div class="agent-social">
                 <span style="background-color: #ff003d; font-weight: bold;" class="span-badge" *ngIf="fermetureOrOuvertureAgence(agenceImmobiliere.heureOuverture, agenceImmobiliere.heureFermeture) == false">Fermé	</span>
@@ -109,7 +109,7 @@
                         </div>
                         <div class="list-content">
                           <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
-                          <p class="list-text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+                          <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
                         </div>
                       </div>
                     </div>
@@ -145,7 +145,7 @@
                         </div>
                         <div class="list-content">
                           <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
-                          <p class="list-text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+                          <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
                         </div>
                       </div>
                     </div>
@@ -181,7 +181,7 @@
                         </div>
                         <div class="list-content">
                           <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
-                          <p class="list-text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+                          <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
                         </div>
                       </div>
                     </div>
@@ -206,32 +206,47 @@
       </div>
       <div class="col-lg-4">
         <div class="agent-single-form home8-contact-form default-box-shadow1 bdrs12 bdr1 p30 mb30-md mt35 bgc-white position-relative">
-          <h4 class="form-title mb25">Contactez-nous !</h4>
-          <form class="form-style1">
+          <h4 class="form-title mb25 text-center">Contactez-nous !</h4>
+          <div *ngIf="loading" class="row text-center">
+            <div class="text-center">
+              <img class="img mt5" src="assets/images/loading.gif">
+              <h6 class="mt10">{{ loadingMessage }}</h6>
+            </div>
+          </div>
+          <form *ngIf="!loading" class="form-style1" [formGroup]="contactezNousForm1" (ngSubmit)="contactezNous()">
             <div class="row">
               <div class="col-lg-12">
                 <div class="mb20">
-                  <input type="text" class="form-control" placeholder="Nom et prénom(s)">
+                  <input type="text" id="nomPrenoms" name="nomPrenoms" class="form-control" placeholder="Nom et prénom(s)" formControlName="nomPrenoms" [(ngModel)]="contactezNousForm2.nomPrenoms" required>
+                  <div class="error" [hidden]="nomPrenoms.valid || nomPrenoms.pristine && !nomPrenoms.touched ">Le nom et prénom(s) est obligatoire</div>
                 </div>
               </div>
               <div class="col-lg-12">
                 <div class="mb20">
-                  <input type="text" class="form-control" placeholder="Numéro de téléphone">
+                  <input type="text" id="telephone" name="telephone" class="form-control" placeholder="Numéro de téléphone" formControlName="telephone" [(ngModel)]="contactezNousForm2.telephone" required>
+                  <div class="error" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numéro de téléphone est obligatoire</div>
                 </div>
               </div>
               <div class="col-md-12">
                 <div class="mb20">
-                  <input type="email" class="form-control" placeholder="Adresse e-mail">
+                  <input type="email" class="form-control" id="emetteurEmail" name="emetteurEmail" placeholder="Adresse e-mail" formControlName="emetteurEmail" [(ngModel)]="contactezNousForm2.emetteurEmail" required>
+                  <div class="error" [hidden]="!emetteurEmail?.hasError('required') || !emetteurEmail.touched">
+                    L'e-mail est obligatoire
+                  </div>
+                  <div class="error" [hidden]="!emetteurEmail?.hasError('email') || !emetteurEmail.touched">
+                    L'e-mail n'est pas valide.
+                  </div>
                 </div>
               </div>
               <div class="col-md-12">
                 <div class="mb10">
-                  <textarea cols="30" rows="4" placeholder="Message"></textarea>
+                  <textarea cols="30" rows="4" id="message" name="message" placeholder="Message" formControlName="message" [(ngModel)]="contactezNousForm2.message" required></textarea>
+                  <div class="error" [hidden]="message.valid || message.pristine && !message.touched ">Le message est obligatoire</div>
                 </div>
               </div>
               <div class="col-md-12">
                 <div class="d-grid">
-                  <a class="ud-btn btn-thm mb15" href="page-contact.html">Envoyer le message</a>
+                  <button class="ud-btn btn-thm mb15" [ngClass]="{ 'disabled-link': contactezNousForm1.invalid }" type="submit">Envoyer le message</button>
                 </div>
               </div>
             </div>
