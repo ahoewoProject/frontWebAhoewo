@@ -71,6 +71,7 @@ import { DemarcheurModule } from './routes/demarcheur/demarcheur.module';
 import { TabViewModule } from 'primeng/tabview';
 import { StepsModule } from 'primeng/steps';
 import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { BadgeModule } from 'primeng/badge';
 import { AutresServicesComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/autres-services/autres-services.component';
 import { AvatarModule } from 'primeng/avatar';
@@ -145,6 +146,7 @@ import { DetailsPublicationComponent } from './components/templates-client/annon
     BrowserAnimationsModule,
     AvatarModule,
     ButtonModule,
+    InputNumberModule,
     PaginatorModule,
     FileUploadModule,
     ToastModule,

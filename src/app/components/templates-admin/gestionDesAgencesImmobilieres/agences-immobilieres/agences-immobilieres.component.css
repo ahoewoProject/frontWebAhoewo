@@ -71,3 +71,8 @@ margin-left: 0; /* Suppression de la marge négative */
   color: #a94442;
   font-family: 'Inter var', sans-serif;
 }
+
+:host ::ng-deep .p-steps-title {
+  font-family: 'DM Sans', sans-serif;
+}
+

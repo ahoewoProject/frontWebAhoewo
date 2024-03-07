@@ -46,6 +46,15 @@
   border-radius: 10px;
 }
 
+:host ::ng-deep .pInputNumber {
+  width: 100%;
+  border-radius: 8px;
+}
+
 :host ::ng-deep .p-galleria-thumbnail-wrapper {
   border-radius: 10px;
+}
+
+:host ::ng-deep .pInputNumber.ng-dirty.ng-invalid > .p-inputnumber > .p-inputtext {
+  border-color: #DDDDDD;
 }

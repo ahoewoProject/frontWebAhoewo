@@ -697,7 +697,7 @@
                   <div class="list-thumb">
                     <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publicationDeLocation.bienImmobilier.id)}}" alt="">
                     <div class="badge"><span style="background-color: #ff003d" class="span-badge">À louer</span></div>
-                    <div class="list-price">{{ publicationDeLocation.prixDuBien | number }} FCFA / <span>mois</span></div>
+                    <div class="list-price">{{ publicationDeLocation.prixDuBien | number }} FCFA / <span class="text">mois</span></div>
                   </div>
                   <div class="list-content">
                     <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publicationDeLocation.codePublication]">{{ publicationDeLocation.libelle }}</a></h6>

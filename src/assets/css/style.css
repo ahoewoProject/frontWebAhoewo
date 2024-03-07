@@ -5613,7 +5613,7 @@ section {
   border-radius: 8px;
   border: 1px solid #DDDDDD;
   box-shadow: none;
-  font-size: 14px;
+  font-size: 16px;
   height: 55px;
   outline: none;
   padding-left: 15px;
@@ -5685,9 +5685,10 @@ section {
 textarea {
   border: 1px solid #DDDDDD;
   border-radius: 8px;
-  font-family: var(--title-font-family);
+  font-family: var(--text-font-family);
   height: auto;
   width: 100%;
+  font-size:16px;
   padding: 25px 20px;
 }
 textarea:focus {
