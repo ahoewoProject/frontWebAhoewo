@@ -57,11 +57,11 @@
                       </button>
 
                       <button pButton type="button" *ngIf="client.etatCompte == true"(click)="desactiverCompte(client.id)" icon="pi pi-lock"
-                        pTooltip="Désactiver ce compte" tooltipPosition="top"class="p-button-text p-button-danger">
+                        pTooltip="Désactiver ce compte" tooltipPosition="top" class="p-button-text p-button-danger">
                       </button>
 
                       <button pButton type="button" *ngIf="client.etatCompte == false" (click)="activerCompte(client.id)" icon="pi pi-lock-open"
-                        pTooltip="Activer ce compte" tooltipPosition="left"class="p-button-text p-button-success">
+                        pTooltip="Activer ce compte" tooltipPosition="left" class="p-button-text p-button-success">
                       </button>
                     </div>
                   </td>
@@ -149,15 +149,12 @@
                 <p-tag *ngIf="client.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
               </p>
             </div>
-            <p-divider></p-divider>
-
-          </div>
-
-          <div class="text-end">
-            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
           </div>
         </div>
       </div>
+    </div>
+    <div class="text-end">
+      <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
     </div>
   </div>
   <!-- End Details d'un client -->

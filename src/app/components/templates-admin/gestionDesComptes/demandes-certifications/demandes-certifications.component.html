@@ -206,9 +206,9 @@
                   <td class="vam">
                     <div class="d-flex">
 
-                      <a pButton class="p-button-text p-button-info" type="button" (click)="afficherPageDetail(demandeCertif.id)" pTooltip="Détails" tooltipPosition="top" icon="pi pi-eye"></a>
-                      <a pButton class="p-button-text p-button-info" *ngIf="demandeCertif.statutDemande == 0 && user.role.code == 'ROLE_NOTAIRE' && demandeCertif.agenceImmobiliere == null" type="button" (click)="certifierCompte(demandeCertif.personne.id, demandeCertif.id)" pTooltip="Certifier le compte du demandeur" tooltipPosition="left" icon="pi pi-verified"></a>
-                      <a pButton class="p-button-text p-button-info" *ngIf="demandeCertif.statutDemande == 0 && user.role.code == 'ROLE_NOTAIRE' && demandeCertif.agenceImmobiliere" type="button" (click)="certifierAgence(demandeCertif.agenceImmobiliere.id, demandeCertif.id)" pTooltip="Certifier l'agence immobilière" tooltipPosition="left" icon="pi pi-verified"></a>
+                      <button pButton class="p-button-text p-button-info" type="button" (click)="afficherPageDetail(demandeCertif.id)" pTooltip="Détails" tooltipPosition="top" icon="pi pi-eye"></button>
+                      <button pButton class="p-button-text p-button-info" *ngIf="demandeCertif.statutDemande == 0 && user.role.code == 'ROLE_NOTAIRE' && demandeCertif.agenceImmobiliere == null" type="button" (click)="certifierCompte(demandeCertif.personne.id, demandeCertif.id)" pTooltip="Certifier le compte du demandeur" tooltipPosition="left" icon="pi pi-verified"></button>
+                      <button pButton class="p-button-text p-button-info" *ngIf="demandeCertif.statutDemande == 0 && user.role.code == 'ROLE_NOTAIRE' && demandeCertif.agenceImmobiliere" type="button" (click)="certifierAgence(demandeCertif.agenceImmobiliere.id, demandeCertif.id)" pTooltip="Certifier l'agence immobilière" tooltipPosition="left" icon="pi pi-verified"></button>
                       <a pButton class="p-button-text p-button-info" *ngIf="demandeCertif.agenceImmobiliere == null" href="{{this.APIEndpoint+'api/cni/demande-certification/'+demandeCertif.id}}" pTooltip="Télécharger la cni du demandeur" tooltipPosition="left" icon="pi pi-download"></a>
                       <a pButton class="p-button-text p-button-info" *ngIf="demandeCertif.agenceImmobiliere" href="{{this.APIEndpoint+'api/carte-cfe/demande-certification/'+demandeCertif.id}}" pTooltip="Télécharger la carte cfe du demandeur" tooltipPosition="left" icon="pi pi-download"></a>
                     </div>
@@ -309,14 +309,12 @@
                 <p-tag *ngIf="demandeCertification.statutDemande == 0" severity="warning" value="En attente"></p-tag>
               </p>
             </div>
-
-          </div>
-
-          <div class="text-end">
-            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
           </div>
         </div>
       </div>
+    </div>
+    <div class="text-end">
+      <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
     </div>
   </div>
   <!-- End Details d'une demande de certification -->

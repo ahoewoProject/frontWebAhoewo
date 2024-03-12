@@ -160,6 +160,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
       notificationUrl = '/agent-immobilier/notifications';
     } else if (this.user.role.code == 'ROLE_CLIENT') {
       notificationUrl = '/client/notifications';
+    } else if (this.user.role.code == 'ROLE_NOTAIRE') {
+      notificationUrl = '/notaire/notifications';
     }
 
     return notificationUrl;
@@ -181,6 +183,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
       profilUrl = '/agent-immobilier/profil';
     } else if (this.user.role.code == 'ROLE_CLIENT') {
       profilUrl = '/client/profil';
+    } else if (this.user.role.code == 'ROLE_NOTAIRE') {
+      profilUrl = '/notaire/profil';
     }
 
     return profilUrl;

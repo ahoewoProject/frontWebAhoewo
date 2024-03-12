@@ -9,7 +9,7 @@
 
     <!-- Mes informations -->
     <div>
-      <div  class="row align-items-center pb40">
+      <div class="row align-items-center pb40">
         <div class="col-xxl-8">
           <div class="dashboard_title_area">
             <h4>Mon profil</h4>
@@ -107,28 +107,28 @@
         <h4 class="title fz17 mb30">Modification des informations</h4>
         <form class="form-style1" [formGroup]="userForm" (ngSubmit)="modifierUser()">
           <div class="row">
-            <div class="col-sm-6 col-xl-4">
+            <div class="col-sm-6">
               <div class="mb20">
                 <label class="heading-color ff-heading fw600 mb10">Nom</label>
                 <input type="text" class="form-control" placeholder="Le nouveau nom" formControlName="nom" id="nom" name="nom" [ngModel]="personne.nom" required>
                 <div class="text-danger" [hidden]="nom.valid || nom.pristine && !nom.touched ">Le nom est obligatoire</div>
               </div>
             </div>
-            <div class="col-sm-6 col-xl-4">
+            <div class="col-sm-6">
               <div class="mb20">
                 <label class="heading-color ff-heading fw600 mb10">Prénom(s)</label>
                 <input type="text" class="form-control" placeholder="Le nouveau prénom(s)" formControlName="prenom" id="prenom" name="prenom" [ngModel]="personne.prenom" required>
                 <div class="text-danger" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le prénom est obligatoire</div>
               </div>
             </div>
-            <div class="col-sm-6 col-xl-4">
+            <div class="col-sm-6">
               <div class="mb20">
                 <label class="heading-color ff-heading fw600 mb10">Nom d'utilisateur</label>
                 <input type="text" class="form-control"  placeholder="Le nouveau nom d'utilisateur" formControlName="username" id="username" name="username" [ngModel]="personne.username" required>
                 <div class="text-danger" [hidden]="username.valid || username.pristine && !username.touched ">Le nom d'utilisateur est obligatoire</div>
               </div>
             </div>
-            <div class="col-sm-6 col-xl-4">
+            <div class="col-sm-6">
               <div class="mb20">
                 <label class="heading-color ff-heading fw600 mb10">Email</label>
                 <input type="email" class="form-control"  placeholder="La nouvelle adresse e-mail" formControlName="email" id="email" name="email" [ngModel]="personne.email" required>
@@ -140,7 +140,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-6 col-xl-4">
+            <div class="col-sm-6">
               <div class="mb20">
                 <label class="heading-color ff-heading fw600 mb10">Mot de passe</label>
                 <input type="{{ voirMotDePasse ? 'text' : 'password' }}" placeholder="Le nouveau mot de passe" class="form-control" id="motDePasse" name="motDePasse" formControlName="motDePasse" [(ngModel)]="personne.motDePasse" required>
@@ -157,7 +157,7 @@
                 <div class="text-danger" *ngIf="motDePasse?.hasError('pattern')">Le mot de passe doit inclure au moins une minuscule, une majuscule, un chiffre et un caractère spécial.</div>
               </div>
             </div>
-            <div class="col-sm-6 col-xl-4">
+            <div class="col-sm-6">
               <div class="mb20">
                 <label class="heading-color ff-heading fw600 mb10">Téléphone</label>
                 <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Le numéro de téléphone du notaire" formControlName="telephone" [(ngModel)]="personne.telephone" required>
