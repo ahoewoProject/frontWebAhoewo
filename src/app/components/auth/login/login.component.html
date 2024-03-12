@@ -38,16 +38,16 @@
                 <div class="error" [hidden]="password.valid || password.pristine && !password.touched">Le mot de passe est obligatoire</div>
               </div>
               <div class="checkbox-style1 d-block d-sm-flex align-items-center justify-content-between mb10">
-                <label class="custom_checkbox fz14 ff-heading">Se souvenir de moi
+                <label class="custom_checkbox fz14 text">Se souvenir de moi
                   <input type="checkbox" checked="checked">
                   <span class="checkmark"></span>
                 </label>
-                <a class="fz14 ff-heading" routerLink="/forgot-password">Mot de passe oublié?</a>
+                <a class="fz14 text" routerLink="/forgot-password">Mot de passe oublié?</a>
               </div>
               <div class="d-grid mb20">
                 <button class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': LoginForm.invalid }" type="submit">Se connecter</button>
               </div>
-              <p class="dark-color ff-heading mb0 mt10 text-center">Nouveau sur la plateforme ? <a class="dark-color fw600" style="font-family: 'DM Sans', sans-serif;" routerLink="/inscription">Créer un compte.</a></p>
+              <p class="dark-color mb0 mt10 text-center text">Nouveau sur la plateforme ? <a class="dark-color fw600" style="font-family: 'DM Sans', sans-serif;" routerLink="/inscription">Créer un compte.</a></p>
             </form>
           </div>
 

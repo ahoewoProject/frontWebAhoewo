@@ -14,8 +14,9 @@
 }
 
 :host ::ng-deep .choose-label {
-  background-color: #4ebc87;;
-  border-color: #4ebc87;;
+  background-color: #4ebc87;
+  border-color: #4ebc87;
+  font-family: 'DM Sans', sans-serif;
 }
 
 :host ::ng-deep .select .p-dropdown {

@@ -53,11 +53,8 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
   APIEndpoint: string;
   serviceAgenceImmobiliereForm: any;
 
-  constructor(
-    private _servicesService: ServicesService,
-    private agenceImmobiliereService: AgenceImmobiliereService,
-    private servicesAgenceImmobiliereService: ServicesAgenceImmobiliereService,
-    private messageService: MessageService,
+  constructor(private _servicesService: ServicesService, private agenceImmobiliereService: AgenceImmobiliereService,
+    private servicesAgenceImmobiliereService: ServicesAgenceImmobiliereService, private messageService: MessageService,
     private confirmationService: ConfirmationService
   )
   {

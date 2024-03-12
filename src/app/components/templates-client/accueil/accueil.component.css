@@ -146,6 +146,10 @@
   font-family: 'DM Sans', sans-serif;
 }
 
+:host ::ng-deep .p-dialog-header-close {
+  border-radius: 100%;
+}
+
 :host ::ng-deep .p-dialog {
   border-radius: 100%;
 }

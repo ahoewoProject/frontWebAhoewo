@@ -5519,7 +5519,7 @@ section {
 .feature-style2 .title,
 .feature-style2 .text {
   color: var(--headings-color);
-  font-family: var(--text-font-family);
+  font-family: var(--title-font-family);
 }
 .feature-style2:hover img {
   transform: scale(1.1) rotate(-1deg);
@@ -9970,7 +9970,7 @@ input:focus-visible {
 
 /* Essential utility classes */
 .ff-heading {
-  font-family: var(--text-font-family);
+  font-family: var(--title-font-family);
 }
 
 .text-white {

@@ -211,7 +211,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   afficherNotification(titre: string, message: string) {
-    const iconUrl = 'assets/images/apple-touch-icon-72x72.png';
+    const iconUrl = 'assets/images/ahoewo-notif.png';
     this.serviceWorker.showNotification(titre, message, iconUrl);
   }
 

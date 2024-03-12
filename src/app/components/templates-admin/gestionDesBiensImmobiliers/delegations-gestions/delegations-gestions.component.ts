@@ -81,20 +81,13 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
   delegationGestionData: FormData = new FormData();
   bienImmobilierData: FormData = new FormData();
 
-  constructor(private delegationGestionService: DelegationGestionService,
-    private personneService: PersonneService,
-    private messageService: MessageService,
-    private bienImmobilierService: BienImmobilierService,
-    private activatedRoute: ActivatedRoute,
-    private paysService: PaysService,
-    private regionService: RegionService,
-    private villeService: VilleService,
-    private quartierService: QuartierService,
-    private caracteristiqueService: CaracteristiquesService,
-    private confirmationService: ConfirmationService,
-    private imagesBienImmobilierService: ImagesBienImmobilierService,
-    private agenceImmobiliereService: AgenceImmobiliereService,
-    private typeDeBienService: TypeDeBienService,
+  constructor(private delegationGestionService: DelegationGestionService, private personneService: PersonneService,
+    private messageService: MessageService, private bienImmobilierService: BienImmobilierService,
+    private activatedRoute: ActivatedRoute, private paysService: PaysService,
+    private regionService: RegionService, private villeService: VilleService,
+    private quartierService: QuartierService, private caracteristiqueService: CaracteristiquesService,
+    private confirmationService: ConfirmationService, private imagesBienImmobilierService: ImagesBienImmobilierService,
+    private agenceImmobiliereService: AgenceImmobiliereService, private typeDeBienService: TypeDeBienService,
     private bienImmAssocieService: BienImmAssocieService
   )
   {
@@ -105,20 +98,8 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.delegationReussie = this.activatedRoute.snapshot.queryParamMap.get('delegationReussie') || '';
-    this.responsiveOptions = [
-      {
-          breakpoint: '1024px',
-          numVisible: 5
-      },
-      {
-          breakpoint: '768px',
-          numVisible: 3
-      },
-      {
-          breakpoint: '560px',
-          numVisible: 1
-      }
-    ];
+
+    this.initResponsiveOptions();
     this.menusOfTerrain();
 
     this.initStep1Form();
@@ -142,6 +123,23 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
       this.listeDelegationsGestionsOfAgencesByAgent(this.numeroDeLaPage, this.elementsParPage);
       this.listeAgencesImmobilieresParAgent();
     }
+  }
+
+  initResponsiveOptions(): void {
+    this.responsiveOptions = [
+      {
+          breakpoint: '1024px',
+          numVisible: 5
+      },
+      {
+          breakpoint: '768px',
+          numVisible: 3
+      },
+      {
+          breakpoint: '560px',
+          numVisible: 1
+      }
+    ];
   }
 
   onActiveIndexChange(event: number) {
@@ -430,6 +428,7 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
         if (this.typeDeBienSelectionne.designation !== 'Terrain') {
           this.detailCaracteristiques(id);
         }
+        this.validateUpdateBienForm();
       }
     );
   }
@@ -441,6 +440,7 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
         this.bienImmAssocie = response;
         this.typeDeBienSelectionne = response.typeDeBien;
         this.detailCaracteristiques(id);
+        this.validateUpdateBienForm();
       }
     );
   }
@@ -1325,6 +1325,7 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
       });
     })
   }
+
   modifierBienImmAssocie(id: number): void {
 
     this.bienImmAssocie.typeDeBien = this.typeDeBienSelectionne;

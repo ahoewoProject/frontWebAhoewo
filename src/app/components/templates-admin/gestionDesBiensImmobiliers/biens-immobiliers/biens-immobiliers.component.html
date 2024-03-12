@@ -1312,9 +1312,9 @@
                     <div class="pd-list">
                       <p *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="text mb10">{{ bienImmobilier.agenceImmobiliere.nomAgence }}</p>
                       <p class="text mb10">{{ typeDeBienSelectionne.designation }}</p>
-                      <p class="text mb10">{{ paysSelectionne.libelle }}</p>
-                      <p class="text mb10">{{ regionSelectionnee.libelle }}</p>
-                      <p class="text mb-0">{{ villeSelectionnee.libelle }}</p>
+                      <p class="text mb10">{{ bienImmobilier.pays.libelle }}</p>
+                      <p class="text mb10">{{ bienImmobilier.region.libelle }}</p>
+                      <p class="text mb-0">{{ bienImmobilier.ville.libelle }}</p>
                     </div>
                   </div>
                 </div>
@@ -1328,7 +1328,7 @@
                     </div>
                     <div class="pd-list">
                       <p *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="text mb10">{{ bienImmobilier.agenceImmobiliere.telephone }}</p>
-                      <p class="text mb10">{{ quartierSelectionne.libelle }}</p>
+                      <p class="text mb10">{{ bienImmobilier.quartier.libelle }}</p>
                       <p class="text mb10" *ngIf="bienImmobilier.adresse">{{ bienImmobilier.adresse }}</p>
                       <p class="text mb10" *ngIf="bienImmobilier.surface">{{ bienImmobilier.surface }} m²</p>
                     </div>
@@ -1579,10 +1579,10 @@
                     <div class="pd-list">
                       <p *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="text mb10">{{ agenceSelectionnee.nomAgence }}</p>
                       <p class="text mb10">{{ typeDeBienSelectionne.designation }}</p>
-                      <p class="text mb10">{{ categorieSelectionnee }}</p>
-                      <p class="text mb10">{{ paysSelectionne.libelle }}</p>
-                      <p class="text mb10">{{ regionSelectionnee.libelle }}</p>
-                      <p class="text mb-0">{{ villeSelectionnee.libelle }}</p>
+                      <p class="text mb10">{{ bienImmobilier.categorie }}</p>
+                      <p class="text mb10">{{ bienImmobilier.pays.libelle }}</p>
+                      <p class="text mb10">{{ bienImmobilier.region.libelle }}</p>
+                      <p class="text mb-0">{{ bienImmobilier.ville.libelle }}</p>
                     </div>
                   </div>
                 </div>
@@ -1596,7 +1596,7 @@
                     </div>
                     <div class="pd-list">
                       <p *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="text mb10">{{ agenceSelectionnee.telephone }}</p>
-                      <p class="text mb10">{{ quartierSelectionne.libelle }}</p>
+                      <p class="text mb10">{{ bienImmobilier.quartier.libelle }}</p>
                       <p class="text mb10" *ngIf="bienImmobilier.adresse">{{ bienImmobilier.adresse }}</p>
                       <p class="text mb10" *ngIf="bienImmobilier.surface">{{ bienImmobilier.surface }} m²</p>
                     </div>

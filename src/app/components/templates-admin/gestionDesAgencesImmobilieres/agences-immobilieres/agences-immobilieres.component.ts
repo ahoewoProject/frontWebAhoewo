@@ -64,17 +64,11 @@ export class AgencesImmobilieresComponent implements OnInit, OnDestroy {
   heureMin = new Date('1970-01-02T06:00:00');
   heureMax = new Date('1970-01-02T23:59:59');
 
-  constructor(
-    private agenceImmobiliereService: AgenceImmobiliereService,
-    private affectationAgentAgenceService: AffectationAgentAgenceService,
-    private servicesAgenceImmobiliereService: ServicesAgenceImmobiliereService,
-    private personneService: PersonneService,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private paysService: PaysService,
-    private regionService: RegionService,
-    private villeService: VilleService,
-    private quartierService: QuartierService
+  constructor(private agenceImmobiliereService: AgenceImmobiliereService, private affectationAgentAgenceService: AffectationAgentAgenceService,
+    private servicesAgenceImmobiliereService: ServicesAgenceImmobiliereService, private personneService: PersonneService,
+    private messageService: MessageService, private confirmationService: ConfirmationService,
+    private paysService: PaysService, private regionService: RegionService,
+    private villeService: VilleService, private quartierService: QuartierService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;

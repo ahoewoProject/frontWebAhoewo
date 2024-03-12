@@ -28,11 +28,8 @@ export class ServicesComponent implements OnInit, OnDestroy {
   messageSuccess: string | null = null;
   serviceForm: any;
 
-  constructor(
-    private _servicesService: ServicesService,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private personneService: PersonneService
+  constructor(private _servicesService: ServicesService, private messageService: MessageService,
+    private confirmationService: ConfirmationService, private personneService: PersonneService
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();

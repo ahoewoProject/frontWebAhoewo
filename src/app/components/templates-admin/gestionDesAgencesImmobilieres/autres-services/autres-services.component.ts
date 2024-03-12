@@ -28,9 +28,7 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
   serviceForm: any;
   serviceId!: number;
 
-  constructor(
-    private _servicesService: ServicesService,
-    private messageService: MessageService,
+  constructor(private _servicesService: ServicesService, private messageService: MessageService,
     private confirmationService: ConfirmationService
   )
   {
