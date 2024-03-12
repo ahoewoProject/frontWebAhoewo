@@ -181,6 +181,14 @@ export class PublicationsComponent implements OnInit, OnDestroy {
         } else if (this.isTypeDeBienAssocie(this.publication.bienImmobilier.typeDeBien.designation)) {
           this.detailBienAssocie(this.publication.bienImmobilier.id);
         }
+
+        if (this.isTypeBienTerrain(this.publication.bienImmobilier.typeDeBien.designation)) {
+          this.typesDeTransactions = ['Vente'];
+        } else if (this.isTypeDeBienSupport(this.publication.bienImmobilier.typeDeBien.designation)) {
+          this.typesDeTransactions = ['Location', 'Vente'];
+        } else if (this.isTypeDeBienAssocie(this.publication.bienImmobilier.typeDeBien.designation)) {
+          this.typesDeTransactions = ['Location'];
+        }
       }
     )
   }
@@ -312,6 +320,7 @@ export class PublicationsComponent implements OnInit, OnDestroy {
 
   voirFormulaireModifier(id: number): void {
     this.detailPublication(id);
+    console.log(this.publication);
     this.affichage = 4;
   }
 
