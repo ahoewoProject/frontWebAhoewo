@@ -286,7 +286,7 @@
   </div>
   <!-- End Formulaire d'ajout d'une agence immobilière - Vue Responsable -->
 
- <!-- Formulaire de modification d'une agence immobilière - Vue Responsable -->
+  <!-- Formulaire de modification d'une agence immobilière - Vue Responsable -->
   <div *ngIf="visibleUpdateForm == 1">
     <div class="row align-items-center pb40">
       <div class="col-xxl-5">
@@ -763,11 +763,11 @@
               </div>
             </div>
           </div>
-          <div class="text-end">
-            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
-          </div>
         </div>
       </div>
+    </div>
+    <div class="text-end">
+      <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
     </div>
   </div>
   <!-- End Details d'une agence immobilière - Vue Responsable -->
@@ -839,9 +839,9 @@
 
                       <button pButton type="button"
                         (click)="afficherListeServices(agenceOfAgent.agenceImmobiliere.id)"
-                        icon="pi pi-briefcase"
+                        icon="pi pi-bars"
                         pTooltip="Services" tooltipPosition="top"
-                        class="p-button-text p-button-secondary">
+                        class="p-button-text p-button-success">
                       </button>
                     </div>
                   </td>
@@ -985,11 +985,11 @@
               </p>
             </div>
           </div>
-          <div class="text-end">
-            <a class="ud-btn btn-retour" (click)="voirListe()"  type="button">Retour</a>
-          </div>
         </div>
       </div>
+    </div>
+    <div class="text-end">
+      <a class="ud-btn btn-retour" (click)="voirListe()"  type="button">Retour</a>
     </div>
   </div>
   <!-- End Details d'une agence immobilière - Vue Agent immobilier -->
@@ -1215,11 +1215,11 @@
               </p>
             </div>
           </div>
-          <div class="text-end">
-            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
-          </div>
         </div>
       </div>
+    </div>
+    <div class="text-end">
+      <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
     </div>
   </div>
   <!-- End Details d'une agence immobilière - Vue Administrateur -->
@@ -1364,12 +1364,11 @@
               <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.telephone }}</p>
             </div>
           </div>
-
-          <div class="text-end">
-            <a class="ud-btn btn-retour" (click)="voirListeServices()"  type="button">Services</a>
-          </div>
         </div>
       </div>
+    </div>
+    <div class="text-end">
+      <a class="ud-btn btn-retour" (click)="voirListeServices()"  type="button">Services</a>
     </div>
   </div>
   <!-- End Details d'un service d'une agence immobilière - Vue Agent immobilier -->

@@ -81,3 +81,9 @@
   border-radius: 4px;
 }
 
+.p-tag.p-tag-success {
+  background-color: #0D7914;
+  color: #ffffff;
+  font-family: 'DM Sans' , sans-serif;
+}
+
