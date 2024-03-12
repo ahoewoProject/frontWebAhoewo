@@ -25,6 +25,7 @@ export class BienImmobilier extends EntiteDeBase {
   agenceImmobiliere!: AgenceImmobiliere;
   statutBien: string;
   etatBien: boolean;
+  estDelegue!: boolean;
   images!: ImagesBienImmobilier[];
 
   constructor() {

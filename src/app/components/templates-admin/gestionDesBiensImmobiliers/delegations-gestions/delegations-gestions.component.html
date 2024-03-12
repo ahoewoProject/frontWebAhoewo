@@ -78,6 +78,13 @@
                       </button>
 
                       <button *ngIf=" delegationGestion.etatDelegation == true  && delegationGestion.statutDelegation == 1 &&
+                      (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT')"
+                       (click)="afficherPageDetail(delegationGestion.id, delegationGestion.bienImmobilier.id)"
+                        pTooltip="Publier ce bien" tooltipPosition="top" pButton type="button" icon="pi pi-share-alt"
+                        class="p-button-text p-button-info">
+                      </button>
+
+                      <button *ngIf=" delegationGestion.etatDelegation == true  && delegationGestion.statutDelegation == 1 &&
                         (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT')"
                         pButton type="button" icon="pi pi-pencil pi-lg"
                         (click)="afficherFormulaireModificationBien(delegationGestion.bienImmobilier.id, delegationGestion.bienImmobilier.typeDeBien.designation)"
@@ -297,11 +304,11 @@
               </div>
             </div>
           </div>
-          <div class="text-end">
-            <a class="ud-btn btn-retour" type="button" (click)="voirListeDelegationsGestions()">Retour</a>
-          </div>
         </div>
       </div>
+    </div>
+    <div class="text-end">
+      <a class="ud-btn btn-retour" type="button" (click)="voirListeDelegationsGestions()">Retour</a>
     </div>
   </div>
   <!-- End Details d'un délégation de gestion - Type De Bien (Terrain) -->
@@ -563,12 +570,11 @@
               </div>
             </div>
           </div>
-
-          <div class="text-end">
-            <a class="ud-btn btn-retour" type="button" (click)="voirListeDelegationsGestions()">Retour</a>
-          </div>
         </div>
       </div>
+    </div>
+    <div class="text-end">
+      <a class="ud-btn btn-retour" type="button" (click)="voirListeDelegationsGestions()">Retour</a>
     </div>
   </div>
   <!-- End Details d'un délégation de gestion - Type De Bien -Maison-Immeuble-Villa -->
@@ -836,12 +842,11 @@
               </div>
             </div>
           </div>
-
-          <div class="text-end">
-            <a class="ud-btn btn-retour" (click)="voirListeDelegationsGestions()" type="button">Retour</a>
-          </div>
         </div>
       </div>
+    </div>
+    <div class="text-end">
+      <a class="ud-btn btn-retour" (click)="voirListeDelegationsGestions()" type="button">Retour</a>
     </div>
   </div>
   <!-- End Details d'un délégation de gestion - Type De Bien -Bien associé -->
