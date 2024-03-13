@@ -9,6 +9,7 @@ import { ServicesAgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmob
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { ServicesAgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/services-agence-immobiliere.service';
 import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/services.service';
+import { NotificationsService } from 'src/app/services/notifications.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -55,7 +56,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
 
   constructor(private _servicesService: ServicesService, private agenceImmobiliereService: AgenceImmobiliereService,
     private servicesAgenceImmobiliereService: ServicesAgenceImmobiliereService, private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService, private notificationService: NotificationsService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -266,6 +267,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
           summary: 'Demande envoyée',
           detail: this.messageSuccess
         });
+
       },
       (error) =>{
         this.messageErreur = "Erreur lors de l'envoi de la demande !";

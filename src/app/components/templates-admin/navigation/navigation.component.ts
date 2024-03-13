@@ -41,8 +41,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
     this.behaviorService.activeLink$.subscribe((donnee) => {
       this.activeLink = donnee;
     });
+
     if (this.user) {
-      this.loadNotification();
+      this.initNotification();
       this.notificationService.initListeNotificationsNonLues();
       this.notificationService.notificationsNonLuesEvent.subscribe(
         (data: Notification[]) => {
@@ -75,31 +76,31 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
   redirectToPageConcernee(url: string): void {
     if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
-      this.behaviorService.notificationsNonLuesByAdmin();
+      this.notificationService.notificationsNonLuesByAdmin();
       this.behaviorService.setActiveLink('/admin' + url);
       this.router.navigate(['admin' + url])
     } else if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
-      this.behaviorService.notificationsNonLuesByOwner();
+      this.notificationService.notificationsNonLuesByOwner();
       this.behaviorService.setActiveLink('/proprietaire' + url);
       this.router.navigate(['proprietaire' + url])
     } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.behaviorService.notificationsNonLuesByOwner();
+      this.notificationService.notificationsNonLuesByOwner();
       this.behaviorService.setActiveLink('/responsable' + url);
       this.router.navigate(['responsable' + url])
     } else if (this.user.role.code == 'ROLE_DEMARCHEUR') {
-      this.behaviorService.notificationsNonLuesByOwner();
+      this.notificationService.notificationsNonLuesByOwner();
       this.behaviorService.setActiveLink('/demarcheur' + url);
       this.router.navigate(['demarcheur' + url])
     } else if (this.user.role.code == 'ROLE_GERANT') {
-      this.behaviorService.notificationsNonLuesByOwner();
+      this.notificationService.notificationsNonLuesByOwner();
       this.behaviorService.setActiveLink('/gerant' + url);
       this.router.navigate(['gerant' + url])
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.behaviorService.notificationsNonLuesByOwner();
+      this.notificationService.notificationsNonLuesByOwner();
       this.behaviorService.setActiveLink('/agent-immobilier' + url);
       this.router.navigate(['agent-immobilier' + url])
     } else if (this.user.role.code == 'ROLE_CLIENT') {
-      this.behaviorService.notificationsNonLuesByOwner();
+      this.notificationService.notificationsNonLuesByOwner();
       this.behaviorService.setActiveLink('/client' + url);
       this.router.navigate(['client' + url])
     }
@@ -124,7 +125,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     this.personneService.deconnexion();
   }
 
-  loadNotification(): void {
+  initNotification(): void {
     interval(1000)
     .pipe(
       switchMap(() => {

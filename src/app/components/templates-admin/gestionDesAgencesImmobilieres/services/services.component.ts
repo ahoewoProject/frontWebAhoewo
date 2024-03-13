@@ -189,6 +189,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
     })
   }
 
+  //Activer un service
   activerService(id: number): void {
     this.confirmationService.confirm({
       message: 'Vous êtes sûr de vouloir activer ce service ?',
@@ -228,6 +229,7 @@ export class ServicesComponent implements OnInit, OnDestroy {
     });
   }
 
+  //Désactiver un service
   desactiverService(id: number): void {
     this.confirmationService.confirm({
       message: 'Vous êtes sûr de vouloir désactiver ce service ?',
