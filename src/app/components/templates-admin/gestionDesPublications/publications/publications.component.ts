@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
 import { BienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/BienImmobilier';
@@ -42,8 +43,9 @@ export class PublicationsComponent implements OnInit, OnDestroy {
 
   APIEndpoint: string;
   publicationForm: any;
+  publicationReussie: any;
 
-  constructor(private publicationService: PublicationService,
+  constructor(private publicationService: PublicationService, private activatedRoute: ActivatedRoute,
     private bienImmobilierService: BienImmobilierService, private bienImmAssocieService: BienImmAssocieService,
     private messageService: MessageService, private confirmationService: ConfirmationService,
     private personneService: PersonneService, private caracteristiquesServices: CaracteristiquesService,
@@ -56,6 +58,8 @@ export class PublicationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.publicationReussie = this.activatedRoute.snapshot.queryParams['publicationReussie'];
+
     this.responsiveOptions = [
       {
           breakpoint: '1024px',
@@ -165,6 +169,9 @@ export class PublicationsComponent implements OnInit, OnDestroy {
     this.publicationService.getPublications(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.publications = response;
+        if (this.publicationReussie) {
+          this.messageService.add({ severity: 'success', summary: 'Publication réussie', detail: 'Le bien correspondant a été publié avec succès.' });
+        }
       }
     )
   }
