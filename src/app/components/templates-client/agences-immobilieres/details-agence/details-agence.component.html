@@ -100,7 +100,7 @@
 
                   <div class="row" *ngIf="!loading">
                     <div class="col-md-6" *ngFor="let publication of publications.content">
-                      <div class="listing-style1">
+                      <div class="listing-style1" type="button" (click)="detailPublicationPage(publication)">
                         <div class="list-thumb">
                           <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
                           <div class="badge"><span style="background-color: #ff003d" class="span-badge">{{ publication.typeDeTransaction === 'Location' ? 'À louer' : 'À vendre' }}</span></div>
@@ -137,7 +137,7 @@
 
                   <div class="row" *ngIf="!loading">
                     <div class="col-md-6" *ngFor="let publication of publications.content">
-                      <div class="listing-style1">
+                      <div class="listing-style1" type="button" (click)="detailPublicationPage(publication)">
                         <div class="list-thumb">
                           <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
                           <div class="badge"><span style="background-color: #ff003d" class="span-badge">À LOUER</span></div>
@@ -173,7 +173,7 @@
 
                   <div class="row" *ngIf="!loading">
                     <div class="col-md-6" *ngFor="let publication of publications.content">
-                      <div class="listing-style1">
+                      <div class="listing-style1" type="button" (click)="detailPublicationPage(publication)">
                         <div class="list-thumb">
                           <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
                           <div class="badge"><span style="background-color: #ff003d" class="span-badge">À VENDRE</span></div>

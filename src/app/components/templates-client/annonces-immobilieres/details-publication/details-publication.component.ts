@@ -1,7 +1,7 @@
 import { DecimalPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Galleria } from 'primeng/galleria';
 import { Page } from 'src/app/interfaces/Page';
@@ -50,7 +50,7 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
   APIEndpoint: string;
 
   constructor(private publicationService: PublicationService,
-    private route: ActivatedRoute, private imagesBienImmobilierService: ImagesBienImmobilierService,
+    private router: Router, private imagesBienImmobilierService: ImagesBienImmobilierService,
     private caracteristiquesServices: CaracteristiquesService, private cd: ChangeDetectorRef,
     private decimalPipe: DecimalPipe, private contactezNousService: ContactezNousService,
     private messageService: MessageService
@@ -63,14 +63,10 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
     this.initContactezNousForm();
     this.initResponsiveOptions();
     this.bindDocumentListeners();
-    this.route.paramMap.subscribe(params => {
-      const codePublication = params.get('codePublication');
-      console.log(codePublication);
-
-      if (codePublication) {
-        this.detailPublication(codePublication);
-      }
-    });
+    const codePublication = JSON.parse(sessionStorage.getItem('codePublication')!);
+    if (codePublication) {
+      this.detailPublication(codePublication);
+    }
   }
 
   initResponsiveOptions(): void {
@@ -88,6 +84,12 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
           numVisible: 1
       }
     ];
+  }
+
+  detailPublicationPage(publication: Publication): void {
+    const codePublication = JSON.stringify(publication.codePublication);
+    sessionStorage.setItem('codePublication', codePublication);
+    this.router.navigate(['/annonce-immobiliere']);
   }
 
   //Fonction pour recupérer les images associées à un bien immobilier

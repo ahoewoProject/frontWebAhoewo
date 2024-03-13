@@ -16,18 +16,6 @@ import { TypeDeBienService } from 'src/app/services/gestionDesBiensImmobiliers/t
 import { VilleService } from 'src/app/services/gestionDesBiensImmobiliers/ville.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
 import { environment } from 'src/environments/environment';
-interface Property {
-  city: string;
-  imageUrl: string;
-  propertyCount: number;
-}
-
-interface PropertyType {
-  type: string;
-  icon: string;
-  count: number;
-}
-
 
 @Component({
   selector: 'app-accueil',
@@ -43,6 +31,7 @@ export class AccueilComponent implements OnInit {
   elementsParPage = 3;
   visible: boolean = false;
 
+  publications!: Page<Publication>;
   publicationsDeLocation!: Page<Publication>;
   publicationsDeVente!: Page<Publication>;
   agencesImmobilieres!: Page<AgenceImmobiliere>;
@@ -55,6 +44,7 @@ export class AccueilComponent implements OnInit {
   typesDeBienActifs: TypeDeBien[] = [];
 
   rechercheAvanceePublicationForm: RechercheAvanceePublicationForm = new RechercheAvanceePublicationForm();
+  rechercheSimplePublicationForm: RechercheAvanceePublicationForm = new RechercheAvanceePublicationForm();
   regionSelectionnee = new Region();
   villeSelectionnee = new Ville();
   quartierSelectionne = new Quartier();
@@ -71,6 +61,23 @@ export class AccueilComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initResponsiveOptions();
+
+    this.typeDeTransactionChoisi('Location');
+    this.listeTypesDeBienActifs();
+
+    this.listeRegionsActives();
+    this.listeVillesActives();
+    this.listeQuartiersActifs();
+    this.listeTypesDeBienPourLocation();
+    this.listeTypesDeBienPourVente();
+    this.listePublicationsActives();
+    this.listePublicationsDeLocationActives();
+    this.listePublicationsDeVenteActives();
+    this.listeAgencesImmobilieres();
+  }
+
+  initResponsiveOptions(): void {
     this.responsiveOptions = [
       {
           breakpoint: '1024px',
@@ -85,70 +92,18 @@ export class AccueilComponent implements OnInit {
           numVisible: 1
       }
     ];
-
-    this.properties;
-    this.propertiesTypes;
-    this.typeDeTransactionChoisi('Location');
-    this.listeTypesDeBienActifs();
-
-    this.listeRegionsActives();
-    this.listeVillesActives();
-    this.listeQuartiersActifs();
-    this.listeTypesDeBienPourLocation();
-    this.listeTypesDeBienPourVente();
-    this.listePublicationsDeLocationActives();
-    this.listePublicationsDeVenteActives();
-    this.listeAgencesImmobilieres();
   }
-
-  properties: Property[] = [
-      {
-          city: "New York",
-          imageUrl: "assets/images/listings/as-1.jpg",
-          propertyCount: 12
-      },
-      {
-          city: "Chicago",
-          imageUrl: "assets/images/listings/as-2.jpg",
-          propertyCount: 12
-      },
-      {
-          city: "Manhattan",
-          imageUrl: "assets/images/listings/as-3.jpg",
-          propertyCount: 12
-      },
-      {
-          city: "San Francisco",
-          imageUrl: "assets/images/listings/as-4.jpg",
-          propertyCount: 12
-      },
-      {
-          city: "Los Angeles",
-          imageUrl: "assets/images/listings/as-5.jpg",
-          propertyCount: 12
-      },
-      {
-          city: "California",
-          imageUrl: "assets/images/listings/as-6.jpg",
-          propertyCount: 12
-      },
-  ];
-
-  propertiesTypes: PropertyType[] = [
-    { type: 'Terrain', icon: 'assets/images/icons/terrain.png', count: 22 },
-    { type: 'Maison', icon: 'assets/images/icons/maison.png', count: 22 },
-    { type: 'Immeuble', icon: 'assets/images/icons/immeuble.png', count: 22 },
-    { type: 'Villa', icon: 'assets/images/icons/villa.png', count: 22 },
-    { type: 'Appartement', icon: 'assets/images/icons/appartement.png', count: 22 },
-    { type: 'Chambre salon', icon: 'assets/images/icons/salon.png', count: 22 },
-    { type: 'Chambre', icon: 'assets/images/icons/chambre.png', count: 22 },
-    { type: 'Bureau', icon: 'assets/images/icons/bureau.png', count: 22 },
-    { type: 'Boutique', icon: 'assets/images/icons/boutique.png', count: 22 },
-    { type: 'Magasin', icon: 'assets/images/icons/magasin.png', count: 22 }
-  ];
 
   showDialog() {
     this.visible = true;
+  }
+
+  listePublicationsActives(): void {
+    this.publicationService.getPublicationsActives(this.numeroDeLaPage, this.elementsParPage).subscribe(
+      (response) => {
+        this.publications = response;
+      }
+    )
   }
 
   listePublicationsDeLocationActives(): void {
@@ -478,24 +433,32 @@ export class AccueilComponent implements OnInit {
   }
 
   rechercheSimpleDePublication(): void {
-    this.router.navigate(['/annonces-immobilieres'], {
-      queryParams: {
-        typeDeTransaction: this.typeDeTransactionSelectionne,
-        typeDeBienId: this.typeDeBienSelectionne.id,
-        quartierId: this.quartierSelectionne.id
-      }
-    });
+    sessionStorage.getItem('rechercheAvanceePublicationForm') && sessionStorage.removeItem('rechercheAvanceePublicationForm');
+
+    sessionStorage.setItem('region', JSON.stringify(this.regionSelectionnee));
+    sessionStorage.setItem('ville', JSON.stringify(this.villeSelectionnee));
+
+    this.rechercheSimplePublicationForm.typeDeTransaction = this.typeDeTransactionSelectionne;
+    this.rechercheSimplePublicationForm.typeDeBien = this.typeDeBienSelectionne;
+    this.rechercheSimplePublicationForm.quartier = this.quartierSelectionne;
+
+    sessionStorage.setItem('rechercheSimplePublicationForm', JSON.stringify(this.rechercheSimplePublicationForm));
+
+    this.router.navigate(['/annonces-immobilieres']);
   }
 
   rechercheAvanceeDePublication(): void {
+    sessionStorage.getItem('rechercheSimplePublicationForm') && sessionStorage.removeItem('rechercheSimplePublicationForm');
+
+    sessionStorage.setItem('region', JSON.stringify(this.regionSelectionnee));
+    sessionStorage.setItem('ville', JSON.stringify(this.villeSelectionnee));
+
     this.rechercheAvanceePublicationForm.typeDeTransaction = this.typeDeTransactionSelectionne;
     this.rechercheAvanceePublicationForm.typeDeBien = this.typeDeBienSelectionne;
     this.rechercheAvanceePublicationForm.quartier = this.quartierSelectionne;
 
-    this.router.navigate(['/annonces-immobilieres'], {
-      queryParams: {
-        rechercheAvanceePublication: JSON.stringify(this.rechercheAvanceePublicationForm)
-      }
-    });
+    sessionStorage.setItem('rechercheAvanceePublicationForm', JSON.stringify(this.rechercheAvanceePublicationForm));
+
+    this.router.navigate(['/annonces-immobilieres']);
   }
 }

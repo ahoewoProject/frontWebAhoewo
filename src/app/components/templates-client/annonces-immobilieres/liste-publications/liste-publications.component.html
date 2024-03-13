@@ -5,8 +5,76 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="widget-wrapper">
+            <h6 class="list-title">Type de bien</h6>
+            <div class="form-style1">
+              <p-dropdown *ngIf="typeDeTransactionSelectionne === 'Location'"
+                class="selectInModal" emptyFilterMessage="Aucun résultat trouvé"
+                emptyMessage="Aucun résultat trouvé"
+                [options]="typesDeBienPourLocation" placeholder="Type de bien"
+                optionLabel="designation" (onChange)="typeDeBienChoisi($event)"
+                [filter]="true" filterBy="designation"
+                [(ngModel)]="typeDeBienSelectionne">
+              </p-dropdown>
+              <p-dropdown *ngIf="typeDeTransactionSelectionne === 'Vente'"
+                class="selectInModal" emptyFilterMessage="Aucun résultat trouvé"
+                emptyMessage="Aucun résultat trouvé"
+                [options]="typesDeBienPourVente" placeholder="Type de bien"
+                optionLabel="designation" (onChange)="typeDeBienChoisi($event)"
+                [filter]="true" filterBy="designation"
+                [(ngModel)]="typeDeBienSelectionne">
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Région</h6>
+            <div class="form-style1">
+              <p-dropdown
+                class="selectInModal" emptyFilterMessage="Aucun résultat trouvé"
+                emptyMessage="Aucun résultat trouvé"
+                [options]="regions" placeholder="Région"
+                optionLabel="libelle" (onChange)="regionChoisie($event)"
+                [filter]="true" filterBy="libelle"
+                [(ngModel)]="regionSelectionnee">
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Ville</h6>
+            <div class="form-style1">
+              <p-dropdown
+                class="selectInModal" emptyFilterMessage="Aucun résultat trouvé"
+                emptyMessage="Aucun résultat trouvé"
+                [options]="villes" placeholder="Ville"
+                optionLabel="libelle" (onChange)="villeChoisie($event)"
+                [filter]="true" filterBy="libelle"
+                [(ngModel)]="villeSelectionnee">
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Quartier</h6>
+            <div class="form-style1">
+              <p-dropdown
+                class="selectInModal" emptyFilterMessage="Aucun résultat trouvé"
+                emptyMessage="Aucun résultat trouvé"
+                [options]="quartiers" placeholder="Quartier"
+                optionLabel="libelle" (onChange)="quartierChoisi($event)"
+                [filter]="true" filterBy="libelle"
+                [(ngModel)]="quartierSelectionne">
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="widget-wrapper">
             <h6 class="list-title">Prix minimum</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="prixMin" name="prixMin" placeholder="Prix minimum" [(ngModel)]="rechercheAvanceePublicationForm.prixMin"
                      #prixMinInput="ngModel" [max]="rechercheAvanceePublicationForm.prixMax">
               <div *ngIf="prixMinInput.invalid && (prixMinInput.dirty || prixMinInput.touched)"
@@ -19,7 +87,7 @@
         <div class="col-sm-6">
           <div class="widget-wrapper">
             <h6 class="list-title">Prix maximum</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="prixMax" name="prixMax" placeholder="Prix maximun" [(ngModel)]="rechercheAvanceePublicationForm.prixMax"
                      #prixMaxInput="ngModel" [min]="rechercheAvanceePublicationForm.prixMin">
               <div *ngIf="prixMaxInput.invalid && (prixMaxInput.dirty || prixMaxInput.touched)"
@@ -32,7 +100,7 @@
         <div class="col-sm-6" *ngIf="afficherAvanceEtCaution()">
           <div class="widget-wrapper">
             <h6 class="list-title">Avance en nombre de mois</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="avance" name="avance" placeholder="Avance en nombre de mois" [(ngModel)]="rechercheAvanceePublicationForm.avance"
                     #avanceInput="ngModel" [max]="12">
               <div *ngIf="avanceInput.invalid && (avanceInput.dirty || avanceInput.touched)"
@@ -45,7 +113,7 @@
         <div class="col-sm-6" *ngIf="afficherAvanceEtCaution()">
           <div class="widget-wrapper">
             <h6 class="list-title">Caution en nombre de mois</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="caution" name="caution" placeholder="Caution en nombre de mois" [(ngModel)]="rechercheAvanceePublicationForm.caution"
                     #cautionInput="ngModel" [max]="12">
                 <div *ngIf="cautionInput.invalid && (cautionInput.dirty || cautionInput.touched)"
@@ -58,7 +126,7 @@
         <div class="col-sm-6">
           <div class="widget-wrapper">
             <h6 class="list-title">Commission {{ typeDeTransactionSelectionne === 'Location' ? 'en nombre de mois' : 'en pourcentage' }}</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input *ngIf="typeDeTransactionSelectionne == 'Location'" type="number" class="form-control" id="commission" name="commission" placeholder="La commission en nombre de mois" [(ngModel)]="rechercheAvanceePublicationForm.commission">
               <input *ngIf="typeDeTransactionSelectionne == 'Vente'" type="number" class="form-control" id="commission" name="commission" placeholder="La commission en pourcentage" [(ngModel)]="rechercheAvanceePublicationForm.commission" [disabled]="isCommissionDisabled()">
             </div>
@@ -67,7 +135,7 @@
         <div class="col-sm-6">
           <div class="widget-wrapper">
             <h6 class="list-title">Frais de visite</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="fraisDeVisite" name="fraisDeVisite" placeholder="Frais de visite" [(ngModel)]="rechercheAvanceePublicationForm.fraisDeVisite">
             </div>
           </div>
@@ -83,7 +151,7 @@
         <div class="col-sm-6" *ngIf="afficherNombreChambre()">
           <div class="widget-wrapper">
             <h6 class="list-title">Nombre de chambres</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="nombreChambres" name="nombreChambres" placeholder="Nombre de chambres" [(ngModel)]="rechercheAvanceePublicationForm.nombreChambres">
             </div>
           </div>
@@ -91,7 +159,7 @@
         <div class="col-sm-6" *ngIf="afficherNombreSalon()">
           <div class="widget-wrapper">
             <h6 class="list-title">Nombre de salons</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="nombreSalons" name="nombreSalons" placeholder="nombre de salons" [(ngModel)]="rechercheAvanceePublicationForm.nombreSalons">
             </div>
           </div>
@@ -99,7 +167,7 @@
         <div class="col-sm-6" *ngIf="afficherNombreChambreSalon()">
           <div class="widget-wrapper">
             <h6 class="list-title">Nombre de chambres salon</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="nombreChambresSalon" name="nombreChambresSalon" placeholder="Nombre de chambres salon" [(ngModel)]="rechercheAvanceePublicationForm.nombreChambresSalon">
             </div>
           </div>
@@ -107,7 +175,7 @@
         <div class="col-sm-6" *ngIf="afficherNombreAppartement()">
           <div class="widget-wrapper">
             <h6 class="list-title">Nombre d'appartements</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="nombreAppartements" name="nombreAppartements" placeholder="Nombre d'appartements" [(ngModel)]="rechercheAvanceePublicationForm.nombreAppartements">
             </div>
           </div>
@@ -115,7 +183,7 @@
         <div class="col-sm-6" *ngIf="afficherNombreBureau()">
           <div class="widget-wrapper">
             <h6 class="list-title">Nombre de bureaux</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="nombreBureaux" name="nombreBureaux" placeholder="Nombre de bureaux" [(ngModel)]="rechercheAvanceePublicationForm.nombreBureaux">
             </div>
           </div>
@@ -123,7 +191,7 @@
         <div class="col-sm-6" *ngIf="afficherNombreBoutique()">
           <div class="widget-wrapper">
             <h6 class="list-title">Nombre de boutiques</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="nombreBoutiques" name="nombreBoutiques" placeholder="Nombre de boutiques" [(ngModel)]="rechercheAvanceePublicationForm.nombreBoutiques">
             </div>
           </div>
@@ -131,7 +199,7 @@
         <div class="col-sm-6" *ngIf="afficherNombreMagasin()">
           <div class="widget-wrapper">
             <h6 class="list-title">Nombre de magasins</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="nombreMagasins" name="nombreMagasins" placeholder="Nombre de magasins" [(ngModel)]="rechercheAvanceePublicationForm.nombreMagasins">
             </div>
           </div>
@@ -139,7 +207,7 @@
         <div class="col-sm-6" *ngIf="afficherNombreEtage()">
           <div class="widget-wrapper">
             <h6 class="list-title">Nombre d'étages</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="nombreEtages" name="nombreEtages" placeholder="Nombre d'étages" [(ngModel)]="rechercheAvanceePublicationForm.nombreEtages">
             </div>
           </div>
@@ -147,7 +215,7 @@
         <div class="col-sm-6" *ngIf="afficherNombreGarage()">
           <div class="widget-wrapper">
             <h6 class="list-title">Nombre de garages</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="nombreGarages" name="nombreGarages" placeholder="Nombre de garages" [(ngModel)]="rechercheAvanceePublicationForm.nombreGarages">
             </div>
           </div>
@@ -155,7 +223,7 @@
         <div class="col-sm-6" *ngIf="afficherNombreCuisine()">
           <div class="widget-wrapper">
             <h6 class="list-title">Nombre de cuisine interne</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="nombreCuisineInterne" name="nombreCuisineInterne" placeholder="Nombre de cuisine interne" [(ngModel)]="rechercheAvanceePublicationForm.nombreCuisineInterne">
             </div>
           </div>
@@ -163,7 +231,7 @@
         <div class="col-sm-6" *ngIf="afficherNombreCuisine()">
           <div class="widget-wrapper">
             <h6 class="list-title">Nombre de cuisine externe</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="nombreCuisineExterne" name="nombreCuisineExterne" placeholder="Nombre de cuisine externe" [(ngModel)]="rechercheAvanceePublicationForm.nombreCuisineExterne">
             </div>
           </div>
@@ -171,7 +239,7 @@
         <div class="col-sm-6" *ngIf="afficherNombreWCDouche()">
           <div class="widget-wrapper">
             <h6 class="list-title">Nombre de WC-Douche interne</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="nombreWCDoucheInterne" name="nombreWCDoucheInterne" placeholder="Nombre de WC-Douche interne" [(ngModel)]="rechercheAvanceePublicationForm.nombreWCDoucheInterne">
             </div>
           </div>
@@ -179,7 +247,7 @@
         <div class="col-sm-6" *ngIf="afficherNombreWCDouche()">
           <div class="widget-wrapper">
             <h6 class="list-title">Nombre de WC-Douche externe</h6>
-            <div class="form-style2">
+            <div class="form-style1">
               <input type="number" class="form-control" id="nombreWCDoucheExterne" name="nombreWCDoucheExterne" placeholder="nombre de WC-Douche externe" [(ngModel)]="rechercheAvanceePublicationForm.nombreWCDoucheExterne">
             </div>
           </div>
@@ -430,14 +498,14 @@
         <div class="advance-style4 at-home5 mx-auto animate-up-2">
           <ul class="nav nav-tabs p-0 m-0" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true" (click)="typeDeTransactionChoisi('Location')">À Louer</button>
+              <button class="nav-link {{typeDeTransactionSelectionne === 'Location' ? 'active' : ''}}" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true" (click)="typeDeTransactionChoisi('Location')">À Louer</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false" (click)="typeDeTransactionChoisi('Vente')">À Vendre</button>
+              <button class="nav-link {{typeDeTransactionSelectionne === 'Vente' ? 'active' : ''}}" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false" (click)="typeDeTransactionChoisi('Vente')">À Vendre</button>
             </li>
           </ul>
           <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fade {{typeDeTransactionSelectionne === 'Location' ? 'show active' : ''}}" id="home" role="tabpanel" aria-labelledby="home-tab">
               <div class="advance-content-style3 at-home5">
                 <div class="row align-items-center">
                   <!-- <div class="col-md-4 col-xl-3 bdrr1 bdrrn-sm">
@@ -519,7 +587,7 @@
                 </div>
               </div>
             </div>
-            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="tab-pane fade {{typeDeTransactionSelectionne === 'Vente' ? 'show active' : ''}}" id="profile" role="tabpanel" aria-labelledby="profile-tab">
               <div class="advance-content-style3 at-home5">
                 <div class="row align-items-center">
                   <!-- <div class="col-md-4 col-xl-3 bdrr1 bdrrn-sm">
@@ -623,7 +691,7 @@
 
     <div class="row" *ngIf="!loading">
       <div class="col-md-6 col-lg-4" *ngFor="let publication of publications.content">
-        <div class="listing-style1">
+        <div class="listing-style1" type="button" (click)="detailPublicationPage(publication)">
           <div class="list-thumb">
             <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
             <!-- <div class="badge"><span style="background-color: #ff003d" class="span-badge">{{ publication.typeDeTransaction === 'Location' ? 'À louer' : 'À vendre' }}</span></div> -->
@@ -632,7 +700,7 @@
             <div *ngIf="publication.typeDeTransaction === 'Vente'" class="list-price">{{ publication.prixDuBien | number }} FCFA </div>
           </div>
           <div class="list-content">
-            <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
+            <h6 class="list-title"><a>{{ publication.libelle }}</a></h6>
             <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
             <!-- <div class="list-meta d-flex align-items-center">
               <a href="#"><span class="flaticon-bed"></span>3 bed</a>

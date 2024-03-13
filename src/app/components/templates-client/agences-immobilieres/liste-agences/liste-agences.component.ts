@@ -37,13 +37,13 @@ export class ListeAgencesComponent implements OnInit {
   APIEndpoint: string;
   nomAgence: any;
 
-  constructor(private regionService: RegionService,
-    private villeService: VilleService,
-    private quartierService: QuartierService,
-    private agenceImmobilierService: AgenceImmobiliereService,
-    private datePipe: DatePipe, private filterService: FilterService) {
-      this.APIEndpoint = environment.APIEndpoint;
-    }
+  constructor(private regionService: RegionService, private villeService: VilleService,
+    private quartierService: QuartierService, private agenceImmobilierService: AgenceImmobiliereService,
+    private datePipe: DatePipe, private filterService: FilterService
+  )
+  {
+    this.APIEndpoint = environment.APIEndpoint;
+  }
 
   ngOnInit(): void {
     this.listeRegionsActives();

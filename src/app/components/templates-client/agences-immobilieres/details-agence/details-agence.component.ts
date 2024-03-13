@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
 import { ContactezNousForm } from 'src/app/models/ContactezNousForm';
@@ -40,7 +40,8 @@ export class DetailsAgenceComponent implements OnInit {
     private agenceImmobiliereService: AgenceImmobiliereService,
     private _serviceAgenceService: ServicesAgenceImmobiliereService,
     private datePipe: DatePipe, private publicationService: PublicationService,
-    private contactezNousService: ContactezNousService, private messageService: MessageService
+    private contactezNousService: ContactezNousService, private messageService: MessageService,
+    private router: Router
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -54,6 +55,12 @@ export class DetailsAgenceComponent implements OnInit {
     this.initContactezNousForm();
     this.detailAgenceImmobiliere();
     this.listeServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
+  }
+
+  detailPublicationPage(publication: Publication): void {
+    const codePublication = JSON.stringify(publication.codePublication);
+    sessionStorage.setItem('codePublication', codePublication);
+    this.router.navigate(['/annonce-immobiliere']);
   }
 
   detailAgenceImmobiliere(): void {

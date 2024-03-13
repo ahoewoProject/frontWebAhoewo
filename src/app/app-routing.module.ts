@@ -24,7 +24,7 @@ const routes: Routes = [
         component: ListePublicationsComponent,
       },
       {
-        path: 'annonce-immobiliere/:codePublication',
+        path: 'annonce-immobiliere',
         component: DetailsPublicationComponent
       },
       {

@@ -7,6 +7,7 @@ import { TypeDeBien } from 'src/app/models/gestionDesBiensImmobiliers/TypeDeBien
 import { Ville } from 'src/app/models/gestionDesBiensImmobiliers/Ville';
 import { Publication } from 'src/app/models/gestionDesPublications/Publication';
 import { RechercheAvanceePublicationForm } from 'src/app/models/gestionDesPublications/RechercheAvanceePublicationForm';
+import { RechercheSimplePublicationForm } from 'src/app/models/gestionDesPublications/RechercheSimplePublicationForm';
 import { QuartierService } from 'src/app/services/gestionDesBiensImmobiliers/quartier.service';
 import { RegionService } from 'src/app/services/gestionDesBiensImmobiliers/region.service';
 import { TypeDeBienService } from 'src/app/services/gestionDesBiensImmobiliers/type-de-bien.service';
@@ -39,6 +40,7 @@ export class ListePublicationsComponent implements OnInit {
   quartierSelectionne = new Quartier();
   typeDeBienSelectionne = new TypeDeBien();
   rechercheAvanceePublicationForm: RechercheAvanceePublicationForm = new RechercheAvanceePublicationForm();
+  rechercheSimplePublicationForm: RechercheSimplePublicationForm = new RechercheSimplePublicationForm();
   typeDeTransactionSelectionne = '';
 
   publications!: Page<Publication>;
@@ -52,12 +54,26 @@ export class ListePublicationsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      const typeDeTransaction = params['typeDeTransaction'];
-      const typeDeBienId = params['typeDeBienId'];
-      const quartierId = params['quartierId'];
+    if (JSON.parse(sessionStorage.getItem('rechercheSimplePublicationForm')!)) {
+      this.initRechercheSimple(this.numeroDeLaPage, this.elementsParPage);
+    } else if (JSON.parse(sessionStorage.getItem('rechercheAvanceePublicationForm')!)) {
+      this.initRechercheAvancee(this.numeroDeLaPage, this.elementsParPage);
+    } else {
+      this.initActivatedRoute(this.numeroDeLaPage, this.elementsParPage);
+    }
 
-      const donnees = params['rechercheAvanceePublication'];
+
+    this.listeRegionsActives();
+    this.listeVillesActives();
+    this.listeQuartiersActifs();
+    this.listeTypesDeBienPourLocation();
+    this.listeTypesDeBienPourVente();
+  }
+
+  initActivatedRoute(numeroDeLaPage: number, elementsParPage: number): void {
+    this.route.queryParams.subscribe(params => {
+
+      this.typeDeTransactionChoisi('Location');
 
       const libelle = params['libelle'];
       const designation = params['designation'];
@@ -67,35 +83,45 @@ export class ListePublicationsComponent implements OnInit {
       const nomAgence = params['nomAgence'];
       const email = params['email'];
 
-      // console.log(this.rechercheAvanceePublicationForm);
-      if (typeDeTransaction && typeDeBienId && quartierId) {
-        this.rechercheSimpleDePublicationsActives(typeDeTransaction, typeDeBienId, quartierId, this.numeroDeLaPage, this.elementsParPage);
-      } else if (donnees) {
-        const donneesParsees = JSON.parse(donnees);
-        this.rechercheAvanceePublicationForm = donneesParsees;
-        console.log(donneesParsees);
-        this.rechercheAvanceeDePublicationsActives(this.rechercheAvanceePublicationForm , this.numeroDeLaPage, this.elementsParPage);
-      } else if (libelle) {
-        this.listePublicationsActivesParRegion(libelle, this.numeroDeLaPage, this.elementsParPage);
+      if (libelle) {
+        this.listePublicationsActivesParRegion(libelle, numeroDeLaPage, elementsParPage);
       } else if (designation) {
-        this.listePublicationsActivesParTypeDeBien(designation, this.numeroDeLaPage, this.elementsParPage);
+        this.listePublicationsActivesParTypeDeBien(designation, numeroDeLaPage, elementsParPage);
       } else if (regions) {
-        this.listePublicationsActivesParListeRegions(this.numeroDeLaPage, this.elementsParPage);
+        this.listePublicationsActivesParListeRegions(numeroDeLaPage, elementsParPage);
       } else if (nomAgence) {
-        this.listePublicationsActivesParAgence(nomAgence, this.numeroDeLaPage, this.elementsParPage);
+        this.listePublicationsActivesParAgence(nomAgence, numeroDeLaPage, elementsParPage);
       } else if (email) {
-        this.listePublicationsActivesParPersonne(email, this.numeroDeLaPage, this.elementsParPage);
+        this.listePublicationsActivesParPersonne(email, numeroDeLaPage, elementsParPage);
       } else {
-        this.listePublicationsActives(this.numeroDeLaPage, this.elementsParPage);
+        this.listePublicationsActives(numeroDeLaPage, elementsParPage);
       }
     });
+  }
 
-    this.typeDeTransactionChoisi('Location');
-    this.listeRegionsActives();
-    this.listeVillesActives();
-    this.listeQuartiersActifs();
-    this.listeTypesDeBienPourLocation();
-    this.listeTypesDeBienPourVente();
+  initRechercheSimple(numeroDeLaPage: number, elementsParPage: number): void {
+
+    this.rechercheSimplePublicationForm = JSON.parse(sessionStorage.getItem('rechercheSimplePublicationForm')!);
+    this.typeDeTransactionChoisi(this.rechercheSimplePublicationForm.typeDeTransaction);
+    this.typeDeBienSelectionne = this.rechercheSimplePublicationForm.typeDeBien;
+    this.regionSelectionnee = JSON.parse(sessionStorage.getItem('region')!);
+    this.villeSelectionnee = JSON.parse(sessionStorage.getItem('ville')!);
+    this.quartierSelectionne = this.rechercheSimplePublicationForm.quartier;
+
+    this.rechercheSimpleDePublicationsActives(this.typeDeTransactionSelectionne, this.typeDeBienSelectionne.id,
+      this.quartierSelectionne.id, numeroDeLaPage, elementsParPage);
+  }
+
+  initRechercheAvancee(numeroDeLaPage: number, elementsParPage: number): void {
+
+    this.rechercheAvanceePublicationForm = JSON.parse(sessionStorage.getItem('rechercheAvanceePublicationForm')!);
+    this.typeDeTransactionChoisi(this.rechercheAvanceePublicationForm.typeDeTransaction);
+    this.typeDeBienSelectionne = this.rechercheAvanceePublicationForm.typeDeBien;
+    this.regionSelectionnee = JSON.parse(sessionStorage.getItem('region')!);
+    this.villeSelectionnee = JSON.parse(sessionStorage.getItem('ville')!);
+    this.quartierSelectionne = this.rechercheAvanceePublicationForm.quartier;
+
+    this.rechercheAvanceeDePublicationsActives(this.rechercheAvanceePublicationForm, numeroDeLaPage, elementsParPage);
   }
 
   showDialog() {
@@ -109,6 +135,7 @@ export class ListePublicationsComponent implements OnInit {
       this.publicationService.rechercheSimpleDePublicationsActives(typeDeTransaction, typeDeBienId, quartierId,
       numeroDeLaPage, elementsParPage).subscribe(
         (response) => {
+          console.log(response);
           this.publications = response;
           this.loading = false;
         }
@@ -193,66 +220,46 @@ export class ListePublicationsComponent implements OnInit {
   }
 
   rechercheSimpleDePublication(): void {
-    this.router.navigate(['/annonces-immobilieres'], {
-      queryParams: {
-        typeDeTransaction: this.typeDeTransactionSelectionne,
-        typeDeBienId: this.typeDeBienSelectionne.id,
-        quartierId: this.quartierSelectionne.id
-      }
-    });
+    sessionStorage.getItem('rechercheAvanceePublicationForm') && sessionStorage.removeItem('rechercheAvanceePublicationForm');
+
+    sessionStorage.setItem('region', JSON.stringify(this.regionSelectionnee));
+    sessionStorage.setItem('ville', JSON.stringify(this.villeSelectionnee));
+
+    this.rechercheSimplePublicationForm.typeDeTransaction = this.typeDeTransactionSelectionne;
+    this.rechercheSimplePublicationForm.typeDeBien = this.typeDeBienSelectionne;
+    this.rechercheSimplePublicationForm.quartier = this.quartierSelectionne;
+
+    sessionStorage.setItem('rechercheSimplePublicationForm', JSON.stringify(this.rechercheSimplePublicationForm));
+
+    this.router.navigate(['/annonces-immobilieres']);
   }
 
   rechercheAvanceeDePublication(): void {
     this.visible = false;
+    sessionStorage.getItem('rechercheSimplePublicationForm') && sessionStorage.removeItem('rechercheSimplePublicationForm');
+
+    sessionStorage.setItem('region', JSON.stringify(this.regionSelectionnee));
+    sessionStorage.setItem('ville', JSON.stringify(this.villeSelectionnee));
+
     this.rechercheAvanceePublicationForm.typeDeTransaction = this.typeDeTransactionSelectionne;
     this.rechercheAvanceePublicationForm.typeDeBien = this.typeDeBienSelectionne;
     this.rechercheAvanceePublicationForm.quartier = this.quartierSelectionne;
 
-    this.router.navigate(['/annonces-immobilieres'], {
-      queryParams: {
-        rechercheAvanceePublication: JSON.stringify(this.rechercheAvanceePublicationForm)
-      }
-    });
+    sessionStorage.setItem('rechercheAvanceePublicationForm', JSON.stringify(this.rechercheAvanceePublicationForm));
+
+    this.router.navigate(['/annonces-immobilieres']);
   }
 
   pagination(event: any): void {
     this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    this.route.queryParams.subscribe(params => {
-      const typeDeTransaction = params['typeDeTransaction'];
-      const typeDeBienId = params['typeDeBienId'];
-      const quartierId = params['quartierId'];
-
-      const donnees = params['rechercheAvanceeDonnees'];
-
-      const libelle = params['libelle'];
-      const designation = params['designation'];
-
-      const regions = params['regions'];
-
-      const nomAgence = params['nomAgence'];
-      const email = params['email']
-
-      if (typeDeTransaction && typeDeBienId && quartierId) {
-        this.rechercheSimpleDePublicationsActives(typeDeTransaction, typeDeBienId, quartierId, this.numeroDeLaPage, this.elementsParPage);
-      } else if (donnees) {
-        const donneesParsees = JSON.parse(donnees);
-        this.rechercheAvanceePublicationForm = donneesParsees;
-        this.rechercheAvanceeDePublicationsActives(this.rechercheAvanceePublicationForm, this.numeroDeLaPage, this.elementsParPage);
-      } else if (libelle) {
-        this.listePublicationsActivesParRegion(libelle, this.numeroDeLaPage, this.elementsParPage);
-      } else if (designation) {
-        this.listePublicationsActivesParTypeDeBien(designation, this.numeroDeLaPage, this.elementsParPage);
-      } else if (regions) {
-        this.listePublicationsActivesParListeRegions(this.numeroDeLaPage, this.elementsParPage);
-      } else if (nomAgence) {
-        this.listePublicationsActivesParAgence(nomAgence, this.numeroDeLaPage, this.elementsParPage);
-      } else if (email) {
-        this.listePublicationsActivesParPersonne(email, this.numeroDeLaPage, this.elementsParPage);
-      } else {
-        this.listePublicationsActives(this.numeroDeLaPage, this.elementsParPage);
-      }
-    });
+    if (JSON.parse(sessionStorage.getItem('rechercheSimplePublicationForm')!)) {
+      this.initRechercheSimple(this.numeroDeLaPage, this.elementsParPage);
+    } else if (JSON.parse(sessionStorage.getItem('rechercheAvanceePublicationForm')!)) {
+      this.initRechercheAvancee(this.numeroDeLaPage, this.elementsParPage);
+    } else {
+      this.initActivatedRoute(this.numeroDeLaPage, this.elementsParPage);
+    }
   }
 
   //Fonction pour recupérer la liste des régions actives
@@ -329,6 +336,12 @@ export class ListePublicationsComponent implements OnInit {
 
   typeDeTransactionChoisi(value: string): void {
     this.typeDeTransactionSelectionne = value;
+  }
+
+  detailPublicationPage(publication: Publication): void {
+    const codePublication = JSON.stringify(publication.codePublication);
+    sessionStorage.setItem('codePublication', codePublication);
+    this.router.navigate(['/annonce-immobiliere']);
   }
 
   afficherAvanceEtCaution(): boolean {
