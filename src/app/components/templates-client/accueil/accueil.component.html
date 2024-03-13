@@ -774,15 +774,10 @@
                   <div class="list-content">
                     <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
                     <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
-                    <!-- <hr class="mt-2 mb-2">
+                    <hr class="mt-2 mb-2">
                     <div class="list-meta2 d-flex justify-content-between align-items-center">
-                      <span class="for-what">For Rent</span>
-                      <div class="icons d-flex align-items-center">
-                        <a href="#"><span class="flaticon-fullscreen"></span></a>
-                        <a href="#"><span class="flaticon-new-tab"></span></a>
-                        <a href="#"><span class="flaticon-like"></span></a>
-                      </div>
-                    </div> -->
+                      <p class="text"><b class="publie-date-heure">Publié </b>{{ formatDate(publication.datePublication) }}</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -800,15 +795,10 @@
                   <div class="list-content">
                     <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publicationDeLocation.codePublication]">{{ publicationDeLocation.libelle }}</a></h6>
                     <p class="text">{{ publicationDeLocation.bienImmobilier.quartier.ville.libelle }}, {{ publicationDeLocation.bienImmobilier.quartier.libelle }}, {{ publicationDeLocation.bienImmobilier.adresse }}</p>
-                    <!-- <hr class="mt-2 mb-2">
+                    <hr class="mt-2 mb-2">
                     <div class="list-meta2 d-flex justify-content-between align-items-center">
-                      <span class="for-what">For Rent</span>
-                      <div class="icons d-flex align-items-center">
-                        <a href="#"><span class="flaticon-fullscreen"></span></a>
-                        <a href="#"><span class="flaticon-new-tab"></span></a>
-                        <a href="#"><span class="flaticon-like"></span></a>
-                      </div>
-                    </div> -->
+                      <p class="text"><b class="publie-date-heure">Publié </b>{{ formatDate(publicationDeLocation.datePublication) }}</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -826,15 +816,10 @@
                   <div class="list-content">
                     <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publicationDeVente.codePublication]">{{ publicationDeVente.libelle }}</a></h6>
                     <p class="list-text">{{ publicationDeVente.bienImmobilier.quartier.ville.libelle }}, {{ publicationDeVente.bienImmobilier.quartier.libelle }}, {{ publicationDeVente.bienImmobilier.adresse }}</p>
-                    <!-- <hr class="mt-2 mb-2">
+                    <hr class="mt-2 mb-2">
                     <div class="list-meta2 d-flex justify-content-between align-items-center">
-                      <span class="for-what">For Rent</span>
-                      <div class="icons d-flex align-items-center">
-                        <a href="#"><span class="flaticon-fullscreen"></span></a>
-                        <a href="#"><span class="flaticon-new-tab"></span></a>
-                        <a href="#"><span class="flaticon-like"></span></a>
-                      </div>
-                    </div> -->
+                      <p class="text"><b class="publie-date-heure">Publié </b>{{ formatDate(publicationDeVente.datePublication) }}</p>
+                    </div>
                   </div>
                 </div>
               </div>

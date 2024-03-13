@@ -461,4 +461,33 @@ export class AccueilComponent implements OnInit {
 
     this.router.navigate(['/annonces-immobilieres']);
   }
+
+  formatDate(datePublication: Date): string {
+    const now = new Date();
+    const publicationDate = new Date(datePublication);
+    const diff = now.getTime() - publicationDate.getTime();
+    const diffDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+    if (diff < 1000 * 60 * 60 * 24) {
+      // Aujourd'hui
+      return `Aujourd'hui, à ${this.formatTime(publicationDate)}`;
+    } else if (diff < 1000 * 60 * 60 * 24 * 2) {
+      // Hier
+      return `Hier, à ${this.formatTime(publicationDate)}`;
+    } else if (diff < 1000 * 60 * 60 * 24 * 3) {
+      // Avant-hier
+      return `Avant-hier, à ${this.formatTime(publicationDate)}`;
+    } else {
+      // Autre date
+      const months = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+      return `le ${publicationDate.getDate()} ${months[publicationDate.getMonth()]} à ${this.formatTime(publicationDate)}`;
+    }
+  }
+
+  // Fonction pour formater l'heure
+  formatTime(date: Date): string {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    return `${hours} heures ${minutes} minutes`;
+  }
 }

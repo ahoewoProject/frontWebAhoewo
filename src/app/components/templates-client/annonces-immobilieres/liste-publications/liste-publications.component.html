@@ -702,20 +702,10 @@
           <div class="list-content">
             <h6 class="list-title"><a>{{ publication.libelle }}</a></h6>
             <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
-            <!-- <div class="list-meta d-flex align-items-center">
-              <a href="#"><span class="flaticon-bed"></span>3 bed</a>
-              <a href="#"><span class="flaticon-shower"></span>4 bath</a>
-              <a href="#"><span class="flaticon-expand"></span>1200 sqft</a>
+            <hr class="mt-2 mb-2">
+            <div class="list-meta2 d-flex justify-content-between align-items-center">
+              <p class="text"><b class="publie-date-heure">Publié </b>{{ formatDate(publication.datePublication) }}</p>
             </div>
-            <hr class="mt-2 mb-2"> -->
-            <!-- <div class="list-meta2 d-flex justify-content-between align-items-center">
-              <span class="for-what">For Rent</span>
-              <div class="icons d-flex align-items-center">
-                <a href="#"><span class="flaticon-fullscreen"></span></a>
-                <a href="#"><span class="flaticon-new-tab"></span></a>
-                <a href="#"><span class="flaticon-like"></span></a>
-              </div>
-            </div> -->
           </div>
         </div>
       </div>

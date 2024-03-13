@@ -84,6 +84,13 @@
 .p-tag.p-tag-success {
   background-color: #0D7914;
   color: #ffffff;
+}
+
+.p-tag {
+  font-family: 'DM Sans' , sans-serif;
+}
+
+.publie-date-heure {
   font-family: 'DM Sans' , sans-serif;
 }
 
