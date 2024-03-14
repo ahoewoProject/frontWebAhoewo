@@ -50,3 +50,8 @@
 :host ::ng-deep .p-dialog {
   border-radius: 100%;
 }
+
+:host ::ng-deep .pInputNumber {
+  width: 100%;
+  border-radius: 8px;
+}

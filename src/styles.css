@@ -86,6 +86,11 @@
   color: #ffffff;
 }
 
+.p-tag.p-tag-warning {
+  background-color: #DB6B15;
+  color: #ffffff;
+}
+
 .p-tag {
   font-family: 'DM Sans' , sans-serif;
 }

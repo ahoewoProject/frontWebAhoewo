@@ -54,6 +54,13 @@ export class ListePublicationsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      if (!params['recherche']) {
+        sessionStorage.getItem('rechercheSimplePublicationForm') && sessionStorage.removeItem('rechercheSimplePublicationForm');
+        sessionStorage.getItem('rechercheAvanceePublicationForm') && sessionStorage.removeItem('rechercheAvanceePublicationForm');
+      }
+    });
+
     if (JSON.parse(sessionStorage.getItem('rechercheSimplePublicationForm')!)) {
       this.initRechercheSimple(this.numeroDeLaPage, this.elementsParPage);
     } else if (JSON.parse(sessionStorage.getItem('rechercheAvanceePublicationForm')!)) {
@@ -61,7 +68,6 @@ export class ListePublicationsComponent implements OnInit {
     } else {
       this.initActivatedRoute(this.numeroDeLaPage, this.elementsParPage);
     }
-
 
     this.listeRegionsActives();
     this.listeVillesActives();
@@ -231,7 +237,7 @@ export class ListePublicationsComponent implements OnInit {
 
     sessionStorage.setItem('rechercheSimplePublicationForm', JSON.stringify(this.rechercheSimplePublicationForm));
 
-    this.router.navigate(['/annonces-immobilieres']);
+    this.router.navigate(['/annonces-immobilieres'], { state: { recherche: 'simple' } });
   }
 
   rechercheAvanceeDePublication(): void {
@@ -247,7 +253,7 @@ export class ListePublicationsComponent implements OnInit {
 
     sessionStorage.setItem('rechercheAvanceePublicationForm', JSON.stringify(this.rechercheAvanceePublicationForm));
 
-    this.router.navigate(['/annonces-immobilieres']);
+    this.router.navigate(['/annonces-immobilieres'], { queryParams: { recherche: 'avancee' } });
   }
 
   pagination(event: any): void {

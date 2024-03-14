@@ -273,12 +273,15 @@
           <div class="widget-wrapper">
             <h6 class="list-title">Prix minimum</h6>
             <div class="form-style1">
-              <input type="number" class="form-control" id="prixMin" name="prixMin" placeholder="Prix minimum" [(ngModel)]="rechercheAvanceePublicationForm.prixMin"
+              <p-inputNumber class="pInputNumber p-fluid" placeholder="Prix minimum" [(ngModel)]="rechercheAvanceePublicationForm.prixMin" inputId="prixMin" mode="currency" currency="CFA" locale="de-DE"
+                [max]="rechercheAvanceePublicationForm.prixMax">
+              </p-inputNumber>
+              <!-- <input type="number" class="form-control" id="prixMin" name="prixMin" placeholder="Prix minimum" [(ngModel)]="rechercheAvanceePublicationForm.prixMin"
                      #prixMinInput="ngModel" [max]="rechercheAvanceePublicationForm.prixMax">
               <div *ngIf="prixMinInput.invalid && (prixMinInput.dirty || prixMinInput.touched)"
                    class="error">
                 <div *ngIf="prixMinInput.errors && prixMinInput.errors['max']">Le prix minimum ne doit pas être supérieur le prix maximum.</div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -286,12 +289,15 @@
           <div class="widget-wrapper">
             <h6 class="list-title">Prix maximum</h6>
             <div class="form-style1">
-              <input type="number" class="form-control" id="prixMax" name="prixMax" placeholder="Prix maximun" [(ngModel)]="rechercheAvanceePublicationForm.prixMax"
+              <p-inputNumber class="pInputNumber p-fluid" placeholder="Prix maximun" [(ngModel)]="rechercheAvanceePublicationForm.prixMax" inputId="prixMax" mode="currency" currency="CFA" locale="de-DE"
+                [min]="rechercheAvanceePublicationForm.prixMin">
+              </p-inputNumber>
+              <!-- <input type="number" class="form-control" id="prixMax" name="prixMax" placeholder="Prix maximun" [(ngModel)]="rechercheAvanceePublicationForm.prixMax"
                      #prixMaxInput="ngModel" [min]="rechercheAvanceePublicationForm.prixMin">
               <div *ngIf="prixMaxInput.invalid && (prixMaxInput.dirty || prixMaxInput.touched)"
                    class="error">
                 <div *ngIf="prixMaxInput.errors && prixMaxInput.errors['min']">Le prix maximum ne doit pas être inférieur au prix minimum.</div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -299,12 +305,13 @@
           <div class="widget-wrapper">
             <h6 class="list-title">Avance en nombre de mois</h6>
             <div class="form-style1">
-              <input type="number" class="form-control" id="avance" name="avance" placeholder="Avance en nombre de mois" [(ngModel)]="rechercheAvanceePublicationForm.avance"
+              <p-inputNumber class="pInputNumber p-fluid" placeholder="Avance en nombre de mois" [(ngModel)]="rechercheAvanceePublicationForm.avance" inputId="avance" suffix=" mois" [max]="12"> </p-inputNumber>
+              <!-- <input type="number" class="form-control" id="avance" name="avance" placeholder="Avance en nombre de mois" [(ngModel)]="rechercheAvanceePublicationForm.avance"
                     #avanceInput="ngModel" [max]="12">
               <div *ngIf="avanceInput.invalid && (avanceInput.dirty || avanceInput.touched)"
                    class="error">
                 <div *ngIf="avanceInput.errors && avanceInput.errors['max']">L'avance ne doit pas dépasser 12 mois</div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -312,12 +319,13 @@
           <div class="widget-wrapper">
             <h6 class="list-title">Caution en nombre de mois</h6>
             <div class="form-style1">
-              <input type="number" class="form-control" id="caution" name="caution" placeholder="Caution en nombre de mois" [(ngModel)]="rechercheAvanceePublicationForm.caution"
+              <p-inputNumber class="pInputNumber p-fluid" placeholder="Caution en nombre de mois" [(ngModel)]="rechercheAvanceePublicationForm.caution" inputId="caution" suffix=" mois" [max]="12"> </p-inputNumber>
+              <!-- <input type="number" class="form-control" id="caution" name="caution" placeholder="Caution en nombre de mois" [(ngModel)]="rechercheAvanceePublicationForm.caution"
                     #cautionInput="ngModel" [max]="12">
                 <div *ngIf="cautionInput.invalid && (cautionInput.dirty || cautionInput.touched)"
                     class="error">
                  <div *ngIf="cautionInput.errors && cautionInput.errors['max']">La caution ne doit pas dépasser 12 mois</div>
-               </div>
+               </div> -->
             </div>
           </div>
         </div>
@@ -325,8 +333,10 @@
           <div class="widget-wrapper">
             <h6 class="list-title">Commission {{ typeDeTransactionSelectionne === 'Location' ? 'en nombre de mois' : 'en pourcentage' }}</h6>
             <div class="form-style1">
-              <input *ngIf="typeDeTransactionSelectionne == 'Location'" type="number" class="form-control" id="commission" name="commission" placeholder="La commission en nombre de mois" [(ngModel)]="rechercheAvanceePublicationForm.commission">
-              <input *ngIf="typeDeTransactionSelectionne == 'Vente'" type="number" class="form-control" id="commission" name="commission" placeholder="La commission en pourcentage" [(ngModel)]="rechercheAvanceePublicationForm.commission" [disabled]="isCommissionDisabled()">
+              <!-- <input *ngIf="typeDeTransactionSelectionne == 'Location'" type="number" class="form-control" id="commission" name="commission" placeholder="La commission en nombre de mois" [(ngModel)]="rechercheAvanceePublicationForm.commission">
+              <input *ngIf="typeDeTransactionSelectionne == 'Vente'" type="number" class="form-control" id="commission" name="commission" placeholder="La commission en pourcentage" [(ngModel)]="rechercheAvanceePublicationForm.commission" [disabled]="isCommissionDisabled()"> -->
+              <p-inputNumber *ngIf="typeDeTransactionSelectionne == 'Location'" class="pInputNumber p-fluid" placeholder="La commission en nombre de mois" [(ngModel)]="rechercheAvanceePublicationForm.commission" inputId="commission" suffix=" mois" [max]="12"> </p-inputNumber>
+              <p-inputNumber *ngIf="typeDeTransactionSelectionne == 'Vente'" class="pInputNumber p-fluid" placeholder="La commission en pourcentage" [(ngModel)]="rechercheAvanceePublicationForm.commission" inputId="commission" prefix="%"  [disabled]="isCommissionDisabled()"> </p-inputNumber>
             </div>
           </div>
         </div>
@@ -334,7 +344,8 @@
           <div class="widget-wrapper">
             <h6 class="list-title">Frais de visite</h6>
             <div class="form-style1">
-              <input type="number" class="form-control" id="fraisDeVisite" name="fraisDeVisite" placeholder="Frais de visite" [(ngModel)]="rechercheAvanceePublicationForm.fraisDeVisite">
+              <p-inputNumber class="pInputNumber p-fluid" placeholder="Frais de visite" [(ngModel)]="rechercheAvanceePublicationForm.fraisDeVisite" inputId="fraisDeVisite" mode="currency" currency="CFA" locale="de-DE"> </p-inputNumber>
+              <!-- <input type="number" class="form-control" id="fraisDeVisite" name="fraisDeVisite" placeholder="Frais de visite" [(ngModel)]="rechercheAvanceePublicationForm.fraisDeVisite"> -->
             </div>
           </div>
         </div>
@@ -674,7 +685,7 @@
     <div class="modal-footer justify-content-between">
       <button class="ud-btn btn-annuler" (click)="reinitialiser()"><span class="pi pi-replay pr10"></span>Réinitialiser</button>
       <div class="btn-area">
-        <button class="ud-btn btn-thm" (click)="rechercheAvanceeDePublication()" [ngClass]="{ 'disabled-link': prixMinInput.invalid || prixMaxInput.invalid || rechercheAvanceePublicationForm.avance > 12 || rechercheAvanceePublicationForm.caution > 12 }"><span class="pi pi-search-plus pr10"></span>Rechercher</button>
+        <button class="ud-btn btn-thm" (click)="rechercheAvanceeDePublication()" [ngClass]="{ 'disabled-link': rechercheAvanceePublicationForm.avance > 12 || rechercheAvanceePublicationForm.caution > 12 }"><span class="pi pi-search-plus pr10"></span>Rechercher</button>
       </div>
     </div>
   </p-dialog>

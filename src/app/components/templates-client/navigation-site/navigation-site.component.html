@@ -26,12 +26,12 @@
         <div class="col-auto">
           <div class="d-flex align-items-center" *ngIf="!user">
             <a class="login-info d-flex align-items-center" routerLink="/connexion"><i class="far fa-user-circle fz16 me-2"></i> <span class="d-none d-xl-block">Se connecter</span></a>
-            <a class="login-info d-flex align-items-center" routerLink="/inscription"><span class="d-none d-xl-block">&nbsp;| S'inscrire</span></a>
-            <a class="ud-btn add-property menu-btn bdrs12 mx-2 mx-xl-4" href="page-dashboard-add-property.html">Ajouter une propriété</a>
+            <a class="login-info d-flex align-items-center" routerLink="/inscription"><span class="d-none d-xl-block">&nbsp;- S'inscrire</span></a>
+            <a class="ud-btn add-property menu-btn bdrs12 mx-2 mx-xl-4" href="page-dashboard-add-property.html">Publier une propriété</a>
           </div>
           <div class="d-flex align-items-center" *ngIf="user">
-            <a class="login-info d-flex align-items-center" [routerLink]="redirectToDashboard()" (click)="setActiveLink(redirectToDashboard())"><i class="far fa-user-circle fz16 me-2"></i> <span class="d-none d-xl-block">{{user.username}} &nbsp;| Tableau de bord</span></a>
-            <a class="ud-btn add-property menu-btn bdrs12 mx-2 mx-xl-4" href="page-dashboard-add-property.html">Ajouter une propriété</a>
+            <a class="login-info d-flex align-items-center" [routerLink]="redirectToDashboard()" (click)="setActiveLink(redirectToDashboard())"><i class="far fa-user-circle fz16 me-2"></i> <span class="d-none d-xl-block">{{user.username}} &nbsp;- Tableau de bord</span></a>
+            <a class="ud-btn add-property menu-btn bdrs12 mx-2 mx-xl-4" href="page-dashboard-add-property.html">Publier une propriété</a>
           </div>
         </div>
       </div>

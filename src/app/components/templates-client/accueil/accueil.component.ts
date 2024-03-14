@@ -444,7 +444,7 @@ export class AccueilComponent implements OnInit {
 
     sessionStorage.setItem('rechercheSimplePublicationForm', JSON.stringify(this.rechercheSimplePublicationForm));
 
-    this.router.navigate(['/annonces-immobilieres']);
+    this.router.navigate(['/annonces-immobilieres'], { queryParams: { recherche: 'simple' } });
   }
 
   rechercheAvanceeDePublication(): void {
@@ -459,7 +459,7 @@ export class AccueilComponent implements OnInit {
 
     sessionStorage.setItem('rechercheAvanceePublicationForm', JSON.stringify(this.rechercheAvanceePublicationForm));
 
-    this.router.navigate(['/annonces-immobilieres']);
+    this.router.navigate(['/annonces-immobilieres'], { queryParams: { recherche: 'avancee' } });
   }
 
   formatDate(datePublication: Date): string {
