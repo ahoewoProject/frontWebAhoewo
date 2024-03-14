@@ -39,7 +39,7 @@
                       </div>
                     </div>
                   </div>
-                  <a [routerLink]="redirectToNotificationPage()" (click)="setActiveLink(redirectToNotificationPage())" *ngIf="notifications.totalElements > 3" class="notification-plus-button btn-valider w-100">Tout voir<i class="pi pi-arrow-right"></i></a>
+                  <a [routerLink]="redirectToNotificationPage()" (click)="setActiveLink(redirectToNotificationPage())" *ngIf="notifications.totalElements > 3" class="notification-plus-button btn-valider w-100">Tout voir <i class="pi pi-arrow-right"></i></a>
                 </div>
                 <div *ngIf="notifications.totalElements == 0" class="dropdown-menu" style="width: 300px;">
                   <div class="user_setting_content">
@@ -47,7 +47,7 @@
                       <p class="text mb-0" style="font-weight: 4px;"><b>Pas de notifications disponibles</b></p>
                     </div>
                   </div>
-                  <a [routerLink]="redirectToNotificationPage()" (click)="setActiveLink(redirectToNotificationPage())" class="notification-plus-button btn-valider w-100">Voir les anciennes notifications</a>
+                  <!-- <a [routerLink]="redirectToNotificationPage()" (click)="setActiveLink(redirectToNotificationPage())" class="notification-plus-button btn-valider w-100">Voir les anciennes notifications</a> -->
                 </div>
               </li>
 

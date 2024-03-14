@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { ForgotPasswordComponent } from './components/auth/forgot-password/forgot-password.component';
@@ -52,8 +52,13 @@ const routes: Routes = [
 
 ];
 
+const routerOptions:ExtraOptions ={
+  scrollPositionRestoration:'enabled',
+  // anchorScrolling:'enabled',
+};
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes,  { scrollPositionRestoration: 'enabled' })],
-  exports: [RouterModule]
+imports:[RouterModule.forRoot(routes,routerOptions)],
+exports:[RouterModule],
 })
 export class AppRoutingModule { }

@@ -92,21 +92,23 @@
       </div>
       <!-- Motif Rejet Start -->
       <p-dialog header="Rejet d'un service" [(visible)]="dialogVisible" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
-        <div class="row">
-          <div class="form-group">
-            <div class="mb30">
-              <label class="heading-color ff-heading fw600 mb10">Motif du rejet</label>
-              <textarea id="motifRejet" name="motifRejet" [(ngModel)]="motifRejetServiceForm.motifRejet" placeholder="Le motif de rejet du service" style="height: 160px;"></textarea>
+        <form class="form-style1">
+          <div class="row">
+            <div class="form-group">
+              <div class="mb30">
+                <label class="heading-color ff-heading fw600 mb10">Motif du rejet</label>
+                <textarea id="motifRejet" name="motifRejet" [(ngModel)]="motifRejetServiceForm.motifRejet" placeholder="Le motif de rejet du service" style="height: 160px;"></textarea>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="text-end">
+                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
+                &nbsp;
+                <button class="ud-btn btn-valider" type="button" (click)="enregistrerMotif()">Enregistrer</button>
+              </div>
             </div>
           </div>
-          <div class="col-md-12">
-            <div class="text-end">
-              <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
-              &nbsp;
-              <button class="ud-btn btn-valider" type="button" (click)="enregistrerMotif()">Enregistrer</button>
-            </div>
-          </div>
-        </div>
+        </form>
       </p-dialog>
       <!-- Motif Rejet End -->
     </div>
