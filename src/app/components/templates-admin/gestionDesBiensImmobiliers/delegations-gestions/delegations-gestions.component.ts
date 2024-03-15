@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, ConfirmationService, ConfirmEventType, MenuItem } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
+import { BienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/BienImmobilier';
 import { Caracteristiques } from 'src/app/models/gestionDesBiensImmobiliers/Caracteristiques';
 import { DelegationGestion } from 'src/app/models/gestionDesBiensImmobiliers/DelegationGestion';
 import { DelegationGestionForm2 } from 'src/app/models/gestionDesBiensImmobiliers/DelegationGestionForm2';
@@ -13,6 +14,7 @@ import { Quartier } from 'src/app/models/gestionDesBiensImmobiliers/Quartier';
 import { Region } from 'src/app/models/gestionDesBiensImmobiliers/Region';
 import { TypeDeBien } from 'src/app/models/gestionDesBiensImmobiliers/TypeDeBien';
 import { Ville } from 'src/app/models/gestionDesBiensImmobiliers/Ville';
+import { BehaviorService } from 'src/app/services/behavior.service';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { BienImmAssocieService } from 'src/app/services/gestionDesBiensImmobiliers/bien-imm-associe.service';
 import { BienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/bien-immobilier.service';
@@ -25,6 +27,7 @@ import { RegionService } from 'src/app/services/gestionDesBiensImmobiliers/regio
 import { TypeDeBienService } from 'src/app/services/gestionDesBiensImmobiliers/type-de-bien.service';
 import { VilleService } from 'src/app/services/gestionDesBiensImmobiliers/ville.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
+import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -37,6 +40,8 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
   listeDesChoix: any[] | undefined;
   checked: string | undefined;
   responsiveOptions: any[] | undefined;
+  typesDeTransactions: string[] = [];
+  typeDeTransactionSelectionne!: string;
   menus: MenuItem[] | undefined;
   listeDesCategories: string[] = [];
   imagesBienImmobilier: any[] = [];
@@ -81,6 +86,10 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
   delegationGestionData: FormData = new FormData();
   bienImmobilierData: FormData = new FormData();
 
+  publicationForm: any;
+  publication = this.publicationService.publication;
+  bienAPublie: any;
+
   constructor(private delegationGestionService: DelegationGestionService, private personneService: PersonneService,
     private messageService: MessageService, private bienImmobilierService: BienImmobilierService,
     private activatedRoute: ActivatedRoute, private paysService: PaysService,
@@ -88,7 +97,8 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     private quartierService: QuartierService, private caracteristiqueService: CaracteristiquesService,
     private confirmationService: ConfirmationService, private imagesBienImmobilierService: ImagesBienImmobilierService,
     private agenceImmobiliereService: AgenceImmobiliereService, private typeDeBienService: TypeDeBienService,
-    private bienImmAssocieService: BienImmAssocieService
+    private bienImmAssocieService: BienImmAssocieService, private publicationService: PublicationService,
+    private router: Router, private behaviorService: BehaviorService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -99,11 +109,16 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.delegationReussie = this.activatedRoute.snapshot.queryParamMap.get('delegationReussie') || '';
 
+    this.initialiserPublicationForm();
+    this.publicationForm.get('prixDuBien').valueChanges.subscribe((value: number) => {
+      this.updateCommissionInputState(value);
+    });
     this.initResponsiveOptions();
     this.menusOfTerrain();
 
     this.initStep1Form();
     this.initStep2Form();
+
 
     this.listeTypesDeBienActifs();
     this.listePaysActifs();
@@ -380,6 +395,7 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
   voirListeDelegationsGestions(): void {
     this.step1Form.reset();
     this.step2Form.reset();
+    this.resetPublicationForm();
     this.delegationGestionData.delete('images');
     this.delegationGestionData.delete('delegationGestionJson');
     this.delegationGestionData.delete('caracteristiquesJson');
@@ -1385,20 +1401,160 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     })
   }
 
-  afficherRegion(libelle: string): string {
-    if (libelle === 'Maritime') {
-        return 'Région Maritime';
-    } else if (libelle === 'Plateaux') {
-        return 'Région des Plateaux';
-    } else if (libelle === 'Centrale') {
-        return 'Région Centrale';
-    } else if (libelle === 'Kara') {
-        return 'Région de la Kara';
-    } else if (libelle === 'Savanes') {
-        return 'Région des Savanes';
+  afficherFormulairePublicationBien(bien: BienImmobilier): void {
+    this.bienChoisi(bien);
+    this.bienAPublie = bien;
+    this.affichage = 5;
+  }
+
+  initialiserPublicationForm(): void {
+    this.publicationForm = new FormGroup({
+      typeDeTransaction: new FormControl('', [Validators.required]),
+      libelle: new FormControl('', [Validators.required]),
+      prixDuBien: new FormControl('', [Validators.required]),
+      avance: new FormControl(''),
+      caution: new FormControl(''),
+      commission: new FormControl({value: '', disabled: true}),
+    })
+  }
+
+  updateCommissionInputState(prix: number): void {
+    const commissionControl = this.publicationForm.get('commission');
+    if (this.typeDeTransactionSelectionne == 'Vente' && prix <= 100000000) {
+      commissionControl.setValue(10);
+      commissionControl.disable();
     } else {
-        return 'Région inconnue';
+      commissionControl.enable();
     }
+  }
+
+  get avance () {
+    return this.publicationForm.get('avance');
+  }
+
+  get caution () {
+    return this.publicationForm.get('caution');
+  }
+
+  get commission () {
+    return this.publicationForm.get('commission');
+  }
+
+  get typeDeTransaction() {
+    return this.publicationForm.get('typeDeTransaction');
+  }
+
+  get libelle() {
+    return this.publicationForm.get('libelle');
+  }
+
+  get prixDuBien() {
+    return this.publicationForm.get('prixDuBien');
+  }
+
+  // listeTypeDeTransactions(): void {
+  //   this.typesDeTransactions = ['Location', 'Vente'];
+  //   this.typeDeTransactionSelectionne = this.typesDeTransactions[0];
+  // }
+
+  bienChoisi(bien: BienImmobilier): void {
+    if (this.isTypeBienTerrain(bien.typeDeBien.designation)) {
+      this.typesDeTransactions = ['Vente'];
+      this.typeDeTransactionSelectionne = this.typesDeTransactions[0]
+    } else if (this.isTypeDeBienSupport(bien.typeDeBien.designation)) {
+      this.typesDeTransactions = ['Location', 'Vente'];
+      this.typeDeTransactionSelectionne = this.typesDeTransactions[0]
+    } else if (this.isTypeDeBienAssocie(bien.typeDeBien.designation)) {
+      this.typesDeTransactions = ['Location'];
+      this.typeDeTransactionSelectionne = this.typesDeTransactions[0]
+    }
+  }
+
+  ajouterPublication(): void {
+    this.publication.bienImmobilier = this.bienAPublie;
+    this.publication.typeDeTransaction = this.typeDeTransactionSelectionne;
+    this.publicationService.ajouterPublication(this.publication).subscribe(
+      (response) => {
+        if (response.id > 0) {
+          this.redirectToPublicationPage();
+        } else {
+          this.messageErreur = "Une erreur s'est produite lors de l'ajout !";
+          this.afficherFormulairePublicationBien(this.bienAPublie);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Publication échouée',
+            detail: this.messageErreur
+          })
+        }
+      },
+      (error) => {
+        if (error.error == "Une publication avec ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Publication non réussie',
+            detail: error.error
+          });
+        } else if (error.error == "Une publication avec un des biens associés à ce bien support est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Publication non réussie',
+            detail: error.error
+          });
+        } else if (error.error == "Une publication avec le bien support auquel est associé ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Publication non réussie',
+            detail: error.error
+          });
+        }
+      }
+    )
+  }
+
+  redirectToPublicationPage(): void {
+    if (this.user.role.code == 'ROLE_RESPONSABLE') {
+      this.behaviorService.setActiveLink('/responsable/agences-immobilieres/publications');
+      this.router.navigate(['/responsable/agences-immobilieres/publications'], { queryParams: { publicationReussie: true }});
+    } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
+      this.behaviorService.setActiveLink('/agent-immobilier/agences-immobilieres/publications');
+      this.router.navigate(['/agent-immobilier/agences-immobilieres/publications'], { queryParams: { publicationReussie: true }});
+    } else if (this.user.role.code == 'ROLE_DEMARCHEUR') {
+      this.behaviorService.setActiveLink('/demarcheur/publications');
+      this.router.navigate(['/demarcheur/publications'], { queryParams: { publicationReussie: true }});
+    } else if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
+      this.behaviorService.setActiveLink('/proprietaire/publications');
+      this.router.navigate(['/proprietaire/publications'], { queryParams: { publicationReussie: true }});
+    }
+  }
+
+  afficherCommission(): boolean {
+    return (this.user.role.code == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_AGENTIMMOBILIER' || this.user.role.code == 'ROLE_DEMARCHEUR')
+    && (this.typeDeTransactionSelectionne == 'Location' || this.typeDeTransactionSelectionne == 'Vente');
+  }
+
+  afficherAvanceEtCaution(): boolean {
+    return this.typeDeTransactionSelectionne == 'Location'
+  }
+
+  afficherFraisDeVisite(): boolean {
+    return (this.user.role.code == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_AGENTIMMOBILIER' || this.user.role.code == 'ROLE_DEMARCHEUR');
+  }
+
+  private isTypeBienTerrain(designation :string): boolean {
+    return designation === "Terrain";
+  }
+
+  private isTypeDeBienSupport(designation: string): boolean {
+    return designation === "Maison" || designation === 'Villa' || designation === "Immeuble";
+  }
+
+  private isTypeDeBienAssocie(designation: string): boolean {
+    return designation === "Appartement" || designation === "Chambre salon" || designation === "Chambre" ||
+      designation === "Bureau" || designation === "Magasin" || designation === "Boutique";
+  }
+
+  resetPublicationForm(): void {
+    this.publicationForm.reset();
   }
 
   ngOnDestroy(): void {

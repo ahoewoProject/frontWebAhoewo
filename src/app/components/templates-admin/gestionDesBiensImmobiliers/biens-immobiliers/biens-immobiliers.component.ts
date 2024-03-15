@@ -109,6 +109,10 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.initialiserPublicationForm();
+    this.publicationForm.get('prixDuBien').valueChanges.subscribe((value: number) => {
+      this.updateCommissionInputState(value);
+    });
     this.initResponsiveOptions();
 
     this.menusOfTerrain();
@@ -117,8 +121,6 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     this.initBienStep2Form();
 
     this.initDelegationGestionForm();
-
-    this.initialiserPublicationForm();
 
     this.listePaysActifs();
     this.listeRegionsActives();
@@ -353,7 +355,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     this.bienStep1Form.reset();
     this.bienStep2Form.reset();
     this.delegationGestionForm.reset();
-    this.publicationForm.reset();
+    this.resetPublicationForm();
     this.caracteristiqueBien = new Caracteristiques();
     if (this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
       this.listeBiensParProprietaire(this.numeroDeLaPage, this.elementsParPage);
@@ -1232,7 +1234,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     this.imagesBienImmobilier = [];
     this.bienStep1Form.reset();
     this.delegationGestionForm.reset();
-    this.publicationForm.reset();
+    this.resetPublicationForm();
     this.caracteristiqueBienAssocie = new Caracteristiques();
     this.listeBiensAssocies(id, this.numeroDeLaPage, this.elementsParPage);
     this.affichage = 5
@@ -1838,10 +1840,10 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     return this.publicationForm.get('prixDuBien');
   }
 
-  // listeTypeDeTransactions(): void {
-  //   this.typesDeTransactions = ['Location', 'Vente'];
-  //   this.typeDeTransactionSelectionne = this.typesDeTransactions[0];
-  // }
+  listeTypeDeTransactions(): void {
+    this.typesDeTransactions = ['Location', 'Vente'];
+    this.typeDeTransactionSelectionne = this.typesDeTransactions[0];
+  }
 
   bienChoisi(bien: BienImmobilier): void {
     if (this.isTypeBienTerrain(bien.typeDeBien.designation)) {
@@ -1880,7 +1882,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
             summary: 'Publication non réussie',
             detail: error.error
           });
-        } else if (error.error == "Une publication avec un des biens associés à ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
+        } else if (error.error == "Une publication avec un des biens associés à ce bien support est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
           this.messageService.add({
             severity: 'warn',
             summary: 'Publication non réussie',

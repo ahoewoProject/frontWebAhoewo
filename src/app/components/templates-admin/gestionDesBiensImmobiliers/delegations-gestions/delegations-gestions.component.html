@@ -79,7 +79,7 @@
 
                       <button *ngIf=" delegationGestion.etatDelegation == true  && delegationGestion.statutDelegation == 1 &&
                       (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT')"
-                       (click)="afficherPageDetail(delegationGestion.id, delegationGestion.bienImmobilier.id)"
+                       (click)="afficherFormulairePublicationBien(delegationGestion.bienImmobilier)"
                         pTooltip="Publier ce bien" tooltipPosition="top" pButton type="button" icon="pi pi-share-alt"
                         class="p-button-text p-button-info">
                       </button>
@@ -594,7 +594,7 @@
       </div>
       <p-messages severity="info">
         <ng-template pTemplate>
-          <div class="ml-2"><th scope="col">Bien support : {{bienImmAssocie.bienImmobilier.typeDeBien.designation}} | {{afficherRegion(bienImmAssocie.bienImmobilier.region.libelle)}} | {{bienImmAssocie.bienImmobilier.ville.libelle}} | {{bienImmAssocie.bienImmobilier.quartier.libelle}} | {{bienImmAssocie.bienImmobilier.adresse}} | {{bienImmAssocie.bienImmobilier.surface}} m²</th></div>
+          <div class="ml-2"><th scope="col">Bien support : {{bienImmAssocie.bienImmobilier.typeDeBien.designation}} | {{bienImmAssocie.bienImmobilier.region.libelle}} | {{bienImmAssocie.bienImmobilier.ville.libelle}} | {{bienImmAssocie.bienImmobilier.quartier.libelle}} | {{bienImmAssocie.bienImmobilier.adresse}} | {{bienImmAssocie.bienImmobilier.surface}} m²</th></div>
         </ng-template>
       </p-messages>
     </div>
@@ -3003,4 +3003,112 @@
     </div>
   </div>
   <!-- End Formulaire de modification d'un bien délégué -->
+
+  <!-- Formulaire d'ajout d'une publication -->
+  <div *ngIf="affichage == 5">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-3">
+        <div class="dashboard_title_area">
+          <h4>Ajout d'une publication</h4>
+        </div>
+      </div>
+      <div class="col-xxl-9">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a class="ud-btn btn-retour" type="button" (click)="voirListeDelegationsGestions()">Retour</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+          <form [formGroup]="publicationForm" (ngSubmit)="ajouterPublication()" class="form-style1">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Type de transaction</label>
+                  <br>
+                  <p-dropdown
+                    class="select" emptyFilterMessage="Aucun résultat trouvé"
+                    emptyMessage="Aucun résultat trouvé"
+                    [options]="typesDeTransactions" placeholder="Choisir le type de transaction"
+                    formControlName="typeDeTransaction" [filter]="true"
+                    filterPlaceholder="Rechercher" [(ngModel)]="typeDeTransactionSelectionne"
+                    [showClear]="true">
+                  </p-dropdown>
+                  <div class="error" [hidden]="!typeDeTransaction?.hasError('required') || !typeDeTransaction.touched">La selection du type de transaction est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Libelle</label>
+                  <input type="text" class="form-control" id="libelle" name="libelle" placeholder="Le libelle de la publication" formControlName="libelle" [(ngModel)]="publication.libelle" required>
+                  <!-- <textarea id="libelle" name="libelle" placeholder="Le libelle de la publication" formControlName="libelle" [(ngModel)]="publication.libelle" style="height: 100px;" required></textarea> -->
+                  <div class="error" [hidden]="libelle.valid || libelle.pristine && !libelle.touched ">Le libelle de la publication est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Prix {{ typeDeTransactionSelectionne === 'Location' ? 'mensuel' : '' }} du bien </label>
+                  <!-- <input type="number" class="form-control" id="prixDuBien" name="prixDuBien" placeholder="Le prix du bien" formControlName="prixDuBien" [(ngModel)]="publication.prixDuBien" required> -->
+                  <p-inputNumber class="pInputNumber p-fluid" placeholder="Le prix du bien" formControlName="prixDuBien" [(ngModel)]="publication.prixDuBien" inputId="fraisDeVisite" mode="currency" currency="CFA" locale="de-DE" [required]="true"> </p-inputNumber>
+                  <div class="error" [hidden]="!prixDuBien?.hasError('required') || !prixDuBien.touched">Le prix du bien est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-sm-6" *ngIf="afficherAvanceEtCaution()">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Avance en nombre de mois</label>
+                  <p-inputNumber class="pInputNumber p-fluid" placeholder="L'avance en nombre de mois" [(ngModel)]="publication.avance" formControlName="avance" inputId="avance" suffix=" mois" [max]="12"> </p-inputNumber>
+                  <!-- <input type="number" class="form-control" id="avance" name="avance" placeholder="L'avance en nombre de mois" [(ngModel)]="publication.avance" formControlName="avance" [max]="12"> -->
+                  <!-- <div *ngIf="avance.invalid && (avance.dirty || avance.touched)"
+                  class="error">
+                    <div *ngIf="avance.errors && avance.errors['max']">L'avance ne doit pas dépasser 12 mois</div>
+                  </div> -->
+                </div>
+              </div>
+              <div class="col-sm-6" *ngIf="afficherAvanceEtCaution()">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Caution en nombre de mois</label>
+                  <p-inputNumber class="pInputNumber p-fluid" placeholder="La caution en nombre de mois" [(ngModel)]="publication.caution" formControlName="caution" inputId="caution" suffix=" mois" [max]="12"> </p-inputNumber>
+                  <!-- <input type="number" class="form-control" id="caution" name="caution" placeholder="La caution en nombre de mois" [(ngModel)]="publication.caution" formControlName="caution" [max]="12"> -->
+                  <!-- <div *ngIf="caution.invalid && (caution.dirty || caution.touched)"
+                    class="error">
+                    <div *ngIf="caution.errors && caution.errors['max']">La caution ne doit pas dépasser 12 mois</div>
+                  </div> -->
+                </div>
+              </div>
+              <div class="col-sm-6" *ngIf="afficherCommission()">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Commission {{ typeDeTransactionSelectionne === 'Location' ? 'en nombre de mois' : 'en pourcentage' }}</label>
+                  <p-inputNumber *ngIf="typeDeTransactionSelectionne == 'Location'" class="pInputNumber p-fluid" placeholder="La commission en nombre de mois" [(ngModel)]="publication.commission" formControlName="commission" inputId="commission" suffix=" mois" [max]="12"> </p-inputNumber>
+                  <!-- <input *ngIf="typeDeTransactionSelectionne == 'Location'" type="number" class="form-control" id="commission" name="commission" placeholder="La commission en nombre de mois" [(ngModel)]="publication.commission"  formControlName="commission" [max]="12"> -->
+                  <!-- <div *ngIf="commission.invalid && (commission.dirty || commission.touched)"
+                    class="error">
+                    <div *ngIf="commission.errors && commission.errors['max']">La commission ne doit pas dépasser 12 mois</div>
+                  </div> -->
+                  <p-inputNumber *ngIf="typeDeTransactionSelectionne == 'Vente'" class="pInputNumber p-fluid" placeholder="La commission en pourcentage" formControlName="commission" [(ngModel)]="publication.commission" inputId="commission" prefix="%"> </p-inputNumber>
+                  <!-- <input *ngIf="typeDeTransactionSelectionne == 'Vente'" type="number" class="form-control" id="commission" name="commission" placeholder="La commission en pourcentage" formControlName="commission" [(ngModel)]="publication.commission"> -->
+                </div>
+              </div>
+              <div class="col-sm-6" *ngIf="afficherFraisDeVisite()">
+                <div class="mb20">
+                  <label class="heading-color ff-heading fw600 mb10">Frais de visite</label>
+                  <p-inputNumber class="pInputNumber p-fluid" placeholder="Le frais de visite" [(ngModel)]="publication.fraisDeVisite" [ngModelOptions]="{standalone: true}" inputId="fraisDeVisite" mode="currency" currency="CFA" locale="de-DE"> </p-inputNumber>
+                  <!-- <input type="number" class="form-control" id="fraisDeVisite" name="fraisDeVisite" placeholder="Le frais de visite" [(ngModel)]="publication.fraisDeVisite" [ngModelOptions]="{standalone: true}"> -->
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="col-md-12">
+              <div class="text-end">
+                <button class="ud-btn btn-annuler" type="button" (click)="resetPublicationForm()">Annuler</button>
+                &nbsp;
+                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': publicationForm.invalid }" type="submit">Ajouter</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Formulaire d'ajout d'une publication -->
 </div>

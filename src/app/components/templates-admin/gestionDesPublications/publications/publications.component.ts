@@ -60,6 +60,21 @@ export class PublicationsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.publicationReussie = this.activatedRoute.snapshot.queryParams['publicationReussie'];
 
+    this.initResponsiveOptions();
+    this.initialiserPublicationForm();
+    this.publicationForm.get('prixDuBien').valueChanges.subscribe((value: number) => {
+      this.updateCommissionInputState(value);
+    });
+    if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
+      this.listeBiensPropres();
+    } else {
+      this.listeBiensPropresEtDelegues();
+    }
+    this.listePublications(this.numeroDeLaPage, this.elementsParPage);
+    this.listeTypeDeTransactions();
+  }
+
+  initResponsiveOptions(): void {
     this.responsiveOptions = [
       {
           breakpoint: '1024px',
@@ -74,18 +89,6 @@ export class PublicationsComponent implements OnInit, OnDestroy {
           numVisible: 1
       }
     ];
-
-    this.initialiserPublicationForm();
-    this.publicationForm.get('prixDuBien').valueChanges.subscribe((value: number) => {
-      this.updateCommissionInputState(value);
-    });
-    if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
-      this.listeBiensPropres();
-    } else {
-      this.listeBiensPropresEtDelegues();
-    }
-    this.listePublications(this.numeroDeLaPage, this.elementsParPage);
-    this.listeTypeDeTransactions();
   }
 
   //Fonction pour recupérer les images associées à un bien immobilier
@@ -268,7 +271,6 @@ export class PublicationsComponent implements OnInit, OnDestroy {
       this.typesDeTransactions = ['Location'];
       this.typeDeTransactionSelectionne = this.typesDeTransactions[0]
     }
-    console.log(this.typeDeTransactionSelectionne)
   }
 
   typeDeTransactionChoisi(event: any) {
@@ -308,7 +310,7 @@ export class PublicationsComponent implements OnInit, OnDestroy {
             summary: 'Publication non réussie',
             detail: error.error
           });
-        } else if (error.error == "Une publication avec un des biens associés à ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
+        } else if (error.error == "Une publication avec un des biens associés à ce bien support est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
           this.messageService.add({
             severity: 'warn',
             summary: 'Publication non réussie',

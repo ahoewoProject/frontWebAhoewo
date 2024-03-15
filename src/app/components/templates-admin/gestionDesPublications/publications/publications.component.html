@@ -39,7 +39,7 @@
                   <th scope="col">#</th>
                   <th scope="col">Code du bien</th>
                   <th scope="col">Type de bien</th>
-                  <th scope="col">Type de transaction</th>
+                  <!-- <th scope="col">Type de transaction</th> -->
                   <!-- <th scope="col">Date</th> -->
                   <th scope="col">Etat</th>
                   <th scope="col">Actions</th>
@@ -49,8 +49,9 @@
                 <tr *ngFor="let publication of publications.content | genericFilter: recherche; let i = index">
                   <td>{{ i + 1 }}</td>
                   <td class="vam">{{ publication.bienImmobilier.codeBien }}</td>
-                  <td class="vam">{{ publication.bienImmobilier.typeDeBien.designation }}</td>
-                  <td class="vam">{{ publication.typeDeTransaction }}</td>
+                  <td class="vam">{{ publication.bienImmobilier.typeDeBien.designation }} - <span *ngIf="publication.bienImmobilier.estDelegue == true">Délégué</span>
+                    <span *ngIf="publication.bienImmobilier.estDelegue == false">Non Délégué</span></td>
+                  <!-- <td class="vam">{{ publication.typeDeTransaction }}</td> -->
                   <!-- <td class="vam">{{ publication.datePublication | date: 'dd-MM-yyyy' }}</td> -->
                   <td class="vam">
                     <p-tag *ngIf="publication.etat == true" severity="success" value="Activé"></p-tag>
