@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="row">
-      <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+      <!-- <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog> -->
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
           <div class="packages_table table-responsive">
@@ -59,7 +59,7 @@
                         class="p-button-text p-button-info">
                       </button>
 
-                      <button pButton type="button"
+                      <!-- <button pButton type="button"
                         *ngIf="_service.etat == 0"
                         (click)="afficherDialogue(_service.id)" icon="pi pi-times-circle"
                         pTooltip="Rejeter ce service" tooltipPosition="right" class="p-button-text p-button-danger">
@@ -69,7 +69,7 @@
                         *ngIf="_service.etat == 0 || _service.etat == 3"
                         (click)="validerService(_service.id)" icon="pi pi-check-circle"
                         pTooltip="Valider ce service" tooltipPosition="right" class="p-button-text p-button-success">
-                      </button>
+                      </button> -->
 
                     </div>
                   </td>
@@ -91,13 +91,13 @@
         </div>
       </div>
       <!-- Motif Rejet Start -->
-      <p-dialog header="Rejet d'un service" [(visible)]="dialogVisible" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+      <!-- <p-dialog header="Rejet d'un service" [(visible)]="dialogVisible" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
         <form class="form-style1">
           <div class="row">
             <div class="form-group">
               <div class="mb30">
                 <label class="heading-color ff-heading fw600 mb10">Motif du rejet</label>
-                <textarea id="motifRejet" name="motifRejet" [(ngModel)]="motifRejetServiceForm.motifRejet" placeholder="Le motif de rejet du service" style="height: 160px;"></textarea>
+                <textarea id="motifRejet" name="motifRejet" [(ngModel)]="motifRejetForm.motif" placeholder="Le motif de rejet du service" style="height: 160px;"></textarea>
               </div>
             </div>
             <div class="col-md-12">
@@ -109,7 +109,7 @@
             </div>
           </div>
         </form>
-      </p-dialog>
+      </p-dialog> -->
       <!-- Motif Rejet End -->
     </div>
   </div>
@@ -126,20 +126,27 @@
       </div>
       <div class="col-xxl-4">
         <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <button class="ud-btn btn-valider" *ngIf="_service.etat == 0 || _service.etat == 3"
+          (click)="validerService(_service.id)">Valider</button>
+          &nbsp;
+          <a class="ud-btn btn-modifier" type="button" *ngIf="_service.etat == 0"
+          (click)="afficherDialogue(_service.id)">Rejeter</a>
+          &nbsp;
           <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
         </div>
       </div>
     </div>
+    <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
     <div class="row">
       <div class="col-xl-12">
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
 
           <div class="row">
-            <div class="form-group col-md-6">
+            <div class="col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Code</p>
               <p>{{ _service.codeService }}</p>
             </div>
-            <div class="form-group col-md-6">
+            <div class="col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Nom</p>
               <p>{{ _service.nomService }}</p>
             </div>
@@ -151,16 +158,59 @@
             </div>
 
             <p-divider></p-divider>
-            <div class="form-group col-md-6">
+            <div class="col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Etat</p>
               <p>
                 <p-tag *ngIf="_service.etat == 0" severity="warning" value="En cours de traitement"></p-tag>
                 <p-tag *ngIf="_service.etat == 3" severity="danger" value="Rejeté"></p-tag>
               </p>
             </div>
+            <div class="col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Nom de l'Emetteur</p>
+              <p>{{ emetteur.nom }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Prénom(s) de l'Emetteur</p>
+              <p>{{ emetteur.prenom }}</p>
+            </div>
+            <div class="col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Email de l'Emetteur</p>
+              <p>{{ emetteur.prenom }}</p>
+            </div>
+
+            <p-divider></p-divider>
+            <div class="col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Téléphone de l'Emetteur</p>
+              <p>{{ emetteur.prenom }}</p>
+            </div>
+            <div class="col-md-6">
+              <p class="fw600 mb10 ff-heading dark-color">Profil de l'Emetteur</p>
+              <p>{{ emetteur.role.libelle }}</p>
+            </div>
         </div>
       </div>
     </div>
+    <p-dialog header="Rejet d'un service" [(visible)]="dialogVisible" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+      <form class="form-style1">
+        <div class="row">
+          <div class="form-group">
+            <div class="mb30">
+              <label class="heading-color ff-heading fw600 mb10">Motif du rejet</label>
+              <textarea id="motifRejet" name="motifRejet" [(ngModel)]="motifRejetForm.motif" placeholder="Le motif de rejet du service" style="height: 160px;"></textarea>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="text-end">
+              <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
+              &nbsp;
+              <button class="ud-btn btn-valider" type="button" (click)="enregistrerMotif()">Enregistrer</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </p-dialog>
     </div>
     <div class="text-end">
       <a class="ud-btn btn-retour" (click)="voirListe()"  type="button">Retour</a>

@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
-import { MotifRejetServiceForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetServiceForm';
+import { MotifRejetForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetForm';
 import { Services } from 'src/app/models/gestionDesAgencesImmobilieres/Services';
 import { environment } from 'src/environments/environment';
 
@@ -85,7 +85,7 @@ export class ServicesService {
 
   // Rejet d'un service;
   // url: http://localhost:4040/api/rejeter/services
-  rejeterServices(m: MotifRejetServiceForm): Observable<any>{
+  rejeterServices(m: MotifRejetForm): Observable<any>{
     return this.httpClient.post<any>(this.url + 'rejeter/services', m);
   }
 }

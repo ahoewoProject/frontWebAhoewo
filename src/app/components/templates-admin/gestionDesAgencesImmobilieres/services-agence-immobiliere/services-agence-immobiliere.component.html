@@ -27,7 +27,7 @@
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30">
           <form [formGroup]="serviceAgenceImmobiliereForm" (ngSubmit)="ajouterServiceAgenceImmobiliere()" class="form-style1">
             <div class="row">
-              <p *ngIf="serviceSelectionne && serviceSelectionne.nomService == 'Autres'" class="error">Veuillez noter que tout nouveau service ajouté ne sera pas instantanément intégré à votre agence. Un processus de traitement est en place pour examiner les demandes de nouveaux services. Vous recevrez un retour par e-mail concernant l'état de votre demande. Merci pour votre compréhension et votre patience.</p>
+              <p *ngIf="serviceSelectionne && serviceSelectionne.nomService == 'Autres'" class="error">Veuillez noter que tout nouveau service ajouté ne sera pas instantanément intégré à votre agence. Un processus de traitement est mis en place pour examiner les demandes de nouveaux services. Vous recevrez un retour par e-mail concernant l'état de votre demande. Merci pour votre compréhension et votre patience.</p>
               <div class="col-md-6">
                 <div class="mb20">
                   <label class="heading-color ff-heading fw600 mb10">Agence immobilière</label>
@@ -263,7 +263,7 @@
                       </div>
                     </div>
                   </th>
-                  <td class="vam">{{ serviceAgenceImmobiliere.services.nomService }} </td>
+                  <td class="vam"><span *ngIf="serviceAgenceImmobiliere.etat == 0" class="error">[Autres] </span>{{ serviceAgenceImmobiliere.services.nomService }}</td>
                   <td class="vam">
                     <p-tag *ngIf="serviceAgenceImmobiliere.etat == 0" severity="warning" value="En cours de traitement"></p-tag>
                     <p-tag *ngIf="serviceAgenceImmobiliere.etat == 1" severity="success" value="Activé"></p-tag>

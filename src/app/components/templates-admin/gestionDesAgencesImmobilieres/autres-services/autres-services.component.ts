@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
-import { MotifRejetServiceForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetServiceForm';
+import { MotifRejetForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetForm';
 import { Services } from 'src/app/models/gestionDesAgencesImmobilieres/Services';
 import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/services.service';
+import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 
 @Component({
   selector: 'app-autres-services',
@@ -16,7 +18,7 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
   affichage = 1;
   user : any;
   dialogVisible: boolean = false;
-  motifRejetServiceForm = new MotifRejetServiceForm();
+  motifRejetForm = new MotifRejetForm();
 
   elementsParPage = 5; // Nombre d'éléments par page
   numeroDeLaPage = 0; // Page actuelle
@@ -27,19 +29,31 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
   messageSuccess: string | null = null;
   serviceForm: any;
   serviceId!: number;
+  emetteur!: any;
 
   constructor(private _servicesService: ServicesService, private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService, private activatedRoute: ActivatedRoute,
+    private personneService: PersonneService, private router: Router
   )
   {
 
   }
 
   ngOnInit(): void {
-    this.listeAutresServices(this.numeroDeLaPage, this.elementsParPage);
+    this.initActivatedRoute();
   }
 
-  // Fonction pour recupérer les services
+  initActivatedRoute(): void {
+    const id = this.activatedRoute.snapshot.params['id'];
+    if (id) {
+      this.affichage = 2;
+      this.detailService(id);
+    } else {
+      this.listeAutresServices(this.numeroDeLaPage, this.elementsParPage);
+    }
+  }
+
+  // Fonction pour recupérer les services inexistants
   listeAutresServices(numeroDeLaPage: number, elementsParPage: number) {
     this._servicesService.getAutresServicesPagines(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
@@ -55,30 +69,35 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
   }
 
   voirListe(): void {
-    this.listeAutresServices(this.numeroDeLaPage, this.elementsParPage);
     this.affichage = 1;
+    this.router.navigate(['/admin/autres-services'])
   }
 
-  annuler(): void {
-    this.dialogVisible = false;
-    this.messageService.add({
-      severity: 'warn',
-      summary: 'Rejet du service annulée',
-      detail: "Vous avez annulé le rejet de ce service !"
-    });
+  detailEmetteur(id: number): void  {
+    this.personneService.findById(id).subscribe(
+      (response) => {
+        this.emetteur = response;
+      }
+    )
   }
 
   detailService(id: number): void {
     this._servicesService.findById(id).subscribe(
       (response) => {
         this._service = response;
+        this.detailEmetteur(response.creerPar)
       }
     );
   }
 
-  afficherPageDetail(id: number): void {
-    this.detailService(id);
+  afficherPageDetail(id: any): void {
     this.affichage = 2;
+    this.router.navigate(['/admin/autres-services', id]);
+  }
+
+  afficherDialogue(id: number): void {
+    this.serviceId = id;
+    this.dialogVisible = true;
   }
 
   validerService(id: number): void {
@@ -121,8 +140,8 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
   }
 
   enregistrerMotif(): void {
-    this.motifRejetServiceForm.id = this.serviceId;
-    this._servicesService.rejeterServices(this.motifRejetServiceForm).subscribe(
+    this.motifRejetForm.id = this.serviceId;
+    this._servicesService.rejeterServices(this.motifRejetForm).subscribe(
       (response) => {
         this.dialogVisible = false;
         this.voirListe();
@@ -136,9 +155,13 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
     );
   }
 
-  afficherDialogue(id: number): void {
-    this.serviceId = id;
-    this.dialogVisible = true;
+  annuler(): void {
+    this.dialogVisible = false;
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Rejet du service annulée',
+      detail: "Vous avez annulé le rejet de ce service !"
+    });
   }
 
   ngOnDestroy(): void {
