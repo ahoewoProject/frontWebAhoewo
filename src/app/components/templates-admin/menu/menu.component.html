@@ -79,7 +79,7 @@
       </a>
     </div>
     <div class="sidebar_list_item">
-      <a [routerLink]="['/admin/autres-services'] || ['/admin/autres-services', 'id']" routerLinkActive="-is-active">
+      <a [routerLink]="['/admin/autres-services'] || ['/admin/autre-service', 'id']" routerLinkActive="-is-active">
         <i class="fa-light fa-briefcase mr15"></i>&nbsp;Autres services
       </a>
     </div>
@@ -326,7 +326,7 @@
       <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
     </div>
     <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/agences-immobilieres']" routerLinkActive="-is-active">
+      <a [routerLink]="['/responsable/agences-immobilieres']" routerLinkActive="-is-active" [routerLinkActiveOptions]="{ exact: true }">
         <i class="fa-light fa-key mr15"></i>&nbsp;Agences immobilières
       </a>
     </div>
@@ -336,7 +336,7 @@
       </a>
     </div>
     <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/agences-immobilieres/services']" routerLinkActive="-is-active">
+      <a [routerLink]="['/responsable/agences-immobilieres/services']" routerLinkActive="-is-active" [routerLinkActiveOptions]="{ exact: true }">
         <i class="fa-light fa-briefcase mr15"></i>&nbsp;Services
       </a>
     </div>

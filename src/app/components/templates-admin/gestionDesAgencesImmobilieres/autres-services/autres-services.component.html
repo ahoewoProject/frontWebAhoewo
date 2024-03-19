@@ -162,6 +162,7 @@
               <p class="fw600 mb10 ff-heading dark-color">Etat</p>
               <p>
                 <p-tag *ngIf="_service.etat == 0" severity="warning" value="En cours de traitement"></p-tag>
+                <p-tag *ngIf="_service.etat == 1" severity="success" value="Validé"></p-tag>
                 <p-tag *ngIf="_service.etat == 3" severity="danger" value="Rejeté"></p-tag>
               </p>
             </div>

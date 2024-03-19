@@ -20,12 +20,11 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
   dialogVisible: boolean = false;
   motifRejetForm = new MotifRejetForm();
 
-  elementsParPage = 5; // Nombre d'éléments par page
-  numeroDeLaPage = 0; // Page actuelle
+  elementsParPage = 5;
+  numeroDeLaPage = 0;
 
   _service = this._servicesService._service;
   services!: Page<Services>;
-  messageErreur: string = "";
   messageSuccess: string | null = null;
   serviceForm: any;
   serviceId!: number;
@@ -44,13 +43,15 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
   }
 
   initActivatedRoute(): void {
-    const id = this.activatedRoute.snapshot.params['id'];
-    if (id) {
-      this.affichage = 2;
-      this.detailService(id);
-    } else {
-      this.listeAutresServices(this.numeroDeLaPage, this.elementsParPage);
-    }
+    this.activatedRoute.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.affichage = 2;
+        this.detailService(parseInt(id));
+      } else {
+        this.listeAutresServices(this.numeroDeLaPage, this.elementsParPage);
+      }
+    });
   }
 
   // Fonction pour recupérer les services inexistants
@@ -69,8 +70,7 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
   }
 
   voirListe(): void {
-    this.affichage = 1;
-    this.router.navigate(['/admin/autres-services'])
+    this.router.navigate(['admin/autres-services'])
   }
 
   detailEmetteur(id: number): void  {
@@ -85,6 +85,9 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
     this._servicesService.findById(id).subscribe(
       (response) => {
         this._service = response;
+        if (!this._service) {
+          this.voirListe();
+        }
         this.detailEmetteur(response.creerPar)
       }
     );
@@ -92,7 +95,7 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
 
   afficherPageDetail(id: any): void {
     this.affichage = 2;
-    this.router.navigate(['/admin/autres-services', id]);
+    this.router.navigate(['admin/autre-service', id]);
   }
 
   afficherDialogue(id: number): void {
