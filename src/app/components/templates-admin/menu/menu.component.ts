@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorService } from 'src/app/services/behavior.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 
@@ -14,7 +15,8 @@ export class MenuComponent implements OnInit {
 
   constructor(
     private personneService: PersonneService,
-    private behaviorService: BehaviorService
+    private behaviorService: BehaviorService,
+    private router: Router
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -31,6 +33,10 @@ export class MenuComponent implements OnInit {
   setActiveLink(link: string) {
     this.activeLink = link;
     this.behaviorService.setActiveLink(this.activeLink);
+  }
+
+  isActive(url: string): boolean {
+    return this.router.url.includes(url);
   }
 
   seDeconnecter(): void {

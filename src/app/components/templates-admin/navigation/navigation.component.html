@@ -60,15 +60,13 @@
                     <div class="user_setting_content">
                       <!-- Informations Gestion Par Profil Start -->
                       <a class="dropdown-item"
-                      [routerLink]="redirectToProfilPage()" [class.-is-active]="activeLink == redirectToProfilPage()"
-                      (click)="setActiveLink(redirectToProfilPage())">
+                      [routerLink]="redirectToProfilPage()" routerLinkActive="-is-active">
                       <i class="flaticon-user mr10"></i>Mes informations</a>
                       <!-- Informations Gestion Par Profil End -->
 
                       <!-- Notifications Gestion Par Profil Start -->
                       <a class="dropdown-item"
-                      [routerLink]="redirectToNotificationPage()" [class.-is-active]="activeLink == redirectToNotificationPage()"
-                      (click)="setActiveLink(redirectToNotificationPage())">
+                      [routerLink]="redirectToNotificationPage()" routerLinkActive="-is-active">
                       <i class="pi pi-bell mr10"></i>Notifications <p-badge *ngIf="notificationsNonLues.length !== 0" [value]="notificationsNonLues.length > 10 ? '10+' : notificationsNonLues.length.toString()"></p-badge></a>
                       <!-- Notifications Gestion Par Profil End -->
 
