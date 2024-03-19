@@ -94,7 +94,6 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
   }
 
   afficherPageDetail(id: any): void {
-    this.affichage = 2;
     this.router.navigate(['admin/autres-services', id]);
   }
 

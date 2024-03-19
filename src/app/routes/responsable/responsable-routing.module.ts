@@ -24,6 +24,7 @@ const routes: Routes = [
       { path: 'demandes-certifications', component: DemandesCertificationsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres', component: AgencesImmobilieresComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/services', component: ServicesAgenceImmobiliereComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/services/:id', component: ServicesAgenceImmobiliereComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/biens-immobiliers', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/notifications', component: NotificationsComponent, canActivate: [AuthGuard] },

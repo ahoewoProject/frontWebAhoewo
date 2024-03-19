@@ -336,7 +336,7 @@
       </a>
     </div>
     <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/agences-immobilieres/services']" routerLinkActive="-is-active" [routerLinkActiveOptions]="{ exact: true }">
+      <a [routerLink]="['/responsable/agences-immobilieres/services'] || ['/responsable/agences-immobilieres/services', 'id']" routerLinkActive="-is-active">
         <i class="fa-light fa-briefcase mr15"></i>&nbsp;Services
       </a>
     </div>

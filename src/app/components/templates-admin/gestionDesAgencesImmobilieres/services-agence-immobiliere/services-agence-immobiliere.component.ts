@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
@@ -23,8 +24,6 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
   agenceSelectionnee!: AgenceImmobiliere;
   recherche: string = '';
   affichage = 1;
-  visibleAddForm = 0;
-  visibleUpdateForm = 0;
   user : any;
 
   elementsParPage = 5; // Nombre d'éléments par page
@@ -56,17 +55,30 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
 
   constructor(private _servicesService: ServicesService, private agenceImmobiliereService: AgenceImmobiliereService,
     private servicesAgenceImmobiliereService: ServicesAgenceImmobiliereService, private messageService: MessageService,
-    private confirmationService: ConfirmationService, private notificationService: NotificationsService
+    private confirmationService: ConfirmationService, private notificationService: NotificationsService,
+    private activatedRoute: ActivatedRoute, private router: Router
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
   }
 
   ngOnInit(): void {
-    this.listerServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
-    this.initServiceAgenceImmobiliereForm();
-    this.listerServicesActifs();
-    this.listerAgencesImmobilieres();
+    this.initActivatedRoute();
+  }
+
+  initActivatedRoute(): void {
+    this.activatedRoute.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.affichage = 2;
+        this.detailServiceAgenceImmobiliere(parseInt(id));
+      } else {
+        this.listerServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
+        this.initServiceAgenceImmobiliereForm();
+        this.listerServicesActifs();
+        this.listerAgencesImmobilieres();
+      }
+    })
   }
 
   initServiceAgenceImmobiliereForm(): void {
@@ -157,32 +169,24 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
   }
 
   voirListe(): void {
-    this.listerServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
-    this.serviceAgenceImmobiliereForm.reset();
-    this.affichage = 1;
-    this.visibleAddForm = 0;
-    this.visibleUpdateForm = 0;
+    if (this.affichage == 3 || this.affichage == 4) {
+      this.affichage = 1;
+      this.listerServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
+      this.serviceAgenceImmobiliereForm.reset();
+    } else {
+      this.router.navigate(['responsable/agences-immobilieres/services']);
+    }
+
   }
 
   annuler(): void {
     this.serviceAgenceImmobiliereForm.reset()
-    if (this.visibleAddForm == 1) {
-      this.affichage = 0;
-      this.visibleAddForm = 1;
-      this.visibleUpdateForm = 0;
-    } else {
-      this.affichage = 0;
-      this.visibleAddForm = 0;
-      this.visibleUpdateForm = 1;
-    }
   }
 
   afficherFormulaireAjouter(): void {
     this.serviceSelectionne = new Services();
     this.agenceSelectionnee = this.agencesImmobilieres[0];
-    this.affichage = 0;
-    this.visibleAddForm = 1;
-    this.visibleUpdateForm = 0;
+    this.affichage = 3;
     this.serviceAgenceImmobiliere = new ServicesAgenceImmobiliere();
     this.agenceImmobiliere.setValidators([Validators.required]);
     this.service.setValidators([Validators.required]);
@@ -192,9 +196,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
 
   afficherFormulaireModifier(id: number): void {
     this.detailServiceAgenceImmobiliere(id);
-    this.affichage = 0;
-    this.visibleAddForm = 0;
-    this.visibleUpdateForm = 1;
+    this.affichage = 4;
     this.serviceSelectionne = this.serviceAgenceImmobiliere.services;
     this.agenceImmobiliere.setValidators([Validators.required]);
     this.service.setValidators([Validators.required]);
@@ -211,8 +213,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
   }
 
   afficherPageDetail(id: number): void {
-    this.detailServiceAgenceImmobiliere(id);
-    this.affichage = 2;
+    this.router.navigate(['responsable/agences-immobilieres/services', id]);
   }
 
   ajouterServiceAgenceImmobiliere(): void {
