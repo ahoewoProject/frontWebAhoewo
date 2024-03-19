@@ -40,7 +40,7 @@ const routes: Routes = [
       { path: 'agences-immobilieres', component: AgencesImmobilieresComponent, canActivate: [AuthGuard] },
       { path: 'services', component: ServicesComponent, canActivate: [AuthGuard] },
       { path: 'autres-services', component: AutresServicesComponent, canActivate: [AuthGuard] },
-      { path: 'autre-service/:id', component: AutresServicesComponent, canActivate: [AuthGuard] },
+      { path: 'autres-services/:id', component: AutresServicesComponent, canActivate: [AuthGuard] },
       { path: 'pays', component: PaysComponent, canActivate: [AuthGuard] },
       { path: 'regions', component: RegionsComponent, canActivate: [AuthGuard] },
       { path: 'villes', component: VillesComponent, canActivate: [AuthGuard] },
