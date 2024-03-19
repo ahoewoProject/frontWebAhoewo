@@ -47,7 +47,7 @@
               </thead>
               <tbody class="t-body">
                 <tr *ngFor="let publication of publications.content | genericFilter: recherche; let i = index">
-                  <td>{{ i + 1 }}</td>
+                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                   <td class="vam">{{ publication.bienImmobilier.codeBien }}</td>
                   <td class="vam">{{ publication.bienImmobilier.typeDeBien.designation }} - <span *ngIf="publication.bienImmobilier.estDelegue == true">Délégué</span>
                     <span *ngIf="publication.bienImmobilier.estDelegue == false">Non Délégué</span></td>

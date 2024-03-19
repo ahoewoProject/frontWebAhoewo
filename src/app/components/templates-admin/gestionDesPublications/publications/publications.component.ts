@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
 import { BienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/BienImmobilier';
@@ -49,7 +49,7 @@ export class PublicationsComponent implements OnInit, OnDestroy {
     private bienImmobilierService: BienImmobilierService, private bienImmAssocieService: BienImmAssocieService,
     private messageService: MessageService, private confirmationService: ConfirmationService,
     private personneService: PersonneService, private caracteristiquesServices: CaracteristiquesService,
-    private imagesBienImmobilierService: ImagesBienImmobilierService
+    private imagesBienImmobilierService: ImagesBienImmobilierService, private router: Router
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -70,8 +70,25 @@ export class PublicationsComponent implements OnInit, OnDestroy {
     } else {
       this.listeBiensPropresEtDelegues();
     }
-    this.listePublications(this.numeroDeLaPage, this.elementsParPage);
     this.listeTypeDeTransactions();
+    this.initActivatedRoute();
+  }
+
+  initActivatedRoute(): void {
+    this.activatedRoute.paramMap.subscribe(params => {
+      const id = params.get('id');
+      const idBien = this.activatedRoute.snapshot.queryParamMap.get('idBien');
+
+      if (id) {
+        this.affichage = 2;
+        if (idBien) {
+          this.getImagesBienImmobilier(parseInt(idBien));
+        }
+        this.detailPublication(parseInt(id));
+      } else {
+        this.listePublications(this.numeroDeLaPage, this.elementsParPage);
+      }
+    });
   }
 
   initResponsiveOptions(): void {
@@ -204,9 +221,10 @@ export class PublicationsComponent implements OnInit, OnDestroy {
   }
 
   voirPageDetail(idPublication: number, idBien: number): void {
-    this.affichage = 2;
+    // this.affichage = 2;
     this.getImagesBienImmobilier(idBien);
-    this.detailPublication(idPublication);
+    // this.detailPublication(idPublication);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/publications', idPublication], { queryParams: { idBien: idBien } });
   }
 
   pagination(event: any): void {
@@ -216,10 +234,14 @@ export class PublicationsComponent implements OnInit, OnDestroy {
   }
 
   voirListe(): void {
-    this.affichage = 1;
-    this.publicationForm.reset();
-    this.caracteristique = new Caracteristiques();
-    this.listePublications(this.numeroDeLaPage, this.elementsParPage);
+    if (this.affichage == 4 || this.affichage == 3 || this.affichage == 1) {
+      this.affichage = 1;
+      this.publicationForm.reset();
+      this.caracteristique = new Caracteristiques();
+      this.listePublications(this.numeroDeLaPage, this.elementsParPage);
+    } else {
+      this.router.navigate([this.navigateURLBYUSER(this.user) + '/publications']);
+    }
   }
 
   //Fonction pour afficher les détails d'un bien immobilier
@@ -506,6 +528,38 @@ export class PublicationsComponent implements OnInit, OnDestroy {
     this.bienImm.typeDeBien.designation == 'Bureau' ||
     this.bienImm.typeDeBien.designation == 'Magasin' ||
     this.bienImm.typeDeBien.designation == 'Boutique';
+  }
+
+  navigateURLBYUSER(user: any): string {
+    let roleBasedURL = '';
+
+    switch (user.role.code) {
+      case 'ROLE_ADMINISTRATEUR':
+        roleBasedURL = '/admin';
+        break;
+      case 'ROLE_PROPRIETAIRE':
+        roleBasedURL = '/proprietaire';
+        break;
+      case 'ROLE_RESPONSABLE':
+        roleBasedURL = '/responsable/agences-immobilieres';
+        break;
+      case 'ROLE_DEMARCHEUR':
+        roleBasedURL = '/demarcheur';
+        break;
+      case 'ROLE_GERANT':
+        roleBasedURL = '/gerant';
+        break;
+      case 'ROLE_AGENTIMMOBILIER':
+        roleBasedURL = '/agent-immobilier/agences-immobilieres';
+        break;
+      case 'ROLE_CLIENT':
+        roleBasedURL = '/client';
+        break;
+      default:
+        break;
+    }
+
+    return roleBasedURL;
   }
 
   ngOnDestroy(): void {

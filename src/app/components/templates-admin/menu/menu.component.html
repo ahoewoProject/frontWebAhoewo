@@ -198,7 +198,7 @@
       <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
     </div>
     <div class="sidebar_list_item">
-      <a [routerLink]="['/proprietaire/publications']" routerLinkActive="-is-active">
+      <a [routerLink]="['/proprietaire/publications'] || ['/proprietaire/publications', 'id']" routerLinkActive="-is-active">
         <i class="fa-light fa-share-all mr15"></i>Publication des biens
       </a>
     </div>
@@ -267,7 +267,7 @@
       <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
     </div>
     <div class="sidebar_list_item">
-      <a [routerLink]="['/gerant/publications']" routerLinkActive="-is-active">
+      <a [routerLink]="['/gerant/publications'] || ['/gerant/publications', 'id']" routerLinkActive="-is-active">
         <i class="fa-light fa-share-all mr15"></i>Publication des biens
       </a>
     </div>
@@ -378,7 +378,7 @@
       <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
     </div>
     <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/agences-immobilieres/publications']" routerLinkActive="-is-active">
+      <a [routerLink]="['/responsable/agences-immobilieres/publications'] || ['/responsable/agences-immobilieres/publications', 'id']" routerLinkActive="-is-active">
       <i class="fa-light fa-share-all mr15"></i>Publication des biens
     </a>
     </div>
@@ -464,7 +464,7 @@
       <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
     </div>
     <div class="sidebar_list_item">
-      <a [routerLink]="['/agent-immobilier/agences-immobilieres/publications']" routerLinkActive="-is-active">
+      <a [routerLink]="['/agent-immobilier/agences-immobilieres/publications'] || ['/agent-immobilier/agences-immobilieres/publications', 'id']" routerLinkActive="-is-active">
         <i class="fa-light fa-share-all mr15"></i>Publication des biens
       </a>
     </div>
@@ -550,7 +550,7 @@
       <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
     </div>
     <div class="sidebar_list_item">
-      <a [routerLink]="['/demarcheur/publications']" routerLinkActive="-is-active">
+      <a [routerLink]="['/demarcheur/publications'] || ['/demarcheur/publications', 'id']" routerLinkActive="-is-active">
         <i class="fa-light fa-share-all mr15"></i>Publication des biens
       </a>
     </div>

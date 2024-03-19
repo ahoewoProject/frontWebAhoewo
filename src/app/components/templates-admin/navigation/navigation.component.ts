@@ -75,44 +75,43 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   redirectToPageConcernee(url: string): void {
-    let pageConcerneeURL = '';
+    console.log(url)
+    let roleBasedURL = '';
 
     switch (this.user.role.code) {
       case 'ROLE_ADMINISTRATEUR':
         this.notificationService.notificationsNonLuesByAdmin();
-        pageConcerneeURL = '/admin';
+        roleBasedURL = '/admin';
         break;
       case 'ROLE_PROPRIETAIRE':
         this.notificationService.notificationsNonLuesByOwner();
-        pageConcerneeURL = '/proprietaire';
+        roleBasedURL = '/proprietaire';
         break;
       case 'ROLE_RESPONSABLE':
         this.notificationService.notificationsNonLuesByOwner();
-        pageConcerneeURL = '/responsable';
+        roleBasedURL = '/responsable';
         break;
       case 'ROLE_DEMARCHEUR':
         this.notificationService.notificationsNonLuesByOwner();
-        pageConcerneeURL = '/demarcheur';
+        roleBasedURL = '/demarcheur';
         break;
       case 'ROLE_GERANT':
         this.notificationService.notificationsNonLuesByOwner();
-        pageConcerneeURL = '/gerant';
+        roleBasedURL = '/gerant';
         break;
       case 'ROLE_AGENTIMMOBILIER':
         this.notificationService.notificationsNonLuesByOwner();
-        pageConcerneeURL = '/agent-immobilier';
+        roleBasedURL = '/agent-immobilier';
         break;
       case 'ROLE_CLIENT':
         this.notificationService.notificationsNonLuesByOwner();
-        pageConcerneeURL = '/client';
+        roleBasedURL = '/client';
         break;
       default:
         break;
     }
-
-    pageConcerneeURL += url;
-
-    this.router.navigate([pageConcerneeURL]);
+    const pageConcerneeURL = roleBasedURL + url;
+    this.router.navigateByUrl(pageConcerneeURL);
   }
 
   lireNotification() {

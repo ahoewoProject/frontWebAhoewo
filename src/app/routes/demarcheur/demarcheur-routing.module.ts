@@ -20,6 +20,7 @@ const routes: Routes = [
       { path: 'delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
       { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
       { path: 'publications', component: PublicationsComponent, canActivate: [AuthGuard] },
+      { path: 'publications/:id', component: PublicationsComponent, canActivate: [AuthGuard] },
     ]
   }
 ];

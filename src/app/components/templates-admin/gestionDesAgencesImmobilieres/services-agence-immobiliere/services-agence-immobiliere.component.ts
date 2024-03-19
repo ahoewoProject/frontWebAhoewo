@@ -172,7 +172,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
   }
 
   voirListe(): void {
-    if (this.affichage == 3 || this.affichage == 4) {
+    if (this.affichage == 3 || this.affichage == 4 || this.affichage == 1) {
       this.affichage = 1;
       this.listerServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
       this.serviceAgenceImmobiliereForm.reset();
