@@ -190,6 +190,12 @@
                 <p-tag *ngIf="serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.etat == 3" severity="danger" value="Rejeté"></p-tag>
               </p>
             </div>
+
+            <p-divider *ngIf="motifRejet"></p-divider>
+            <div *ngIf="motifRejet">
+              <p class="fw600 mb10 ff-heading dark-color">Motif de rejet du service</p>
+              <p>{{ motifRejet.motif }}</p>
+            </div>
           </div>
         </div>
       </div>

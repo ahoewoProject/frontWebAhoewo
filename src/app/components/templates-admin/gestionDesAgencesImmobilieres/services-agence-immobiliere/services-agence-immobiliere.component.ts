@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
+import { MotifRejet } from 'src/app/models/MotifRejet';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
 import { ServiceNonTrouveForm } from 'src/app/models/gestionDesAgencesImmobilieres/ServiceNonTrouveForm';
 import { Services } from 'src/app/models/gestionDesAgencesImmobilieres/Services';
@@ -10,6 +11,7 @@ import { ServicesAgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmob
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { ServicesAgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/services-agence-immobiliere.service';
 import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/services.service';
+import { MotifRejetService } from 'src/app/services/motif-rejet.service';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { environment } from 'src/environments/environment';
 
@@ -22,6 +24,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
 
   serviceSelectionne!: Services;
   agenceSelectionnee!: AgenceImmobiliere;
+  motifRejet!: MotifRejet;
   recherche: string = '';
   affichage = 1;
   user : any;
@@ -56,7 +59,7 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
   constructor(private _servicesService: ServicesService, private agenceImmobiliereService: AgenceImmobiliereService,
     private servicesAgenceImmobiliereService: ServicesAgenceImmobiliereService, private messageService: MessageService,
     private confirmationService: ConfirmationService, private notificationService: NotificationsService,
-    private activatedRoute: ActivatedRoute, private router: Router
+    private activatedRoute: ActivatedRoute, private router: Router, private motifRejetService: MotifRejetService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -204,10 +207,20 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
     this.descriptionDuService.clearValidators();
   }
 
+  detailMotif(code: string): void {
+    this.motifRejetService.findByCode(code).subscribe(
+      (response) => {
+        console.log(response)
+        this.motifRejet = response;
+      }
+    );
+  }
+
   detailServiceAgenceImmobiliere(id: number): void {
     this.servicesAgenceImmobiliereService.findById(id).subscribe(
       (response) => {
         this.serviceAgenceImmobiliere = response;
+        this.detailMotif(this.serviceAgenceImmobiliere.services.codeService);
       }
     );
   }
