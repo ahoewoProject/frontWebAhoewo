@@ -775,7 +775,7 @@
           <div class="tab-pane fade show active" id="pills-tout" role="tabpanel" aria-labelledby="pills-tout-tab">
             <div class="row">
               <div class="col-sm-6 col-lg-4" *ngFor="let publication of publications.content">
-                <div class="listing-style1">
+                <div class="listing-style1" type="button" (click)="detailPublicationPage(publication)">
                   <div class="list-thumb">
                     <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
                     <!-- <div class="badge"><span style="background-color: #ff003d" class="span-badge">À louer</span></div> -->
@@ -783,7 +783,7 @@
                     <div class="list-price">{{ publication.prixDuBien | number }} FCFA / <span class="text">mois</span></div>
                   </div>
                   <div class="list-content">
-                    <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
+                    <h6 class="list-title"><a>{{ publication.libelle }}</a></h6>
                     <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
                     <hr class="mt-2 mb-2">
                     <div class="list-meta2 d-flex justify-content-between align-items-center">
@@ -797,14 +797,14 @@
           <div class="tab-pane fade" id="pills-louer" role="tabpanel" aria-labelledby="pills-louer-tab">
             <div class="row">
               <div class="col-sm-6 col-lg-4" *ngFor="let publicationDeLocation of publicationsDeLocation.content">
-                <div class="listing-style1">
+                <div class="listing-style1" type="button" (click)="detailPublicationPage(publicationDeLocation)">
                   <div class="list-thumb">
                     <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publicationDeLocation.bienImmobilier.id)}}" alt="">
                     <div class="list-tag fz12 mr20">À LOUER</div>
                     <div class="list-price">{{ publicationDeLocation.prixDuBien | number }} FCFA / <span class="text">mois</span></div>
                   </div>
                   <div class="list-content">
-                    <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publicationDeLocation.codePublication]">{{ publicationDeLocation.libelle }}</a></h6>
+                    <h6 class="list-title"><a>{{ publicationDeLocation.libelle }}</a></h6>
                     <p class="text">{{ publicationDeLocation.bienImmobilier.quartier.ville.libelle }}, {{ publicationDeLocation.bienImmobilier.quartier.libelle }}, {{ publicationDeLocation.bienImmobilier.adresse }}</p>
                     <hr class="mt-2 mb-2">
                     <div class="list-meta2 d-flex justify-content-between align-items-center">
@@ -818,14 +818,14 @@
           <div class="tab-pane fade" id="pills-vendre" role="tabpanel" aria-labelledby="pills-vendre-tab">
             <div class="row">
               <div class="col-sm-6 col-lg-4" *ngFor="let publicationDeVente of publicationsDeVente.content">
-                <div class="listing-style1">
+                <div class="listing-style1" type="button" (click)="detailPublicationPage(publicationDeVente)">
                   <div class="list-thumb">
                     <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publicationDeVente.bienImmobilier.id)}}" alt="">
                     <div class="list-tag fz12 mr20">À VENDRE</div>
                     <div class="list-price">{{ publicationDeVente.prixDuBien | number }} FCFA</div>
                   </div>
                   <div class="list-content">
-                    <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publicationDeVente.codePublication]">{{ publicationDeVente.libelle }}</a></h6>
+                    <h6 class="list-title"><a>{{ publicationDeVente.libelle }}</a></h6>
                     <p class="list-text">{{ publicationDeVente.bienImmobilier.quartier.ville.libelle }}, {{ publicationDeVente.bienImmobilier.quartier.libelle }}, {{ publicationDeVente.bienImmobilier.adresse }}</p>
                     <hr class="mt-2 mb-2">
                     <div class="list-meta2 d-flex justify-content-between align-items-center">

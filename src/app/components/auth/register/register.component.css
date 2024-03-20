@@ -40,7 +40,7 @@
 }
 
 :host ::ng-deep .select .p-dropdown {
-  width: 345px !important;
+  width: 100%;
   height: 55px;
   border-radius: 8px;
 }
@@ -50,7 +50,7 @@
 }
 
 .icon-voir-mot-passe {
-  left: 89%;
+  left: 95%;
   margin-top: -34px;
   position: absolute;
   z-index: 100;
@@ -61,3 +61,12 @@
   display: none;
 }
 
+:host ::ng-deep .p-steps-title {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.ud-btn i {
+  margin-left: 10px;
+  font-size: 16px;
+  transform: rotate(0deg);
+}

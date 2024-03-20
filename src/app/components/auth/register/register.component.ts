@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
 import { Role } from 'src/app/models/gestionDesComptes/Role';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 
@@ -15,6 +16,12 @@ export class RegisterComponent implements OnInit {
   inscriptionNonReussie: boolean = false;
   registerForm = this.personneService.registerForm;
   message: string = '';
+
+  menus: MenuItem[] | undefined;
+  activeIndex: number = 0;
+
+  etape1Form: any;
+  etape2Form: any;
 
   voirMotDePasseConfirmer: boolean = false;
 
@@ -113,7 +120,28 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initRegisterMenu();
+    this.initEtape1Form();
+    this.initEtape2Form();
     this.initRegisterForm();
+  }
+
+  initRegisterMenu(): void {
+    this.menus = [
+      {
+          label: 'Informations personnelles',
+      },
+      {
+          label: 'Informations de connexion',
+      },
+      {
+          label: 'Confirmation',
+      },
+    ];
+  }
+
+  onActiveIndexChange(event: number) {
+    this.activeIndex = event;
   }
 
   initRegisterForm() {
@@ -131,155 +159,202 @@ export class RegisterComponent implements OnInit {
     }, [ this.passwordMatch("motDePasse", "motDePasseConfirmer") ])
   }
 
+  initEtape1Form() {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    this.etape1Form = new FormGroup({
+      nom: new FormControl('', [Validators.required]),
+      prenom: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
+      telephone: new FormControl('', [Validators.required]),
+    })
+  }
+
+  initEtape2Form() {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
+    this.etape2Form = new FormGroup({
+      username: new FormControl('', [Validators.required]),
+      motDePasse: new FormControl('', [Validators.required, Validators.maxLength(14), Validators.minLength(8), Validators.pattern(passwordRegex)]),
+      motDePasseConfirmer: new FormControl('', [Validators.required, Validators.maxLength(14), Validators.minLength(8), Validators.pattern(passwordRegex)]),
+      role: new FormControl('', [Validators.required])
+    }, [ this.passwordMatch("motDePasse", "motDePasseConfirmer") ])
+  }
+
   get nom() {
-    return this.RegisterForm.get('nom');
+    return this.etape1Form.get('nom');
   }
 
   get prenom() {
-    return this.RegisterForm.get('prenom');
+    return this.etape1Form.get('prenom');
   }
 
   get username() {
-    return this.RegisterForm.get('username');
+    return this.etape2Form.get('username');
   }
 
   get email() {
-    return this.RegisterForm.get('email');
+    return this.etape1Form.get('email');
   }
 
   get motDePasse() {
-    return this.RegisterForm.get('motDePasse');
+    return this.etape2Form.get('motDePasse');
   }
 
   get motDePasseConfirmer() {
-    return this.RegisterForm.get('motDePasseConfirmer');
+    return this.etape2Form.get('motDePasseConfirmer');
   }
 
   get telephone() {
-    return this.RegisterForm.get('telephone');
+    return this.etape1Form.get('telephone');
   }
 
   get role() {
-    return this.RegisterForm.get('role');
+    return this.etape2Form.get('role');
   }
 
 
   profilChoisi(event: any) {
     this.profilSelectionne = event.value;
-    //console.log(this.profilSelectionne)
+  }
+
+  etape1(): void {
+    this.activeIndex = 0;
+  }
+
+  etape2(): void {
+    this.activeIndex = 1;
+  }
+
+  etape3(): void {
+    this.activeIndex = 2;
   }
 
   register(): void {
 
     if (this.profilSelectionne.libelle === 'Propriétaire') {
-      this.registerForm.role = this.roleProprietaire;
-      this.personneService.inscription(this.registerForm).subscribe(
-        (response) => {
-          this.RegisterForm.reset();
-          this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
-        },
-        (error) => {
-          if (error.error == "Un utilisateur avec ce nom d'utilisateur existe déjà") {
-            this.inscriptionNonReussie = true;
-            this.message = "Un propriétaire avec ce nom d'utilisateur existe déjà. Veuillez réessayez !";
-            this.router.navigate(['/inscription'])
-            setTimeout(() => {
-              this.inscriptionNonReussie = false;
-              this.message = '';
-            }, 3000);
-          } else if(error.error == "Un utilisateur avec cette adresse e-mail existe déjà") {
-            this.inscriptionNonReussie = true;
-            this.message = "Un propriétaire avec cette adresse e-mail existe déjà. Veuillez réessayez !";
-            this.router.navigate(['/inscription'])
-            setTimeout(() => {
-              this.inscriptionNonReussie = false;
-              this.message = '';
-            }, 3000);
-          }
-        }
-      )
+      this.registerProprietaire();
     } else if (this.profilSelectionne.libelle === "Responsable d'agence immobilière") {
-      this.registerForm.role = this.roleRespnsableAgenceImmobiliere;
-      this.personneService.inscription(this.registerForm).subscribe(
-        (response) => {
-          this.RegisterForm.reset();
-          this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
-        },
-        (error) => {
-          if (error.error == "Un utilisateur avec ce nom d'utilisateur existe déjà") {
-            this.inscriptionNonReussie = true;
-            this.message = "Un responsable d'agence immobilière avec ce nom d'utilisateur existe déjà. Veuillez réessayez !";
-            this.router.navigate(['/inscription'])
-            setTimeout(() => {
-              this.inscriptionNonReussie = false;
-              this.message = '';
-            }, 3000);
-          } else if (error.error == "Un utilisateur avec cette adresse e-mail existe déjà") {
-            this.inscriptionNonReussie = true;
-            this.message = "Un responsable d'agence immobilière avec cette adresse e-mail existe déjà. Veuillez réessayez !";
-            this.router.navigate(['/inscription'])
-            setTimeout(() => {
-              this.inscriptionNonReussie = false;
-              this.message = '';
-            }, 3000);
-          }
-        }
-      )
+      this.registerResponsable();
     } else if (this.profilSelectionne.libelle === "Démarcheur") {
-      this.registerForm.role = this.roleDemarcheur;
-      this.personneService.inscription(this.registerForm).subscribe(
-        (response) => {
-          this.RegisterForm.reset();
-          this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
-        },
-        (error) => {
-          if (error.error == "Un utilisateur avec ce nom d'utilisateur existe déjà") {
-            this.inscriptionNonReussie = true;
-            this.message = "Un demarcheur avec ce nom d'utilisateur existe déjà. Veuillez réessayez !";
-            this.router.navigate(['/inscription'])
-            setTimeout(() => {
-              this.inscriptionNonReussie = false;
-              this.message = '';
-            }, 3000);
-          } else if (error.error == "Un utilisateur avec cette adresse e-mail existe déjà") {
-            this.inscriptionNonReussie = true;
-            this.message = "Un demarcheur avec cette adresse e-mail existe déjà. Veuillez réessayez !";
-            this.router.navigate(['/inscription'])
-            setTimeout(() => {
-              this.inscriptionNonReussie = false;
-              this.message = '';
-            }, 3000);
-          }
-        }
-      )
+      this.registerDemarcheur();
     } else {
-      this.registerForm.role = this.roleClient;
-      this.personneService.inscription(this.registerForm).subscribe(
-        (response) => {
-          this.RegisterForm.reset();
-          this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
-        },
-        (error) => {
-          if (error.error == "Un utilisateur avec ce nom d'utilisateur existe déjà") {
-            this.inscriptionNonReussie = true;
-            this.message = "Un client avec ce nom d'utilisateur existe déjà. Veuillez réessayez !";
-            this.router.navigate(['/inscription'])
-            setTimeout(() => {
-              this.inscriptionNonReussie = false;
-              this.message = '';
-            }, 3000);
-          } else if (error.error == "Un utilisateur avec cette adresse e-mail existe déjà") {
-            this.inscriptionNonReussie = true;
-            this.message = "Un client avec cette adresse e-mail existe déjà. Veuillez réessayez !";
-            this.router.navigate(['/inscription'])
-            setTimeout(() => {
-              this.inscriptionNonReussie = false;
-              this.message = '';
-            }, 3000);
-          }
-        }
-      )
+      this.registerClient();
     }
+  }
+
+  registerProprietaire(): void {
+    this.registerForm.role = this.roleProprietaire;
+    this.personneService.inscription(this.registerForm).subscribe(
+      (response) => {
+        this.RegisterForm.reset();
+        this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
+      },
+      (error) => {
+        if (error.error == "Un utilisateur avec ce nom d'utilisateur existe déjà") {
+          this.inscriptionNonReussie = true;
+          this.message = "Un propriétaire avec ce nom d'utilisateur existe déjà. Veuillez réessayez !";
+          this.router.navigate(['/inscription'])
+          setTimeout(() => {
+            this.inscriptionNonReussie = false;
+            this.message = '';
+          }, 3000);
+        } else if(error.error == "Un utilisateur avec cette adresse e-mail existe déjà") {
+          this.inscriptionNonReussie = true;
+          this.message = "Un propriétaire avec cette adresse e-mail existe déjà. Veuillez réessayez !";
+          this.router.navigate(['/inscription'])
+          setTimeout(() => {
+            this.inscriptionNonReussie = false;
+            this.message = '';
+          }, 3000);
+        }
+      }
+    )
+  }
+
+  registerDemarcheur(): void {
+    this.registerForm.role = this.roleDemarcheur;
+    this.personneService.inscription(this.registerForm).subscribe(
+      (response) => {
+        this.RegisterForm.reset();
+        this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
+      },
+      (error) => {
+        if (error.error == "Un utilisateur avec ce nom d'utilisateur existe déjà") {
+          this.inscriptionNonReussie = true;
+          this.message = "Un demarcheur avec ce nom d'utilisateur existe déjà. Veuillez réessayez !";
+          this.router.navigate(['/inscription'])
+          setTimeout(() => {
+            this.inscriptionNonReussie = false;
+            this.message = '';
+          }, 3000);
+        } else if (error.error == "Un utilisateur avec cette adresse e-mail existe déjà") {
+          this.inscriptionNonReussie = true;
+          this.message = "Un demarcheur avec cette adresse e-mail existe déjà. Veuillez réessayez !";
+          this.router.navigate(['/inscription'])
+          setTimeout(() => {
+            this.inscriptionNonReussie = false;
+            this.message = '';
+          }, 3000);
+        }
+      }
+    )
+  }
+
+  registerResponsable(): void {
+    this.registerForm.role = this.roleRespnsableAgenceImmobiliere;
+    this.personneService.inscription(this.registerForm).subscribe(
+      (response) => {
+        this.RegisterForm.reset();
+        this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
+      },
+      (error) => {
+        if (error.error == "Un utilisateur avec ce nom d'utilisateur existe déjà") {
+          this.inscriptionNonReussie = true;
+          this.message = "Un responsable d'agence immobilière avec ce nom d'utilisateur existe déjà. Veuillez réessayez !";
+          this.router.navigate(['/inscription'])
+          setTimeout(() => {
+            this.inscriptionNonReussie = false;
+            this.message = '';
+          }, 3000);
+        } else if (error.error == "Un utilisateur avec cette adresse e-mail existe déjà") {
+          this.inscriptionNonReussie = true;
+          this.message = "Un responsable d'agence immobilière avec cette adresse e-mail existe déjà. Veuillez réessayez !";
+          this.router.navigate(['/inscription'])
+          setTimeout(() => {
+            this.inscriptionNonReussie = false;
+            this.message = '';
+          }, 3000);
+        }
+      }
+    )
+  }
+
+  registerClient(): void {
+    this.registerForm.role = this.roleClient;
+    this.personneService.inscription(this.registerForm).subscribe(
+      (response) => {
+        this.RegisterForm.reset();
+        this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
+      },
+      (error) => {
+        if (error.error == "Un utilisateur avec ce nom d'utilisateur existe déjà") {
+          this.inscriptionNonReussie = true;
+          this.message = "Un client avec ce nom d'utilisateur existe déjà. Veuillez réessayez !";
+          this.router.navigate(['/inscription'])
+          setTimeout(() => {
+            this.inscriptionNonReussie = false;
+            this.message = '';
+          }, 3000);
+        } else if (error.error == "Un utilisateur avec cette adresse e-mail existe déjà") {
+          this.inscriptionNonReussie = true;
+          this.message = "Un client avec cette adresse e-mail existe déjà. Veuillez réessayez !";
+          this.router.navigate(['/inscription'])
+          setTimeout(() => {
+            this.inscriptionNonReussie = false;
+            this.message = '';
+          }, 3000);
+        }
+      }
+    )
   }
 
   passwordMatch(motDePasse: string, motDePasseConfirmer: string) {
