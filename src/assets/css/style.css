@@ -6804,9 +6804,8 @@ textarea:focus {
 }
 
 .menu-btn {
-  background-color: transparent;
-  border: 1px solid #ffffff;
-  color: #ffffff;
+  border: 1px solid var(--headings-color);
+  color: var(--headings-color);
 }
 .menu-btn:hover {
   background-color: #db6b15;
@@ -7183,7 +7182,7 @@ header.menu-home10.stricky.stricky-fixed .ace-responsive-menu .visible_list a.li
   background-color: #181A20;
 }
 header.nav-homepage-style {
-  background-color: transparent;
+  background-color: #ffffff;
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   padding: 20px 0;
   position: fixed;
@@ -7271,7 +7270,7 @@ header.nav-homepage-style .ace-responsive-menu .visible_list a.list-item {
   }
 }
 header.nav-homepage-style .ace-responsive-menu a {
-  color: #ffffff;
+  color: var(--headings-color);
   font-family: var(--title-font-family);
   font-weight: 600;
 }
@@ -7280,7 +7279,7 @@ header.nav-homepage-style .header-logo.logo2 {
 }
 header.nav-homepage-style .sidemenu-btn,
 header.nav-homepage-style .login-info {
-  color: #ffffff;
+  color: var(--headings-color);
 }
 header.nav-homepage-style .sidemenu-btn .img-2 {
   display: none;
