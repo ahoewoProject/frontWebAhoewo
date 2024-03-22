@@ -9,6 +9,9 @@ import { ProfilComponent } from 'src/app/components/templates-admin/gestionDesCo
 import { TemplatesAdminComponent } from 'src/app/components/templates-admin/templates-admin.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
 import { NotificationsComponent } from 'src/app/components/templates-admin/notifications/notifications.component';
+import { DemandesVisitesComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-visites/demandes-visites.component';
+import { DemandesAchatsComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-achats/demandes-achats.component';
+import { DemandesLocationsComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-locations/demandes-locations.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -21,6 +24,12 @@ const routes: Routes = [
       { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/publications', component: PublicationsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/publications/:id', component: PublicationsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/demandes-visites', component: DemandesVisitesComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/demandes-visites/:id', component: DemandesVisitesComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/demandes-locations', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/demandes-locations/:id', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/demandes-achats', component: DemandesAchatsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/demandes-achats/:id', component: DemandesAchatsComponent, canActivate: [AuthGuard] }
     ]
   }
 ];

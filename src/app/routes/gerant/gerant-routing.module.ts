@@ -7,6 +7,9 @@ import { NotificationsComponent } from 'src/app/components/templates-admin/notif
 import { PublicationsComponent } from 'src/app/components/templates-admin/gestionDesPublications/publications/publications.component';
 import { TemplatesAdminComponent } from 'src/app/components/templates-admin/templates-admin.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
+import { DemandesVisitesComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-visites/demandes-visites.component';
+import { DemandesLocationsComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-locations/demandes-locations.component';
+import { DemandesAchatsComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-achats/demandes-achats.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -16,7 +19,13 @@ const routes: Routes = [
       { path: 'delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
       { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
       { path: 'publications', component: PublicationsComponent, canActivate: [AuthGuard] },
-      { path: 'publications/:id', component: PublicationsComponent, canActivate: [AuthGuard]}
+      { path: 'publications/:id', component: PublicationsComponent, canActivate: [AuthGuard] },
+      { path: 'demandes-visites', component: DemandesVisitesComponent, canActivate: [AuthGuard] },
+      { path: 'demandes-visites/:id', component: DemandesVisitesComponent, canActivate: [AuthGuard] },
+      { path: 'demandes-locations', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
+      { path: 'demandes-locations/:id', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
+      { path: 'demandes-achats', component: DemandesAchatsComponent, canActivate: [AuthGuard] },
+      { path: 'demandes-achats/:id', component: DemandesAchatsComponent, canActivate: [AuthGuard] }
     ]
   }
 ];

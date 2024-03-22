@@ -13,6 +13,9 @@ import { DelegationsGestionsComponent } from 'src/app/components/templates-admin
 import { ResponsablesAgenceImmobiliereComponent } from 'src/app/components/templates-admin/gestionDesComptes/responsables-agence-immobiliere/responsables-agence-immobiliere.component';
 import { NotificationsComponent } from 'src/app/components/templates-admin/notifications/notifications.component';
 import { PublicationsComponent } from 'src/app/components/templates-admin/gestionDesPublications/publications/publications.component';
+import { DemandesVisitesComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-visites/demandes-visites.component';
+import { DemandesLocationsComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-locations/demandes-locations.component';
+import { DemandesAchatsComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-achats/demandes-achats.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -30,6 +33,13 @@ const routes: Routes = [
       { path: 'agences-immobilieres/notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/publications',  component: PublicationsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/publications/:id',  component: PublicationsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/demandes-visites', component: DemandesVisitesComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/demandes-visites/:id', component: DemandesVisitesComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/demandes-locations', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/demandes-locations/:id', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/demandes-achats', component: DemandesAchatsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/demandes-achats/:id', component: DemandesAchatsComponent, canActivate: [AuthGuard] }
+
     ]
   }
 ];
