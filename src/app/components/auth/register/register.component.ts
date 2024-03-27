@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { Role } from 'src/app/models/gestionDesComptes/Role';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
@@ -34,6 +34,10 @@ export class RegisterComponent implements OnInit {
       creerLe: new Date(),
       modifierPar: 0,
       modifierLe: new Date(),
+      annulerPar: 0,
+      annulerLe: new Date(),
+      refuserPar: 0,
+      refuserLe: new Date(),
       statut: false
     },
     {
@@ -44,6 +48,10 @@ export class RegisterComponent implements OnInit {
       creerLe: new Date(),
       modifierPar: 0,
       modifierLe: new Date(),
+      annulerPar: 0,
+      annulerLe: new Date(),
+      refuserPar: 0,
+      refuserLe: new Date(),
       statut: false
     },
     {
@@ -54,6 +62,10 @@ export class RegisterComponent implements OnInit {
       creerLe: new Date(),
       modifierPar: 0,
       modifierLe: new Date(),
+      annulerPar: 0,
+      annulerLe: new Date(),
+      refuserPar: 0,
+      refuserLe: new Date(),
       statut: false
     },
     {
@@ -64,6 +76,10 @@ export class RegisterComponent implements OnInit {
       creerLe: new Date(),
       modifierPar: 0,
       modifierLe: new Date(),
+      annulerPar: 0,
+      annulerLe: new Date(),
+      refuserPar: 0,
+      refuserLe: new Date(),
       statut: false
     }
   ]
@@ -76,6 +92,10 @@ export class RegisterComponent implements OnInit {
     creerLe: new Date(),
     modifierPar: 0,
     modifierLe: new Date(),
+    annulerPar: 0,
+    annulerLe: new Date(),
+    refuserPar: 0,
+    refuserLe: new Date(),
     statut: false
   }
 
@@ -87,6 +107,10 @@ export class RegisterComponent implements OnInit {
     creerLe: new Date(),
     modifierPar: 0,
     modifierLe: new Date(),
+    annulerPar: 0,
+    annulerLe: new Date(),
+    refuserPar: 0,
+    refuserLe: new Date(),
     statut: false
   }
 
@@ -98,6 +122,10 @@ export class RegisterComponent implements OnInit {
     creerLe: new Date(),
     modifierPar: 0,
     modifierLe: new Date(),
+    annulerPar: 0,
+    annulerLe: new Date(),
+    refuserPar: 0,
+    refuserLe: new Date(),
     statut: false
   }
 
@@ -109,17 +137,25 @@ export class RegisterComponent implements OnInit {
     creerLe: new Date(),
     modifierPar: 0,
     modifierLe: new Date(),
+    annulerPar: 0,
+    annulerLe: new Date(),
+    refuserPar: 0,
+    refuserLe: new Date(),
     statut: false
   }
 
   RegisterForm: any;
+  from: any;
 
   constructor(
     private personneService: PersonneService,
-    private router: Router
+    private router: Router, private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.from = this.activatedRoute.snapshot.queryParamMap.get('from') || '';
+    console.log(this.from);
+
     this.initRegisterMenu();
     this.initEtape1Form();
     this.initEtape2Form();
@@ -246,7 +282,11 @@ export class RegisterComponent implements OnInit {
     this.personneService.inscription(this.registerForm).subscribe(
       (response) => {
         this.RegisterForm.reset();
-        this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
+        if (this.from) {
+          this.router.navigate(['connexion'], { queryParams: { from: this.from }});
+        } else {
+          this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
+        }
       },
       (error) => {
         if (error.error == "Un utilisateur avec ce nom d'utilisateur existe déjà") {
@@ -275,7 +315,11 @@ export class RegisterComponent implements OnInit {
     this.personneService.inscription(this.registerForm).subscribe(
       (response) => {
         this.RegisterForm.reset();
-        this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
+        if (this.from) {
+          this.router.navigate(['connexion'], { queryParams: { from: this.from }});
+        } else {
+          this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
+        }
       },
       (error) => {
         if (error.error == "Un utilisateur avec ce nom d'utilisateur existe déjà") {
@@ -304,7 +348,11 @@ export class RegisterComponent implements OnInit {
     this.personneService.inscription(this.registerForm).subscribe(
       (response) => {
         this.RegisterForm.reset();
-        this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
+        if (this.from) {
+          this.router.navigate(['connexion'], { queryParams: { from: this.from }});
+        } else {
+          this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
+        }
       },
       (error) => {
         if (error.error == "Un utilisateur avec ce nom d'utilisateur existe déjà") {
@@ -333,7 +381,11 @@ export class RegisterComponent implements OnInit {
     this.personneService.inscription(this.registerForm).subscribe(
       (response) => {
         this.RegisterForm.reset();
-        this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
+        if (this.from) {
+          this.router.navigate(['connexion'], { queryParams: { from: this.from }});
+        } else {
+          this.router.navigate(['/connexion'], { queryParams: { inscriptionSuccess: true } })
+        }
       },
       (error) => {
         if (error.error == "Un utilisateur avec ce nom d'utilisateur existe déjà") {

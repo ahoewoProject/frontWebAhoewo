@@ -484,12 +484,6 @@ export class AccueilComponent implements OnInit {
     }
   }
 
-  detailPublicationPage(publication: Publication): void {
-    const codePublication = JSON.stringify(publication.codePublication);
-    sessionStorage.setItem('codePublication', codePublication);
-    this.router.navigate(['/annonce-immobiliere']);
-  }
-
   // Fonction pour formater l'heure
   formatTime(date: Date): string {
     const hours = date.getHours();

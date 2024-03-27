@@ -344,12 +344,6 @@ export class ListePublicationsComponent implements OnInit {
     this.typeDeTransactionSelectionne = value;
   }
 
-  detailPublicationPage(publication: Publication): void {
-    const codePublication = JSON.stringify(publication.codePublication);
-    sessionStorage.setItem('codePublication', codePublication);
-    this.router.navigate(['/annonce-immobiliere']);
-  }
-
   afficherAvanceEtCaution(): boolean {
     return this.typeDeTransactionSelectionne == 'Location'
   }

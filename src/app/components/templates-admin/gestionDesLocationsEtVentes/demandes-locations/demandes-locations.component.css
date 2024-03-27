@@ -1,0 +1,57 @@
+:host ::ng-deep .p-message {
+  font-family: 'DM Sans', sans-serif;
+}
+
+:host ::ng-deep .p-dialog-title {
+  font-family: 'DM Sans', sans-serif;
+}
+
+:host ::ng-deep .p-dialog-header-close {
+  border-radius: 100%;
+}
+
+:host ::ng-deep .image {
+  border-radius: 10px;
+}
+
+:host ::ng-deep .imageLength0 {
+  border-radius: 10px;
+}
+
+:host ::ng-deep .p-galleria-thumbnail-wrapper {
+  border-radius: 10px;
+}
+
+.justify-text {
+  text-align: justify;
+}
+
+.error {
+  color: #a94442;
+  font-family: 'Inter var', sans-serif;
+  font-size: 14px;
+}
+
+.ng-valid[required],
+.ng-valid.required:not(.pCalendar) {
+  border-left: 5px solid #42A948;
+}
+
+.ng-invalid:not(form):not(.pCalendar) {
+  border-left: 5px solid #a94442;
+}
+
+:host ::ng-deep .pInputNumber {
+  width: 100%;
+  border-radius: 8px;
+}
+
+:host ::ng-deep .pInputNumber.ng-dirty.ng-invalid > .p-inputnumber > .p-inputtext {
+  border-color: #DDDDDD;
+}
+
+.disabled-link {
+  pointer-events: none; /* Désactive les événements de pointage, rendant le lien non cliquable */
+  opacity: 0.5; /* Réduit l'opacité pour montrer qu'il est désactivé */
+  cursor: not-allowed; /* Affiche un curseur "non autorisé" */
+}

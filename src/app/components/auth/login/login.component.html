@@ -47,7 +47,7 @@
               <div class="d-grid mb20">
                 <button class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': LoginForm.invalid }" type="submit">Se connecter</button>
               </div>
-              <p class="dark-color mb0 mt10 text-center text">Nouveau sur la plateforme ? <a class="dark-color fw600" style="font-family: 'DM Sans', sans-serif;" routerLink="/inscription">Créer un compte.</a></p>
+              <p class="dark-color mb0 mt10 text-center text">Nouveau sur la plateforme ? <a class="dark-color fw600" style="font-family: 'DM Sans', sans-serif;" [routerLink]="['/inscription']" [queryParams]="from ? { from: from } : null">S'inscrire.</a></p>
             </form>
           </div>
 

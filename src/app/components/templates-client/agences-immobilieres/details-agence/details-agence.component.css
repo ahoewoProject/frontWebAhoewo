@@ -16,6 +16,11 @@
   font-family: 'Inter var', sans-serif;
 }
 
+.imgForm {
+  text-align: center;
+  width: 25%;
+}
+
 .disabled-link {
   pointer-events: none; /* Désactive les événements de pointage, rendant le lien non cliquable */
   opacity: 0.5; /* Réduit l'opacité pour montrer qu'il est désactivé */

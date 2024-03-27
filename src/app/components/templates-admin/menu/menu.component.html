@@ -209,13 +209,19 @@
       <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites</a>
+      <a [routerLink]="['/proprietaire/demandes-visites'] || ['/proprietaire/demandes-visites', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
+      </a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations</a>
+      <a [routerLink]="['/proprietaire/demandes-locations'] || ['/proprietaire/demandes-locations', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
+      </a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats</a>
+      <a [routerLink]="['/proprietaire/demandes-achats'] || ['/proprietaire/demandes-achats', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
+      </a>
     </div>
     <div class="sidebar_list_item">
       <a class="items-center"><i class="fa-light fa-folders mr15"></i>Contrats</a>
@@ -278,13 +284,19 @@
       <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites</a>
+      <a [routerLink]="['/gerant/demandes-visites'] || ['/gerant/demandes-visites', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
+      </a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations</a>
+      <a [routerLink]="['/gerant/demandes-locations'] || ['/gerant/demandes-locations', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
+      </a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats</a>
+      <a [routerLink]="['/gerant/demandes-achats'] || ['/gerant/demandes-achats', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
+      </a>
     </div>
     <div class="sidebar_list_item">
       <a class="items-center"><i class="fa-light fa-folders mr15"></i>Contrats</a>
@@ -389,13 +401,19 @@
       <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites</a>
+      <a [routerLink]="['/responsable/agences-immobilieres/demandes-visites'] || ['/responsable/agences-immobilieres/demandes-visites', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
+      </a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations</a>
+      <a [routerLink]="['/responsable/agences-immobilieres/demandes-locations'] || ['/responsable/agences-immobilieres/demandes-locations', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
+      </a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats</a>
+      <a [routerLink]="['/responsable/agences-immobilieres/demandes-achats'] || ['/responsable/agences-immobilieres/demandes-achats', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
+      </a>
     </div>
     <div class="sidebar_list_item">
       <a class="items-center"><i class="fa-light fa-folders mr15"></i>Contrats</a>
@@ -437,7 +455,7 @@
       <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
     </div>
     <div class="sidebar_list_item">
-      <a [routerLink]="['/agent-immobilier/agences-immobilieres']" routerLinkActive="-is-active">
+      <a [routerLink]="['/agent-immobilier/agences-immobilieres']" routerLinkActive="-is-active" [routerLinkActiveOptions]="{ exact: true }">
         <i class="fa-light fa-key mr15"></i>&nbsp;Agences immobilières
       </a>
     </div>
@@ -475,13 +493,19 @@
       <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites</a>
+      <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-visites'] || ['/agent-immobilier/agences-immobilieres/demandes-visites', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
+      </a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations</a>
+      <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-locations'] || ['/agent-immobilier/agences-immobilieres/demandes-locations', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
+      </a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats</a>
+      <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-achats'] || ['/agent-immobilier/agences-immobilieres/demandes-achats', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
+      </a>
     </div>
     <div class="sidebar_list_item">
       <a class="items-center"><i class="fa-light fa-folders mr15"></i>Contrats</a>
@@ -561,13 +585,19 @@
       <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites</a>
+      <a [routerLink]="['/demarcheur/demandes-visites'] || ['/demarcheur/demandes-visites', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
+      </a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations</a>
+      <a [routerLink]="['/demarcheur/demandes-locations'] || ['/demarcheur/demandes-locations', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
+      </a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats</a>
+      <a [routerLink]="['/demarcheur/demandes-achats'] || ['/demarcheur/demandes-achats', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
+      </a>
     </div>
     <div class="sidebar_list_item">
       <a class="items-center"><i class="fa-light fa-folders mr15"></i>Contrats</a>
@@ -609,13 +639,19 @@
       <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites</a>
+      <a [routerLink]="['/client/demandes-visites'] || ['/client/demandes-visites', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
+      </a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations</a>
+      <a [routerLink]="['/client/demandes-locations'] || ['/client/demandes-locations', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
+      </a>
     </div>
     <div class="sidebar_list_item">
-      <a class="items-center"><i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats</a>
+      <a [routerLink]="['/client/demandes-achats'] || ['/client/demandes-achats', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
+      </a>
     </div>
     <div class="sidebar_list_item">
       <a class="items-center"><i class="fa-light fa-folders mr15"></i>Contrats</a>

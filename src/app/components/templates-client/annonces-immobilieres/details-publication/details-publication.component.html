@@ -4,6 +4,84 @@
 <!-- Section Titre End -->
 <p-toast></p-toast>
 
+<!-- Modal - Recherche Avancée - Start -->
+<!-- <div class="card flex justify-content-center">
+  <p-dialog header="Envoi d'une demande" [(visible)]="visible" [modal]="true" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [dismissableMask]="true" [draggable]="true" [resizable]="false">
+    <div class="modal-body">
+      <form [formGroup]="demandeForm" (ngSubmit)="soumettre()" class="form-style1">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="mb20">
+              <label class="heading-color ff-heading fw600 mb10">Type de la demande</label>
+              <p-dropdown appendTo="body"
+                class="select1"
+                emptyMessage="Aucun résultat trouvé" (onChange)="typeDeDemandeChoisi($event)"
+                [options]="typesDeDemandes" placeholder="Choisir le type de la demande"
+                [(ngModel)]="typeDeDemandeSelectionne" [ngModelOptions]="{standalone: true}">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="col-sm-6"  *ngIf="typeDeDemandeSelectionne == 'Demande de visite'">
+            <div class="mb20">
+              <label class="heading-color ff-heading fw600 mb10">Date et heure de visite</label>
+              <p-calendar appendTo="body" class="pCalendar p-fluid" placeholder="La date et l'heure de visite" formControlName="dateHeureVisite" [showTime]="true" [showSeconds]="false" (onSelect)="onSelectDateHeureVisite($event)"></p-calendar>
+              <div class="error" [hidden]="!dateHeureVisite?.hasError('required') || !dateHeureVisite.touched">La date et l'heure de visite est obligatoire</div>
+            </div>
+          </div>
+          <div class="col-sm-6" *ngIf="typeDeDemandeSelectionne == 'Demande de location'">
+            <div class="mb20">
+              <label class="heading-color ff-heading fw600 mb10">Prix de location</label>
+              <p-inputNumber class="pInputNumber p-fluid" placeholder="Prix de location proposé" formControlName="prixDeLocation" [(ngModel)]="demandeRequest.prixDeLocation" inputId="prixDeLocation" mode="currency" currency="CFA" locale="de-DE"
+                [max]="publication.prixDuBien">
+              </p-inputNumber>
+              <div class="error" [hidden]="!prixDeLocation?.hasError('required') || !prixDeLocation.touched">Le prix de location est obligatoire</div>
+            </div>
+          </div>
+          <div class="col-sm-6" *ngIf="typeDeDemandeSelectionne == 'Demande de location'">
+            <div class="mb20">
+              <label class="heading-color ff-heading fw600 mb10">Avance</label>
+              <p-inputNumber class="pInputNumber p-fluid" placeholder="Avance en nombre de mois proposé" [(ngModel)]="demandeRequest.avance" inputId="avance" suffix=" mois" [max]="12">
+              </p-inputNumber>
+            </div>
+          </div>
+          <div class="col-sm-6" *ngIf="typeDeDemandeSelectionne == 'Demande de location'">
+            <div class="mb20">
+              <label class="heading-color ff-heading fw600 mb10">Caution</label>
+              <p-inputNumber class="pInputNumber p-fluid" placeholder="Caution en nombre de mois proposé" [(ngModel)]="demandeRequest.caution" inputId="caution" suffix=" mois" [max]="12">
+              </p-inputNumber>
+            </div>
+          </div>
+          <div class="col-sm-6" *ngIf="typeDeDemandeSelectionne == 'Demande d\'achat'">
+            <div class="mb20">
+              <label class="heading-color ff-heading fw600 mb10">Prix d'achat</label>
+              <p-inputNumber class="pInputNumber p-fluid" placeholder="Prix d'achat proposé" formControlName="prixAchat" [(ngModel)]="demandeRequest.prixAchat" inputId="prixMax" mode="currency" currency="CFA" locale="de-DE"
+                [min]="demandeRequest.prixAchat">
+              </p-inputNumber>
+              <div class="error" [hidden]="!prixAchat?.hasError('required') || !prixAchat.touched">Le prix d'achat est obligatoire</div>
+            </div>
+          </div>
+          <div class="col-sm-6" *ngIf="typeDeDemandeSelectionne == 'Demande d\'achat'">
+            <div class="mb20">
+              <label class="heading-color ff-heading fw600 mb10">Nombre de tranches pour le paiement</label>
+              <p-inputNumber class="pInputNumber p-fluid" placeholder="Nombre de tranches" formControlName="nombreDeTranche" [(ngModel)]="demandeRequest.nombreDeTranche" inputId="nombreDeTranche" suffix=" tranches">
+              </p-inputNumber>
+              <div class="error" [hidden]="!nombreDeTranche?.hasError('required') || !nombreDeTranche.touched">Le nombre de tranche pour le paiement est obligatoire</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="text-end">
+            <button class="ud-btn btn-annuler" type="button" (click)="reinitialiser()">Annuler</button>
+            &nbsp;
+            <button class="ud-btn btn-thm" [ngClass]="{ 'disabled-link': demandeForm.invalid }" (click)="soumettre()">Soumettre</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </p-dialog>
+</div> -->
+<!-- Modal - Recherche Avancée End -->
+
 <!-- Détails Propriété -->
 <section class="pt60 pb90 bgc-f7">
   <div class="container">
@@ -29,10 +107,7 @@
         <div class="single-property-content">
           <div class="property-action text-lg-end">
             <!-- <div class="d-flex mb20 mb10-md align-items-center justify-content-lg-end">
-              <a class="icon mr10" href="#"><span class="flaticon-like"></span></a>
-              <a class="icon mr10" href="#"><span class="flaticon-new-tab"></span></a>
-              <a class="icon mr10" href="#"><span class="flaticon-share-1"></span></a>
-              <a class="icon" href="#"><span class="flaticon-printer"></span></a>
+              <a type="button" (click)="afficherDemandeDialog()" class="ud-btn btn-thm3 mb10"><i class="pi pi-inbox mr15"></i> Soumettre une demande</a>
             </div> -->
             <h3 class="price mb-0" *ngIf="publication.typeDeTransaction === 'Location'">{{ publication.prixDuBien | number }} FCFA / mois</h3>
             <h3 class="price mb-0" *ngIf="publication.typeDeTransaction === 'Vente'">{{ publication.prixDuBien | number }} FCFA</h3>
@@ -339,31 +414,23 @@
 
                     <div class="row" *ngIf="!loading">
                       <div class="col-md-6" *ngFor="let publication of publications.content">
-                        <div class="listing-style1" type="button" (click)="detailPublicationPage(publication)">
-                          <div class="list-thumb">
-                            <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
-                            <div class="badge"><span style="background-color: #ff003d" class="span-badge">{{ publication.typeDeTransaction === 'Location' ? 'À louer' : 'À vendre' }}</span></div>
-                            <div *ngIf="publication.typeDeTransaction === 'Location'" class="list-price">{{ publication.prixDuBien | number }} FCFA / <span>mois</span></div>
-                            <div *ngIf="publication.typeDeTransaction === 'Vente'" class="list-price">{{ publication.prixDuBien | number }} FCFA </div>
-                          </div>
-                          <div class="list-content">
-                            <h6 class="list-title"><a>{{ publication.libelle }}</a></h6>
-                            <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
-                            <!-- <div class="list-meta d-flex align-items-center">
-                              <a href="#"><span class="flaticon-bed"></span>3 bed</a>
-                              <a href="#"><span class="flaticon-shower"></span>4 bath</a>
-                              <a href="#"><span class="flaticon-expand"></span>1200 sqft</a>
+                        <div class="listing-style1">
+                          <a [routerLink]="['/annonce-immobiliere']" [queryParams]="{ key: publication.codePublication }">
+                            <div class="list-thumb">
+                              <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
+                              <div class="badge"><span style="background-color: #ff003d" class="span-badge">{{ publication.typeDeTransaction === 'Location' ? 'À louer' : 'À vendre' }}</span></div>
+                              <div *ngIf="publication.typeDeTransaction === 'Location'" class="list-price">{{ publication.prixDuBien | number }} FCFA / <span>mois</span></div>
+                              <div *ngIf="publication.typeDeTransaction === 'Vente'" class="list-price">{{ publication.prixDuBien | number }} FCFA </div>
                             </div>
-                            <hr class="mt-2 mb-2"> -->
-                            <!-- <div class="list-meta2 d-flex justify-content-between align-items-center">
-                              <span class="for-what">For Rent</span>
-                              <div class="icons d-flex align-items-center">
-                                <a href="#"><span class="flaticon-fullscreen"></span></a>
-                                <a href="#"><span class="flaticon-new-tab"></span></a>
-                                <a href="#"><span class="flaticon-like"></span></a>
+                            <div class="list-content">
+                              <h6 class="list-title"><a>{{ publication.libelle }}</a></h6>
+                              <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+                              <hr class="mt-2 mb-2">
+                              <div class="list-meta2 d-flex justify-content-between align-items-center">
+                                <p class="text"><b class="publie-date-heure">Publié </b>{{ formatDate(publication.datePublication) }}</p>
                               </div>
-                            </div> -->
-                          </div>
+                            </div>
+                          </a>
                         </div>
                       </div>
 
@@ -390,30 +457,22 @@
 
                     <div class="row" *ngIf="!loading">
                       <div class="col-md-6" *ngFor="let publication of publications.content">
-                        <div class="listing-style1" type="button" (click)="detailPublicationPage(publication)">
-                          <div class="list-thumb">
-                            <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
-                            <div class="badge"><span style="background-color: #ff003d" class="span-badge">À LOUER</span></div>
-                            <div class="list-price">{{ publication.prixDuBien | number }} FCFA / <span>mois</span></div>
-                          </div>
-                          <div class="list-content">
-                            <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
-                            <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
-                            <!-- <div class="list-meta d-flex align-items-center">
-                              <a href="#"><span class="flaticon-bed"></span>3 bed</a>
-                              <a href="#"><span class="flaticon-shower"></span>4 bath</a>
-                              <a href="#"><span class="flaticon-expand"></span>1200 sqft</a>
+                        <div class="listing-style1">
+                          <a [routerLink]="['/annonce-immobiliere']" [queryParams]="{ key: publication.codePublication }">
+                            <div class="list-thumb">
+                              <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
+                              <div class="badge"><span style="background-color: #ff003d" class="span-badge">À LOUER</span></div>
+                              <div class="list-price">{{ publication.prixDuBien | number }} FCFA / <span>mois</span></div>
                             </div>
-                            <hr class="mt-2 mb-2"> -->
-                            <!-- <div class="list-meta2 d-flex justify-content-between align-items-center">
-                              <span class="for-what">For Rent</span>
-                              <div class="icons d-flex align-items-center">
-                                <a href="#"><span class="flaticon-fullscreen"></span></a>
-                                <a href="#"><span class="flaticon-new-tab"></span></a>
-                                <a href="#"><span class="flaticon-like"></span></a>
+                            <div class="list-content">
+                              <h6 class="list-title"><a>{{ publication.libelle }}</a></h6>
+                              <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+                              <hr class="mt-2 mb-2">
+                              <div class="list-meta2 d-flex justify-content-between align-items-center">
+                                <p class="text"><b class="publie-date-heure">Publié </b>{{ formatDate(publication.datePublication) }}</p>
                               </div>
-                            </div> -->
-                          </div>
+                            </div>
+                          </a>
                         </div>
                       </div>
 
@@ -440,20 +499,22 @@
 
                     <div class="row" *ngIf="!loading">
                       <div class="col-md-6" *ngFor="let publication of publications.content">
-                        <div class="listing-style1" type="button" (click)="detailPublicationPage(publication)">
-                          <div class="list-thumb">
-                            <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
-                            <div class="badge"><span style="background-color: #ff003d" class="span-badge">À VENDRE</span></div>
-                            <div class="list-price">{{ publication.prixDuBien | number }} FCFA </div>
-                          </div>
-                          <div class="list-content">
-                            <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
-                            <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
-                            <hr class="mt-2 mb-2">
-                            <div class="list-meta2 d-flex justify-content-between align-items-center">
-                              <p class="text"><b class="publie-date-heure">Publié </b>{{ formatDate(publication.datePublication) }}</p>
+                        <div class="listing-style1">
+                          <a [routerLink]="['/annonce-immobiliere']" [queryParams]="{ key: publication.codePublication }">
+                            <div class="list-thumb">
+                              <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
+                              <div class="badge"><span style="background-color: #ff003d" class="span-badge">À VENDRE</span></div>
+                              <div class="list-price">{{ publication.prixDuBien | number }} FCFA </div>
                             </div>
-                          </div>
+                            <div class="list-content">
+                              <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
+                              <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+                              <hr class="mt-2 mb-2">
+                              <div class="list-meta2 d-flex justify-content-between align-items-center">
+                                <p class="text"><b class="publie-date-heure">Publié </b>{{ formatDate(publication.datePublication) }}</p>
+                              </div>
+                            </div>
+                          </a>
                         </div>
                       </div>
 
@@ -480,10 +541,79 @@
 
       <div class="col-lg-4">
 
+        <!-- Envoi d'une demande Start -->
+        <div class="default-box-shadow2 bdrs12 bdr1 p30 mb30 bgc-white position-relative">
+          <h4 class="form-title mb25 text-center">Envoyer une demande</h4>
+          <form [formGroup]="demandeForm" (ngSubmit)="soumettre()" class="form-style1">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="mb20">
+                  <p-dropdown
+                    class="select1"
+                    emptyMessage="Aucun résultat trouvé" (onChange)="typeDeDemandeChoisi($event)"
+                    [options]="typesDeDemandes" placeholder="Type de la demande"
+                    [(ngModel)]="typeDeDemandeSelectionne" [ngModelOptions]="{standalone: true}">
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="col-lg-12" *ngIf="typeDeDemandeSelectionne == 'Demande de visite'">
+                <div class="mb20">
+                  <p-calendar class="pCalendar p-fluid" placeholder="La date et l'heure de visite" formControlName="dateHeureVisite" [showTime]="true" [showSeconds]="false" (onSelect)="onSelectDateHeureVisite($event)"
+                    [(ngModel)]="demandeRequest.dateHeureVisite"></p-calendar>
+                  <div class="error" [hidden]="!dateHeureVisite?.hasError('required') || !dateHeureVisite.touched">La date et l'heure de visite est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-lg-12" *ngIf="typeDeDemandeSelectionne == 'Demande de location'">
+                <div class="mb20">
+                  <p-inputNumber class="pInputNumber p-fluid" placeholder="Prix de location proposé" formControlName="prixDeLocation" [(ngModel)]="demandeRequest.prixDeLocation" inputId="prixDeLocation" mode="currency" currency="CFA" locale="de-DE"
+                    [max]="publication.prixDuBien">
+                  </p-inputNumber>
+                  <div class="error" [hidden]="!prixDeLocation?.hasError('required') || !prixDeLocation.touched">Le prix de location est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-lg-12" *ngIf="typeDeDemandeSelectionne == 'Demande de location'">
+                <div class="mb20">
+                  <p-inputNumber class="pInputNumber p-fluid" placeholder="Avance proposée en nombre de mois" [(ngModel)]="demandeRequest.avance"  [ngModelOptions]="{standalone: true}" inputId="avance" suffix=" mois"
+                  [max]="publication.avance">
+                  </p-inputNumber>
+                </div>
+              </div>
+              <div class="col-lg-12" *ngIf="typeDeDemandeSelectionne == 'Demande de location'">
+                <div class="mb20">
+                  <p-inputNumber class="pInputNumber p-fluid" placeholder="Caution proposée en nombre de mois" [(ngModel)]="demandeRequest.caution"  [ngModelOptions]="{standalone: true}" inputId="caution" suffix=" mois"
+                  [max]="publication.caution">
+                  </p-inputNumber>
+                </div>
+              </div>
+              <div class="col-lg-12" *ngIf="typeDeDemandeSelectionne == 'Demande d\'achat'">
+                <div class="mb20">
+                  <p-inputNumber class="pInputNumber p-fluid" placeholder="Prix d'achat proposé" formControlName="prixAchat" [(ngModel)]="demandeRequest.prixAchat" inputId="prixMax" mode="currency" currency="CFA" locale="de-DE"
+                    [max]="publication.prixDuBien">
+                  </p-inputNumber>
+                  <div class="error" [hidden]="!prixAchat?.hasError('required') || !prixAchat.touched">Le prix d'achat est obligatoire</div>
+                </div>
+              </div>
+              <div class="col-lg-12" *ngIf="typeDeDemandeSelectionne == 'Demande d\'achat'">
+                <div class="mb20">
+                  <p-inputNumber class="pInputNumber p-fluid" placeholder="Nombre de tranches" formControlName="nombreDeTranche" [(ngModel)]="demandeRequest.nombreDeTranche" inputId="nombreDeTranche" suffix=" tranches">
+                  </p-inputNumber>
+                  <div class="error" [hidden]="!nombreDeTranche?.hasError('required') || !nombreDeTranche.touched">Le nombre de tranche pour le paiement est obligatoire</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="d-grid">
+                <button class="ud-btn btn-thm mb15" [ngClass]="{ 'disabled-link': demandeForm.invalid }" type="submit">Envoyer la demande</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- End Envoi d'une demande -->
+
         <!-- Info Annonceur Start -->
         <div class="agen-personal-info position-relative bgc-white default-box-shadow2 bdrs12 p30 mb30">
           <div class="widget-wrapper mb-0">
-            <h6 class="title fz17 mb30 text-center">Contact de l'annonceur</h6>
+            <h4 class="form-title mb25 text-center">Contact de l'annonceur</h4>
             <div *ngIf="publication.agenceImmobiliere" class="align-items-center pb25">
               <div class="row">
                 <div class="col-lg-12 text-center">
@@ -492,7 +622,7 @@
                   </div>
                 </div>
                 <div class="col-lg-12 text-center">
-                  <h6 class="title mb-1">{{ publication.agenceImmobiliere.nomAgence }} <i *ngIf="publication.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6; font-size: smaller;"></i></h6>
+                  <h6 class="title mb-1">{{ publication.agenceImmobiliere.nomAgence }} <i *ngIf="publication.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6;"></i></h6>
                   <a class="text fz15" href="tel:{{ publication.agenceImmobiliere.telephone }}"><i class="flaticon-call pe-1"></i>{{ publication.agenceImmobiliere.telephone }}</a>
                 </div>
               </div>
@@ -505,7 +635,7 @@
                   </div>
                 </div>
                 <div class="col-lg-12 text-center">
-                  <h6 class="title mb-1">{{ publication.personne.nom }} {{ publication.personne.prenom }} <i *ngIf="publication.personne.estCertifie" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6; font-size: smaller;"></i></h6>
+                  <h6 class="title mb-1">{{ publication.personne.nom }} {{ publication.personne.prenom }} <i *ngIf="publication.personne.estCertifie" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6;"></i></h6>
                   <a class="text fz15" href="tel:{{ publication.personne.telephone }}"><i class="flaticon-call pe-1"></i>{{ publication.personne.telephone }}</a>
                 </div>
               </div>
@@ -535,13 +665,13 @@
         <!-- Start Contact Form -->
         <div class="default-box-shadow2 bdrs12 bdr1 p30 mb30 bgc-white position-relative">
           <h4 class="form-title mb25 text-center">Contactez l'annonceur</h4>
-          <div *ngIf="loadingContactForm" class="row text-center">
+          <!-- <div *ngIf="loadingContactForm" class="row text-center">
             <div class="text-center">
-              <img class="img mt5" src="assets/images/loading.gif">
+              <img class="imgForm mt5" src="assets/images/loading.gif">
               <h6 class="mt10">{{ loadingMessage }}</h6>
             </div>
-          </div>
-          <form *ngIf="!loadingContactForm" class="form-style1" [formGroup]="contactezNousForm1" (ngSubmit)="contactezNous()">
+          </div> -->
+          <form class="form-style1" [formGroup]="contactezNousForm1" (ngSubmit)="contactezNous()">
             <div class="row" >
               <div class="col-lg-12">
                 <div class="mb20">
@@ -574,7 +704,7 @@
               </div>
               <div class="col-md-12">
                 <div class="d-grid">
-                  <button class="ud-btn btn-thm mb15" [ngClass]="{ 'disabled-link': contactezNousForm1.invalid }" type="submit">Envoyer le message</button>
+                  <button class="ud-btn btn-thm mb15" [ngClass]="{ 'disabled-link': contactezNousForm1.invalid || loadingContactForm }" type="submit">Envoyer le message</button>
                 </div>
               </div>
             </div>

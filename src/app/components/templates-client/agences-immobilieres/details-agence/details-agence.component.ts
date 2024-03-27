@@ -57,12 +57,6 @@ export class DetailsAgenceComponent implements OnInit {
     this.listeServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
   }
 
-  detailPublicationPage(publication: Publication): void {
-    const codePublication = JSON.stringify(publication.codePublication);
-    sessionStorage.setItem('codePublication', codePublication);
-    this.router.navigate(['/annonce-immobiliere']);
-  }
-
   detailAgenceImmobiliere(): void {
     this.agenceImmobiliereService.findAgenceByNom(this.nomAgence).subscribe(
       (data: AgenceImmobiliere) => {
@@ -103,93 +97,117 @@ export class DetailsAgenceComponent implements OnInit {
     this.elementsParPage = event.rows;
 
     if (this.activeIndex == 0) {
-      this.loading = true
-      setTimeout(() => {
-        this.publicationService.getPublicationsActivesByAgence(this.agenceImmobiliere.nomAgence, this.numeroDeLaPage, this.elementsParPage).subscribe(
-          (response) => {
-            this.publications = response;
-            this.loading = false
-          }
-        )
-      }, 5000);
+      this.paginationsIfActiveIndex0()
     } else if (this.activeIndex == 1) {
-      this.loading = true
-      setTimeout(() => {
-        this.publicationService.getPublicationsActivesByAgence(this.agenceImmobiliere.nomAgence, this.numeroDeLaPage, this.elementsParPage).subscribe(
-          (response) => {
-            this.publications = {
-              ...response,
-              content: response.content.filter(
-                publication => publication.typeDeTransaction === 'Location'
-              )
-            };
-            this.loading = false
-          }
-        )
-      }, 5000);
+      this.paginationsIfActiveIndex1()
     } else if (this.activeIndex == 2) {
-      this.loading = true
-      setTimeout(() => {
-        this.publicationService.getPublicationsActivesByAgence(this.agenceImmobiliere.nomAgence, this.numeroDeLaPage, this.elementsParPage).subscribe(
-          (response) => {
-            this.publications = {
-              ...response,
-              content: response.content.filter(
-                publication => publication.typeDeTransaction === 'Vente'
-              )
-            };
-            this.loading = false
-          }
-        )
-      }, 5000);
+      this.paginationsIfActiveIndex2()
     } else {
       this.listePublicationsActivesParAgence(this.agenceImmobiliere.nomAgence, this.numeroDeLaPage, this.elementsParPage);
     }
   }
 
+  paginationsIfActiveIndex0(): void {
+    this.loading = true
+    setTimeout(() => {
+      this.publicationService.getPublicationsActivesByAgence(this.agenceImmobiliere.nomAgence, this.numeroDeLaPage, this.elementsParPage).subscribe(
+        (response) => {
+          this.publications = response;
+          this.loading = false
+        }
+      )
+    }, 5000);
+  }
+
+  paginationsIfActiveIndex1(): void {
+    this.loading = true
+    setTimeout(() => {
+      this.publicationService.getPublicationsActivesByAgence(this.agenceImmobiliere.nomAgence, this.numeroDeLaPage, this.elementsParPage).subscribe(
+        (response) => {
+          this.publications = {
+            ...response,
+            content: response.content.filter(
+              publication => publication.typeDeTransaction === 'Location'
+            )
+          };
+          this.loading = false
+        }
+      )
+    }, 5000);
+  }
+
+  paginationsIfActiveIndex2(): void {
+    this.loading = true
+    setTimeout(() => {
+      this.publicationService.getPublicationsActivesByAgence(this.agenceImmobiliere.nomAgence, this.numeroDeLaPage, this.elementsParPage).subscribe(
+        (response) => {
+          this.publications = {
+            ...response,
+            content: response.content.filter(
+              publication => publication.typeDeTransaction === 'Vente'
+            )
+          };
+          this.loading = false
+        }
+      )
+    }, 5000);
+  }
+
   filtrePublications(activeIndex: number): void {
     this.activeIndex = activeIndex;
     if (this.activeIndex == 0) {
-      this.loading = true
-      setTimeout(() => {
-        this.publicationService.getPublicationsActivesByAgence(this.agenceImmobiliere.nomAgence, this.numeroDeLaPage, this.elementsParPage).subscribe(
-          (response) => {
-            this.publications = response;
-            this.loading = false
-          }
-        )
-      }, 5000);
+      this.filtrerPublicationsIfActiveIndex0()
     } else if (this.activeIndex == 1) {
-      this.loading = true
-      setTimeout(() => {
-        this.publicationService.getPublicationsActivesByAgence(this.agenceImmobiliere.nomAgence, this.numeroDeLaPage, this.elementsParPage).subscribe(
-          (response) => {
-            this.publications = {
-              ...response,
-              content: response.content.filter(
-                publication => publication.typeDeTransaction === 'Location'
-              )
-            };
-            this.loading = false
-          }
-        )
-      }, 5000);
+      this.filtrerPublicationsIfActiveIndex1()
     } else {
-      this.loading = true
-      setTimeout(() => {
-        this.publicationService.getPublicationsActivesByAgence(this.agenceImmobiliere.nomAgence, this.numeroDeLaPage, this.elementsParPage).subscribe(
-          (response) => {
-            this.publications = {
-              ...response,
-              content: response.content.filter(
-                publication => publication.typeDeTransaction === 'Vente'
-              )
-            };
-            this.loading = false
-          }
-        )
-      }, 5000);
+      this.filtrerPublicationsIfActiveIndex2()
     }
+  }
+
+  filtrerPublicationsIfActiveIndex0(): void {
+    this.loading = true
+    setTimeout(() => {
+      this.publicationService.getPublicationsActivesByAgence(this.agenceImmobiliere.nomAgence, this.numeroDeLaPage, this.elementsParPage).subscribe(
+        (response) => {
+          this.publications = response;
+          this.loading = false
+        }
+      )
+    }, 5000);
+  }
+
+  filtrerPublicationsIfActiveIndex1(): void {
+    this.loading = true
+    setTimeout(() => {
+      this.publicationService.getPublicationsActivesByAgence(this.agenceImmobiliere.nomAgence, this.numeroDeLaPage, this.elementsParPage).subscribe(
+        (response) => {
+          this.publications = {
+            ...response,
+            content: response.content.filter(
+              publication => publication.typeDeTransaction === 'Location'
+            )
+          };
+          this.loading = false
+        }
+      )
+    }, 5000);
+  }
+
+  filtrerPublicationsIfActiveIndex2(): void {
+    this.loading = true
+    setTimeout(() => {
+      this.publicationService.getPublicationsActivesByAgence(this.agenceImmobiliere.nomAgence, this.numeroDeLaPage, this.elementsParPage).subscribe(
+        (response) => {
+          this.publications = {
+            ...response,
+            content: response.content.filter(
+              publication => publication.typeDeTransaction === 'Vente'
+            )
+          };
+          this.loading = false
+        }
+      )
+    }, 5000);
   }
 
   afficherRegion(libelle: string): string {
@@ -255,17 +273,15 @@ export class DetailsAgenceComponent implements OnInit {
 
   contactezNous(): void {
     this.loading = true;
-    this.loadingMessage = 'Envoi du message de contact en cours !';
+    // this.loadingMessage = 'Envoi du message en cours !';
     this.contactezNousForm2.recepteurEmail = this.agenceImmobiliere.adresseEmail;
-    setTimeout(() => {
-      this.contactezNousService.contactezNous(this.contactezNousForm2).subscribe(
-        (response) => {
-          this.loading = false;
-          this.messageService.add({severity:'success', summary: 'Message envoyé', detail: 'Votre message a été envoyé avec succès'});
-        }
-      );
-    }, 5000);
-    this.resetContactezNousForm();
+    this.contactezNousService.contactezNous(this.contactezNousForm2).subscribe(
+      (response) => {
+        this.messageService.add({severity:'success', summary: 'Message envoyé', detail: 'Votre message a été envoyé avec succès'});
+        this.resetContactezNousForm();
+        this.loading = false;
+    },
+    );
   }
 
   formatDate(datePublication: Date): string {

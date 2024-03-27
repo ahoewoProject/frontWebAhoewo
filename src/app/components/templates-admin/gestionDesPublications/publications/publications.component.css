@@ -58,3 +58,7 @@
 :host ::ng-deep .pInputNumber.ng-dirty.ng-invalid > .p-inputnumber > .p-inputtext {
   border-color: #DDDDDD;
 }
+
+:host ::ng-deep .p-message {
+  font-family: 'DM Sans', sans-serif;
+}

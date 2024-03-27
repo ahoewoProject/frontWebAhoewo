@@ -78,7 +78,7 @@
         </div>
         <div class="row">
           <div class="col-sm-4 mt20">
-            <h6 class="fz17">Annonces</h6>
+            <h6 class="fz17">Nos annonces</h6>
           </div>
           <div class="col-md-12">
             <div class="navtab-style1">
@@ -100,21 +100,23 @@
 
                   <div class="row" *ngIf="!loading">
                     <div class="col-md-6" *ngFor="let publication of publications.content">
-                      <div class="listing-style1" type="button" (click)="detailPublicationPage(publication)">
-                        <div class="list-thumb">
-                          <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
-                          <div class="badge"><span style="background-color: #ff003d" class="span-badge">{{ publication.typeDeTransaction === 'Location' ? 'À louer' : 'À vendre' }}</span></div>
-                          <div *ngIf="publication.typeDeTransaction === 'Location'" class="list-price">{{ publication.prixDuBien | number }} FCFA / <span>mois</span></div>
-                          <div *ngIf="publication.typeDeTransaction === 'Vente'" class="list-price">{{ publication.prixDuBien | number }} FCFA </div>
-                        </div>
-                        <div class="list-content">
-                          <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
-                          <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
-                          <hr class="mt-2 mb-2">
-                          <div class="list-meta2 d-flex justify-content-between align-items-center">
-                            <p class="text"><b class="publie-date-heure">Publié </b>{{ formatDate(publication.datePublication) }}</p>
+                      <div class="listing-style1">
+                        <a [routerLink]="['/annonce-immobiliere']" [queryParams]="{ key: publication.codePublication }">
+                          <div class="list-thumb">
+                            <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
+                            <div class="badge"><span style="background-color: #ff003d" class="span-badge">{{ publication.typeDeTransaction === 'Location' ? 'À louer' : 'À vendre' }}</span></div>
+                            <div *ngIf="publication.typeDeTransaction === 'Location'" class="list-price">{{ publication.prixDuBien | number }} FCFA / <span>mois</span></div>
+                            <div *ngIf="publication.typeDeTransaction === 'Vente'" class="list-price">{{ publication.prixDuBien | number }} FCFA </div>
                           </div>
-                        </div>
+                          <div class="list-content">
+                            <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
+                            <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+                            <hr class="mt-2 mb-2">
+                            <div class="list-meta2 d-flex justify-content-between align-items-center">
+                              <p class="text"><b class="publie-date-heure">Publié </b>{{ formatDate(publication.datePublication) }}</p>
+                            </div>
+                          </div>
+                        </a>
                       </div>
                     </div>
 
@@ -141,16 +143,22 @@
 
                   <div class="row" *ngIf="!loading">
                     <div class="col-md-6" *ngFor="let publication of publications.content">
-                      <div class="listing-style1" type="button" (click)="detailPublicationPage(publication)">
-                        <div class="list-thumb">
-                          <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
-                          <div class="badge"><span style="background-color: #ff003d" class="span-badge">À LOUER</span></div>
-                          <div class="list-price">{{ publication.prixDuBien | number }} FCFA / <span>mois</span></div>
-                        </div>
-                        <div class="list-content">
-                          <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
-                          <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
-                        </div>
+                      <div class="listing-style1">
+                        <a [routerLink]="['/annonce-immobiliere']" [queryParams]="{ key: publication.codePublication }">
+                          <div class="list-thumb">
+                            <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
+                            <div class="badge"><span style="background-color: #ff003d" class="span-badge">À LOUER</span></div>
+                            <div class="list-price">{{ publication.prixDuBien | number }} FCFA / <span>mois</span></div>
+                          </div>
+                          <div class="list-content">
+                            <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
+                            <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+                            <hr class="mt-2 mb-2">
+                            <div class="list-meta2 d-flex justify-content-between align-items-center">
+                              <p class="text"><b class="publie-date-heure">Publié </b>{{ formatDate(publication.datePublication) }}</p>
+                            </div>
+                          </div>
+                        </a>
                       </div>
                     </div>
 
@@ -177,16 +185,22 @@
 
                   <div class="row" *ngIf="!loading">
                     <div class="col-md-6" *ngFor="let publication of publications.content">
-                      <div class="listing-style1" type="button" (click)="detailPublicationPage(publication)">
-                        <div class="list-thumb">
-                          <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
-                          <div class="badge"><span style="background-color: #ff003d" class="span-badge">À VENDRE</span></div>
-                          <div>{{ publication.prixDuBien | number }} FCFA </div>
-                        </div>
-                        <div class="list-content">
-                          <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
-                          <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
-                        </div>
+                      <div class="listing-style1">
+                        <a [routerLink]="['/annonce-immobiliere']" [queryParams]="{ key: publication.codePublication }">
+                          <div class="list-thumb">
+                            <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
+                            <div class="badge"><span style="background-color: #ff003d" class="span-badge">À VENDRE</span></div>
+                            <div>{{ publication.prixDuBien | number }} FCFA </div>
+                          </div>
+                          <div class="list-content">
+                            <h6 class="list-title"><a [routerLink]="['/annonce-immobiliere', publication.codePublication]">{{ publication.libelle }}</a></h6>
+                            <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+                            <hr class="mt-2 mb-2">
+                            <div class="list-meta2 d-flex justify-content-between align-items-center">
+                              <p class="text"><b class="publie-date-heure">Publié </b>{{ formatDate(publication.datePublication) }}</p>
+                            </div>
+                          </div>
+                        </a>
                       </div>
                     </div>
 
@@ -211,13 +225,13 @@
       <div class="col-lg-4">
         <div class="agent-single-form home8-contact-form default-box-shadow1 bdrs12 bdr1 p30 mb30-md mt35 bgc-white position-relative">
           <h4 class="form-title mb25 text-center">Contactez-nous !</h4>
-          <div *ngIf="loading" class="row text-center">
+          <!-- <div *ngIf="loading" class="row text-center">
             <div class="text-center">
-              <img class="img mt5" src="assets/images/loading.gif">
+              <img class="imgForm mt5" src="assets/images/loading.gif">
               <h6 class="mt10">{{ loadingMessage }}</h6>
             </div>
-          </div>
-          <form *ngIf="!loading" class="form-style1" [formGroup]="contactezNousForm1" (ngSubmit)="contactezNous()">
+          </div> -->
+          <form class="form-style1" [formGroup]="contactezNousForm1" (ngSubmit)="contactezNous()">
             <div class="row">
               <div class="col-lg-12">
                 <div class="mb20">
@@ -250,7 +264,7 @@
               </div>
               <div class="col-md-12">
                 <div class="d-grid">
-                  <button class="ud-btn btn-thm mb15" [ngClass]="{ 'disabled-link': contactezNousForm1.invalid }" type="submit">Envoyer le message</button>
+                  <button class="ud-btn btn-thm mb15" [ngClass]="{ 'disabled-link': contactezNousForm1.invalid || loading }" type="submit">Envoyer le message</button>
                 </div>
               </div>
             </div>

@@ -40,6 +40,18 @@ export class DemandeAchatService {
     return this.httpClient.post<DemandeAchat>(this.url + 'demande-achat/soumettre', d);
   }
 
+  // Modifier une demande d'achat ;
+  // url: http://localhost:4040/api/demande-achat/modifier/{id}
+  updateDemandeAchat(id: number, d: DemandeAchat): Observable<DemandeAchat>{
+    return this.httpClient.put<DemandeAchat>(this.url + 'demande-achat/modifier/' + id, d);
+  }
+
+  // Relancer une demande d'achat ;
+  // url: http://localhost:4040/api/demande-achat/relancer/{id}
+  relancer(id: number): Observable<any>{
+    return this.httpClient.get<any>(this.url + 'demande-achat/relancer/' + id);
+  }
+
   // Valider une demande d'achat ;
   // url: http://localhost:4040/api/demande-achat/valider/{id}
   valider(id: number): Observable<any>{
@@ -49,12 +61,12 @@ export class DemandeAchatService {
   // Refuser une demande d'achat ;
   // url: http://localhost:4040/api/demande-achat/refuser/{id}
   refuser(id: number, m: MotifRejetForm): Observable<any>{
-    return this.httpClient.post<any>(this.url + 'demande-achat/refuser' + id, m);
+    return this.httpClient.post<any>(this.url + 'demande-achat/refuser/' + id, m);
   }
 
   // Annuler une demande d'achat ;
   // url: http://localhost:4040/api/demande-achat/annuler/{id}
   annuler(id: number, m: MotifRejetForm): Observable<any>{
-    return this.httpClient.post<any>(this.url + 'demande-achat/annuler' + id, m);
+    return this.httpClient.post<any>(this.url + 'demande-achat/annuler/' + id, m);
   }
 }

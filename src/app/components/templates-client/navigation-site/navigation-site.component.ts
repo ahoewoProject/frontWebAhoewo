@@ -19,7 +19,9 @@ export class NavigationSiteComponent implements OnInit {
 
   ngOnInit(): void {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
-    this.user = JSON.parse(utilisateurConnecte);
+    if (utilisateurConnecte) {
+      this.user = JSON.parse(utilisateurConnecte);
+    }
   }
 
   setActiveLink(link: string) {

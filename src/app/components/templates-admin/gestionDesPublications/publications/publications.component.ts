@@ -27,8 +27,8 @@ export class PublicationsComponent implements OnInit, OnDestroy {
   responsiveOptions: any[] | undefined;
   typesDeTransactions: string[] = [];
   typeDeTransactionSelectionne!: string;
-  elementsParPage = 5; // Nombre d'éléments par page
-  numeroDeLaPage = 0; // Page actuelle
+  elementsParPage = 5;
+  numeroDeLaPage = 0;
 
   user: any;
   biensImmobiliers: BienImmobilier[] = [];
@@ -265,7 +265,6 @@ export class PublicationsComponent implements OnInit, OnDestroy {
       }
     );
   }
-
 
   //Détails caracteristiques d'un bien
   detailCaracteristiquesBien(id: number) {

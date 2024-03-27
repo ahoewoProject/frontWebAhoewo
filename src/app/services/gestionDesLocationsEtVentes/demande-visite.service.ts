@@ -40,6 +40,18 @@ export class DemandeVisiteService {
     return this.httpClient.post<DemandeVisite>(this.url + 'demande-visite/soumettre', d);
   }
 
+  // Modifier une demande de visite ;
+  // url: http://localhost:4040/api/demande-visite/modifier/{id}
+  editDemandeVisite(id: number, d: DemandeVisite): Observable<DemandeVisite>{
+    return this.httpClient.put<DemandeVisite>(this.url + 'demande-visite/modifier/' + id, d);
+  }
+
+  // Relancer une demande de visite ;
+  // url: http://localhost:4040/api/demande-visite/relancer/{id}
+  relancer(id: number): Observable<any>{
+    return this.httpClient.get<any>(this.url + 'demande-visite/relancer/' + id);
+  }
+
   // Valider une demande de visite ;
   // url: http://localhost:4040/api/demande-visite/valider/{id}
   valider(id: number): Observable<any>{
@@ -49,12 +61,12 @@ export class DemandeVisiteService {
   // Refuser une demande de visite ;
   // url: http://localhost:4040/api/demande-visite/refuser/{id}
   refuser(id: number, m: MotifRejetForm): Observable<any>{
-    return this.httpClient.post<any>(this.url + 'demande-visite/refuser' + id, m);
+    return this.httpClient.post<any>(this.url + 'demande-visite/refuser/' + id, m);
   }
 
   // Annuler une demande de visite ;
   // url: http://localhost:4040/api/demande-visite/annuler/{id}
   annuler(id: number, m: MotifRejetForm): Observable<any>{
-    return this.httpClient.post<any>(this.url + 'demande-visite/annuler' + id, m);
+    return this.httpClient.post<any>(this.url + 'demande-visite/annuler/' + id, m);
   }
 }

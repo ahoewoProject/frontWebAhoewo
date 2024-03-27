@@ -40,6 +40,18 @@ export class DemandeLocationService {
     return this.httpClient.post<DemandeLocation>(this.url + 'demande-location/soumettre', d);
   }
 
+  // Modifier une demande de location ;
+  // url: http://localhost:4040/api/demande-location/modifier/{id}
+  editDemandeLocation(id: number, d: DemandeLocation): Observable<DemandeLocation>{
+    return this.httpClient.put<DemandeLocation>(this.url + 'demande-location/modifier/' + id, d);
+  }
+
+  // Relancer une demande de location ;
+  // url: http://localhost:4040/api/demande-location/relancer/{id}
+  relancer(id: number): Observable<any>{
+    return this.httpClient.get<any>(this.url + 'demande-location/relancer/' + id);
+  }
+
   // Valider une demande de location ;
   // url: http://localhost:4040/api/demande-location/valider/{id}
   valider(id: number): Observable<any>{
@@ -49,12 +61,12 @@ export class DemandeLocationService {
   // Refuser une demande de location ;
   // url: http://localhost:4040/api/demande-location/refuser/{id}
   refuser(id: number, m: MotifRejetForm): Observable<any>{
-    return this.httpClient.post<any>(this.url + 'demande-location/refuser' + id, m);
+    return this.httpClient.post<any>(this.url + 'demande-location/refuser/' + id, m);
   }
 
   // Annuler une demande de location ;
   // url: http://localhost:4040/api/demande-location/annuler/{id}
   annuler(id: number, m: MotifRejetForm): Observable<any>{
-    return this.httpClient.post<any>(this.url + 'demande-location/annuler' + id, m);
+    return this.httpClient.post<any>(this.url + 'demande-location/annuler/' + id, m);
   }
 }

@@ -9,7 +9,7 @@ export class Demande extends EntiteDeBase {
   client!: Client;
   publication!: Publication;
   dateDemande!: Date;
-  etatPublication!: number;
+  etatDemande!: number;
 
   constructor() {
     super();

@@ -1,17 +1,25 @@
+import { PersonneService } from './../../../../services/gestionDesComptes/personne.service';
 import { DecimalPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Galleria } from 'primeng/galleria';
 import { Page } from 'src/app/interfaces/Page';
 import { ContactezNousForm } from 'src/app/models/ContactezNousForm';
 import { Caracteristiques } from 'src/app/models/gestionDesBiensImmobiliers/Caracteristiques';
 import { ImagesBienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/ImagesBienImmobilier';
+import { DemandeAchat } from 'src/app/models/gestionDesLocationsEtVentes/DemandeAchat';
+import { DemandeLocation } from 'src/app/models/gestionDesLocationsEtVentes/DemandeLocation';
+import { DemandeRequest } from 'src/app/models/gestionDesLocationsEtVentes/DemandeRequest';
+import { DemandeVisite } from 'src/app/models/gestionDesLocationsEtVentes/DemandeVisite';
 import { Publication } from 'src/app/models/gestionDesPublications/Publication';
 import { ContactezNousService } from 'src/app/services/contactez-nous.service';
 import { CaracteristiquesService } from 'src/app/services/gestionDesBiensImmobiliers/caracteristiques.service';
 import { ImagesBienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/images-bien-immobilier.service';
+import { DemandeAchatService } from 'src/app/services/gestionDesLocationsEtVentes/demande-achat.service';
+import { DemandeLocationService } from 'src/app/services/gestionDesLocationsEtVentes/demande-location.service';
+import { DemandeVisiteService } from 'src/app/services/gestionDesLocationsEtVentes/demande-visite.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
 import { environment } from 'src/environments/environment';
 
@@ -28,6 +36,14 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
   activeIndex: number = 0;
   contactezNousForm1: any;
   contactezNousForm2: ContactezNousForm = new ContactezNousForm();
+  demandeRequest: DemandeRequest = new DemandeRequest();
+  demandeVisite: DemandeVisite = new DemandeVisite();
+  demandeLocation: DemandeLocation = new DemandeLocation();
+  demandeAchat: DemandeAchat = new DemandeAchat();
+  demandeForm: any;
+  visible: boolean = false;
+  typesDeDemandes: string[] = [];
+  typeDeDemandeSelectionne!: string;
 
   numeroDeLaPage = 0;
   elementsParPage = 2;
@@ -48,25 +64,39 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
   @ViewChild('galleria') galleria: Galleria | undefined;
 
   APIEndpoint: string;
+  user: any;
 
   constructor(private publicationService: PublicationService,
     private router: Router, private imagesBienImmobilierService: ImagesBienImmobilierService,
     private caracteristiquesServices: CaracteristiquesService, private cd: ChangeDetectorRef,
     private decimalPipe: DecimalPipe, private contactezNousService: ContactezNousService,
-    private messageService: MessageService
+    private messageService: MessageService, private personneService: PersonneService,
+    private activatedRoute: ActivatedRoute, private demandeLocationService: DemandeLocationService,
+    private demandeAchatService: DemandeAchatService, private demandeVisiteService: DemandeVisiteService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
+    const utilisateurConnecte = this.personneService.utilisateurConnecte();
+    if (utilisateurConnecte) {
+      this.user = JSON.parse(utilisateurConnecte);
+    }
   }
 
   ngOnInit(): void {
+    this.initDemandeForm();
     this.initContactezNousForm();
     this.initResponsiveOptions();
     this.bindDocumentListeners();
-    const codePublication = JSON.parse(sessionStorage.getItem('codePublication')!);
-    if (codePublication) {
-      this.detailPublication(codePublication);
-    }
+    this.initActivatedRoute();
+  }
+
+  initActivatedRoute(): void {
+    this.activatedRoute.queryParams.subscribe(params => {
+      const codePublication = params['key'];
+      if (codePublication) {
+        this.detailPublication(codePublication);
+      }
+    });
   }
 
   initResponsiveOptions(): void {
@@ -86,10 +116,175 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
     ];
   }
 
-  detailPublicationPage(publication: Publication): void {
-    const codePublication = JSON.stringify(publication.codePublication);
-    sessionStorage.setItem('codePublication', codePublication);
-    this.router.navigate(['/annonce-immobiliere']);
+  listeTypesDeDemandes(): void {
+    this.typesDeDemandes = ['Demande de visite', 'Demande de location', 'Demande d\'achat'];
+    this.typeDeDemandeSelectionne = this.typesDeDemandes[0];
+  }
+
+  typeDeDemandeChoisi(event: any): void {
+    this.typeDeDemandeSelectionne = event.value;
+    this.validerDemandeForm();
+  }
+
+  initDemandeForm(): void {
+    this.demandeForm = new FormGroup({
+      dateHeureVisite: new FormControl(''),
+      prixDeLocation: new FormControl(''),
+      prixAchat: new FormControl(''),
+      nombreDeTranche: new FormControl('')
+    })
+  }
+
+  get dateHeureVisite() {
+    return this.demandeForm.get('dateHeureVisite');
+  }
+
+  get prixDeLocation() {
+    return this.demandeForm.get('prixDeLocation');
+  }
+
+  get prixAchat() {
+    return this.demandeForm.get('prixAchat');
+  }
+
+  get nombreDeTranche() {
+    return this.demandeForm.get('nombreDeTranche');
+  }
+
+  // afficherDemandeDialog(): void {
+  //   if (this.publication.typeDeTransaction == 'Vente') {
+  //     this.typesDeDemandes = ['Demande de visite', 'Demande d\'achat'];
+  //     this.typeDeDemandeSelectionne = this.typesDeDemandes[0];
+  //   } else {
+  //     this.typesDeDemandes = ['Demande de visite', 'Demande de location'];
+  //     this.typeDeDemandeSelectionne = this.typesDeDemandes[0];
+  //   }
+  //   this.validerDemandeForm();
+  //   this.visible = true;
+  // }
+
+  onSelectDateHeureVisite(event: any): void {
+    // this.demandeRequest.dateHeureVisite = event.value;
+    console.log(this.demandeRequest.dateHeureVisite)
+  }
+
+  soumettre(): void {
+
+    if (this.personneService.estConnecte()) {
+      if (this.user.role.code != 'ROLE_CLIENT') {
+        this.messageService.add({
+          severity:'error',
+          summary: 'Soumission non autorisée',
+          detail: 'Vous devez être un client pour soumettre une demande !'
+        });
+        return;
+      } else {
+        if (this.typeDeDemandeSelectionne == 'Demande de visite') {
+          this.soumettreDemandeVisite();
+        } else if (this.typeDeDemandeSelectionne == 'Demande de location') {
+          this.soumettreDemandeLocation();
+        } else {
+          this.soumettreDemandeAchat();
+        }
+      }
+    } else {
+      console.log(this.demandeRequest.dateHeureVisite)
+      this.demandeRequest.typeDeDemande = this.typeDeDemandeSelectionne;
+      // localStorage.setItem('demandeRequest', JSON.stringify(this.demandeRequest));
+      // this.router.navigate(['/connexion'] , { queryParams: { from: this.router.url } });
+    }
+  }
+
+  soumettreDemandeVisite(): void {
+    this.demandeVisite.publication = this.publication;
+    this.demandeVisite.client = this.user;
+    this.demandeVisite.dateHeureVisite = this.demandeRequest.dateHeureVisite;
+    console.log(this.demandeVisite)
+    this.demandeVisiteService.addDemandeVisite(this.demandeVisite).subscribe(
+      (response) => {
+        if (response.id > 0) {
+          this.router.navigate(['/client/demandes-visites'], { queryParams: { demandeVisiteReussie: true } });
+        } else {
+          this.messageService.add({
+            severity:'error',
+            summary: 'Echec de la demande',
+            detail: 'Votre demande de visite n\'a pas été soumise !'
+          })
+        }
+      },
+      (error) => {
+        if (error.status == 409) {
+          this.messageService.add({
+            severity:'error',
+            summary: 'Echec de la demande',
+            detail: 'Vous avez déjà soumis une demande de visite pour cette publication !'
+          })
+        }
+      }
+    )
+
+  }
+
+  soumettreDemandeLocation(): void {
+    this.demandeLocation.publication = this.publication;
+    this.demandeLocation.client = this.user;
+    this.demandeLocation.prixDeLocation = this.demandeRequest.prixDeLocation;
+    this.demandeLocation.avance = this.demandeRequest.avance;
+    this.demandeLocation.caution = this.demandeRequest.caution;
+    console.log(this.demandeLocation)
+    this.demandeLocationService.addDemandeLocation(this.demandeLocation).subscribe(
+      (response) => {
+        if (response.id > 0) {
+          this.router.navigate(['/client/demandes-locations'], { queryParams: { demandeLocationReussie: true } });
+        } else {
+          this.messageService.add({
+            severity:'error',
+            summary: 'Echec de la demande',
+            detail: 'Votre demande de location n\'a pas été soumise !'
+          })
+        }
+      },
+      (error) => {
+        if (error.status == 409) {
+          this.messageService.add({
+            severity:'error',
+            summary: 'Echec de la demande',
+            detail: 'Vous avez déjà soumis une demande de location pour cette publication !'
+          })
+        }
+      }
+    )
+  }
+
+  soumettreDemandeAchat(): void {
+    this.demandeAchat.publication = this.publication;
+    this.demandeAchat.client = this.user;
+    this.demandeAchat.prixAchat = this.demandeRequest.prixAchat;
+    this.demandeAchat.nombreDeTranche = this.demandeRequest.nombreDeTranche;
+    console.log(this.demandeAchat)
+    this.demandeAchatService.addDemandeAchat(this.demandeAchat).subscribe(
+      (response) => {
+        if (response.id > 0) {
+          this.router.navigate(['/client/demandes-achats'], { queryParams: { demandeAchatReussie: true } });
+        } else {
+          this.messageService.add({
+            severity:'error',
+            summary: 'Echec de la demande',
+            detail: 'Votre demande d\'achat n\'a pas été soumise !'
+          })
+        }
+      },
+      (error) => {
+        console.log(error)
+        if (error.status == 409) {
+          this.messageService.add({
+            severity:'error',
+            summary: 'Echec de la demande',
+            detail: 'Vous avez déjà soumis une demande d\'achat pour cette publication !'
+          })
+        }
+      }
+    )
   }
 
   //Fonction pour recupérer les images associées à un bien immobilier
@@ -112,6 +307,27 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
         } else if (this.isTypeDeBienAssocie(this.publication.bienImmobilier.typeDeBien.designation)) {
           this.detailCaracteristiquesBien(this.publication.bienImmobilier.id);
         }
+
+        if (localStorage.getItem('demandeRequest')) {
+          this.demandeRequest = JSON.parse(localStorage.getItem('demandeRequest')!);
+          if (this.publication.typeDeTransaction == 'Vente') {
+            this.typesDeDemandes = ['Demande de visite', 'Demande d\'achat'];
+          } else {
+            this.typesDeDemandes = ['Demande de visite', 'Demande de location'];
+          }
+          this.typeDeDemandeSelectionne = this.demandeRequest.typeDeDemande;
+          this.validerDemandeForm();
+          console.log(this.demandeRequest)
+        } else {
+          if (this.publication.typeDeTransaction == 'Vente') {
+            this.typesDeDemandes = ['Demande de visite', 'Demande d\'achat'];
+            this.typeDeDemandeSelectionne = this.typesDeDemandes[1];
+          } else {
+            this.typesDeDemandes = ['Demande de visite', 'Demande de location'];
+            this.typeDeDemandeSelectionne = this.typesDeDemandes[1];
+          }
+          this.validerDemandeForm();
+        }
       }
     )
   }
@@ -120,7 +336,6 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
   detailCaracteristiquesBien(id: number) {
     this.caracteristiquesServices.getCaracteristiquesOfBienImmobilier(id).subscribe(
       (response) => {
-        console.log(response)
         this.caracteristique = response;
       }
     );
@@ -130,103 +345,126 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
     this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
     if (this.activeIndex == 0) {
-      this.loading = true
-      setTimeout(() => {
-        this.publicationService.getPublicationsActivesByTypeDeBien(this.publication.bienImmobilier.typeDeBien.designation, this.numeroDeLaPage, this.elementsParPage).subscribe(
-          (response) => {
-            this.publications = {
-              ...response,
-              content: response.content.filter(p => p.id !== this.publication.id)
-            };
-            this.loading = false
-          }
-        )
-      }, 5000);
+      this.paginationActiveIndex0();
     } else if (this.activeIndex == 1) {
-      this.loading = true
-      setTimeout(() => {
-        this.publicationService.getPublicationsActivesByTypeDeBien(this.publication.bienImmobilier.typeDeBien.designation, this.numeroDeLaPage, this.elementsParPage).subscribe(
-          (response) => {
-            this.publications = {
-              ...response,
-              content: response.content.filter(
-                publication => publication.typeDeTransaction === 'Location' &&
-                publication.id !== this.publication.id
-              )
-            };
-            this.loading = false
-          }
-        )
-      }, 5000);
+      this.paginationActiveIndex1();
     } else {
-      this.loading = true
-      setTimeout(() => {
-        this.publicationService.getPublicationsActivesByTypeDeBien(this.publication.bienImmobilier.typeDeBien.designation, this.numeroDeLaPage, this.elementsParPage).subscribe(
-          (response) => {
-            this.publications = {
-              ...response,
-              content: response.content.filter(
-                publication => publication.typeDeTransaction === 'Vente'&&
-                publication.id !== this.publication.id
-              )
-            };
-            this.loading = false
-          }
-        )
-      }, 5000);
+      this.paginationActiveIndex2();
     }
+  }
+
+  paginationActiveIndex0(): void {
+    this.loading = true
+    setTimeout(() => {
+      this.publicationService.getPublicationsActivesByTypeDeBien(this.publication.bienImmobilier.typeDeBien.designation, this.numeroDeLaPage, this.elementsParPage).subscribe(
+        (response) => {
+          this.publications = {
+            ...response,
+            content: response.content.filter(p => p.id !== this.publication.id)
+          };
+          this.loading = false
+        }
+      )
+    }, 5000);
+  }
+
+  paginationActiveIndex1(): void {
+    this.loading = true
+    setTimeout(() => {
+      this.publicationService.getPublicationsActivesByTypeDeBien(this.publication.bienImmobilier.typeDeBien.designation, this.numeroDeLaPage, this.elementsParPage).subscribe(
+        (response) => {
+          this.publications = {
+            ...response,
+            content: response.content.filter(
+              publication => publication.typeDeTransaction === 'Location' &&
+              publication.id !== this.publication.id
+            )
+          };
+          this.loading = false
+        }
+      )
+    }, 5000);
+  }
+
+  paginationActiveIndex2(): void {
+    this.loading = true
+    setTimeout(() => {
+      this.publicationService.getPublicationsActivesByTypeDeBien(this.publication.bienImmobilier.typeDeBien.designation, this.numeroDeLaPage, this.elementsParPage).subscribe(
+        (response) => {
+          this.publications = {
+            ...response,
+            content: response.content.filter(
+              publication => publication.typeDeTransaction === 'Vente'&&
+              publication.id !== this.publication.id
+            )
+          };
+          this.loading = false
+        }
+      )
+    }, 5000);
   }
 
   filtrePublications(activeIndex: number): void {
     this.activeIndex = activeIndex;
     if (this.activeIndex == 0) {
-      this.loading = true
-      setTimeout(() => {
-        this.publicationService.getPublicationsActivesByTypeDeBien(this.publication.bienImmobilier.typeDeBien.designation, this.numeroDeLaPage, this.elementsParPage).subscribe(
-          (response) => {
-            this.publications = {
-              ...response,
-              content: response.content.filter(p => p.id !== this.publication.id)
-            };
-            this.loading = false
-          }
-        )
-      }, 5000);
+      this.filtrePublicationsActiveIndex0();
     } else if (this.activeIndex == 1) {
-      this.loading = true
-      setTimeout(() => {
-        this.publicationService.getPublicationsActivesByTypeDeBien(this.publication.bienImmobilier.typeDeBien.designation, this.numeroDeLaPage, this.elementsParPage).subscribe(
-          (response) => {
-            this.publications = {
-              ...response,
-              content: response.content.filter(
-                publication => publication.typeDeTransaction === 'Location' &&
-                publication.id !== this.publication.id
-              )
-            };
-            this.loading = false
-          }
-        )
-      }, 5000);
+      this.filtrePublicationsActiveIndex1();
     } else {
-      this.loading = true
-      setTimeout(() => {
-        this.publicationService.getPublicationsActivesByTypeDeBien(this.publication.bienImmobilier.typeDeBien.designation, this.numeroDeLaPage, this.elementsParPage).subscribe(
-          (response) => {
-            this.publications = {
-              ...response,
-              content: response.content.filter(
-                publication => publication.typeDeTransaction === 'Vente' &&
-                publication.id !== this.publication.id
-              )
-            };
-            this.loading = false
-          }
-        )
-      }, 5000);
+      this.filtrePublicationsActiveIndex2();
     }
   }
 
+  filtrePublicationsActiveIndex0(): void {
+    this.loading = true
+    setTimeout(() => {
+      this.publicationService.getPublicationsActivesByTypeDeBien(this.publication.bienImmobilier.typeDeBien.designation, this.numeroDeLaPage, this.elementsParPage).subscribe(
+        (response) => {
+          this.publications = {
+            ...response,
+            content: response.content.filter(p => p.id !== this.publication.id)
+          };
+          this.loading = false
+        }
+      )
+    }, 5000);
+  }
+
+  filtrePublicationsActiveIndex1(): void {
+    this.loading = true
+    setTimeout(() => {
+      this.publicationService.getPublicationsActivesByTypeDeBien(this.publication.bienImmobilier.typeDeBien.designation, this.numeroDeLaPage, this.elementsParPage).subscribe(
+        (response) => {
+          this.publications = {
+            ...response,
+            content: response.content.filter(
+              publication => publication.typeDeTransaction === 'Location' &&
+              publication.id !== this.publication.id
+            )
+          };
+          this.loading = false
+        }
+      )
+    }, 5000);
+  }
+
+  filtrePublicationsActiveIndex2(): void {
+    this.loading = true
+    setTimeout(() => {
+      this.publicationService.getPublicationsActivesByTypeDeBien(this.publication.bienImmobilier.typeDeBien.designation, this.numeroDeLaPage, this.elementsParPage).subscribe(
+        (response) => {
+          this.publications = {
+            ...response,
+            content: response.content.filter(
+              publication => publication.typeDeTransaction === 'Vente' &&
+              publication.id !== this.publication.id
+            )
+          };
+          this.loading = false
+        }
+      )
+    }, 5000);
+  }
 
   private isTypeBienTerrain(designation :string): boolean {
     return designation === "Terrain";
@@ -319,23 +557,25 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
 
   contactezNous(): void {
     this.loadingContactForm = true;
-    this.loadingMessage = 'Envoi du message de contact en cours !';
+    // this.loadingMessage = 'Envoi du message en cours !';
 
     if (this.publication.agenceImmobiliere) {
       this.contactezNousForm2.recepteurEmail = this.publication.agenceImmobiliere.adresseEmail;
     } else {
       this.contactezNousForm2.recepteurEmail = this.publication.personne.email;
     }
-    setTimeout(() => {
-      this.contactezNousService.contactezNous(this.contactezNousForm2).subscribe(
-        (response) => {
-          this.loadingContactForm = false;
-          this.messageService.add({severity:'success', summary: 'Message envoyé', detail: 'Votre message a été envoyé avec succès'});
 
-        }
-      );
-    }, 5000);
-    this.resetContactezNousForm();
+    this.contactezNousService.contactezNous(this.contactezNousForm2).subscribe(
+      (response) => {
+        this.messageService.add({
+          severity:'success',
+          summary: 'Message envoyé',
+          detail: 'Votre message a été envoyé avec succès'
+        });
+        this.resetContactezNousForm();
+        this.loadingContactForm = false;
+      }
+    );
   }
 
   onThumbnailButtonClick() {
@@ -441,5 +681,29 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
     const hours = date.getHours();
     const minutes = date.getMinutes();
     return `${hours} heures ${minutes} minutes`;
+  }
+
+  validerDemandeForm(): void {
+    if (this.typeDeDemandeSelectionne == 'Demande de visite') {
+      this.dateHeureVisite.setValidators([Validators.required]);
+      this.prixDeLocation.clearValidators();
+      this.prixAchat.clearValidators();
+      this.nombreDeTranche.clearValidators();
+    } else if (this.typeDeDemandeSelectionne == 'Demande de location') {
+      this.dateHeureVisite.clearValidators();
+      this.prixDeLocation.setValidators([Validators.required]);
+      this.prixAchat.clearValidators();
+      this.nombreDeTranche.clearValidators();
+    } else {
+      this.dateHeureVisite.clearValidators();
+      this.prixDeLocation.clearValidators();
+      this.prixAchat.setValidators([Validators.required]);
+      this.nombreDeTranche.setValidators([Validators.required]);
+    }
+
+    this.dateHeureVisite.updateValueAndValidity();
+    this.prixDeLocation.updateValueAndValidity();
+    this.prixAchat.updateValueAndValidity();
+    this.nombreDeTranche.updateValueAndValidity();
   }
 }

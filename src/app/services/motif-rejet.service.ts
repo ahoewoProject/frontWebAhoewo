@@ -16,6 +16,12 @@ export class MotifRejetService {
     this.url = APIEndpoint + 'api/';
   }
 
+  // Liste motfis de rejet (code et creerPar) ;
+  // url: http://localhost:4040/api/motifs-rejets/{code}/{creerPar}
+  getMotifsByCodeAndCreerPar(code: string, creerPar: number): Observable<Array<MotifRejet>>{
+    return this.httpClient.get<Array<MotifRejet>>(this.url + 'motifs-rejets/' + code + '/' + creerPar);
+  }
+
   // Recherche d'une occurrence de notification par la clé primaire ;
   // url: http://localhost:4040/api/motif-rejet/{code}
   findByCode(code: string): Observable<MotifRejet>{

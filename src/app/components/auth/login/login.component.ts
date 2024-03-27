@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit{
   loginData: FormData = new  FormData();
   reinitialisationMotDePasseReussie: any;
   inscriptionReussie: any;
+  from: any;
 
   constructor(
     private personneService: PersonneService,
@@ -33,6 +34,9 @@ export class LoginComponent implements OnInit{
   ngOnInit(): void {
     this.reinitialisationMotDePasseReussie = this.activatedRoute.snapshot.queryParamMap.get('passwordResetSuccess') || '';
     this.inscriptionReussie = this.activatedRoute.snapshot.queryParamMap.get('inscriptionSuccess') || '';
+    this.from = this.activatedRoute.snapshot.queryParamMap.get('from') || '';
+    console.log(this.from)
+
     if (this.reinitialisationMotDePasseReussie) {
       this.message = 'Mot de passe réinitialisé avec succès !';
       setTimeout(() => {
@@ -135,61 +139,77 @@ export class LoginComponent implements OnInit{
       //console.log(this.message);
     } else {
       if (this.user.role.code === 'ROLE_ADMINISTRATEUR') {
-        // localStorage.setItem('activeLink', '/admin/dashboard');
-        this.behaviorService.setActiveLink('/admin/dashboard');
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
-        this.router.navigate(['/admin/dashboard'], { queryParams: { connexionReussie: true } })
+        if (this.from) {
+          this.router.navigateByUrl(this.from);
+        } else {
+          this.router.navigate(['/admin/dashboard'], { queryParams: { connexionReussie: true } })
+        }
       } else if (this.user.role.code === 'ROLE_NOTAIRE') {
-        // localStorage.setItem('activeLink', '/notaire/dashboard');
-        this.behaviorService.setActiveLink('/notaire/dashboard');
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
-        this.router.navigate(['/notaire/dashboard'], { queryParams: { connexionReussie: true } })
+        if (this.from) {
+          this.router.navigateByUrl(this.from);
+        } else {
+          this.router.navigate(['/notaire/dashboard'], { queryParams: { connexionReussie: true } })
+        }
       } else if (this.user.role.code === 'ROLE_GERANT') {
-        // localStorage.setItem('activeLink', '/gerant/dashboard');
-        this.behaviorService.setActiveLink('/gerant/dashboard');
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
-        this.router.navigate(['/gerant/dashboard'], { queryParams: { connexionReussie: true } })
+        if (this.from) {
+          this.router.navigateByUrl(this.from);
+        } else {
+          this.router.navigate(['/gerant/dashboard'], { queryParams: { connexionReussie: true } })
+        }
       } else if (this.user.role.code === 'ROLE_AGENTIMMOBILIER') {
-        // localStorage.setItem('activeLink', '/agent-immobilier/dashboard');
-        this.behaviorService.setActiveLink('/agent-immobilier/dashboard');
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
-        this.router.navigate(['/agent-immobilier/dashboard'], { queryParams: { connexionReussie: true } })
+        if (this.from) {
+          this.router.navigateByUrl(this.from);
+        } else {
+          this.router.navigate(['/agent-immobilier/dashboard'], { queryParams: { connexionReussie: true } })
+        }
       } else if (this.user.role.code === 'ROLE_CLIENT') {
-        // localStorage.setItem('activeLink', '/client/dashboard');
-        this.behaviorService.setActiveLink('/client/dashboard');
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
-        this.router.navigate(['/client/dashboard'], { queryParams: { connexionReussie: true } })
+        if (this.from) {
+          this.router.navigateByUrl(this.from);
+        } else {
+          this.router.navigate(['/client/dashboard'], { queryParams: { connexionReussie: true } })
+        }
       } else if (this.user.role.code === 'ROLE_PROPRIETAIRE') {
-        // localStorage.setItem('activeLink', '/proprietaire/dashboard');
-        this.behaviorService.setActiveLink('/proprietaire/dashboard');
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
-        this.router.navigate(['/proprietaire/dashboard'], { queryParams: { connexionReussie: true } })
+        if (this.from) {
+          this.router.navigateByUrl(this.from);
+        } else {
+          this.router.navigate(['/proprietaire/dashboard'], { queryParams: { connexionReussie: true } })
+        }
       } else if (this.user.role.code === 'ROLE_RESPONSABLE') {
-        // localStorage.setItem('activeLink', '/responsable/dashboard');
-        this.behaviorService.setActiveLink('/responsable/dashboard');
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
-        this.router.navigate(['/responsable/dashboard'], { queryParams: { connexionReussie: true } })
+        if (this.from) {
+          this.router.navigateByUrl(this.from);
+        } else {
+          this.router.navigate(['/responsable/dashboard'], { queryParams: { connexionReussie: true } })
+        }
       } else if (this.user.role.code === 'ROLE_DEMARCHEUR') {
-        // localStorage.setItem('activeLink', '/demarcheur/dashboard');
-        this.behaviorService.setActiveLink('/demarcheur/dashboard');
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
-        this.router.navigate(['/demarcheur/dashboard'], { queryParams: { connexionReussie: true } })
+        if (this.from) {
+          this.router.navigateByUrl(this.from);
+        } else {
+          this.router.navigate(['/demarcheur/dashboard'], { queryParams: { connexionReussie: true } })
+        }
       }
 
     }
@@ -223,6 +243,5 @@ export class LoginComponent implements OnInit{
 
     this.router.navigate(['/connexion']);
   }
-
 
 }

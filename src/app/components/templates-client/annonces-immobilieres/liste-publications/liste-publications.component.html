@@ -702,22 +702,24 @@
 
     <div class="row" *ngIf="!loading">
       <div class="col-md-6 col-lg-4" *ngFor="let publication of publications.content">
-        <div class="listing-style1" type="button" (click)="detailPublicationPage(publication)">
-          <div class="list-thumb">
-            <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
-            <!-- <div class="badge"><span style="background-color: #ff003d" class="span-badge">{{ publication.typeDeTransaction === 'Location' ? 'À louer' : 'À vendre' }}</span></div> -->
-            <div class="list-tag fz12 mr20">{{ publication.typeDeTransaction === 'Location' ? 'À LOUER' : 'À VENDRE' }}</div>
-            <div *ngIf="publication.typeDeTransaction === 'Location'" class="list-price">{{ publication.prixDuBien | number }} FCFA / <span>mois</span></div>
-            <div *ngIf="publication.typeDeTransaction === 'Vente'" class="list-price">{{ publication.prixDuBien | number }} FCFA </div>
-          </div>
-          <div class="list-content">
-            <h6 class="list-title"><a>{{ publication.libelle }}</a></h6>
-            <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
-            <hr class="mt-2 mb-2">
-            <div class="list-meta2 d-flex justify-content-between align-items-center">
-              <p class="text"><b class="publie-date-heure">Publié </b>{{ formatDate(publication.datePublication) }}</p>
+        <div class="listing-style1">
+          <a [routerLink]="['/annonce-immobiliere']" [queryParams]="{ key: publication.codePublication }">
+            <div class="list-thumb">
+              <img class="w-100" height="210" width="100" src="{{(this.APIEndpoint+'api/premiere-image/bien-immobilier/'+publication.bienImmobilier.id)}}" alt="">
+              <!-- <div class="badge"><span style="background-color: #ff003d" class="span-badge">{{ publication.typeDeTransaction === 'Location' ? 'À louer' : 'À vendre' }}</span></div> -->
+              <div class="list-tag fz12 mr20">{{ publication.typeDeTransaction === 'Location' ? 'À LOUER' : 'À VENDRE' }}</div>
+              <div *ngIf="publication.typeDeTransaction === 'Location'" class="list-price">{{ publication.prixDuBien | number }} FCFA / <span>mois</span></div>
+              <div *ngIf="publication.typeDeTransaction === 'Vente'" class="list-price">{{ publication.prixDuBien | number }} FCFA </div>
             </div>
-          </div>
+            <div class="list-content">
+              <h6 class="list-title"><a>{{ publication.libelle }}</a></h6>
+              <p class="text">{{ publication.bienImmobilier.quartier.ville.libelle }}, {{ publication.bienImmobilier.quartier.libelle }}, {{ publication.bienImmobilier.adresse }}</p>
+              <hr class="mt-2 mb-2">
+              <div class="list-meta2 d-flex justify-content-between align-items-center">
+                <p class="text"><b class="publie-date-heure">Publié </b>{{ formatDate(publication.datePublication) }}</p>
+              </div>
+            </div>
+          </a>
         </div>
       </div>
 

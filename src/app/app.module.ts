@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import * as fr from '@angular/common/locales/fr';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PaginatorModule } from 'primeng/paginator';
@@ -6,8 +7,8 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CommonModule, DecimalPipe } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { CommonModule, DecimalPipe, registerLocaleData } from '@angular/common';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { LoginComponent } from './components/auth/login/login.component';
@@ -85,9 +86,15 @@ import { ListeAgencesComponent } from './components/templates-client/agences-imm
 import { DetailsAgenceComponent } from './components/templates-client/agences-immobilieres/details-agence/details-agence.component';
 import { FilterService } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
+import { CalendarModule } from 'primeng/calendar';
 import { PublicationsComponent } from './components/templates-admin/gestionDesPublications/publications/publications.component';
 import { ListePublicationsComponent } from './components/templates-client/annonces-immobilieres/liste-publications/liste-publications.component';
 import { DetailsPublicationComponent } from './components/templates-client/annonces-immobilieres/details-publication/details-publication.component';
+import { DemandesVisitesComponent } from './components/templates-admin/gestionDesLocationsEtVentes/demandes-visites/demandes-visites.component';
+import { DemandesLocationsComponent } from './components/templates-admin/gestionDesLocationsEtVentes/demandes-locations/demandes-locations.component';
+import { DemandesAchatsComponent } from './components/templates-admin/gestionDesLocationsEtVentes/demandes-achats/demandes-achats.component';
+import { TranslateLoader, TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 @NgModule({
   declarations: [
@@ -135,9 +142,19 @@ import { DetailsPublicationComponent } from './components/templates-client/annon
     PublicationsComponent,
     ListePublicationsComponent,
     DetailsPublicationComponent,
+    DemandesVisitesComponent,
+    DemandesLocationsComponent,
+    DemandesAchatsComponent,
   ],
   imports: [
     BrowserModule,
+    TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+      }
+    }),
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
@@ -178,17 +195,29 @@ import { DetailsPublicationComponent } from './components/templates-client/annon
     InputTextModule,
     MessagesModule,
     MenuModule,
+    CalendarModule,
     CommonModule
   ],
   providers: [
     MessageService,
     ConfirmationService,
+    TranslateStore,
+    TranslateService,
     TokenInterceptorProvider,
     DatePipe,
     DecimalPipe,
     FilterService,
-    { provide: LocationStrategy, useClass: HashLocationStrategy }
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: LOCALE_ID, useValue: 'fr-FR'}
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    registerLocaleData(fr.default);
+  }
+}
+
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http);
+}

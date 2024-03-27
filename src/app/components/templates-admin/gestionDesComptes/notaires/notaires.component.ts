@@ -36,6 +36,10 @@ export class NotairesComponent implements OnInit, OnDestroy {
     creerLe: new Date(),
     modifierPar: 0,
     modifierLe: new Date(),
+    annulerPar: 0,
+    annulerLe: new Date(),
+    refuserPar: 0,
+    refuserLe: new Date(),
     statut: false
   }
 
