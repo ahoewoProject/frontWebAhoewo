@@ -1,11 +1,13 @@
 :host ::ng-deep .accept-label {
   background-color: #4ebc87;;
-  border-color: #4ebc87;;
+  border-color: #4ebc87;
+  font-family: 'DM Sans', sans-serif;
 }
 
 :host ::ng-deep .reject-label {
   background-color: #f43838;
   border-color: #f43838;
+  font-family: 'DM Sans', sans-serif;
 }
 
 :host ::ng-deep .p-button {

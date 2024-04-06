@@ -39,7 +39,7 @@
                   <th scope="col">#</th>
                   <th scope="col">Code</th>
                   <th scope="col">{{ user.role.code == 'ROLE_CLIENT' ? 'Annonceur' : 'Client' }}</th>
-                  <!-- <th scope="col">Type de transaction</th> -->
+                  <th scope="col">Bien</th>
                   <!-- <th scope="col">Date</th> -->
                   <th scope="col">Etat</th>
                   <th scope="col">Actions</th>
@@ -52,7 +52,7 @@
                   <td class="vam" *ngIf="user.role.code !== 'ROLE_CLIENT'">{{ demandeVisite.client.nom }} {{ demandeVisite.client.prenom }}</td>
                   <td class="vam" *ngIf="user.role.code == 'ROLE_CLIENT' && demandeVisite.publication.agenceImmobiliere !== null">{{ demandeVisite.publication.agenceImmobiliere.nomAgence }}</td>
                   <td class="vam" *ngIf="user.role.code == 'ROLE_CLIENT' && demandeVisite.publication.agenceImmobiliere == null">{{ demandeVisite.publication.personne.nom }} {{ demandeVisite.publication.personne.prenom }}</td>
-                  <!-- <td class="vam">{{ publication.typeDeTransaction }}</td> -->
+                  <td class="vam">{{ demandeVisite.publication.bienImmobilier.codeBien }} / {{ demandeVisite.publication.bienImmobilier.typeDeBien.designation }}</td>
                   <!-- <td class="vam">{{ publication.datePublication | date: 'dd-MM-yyyy' }}</td> -->
                   <td class="vam">
                     <p-tag *ngIf="demandeVisite.etatDemande == 0" severity="warning" value="En attente"></p-tag>
@@ -98,7 +98,7 @@
             </p-paginator>
           </div>
           <div *ngIf="demandesVisites.totalElements == 0" class="mbp_pagination text-center mt30">
-            <p class="mt10 pagination_page_count text-center">Aucune demande de visite enregistré pour le moment</p>
+            <p class="mt10 pagination_page_count text-center">Aucune demande de visite enregistrée pour le moment</p>
           </div>
         </div>
       </div>
@@ -142,78 +142,72 @@
 
             <h4 class="title fz17 mb30">Détails de la demande de visite</h4>
             <div class="row" *ngIf="user.role.code !== 'ROLE_CLIENT'">
-              <div class="col-md-6 col-xl-4">
-                <div class="d-flex justify-content-between">
-                  <div class="pd-list">
-                    <p class="fw600 mb10 ff-heading dark-color">Nom du client</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Email du client</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Date de visite</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Etat</p>
-                  </div>
-                  <div class="pd-list">
-                    <p class="text mb10">{{ demandeVisite.client.nom }}</p>
-                    <p class="text mb10">{{ demandeVisite.client.email }}</p>
-                    <p class="text mb10 text-capitalize">{{ demandeVisite.dateHeureVisite | date:'longDate' }}</p>
-                    <p class="text mb10">
-                      <p-tag *ngIf="demandeVisite.etatDemande == 0" severity="warning" value="En attente"></p-tag>
-                      <p-tag *ngIf="demandeVisite.etatDemande == 1" severity="success" value="Validé"></p-tag>
-                      <p-tag *ngIf="demandeVisite.etatDemande == 2" severity="danger" value="Annuler"></p-tag>
-                      <p-tag *ngIf="demandeVisite.etatDemande == 3" severity="danger" value="Refusé"></p-tag>
-                      <p-tag *ngIf="demandeVisite.etatDemande == 4" severity="warning" value="Modifié"></p-tag>
-                    </p>
-                  </div>
-                </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Nom du client</p>
+                <p class="text">{{ demandeVisite.client.nom }}</p>
               </div>
-              <div class="col-md-6 col-xl-4 offset-xl-2">
-                <div class="d-flex justify-content-between">
-                  <div class="pd-list">
-                    <p class="fw600 mb10 ff-heading dark-color">Prénom(s) du client</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Téléphone du client</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Heure de visite</p>
-                  </div>
-                  <div class="pd-list">
-                    <p class="text mb10">{{ demandeVisite.client.prenom }}</p>
-                    <p class="text mb10">{{ demandeVisite.client.telephone }}</p>
-                    <p class="text mb10">{{ demandeVisite.dateHeureVisite | date:'HH:mm' }}</p>
-                  </div>
-                </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Prénom(s) du client</p>
+                <p class="text">{{ demandeVisite.client.prenom }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Email du client</p>
+                <p class="text">{{ demandeVisite.client.email }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Téléphone du client</p>
+                <p class="text">{{ demandeVisite.client.telephone }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Date de visite</p>
+                <p class="text text-capitalize">{{ demandeVisite.dateHeureVisite | date:'longDate' }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Heure de visite</p>
+                <p class="text">{{ demandeVisite.dateHeureVisite | date:'HH:mm' }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Etat</p>
+                <p class="text">
+                  <p-tag *ngIf="demandeVisite.etatDemande == 0" severity="warning" value="En attente"></p-tag>
+                  <p-tag *ngIf="demandeVisite.etatDemande == 1" severity="success" value="Validé"></p-tag>
+                  <p-tag *ngIf="demandeVisite.etatDemande == 2" severity="danger" value="Annuler"></p-tag>
+                  <p-tag *ngIf="demandeVisite.etatDemande == 3" severity="danger" value="Refusé"></p-tag>
+                  <p-tag *ngIf="demandeVisite.etatDemande == 4" severity="warning" value="Modifié"></p-tag>
+                </p>
               </div>
             </div>
 
             <div class="row" *ngIf="user.role.code == 'ROLE_CLIENT'">
-              <div class="col-md-6 col-xl-4">
-                <div class="d-flex justify-content-between">
-                  <div class="pd-list">
-                    <p class="fw600 mb10 ff-heading dark-color">Annonceur</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Téléphone de l'annonceur</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Heure de visite</p>
-                  </div>
-                  <div class="pd-list">
-                    <p class="text mb10">{{ demandeVisite.publication.agenceImmobiliere ? demandeVisite.publication.agenceImmobiliere.nomAgence : demandeVisite.publication.personne.nom + ' ' + demandeVisite.publication.personne.prenom }}</p>
-                    <p class="text mb10">{{ demandeVisite.publication.agenceImmobiliere ? demandeVisite.publication.agenceImmobiliere.telephone : demandeVisite.publication.personne.telephone }}</p>
-                    <p class="text mb10 text-capitalize">{{ demandeVisite.dateHeureVisite | date:'HH:mm' }}</p>
-                  </div>
-                </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Annonceur</p>
+                <p class="text">{{ demandeVisite.publication.agenceImmobiliere ? demandeVisite.publication.agenceImmobiliere.nomAgence : demandeVisite.publication.personne.nom + ' ' + demandeVisite.publication.personne.prenom }}</p>
               </div>
-              <div class="col-md-6 col-xl-4 offset-xl-2">
-                <div class="d-flex justify-content-between">
-                  <div class="pd-list">
-                    <p class="fw600 mb10 ff-heading dark-color">Email de l'annonceur</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Date de visite</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Etat</p>
-                  </div>
-                  <div class="pd-list">
-                    <p class="text mb10">{{ demandeVisite.publication.agenceImmobiliere ? demandeVisite.publication.agenceImmobiliere.adresseEmail : demandeVisite.publication.personne.email }}</p>
-                    <p class="text mb10">{{ demandeVisite.dateHeureVisite | date:'longDate' }}</p>
-                    <p class="text mb10">
-                      <p-tag *ngIf="demandeVisite.etatDemande == 0" severity="warning" value="En attente"></p-tag>
-                      <p-tag *ngIf="demandeVisite.etatDemande == 1" severity="success" value="Validé"></p-tag>
-                      <p-tag *ngIf="demandeVisite.etatDemande == 2" severity="danger" value="Annuler"></p-tag>
-                      <p-tag *ngIf="demandeVisite.etatDemande == 3" severity="danger" value="Refusé"></p-tag>
-                      <p-tag *ngIf="demandeVisite.etatDemande == 4" severity="warning" value="Modifié"></p-tag>
-                    </p>
-                  </div>
-                </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Email de l'annonceur</p>
+                <p class="text">{{ demandeVisite.publication.agenceImmobiliere ? demandeVisite.publication.agenceImmobiliere.adresseEmail : demandeVisite.publication.personne.email }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Téléphone de l'annonceur</p>
+                <p class="text">{{ demandeVisite.publication.agenceImmobiliere ? demandeVisite.publication.agenceImmobiliere.telephone : demandeVisite.publication.personne.telephone }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Date de visite</p>
+                <p class="text text-capitalize">{{ demandeVisite.dateHeureVisite | date:'longDate' }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Heure de visite</p>
+                <p class="text">{{ demandeVisite.dateHeureVisite | date:'HH:mm' }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Etat</p>
+                <p class="text">
+                  <p-tag *ngIf="demandeVisite.etatDemande == 0" severity="warning" value="En attente"></p-tag>
+                  <p-tag *ngIf="demandeVisite.etatDemande == 1" severity="success" value="Validé"></p-tag>
+                  <p-tag *ngIf="demandeVisite.etatDemande == 2" severity="danger" value="Annuler"></p-tag>
+                  <p-tag *ngIf="demandeVisite.etatDemande == 3" severity="danger" value="Refusé"></p-tag>
+                  <p-tag *ngIf="demandeVisite.etatDemande == 4" severity="warning" value="Modifié"></p-tag>
+                </p>
               </div>
             </div>
 
@@ -226,38 +220,37 @@
             <p-divider></p-divider>
             <h4 class="title fz17 mb30">Détails de la publication</h4>
             <div class="row">
-              <div class="col-md-6 col-xl-4">
-                <div class="d-flex justify-content-between">
-                  <div class="pd-list">
-                    <p class="fw600 mb10 ff-heading dark-color">Code publication</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Type de transaction</p>
-                    <p class="fw600 mb10 ff-heading dark-color" *ngIf="demandeVisite.publication.typeDeTransaction == 'Location'">Avance</p>
-                    <p class="fw600 mb10 ff-heading dark-color" *ngIf="demandeVisite.publication.commission">Commission</p>
-                  </div>
-                  <div class="pd-list">
-                    <p class="text mb10">{{ demandeVisite.publication.codePublication }}</p>
-                    <p class="text mb10">{{ demandeVisite.publication.typeDeTransaction }}</p>
-                    <p class="text mb10" *ngIf="demandeVisite.publication.typeDeTransaction == 'Location'">{{ demandeVisite.publication.avance }} mois</p>
-                    <p class="text mb10" *ngIf="demandeVisite.publication.commission">{{ demandeVisite.publication.commission }} {{ demandeVisite.publication.typeDeTransaction === 'Location' ? 'mois de loyer' : '%' }}</p>
-                  </div>
-                </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Code publication</p>
+                <p class="text">{{ demandeVisite.publication.codePublication }}</p>
               </div>
-
-              <div class="col-md-6 col-xl-4 offset-xl-2">
-                <div class="d-flex justify-content-between">
-                  <div class="pd-list">
-                    <p class="fw600 mb10 ff-heading dark-color">Prix {{ demandeVisite.publication.typeDeTransaction === 'Location' ? 'mensuel' : '' }} du bien</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Date de publication</p>
-                    <p class="fw600 mb10 ff-heading dark-color" *ngIf="demandeVisite.publication.typeDeTransaction == 'Location'">Caution</p>
-                    <p class="fw600 mb10 ff-heading dark-color" *ngIf="demandeVisite.publication.fraisDeVisite && (user.role.code !== 'ROLE_PROPRIETAIRE')">Frais de visite</p>
-                  </div>
-                  <div class="pd-list">
-                    <p class="text mb10">{{ demandeVisite.publication.prixDuBien | number }} FCFA</p>
-                    <p class="text mb10">{{ demandeVisite.publication.datePublication | date: "dd-MM-yyyy" }}</p>
-                    <p class="text mb10" *ngIf="demandeVisite.publication.typeDeTransaction == 'Location'">{{ demandeVisite.publication.caution }} mois</p>
-                    <p class="text mb10" *ngIf="demandeVisite.publication.fraisDeVisite && (user.role.code !== 'ROLE_PROPRIETAIRE')">{{ demandeVisite.publication.fraisDeVisite }}</p>
-                  </div>
-                </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Type de transaction</p>
+                <p class="text">{{ demandeVisite.publication.typeDeTransaction }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Date de publication</p>
+                <p class="text">{{ demandeVisite.publication.datePublication | date: "dd-MM-yyyy" }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Prix {{ demandeVisite.publication.typeDeTransaction === 'Location' ? 'mensuel' : '' }} du bien</p>
+                <p class="text">{{ demandeVisite.publication.prixDuBien | number }} FCFA</p>
+              </div>
+              <div class="col-sm-6 col-xl-4" *ngIf="demandeVisite.publication.typeDeTransaction == 'Location' && demandeVisite.publication.avance">
+                <p class="fw600 mb5 ff-heading dark-color">Avance</p>
+                <p class="text">{{ demandeVisite.publication.avance }} mois</p>
+              </div>
+              <div class="col-sm-6 col-xl-4" *ngIf="demandeVisite.publication.typeDeTransaction == 'Location' && demandeVisite.publication.caution">
+                <p class="fw600 mb5 ff-heading dark-color">Caution</p>
+                <p class="text">{{ demandeVisite.publication.caution }} mois</p>
+              </div>
+              <div class="col-sm-6 col-xl-4" *ngIf="demandeVisite.publication.commission">
+                <p class="fw600 mb5 ff-heading dark-color">Commission</p>
+                <p class="text">{{ demandeVisite.publication.commission }} {{ demandeVisite.publication.typeDeTransaction === 'Location' ? 'mois de loyer' : '%' }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4" *ngIf="demandeVisite.publication.fraisDeVisite">
+                <p class="fw600 mb5 ff-heading dark-color">Frais de visite</p>
+                <p class="text">{{ demandeVisite.publication.fraisDeVisite }}</p>
               </div>
             </div>
 

@@ -95,6 +95,7 @@ import { DemandesLocationsComponent } from './components/templates-admin/gestion
 import { DemandesAchatsComponent } from './components/templates-admin/gestionDesLocationsEtVentes/demandes-achats/demandes-achats.component';
 import { TranslateLoader, TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ContratsComponent } from './components/templates-admin/gestionDesLocationsEtVentes/contrats/contrats.component';
 
 @NgModule({
   declarations: [
@@ -145,6 +146,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     DemandesVisitesComponent,
     DemandesLocationsComponent,
     DemandesAchatsComponent,
+    ContratsComponent,
   ],
   imports: [
     BrowserModule,

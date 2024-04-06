@@ -188,10 +188,9 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
         }
       }
     } else {
-      console.log(this.demandeRequest.dateHeureVisite)
       this.demandeRequest.typeDeDemande = this.typeDeDemandeSelectionne;
-      // localStorage.setItem('demandeRequest', JSON.stringify(this.demandeRequest));
-      // this.router.navigate(['/connexion'] , { queryParams: { from: this.router.url } });
+      localStorage.setItem('demandeRequest', JSON.stringify(this.demandeRequest));
+      this.router.navigate(['/connexion'] , { queryParams: { from: this.router.url } });
     }
   }
 

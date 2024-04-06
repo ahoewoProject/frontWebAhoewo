@@ -39,7 +39,7 @@
                   <th scope="col">#</th>
                   <th scope="col">Code</th>
                   <th scope="col">{{ user.role.code == 'ROLE_CLIENT' ? 'Annonceur' : 'Client' }}</th>
-                  <!-- <th scope="col">Type de transaction</th> -->
+                  <th scope="col">Bien</th>
                   <!-- <th scope="col">Date</th> -->
                   <th scope="col">Etat</th>
                   <th scope="col">Actions</th>
@@ -52,7 +52,7 @@
                   <td class="vam" *ngIf="user.role.code !== 'ROLE_CLIENT'">{{ demandeAchat.client.nom }} {{ demandeAchat.client.prenom }}</td>
                   <td class="vam" *ngIf="user.role.code == 'ROLE_CLIENT' && demandeAchat.publication.agenceImmobiliere !== null">{{ demandeAchat.publication.agenceImmobiliere.nomAgence }}</td>
                   <td class="vam" *ngIf="user.role.code == 'ROLE_CLIENT' && demandeAchat.publication.agenceImmobiliere == null">{{ demandeAchat.publication.personne.nom }} {{ demandeAchat.publication.personne.prenom }}</td>
-                  <!-- <td class="vam">{{ publication.typeDeTransaction }}</td> -->
+                  <td class="vam">{{ demandeAchat.publication.bienImmobilier.codeBien }} / {{ demandeAchat.publication.bienImmobilier.typeDeBien.designation }}</td>
                   <!-- <td class="vam">{{ publication.datePublication | date: 'dd-MM-yyyy' }}</td> -->
                   <td class="vam">
                     <p-tag *ngIf="demandeAchat.etatDemande == 0" severity="warning" value="En attente"></p-tag>
@@ -79,9 +79,9 @@
                         pTooltip="Relancer" tooltipPosition="right" class="p-button-text p-button-sucess">
                       </button>
 
-                      <button *ngIf="demandeAchat.etatDemande == 0 && user.role.code !== 'ROLE_CLIENT'"
-                        pButton type="button" icon="pi pi-file-edit pi-lg" (click)="relancer(demandeAchat.id)"
-                        pTooltip="Proposer un contrat" tooltipPosition="right" class="p-button-text p-button-sucess">
+                      <button *ngIf="demandeAchat.etatDemande == 1 && user.role.code !== 'ROLE_CLIENT'"
+                        pButton type="button" icon="pi pi-folder pi-lg" (click)="afficherPageContrat(demandeAchat.id)"
+                        pTooltip="Proposer un contrat de vente" tooltipPosition="right" class="p-button-text p-button-sucess">
                       </button>
                     </div>
                   </td>
@@ -98,7 +98,7 @@
             </p-paginator>
           </div>
           <div *ngIf="demandesAchats.totalElements == 0" class="mbp_pagination text-center mt30">
-            <p class="mt10 pagination_page_count text-center">Aucune demande d'achat enregistré pour le moment</p>
+            <p class="mt10 pagination_page_count text-center">Aucune demande d'achat enregistrée pour le moment</p>
           </div>
         </div>
       </div>
@@ -144,78 +144,72 @@
 
             <h4 class="title fz17 mb30">Détails de la demande d'achat</h4>
             <div class="row" *ngIf="user.role.code !== 'ROLE_CLIENT'">
-              <div class="col-md-6 col-xl-4">
-                <div class="d-flex justify-content-between">
-                  <div class="pd-list">
-                    <p class="fw600 mb10 ff-heading dark-color">Nom du client</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Email du client</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Prix d'achat proposé</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Etat</p>
-                  </div>
-                  <div class="pd-list">
-                    <p class="text mb10">{{ demandeAchat.client.nom }}</p>
-                    <p class="text mb10">{{ demandeAchat.client.email }}</p>
-                    <p class="text mb10">{{ demandeAchat.prixAchat | number }} FCFA</p>
-                    <p class="text mb10">
-                      <p-tag *ngIf="demandeAchat.etatDemande == 0" severity="warning" value="En attente"></p-tag>
-                      <p-tag *ngIf="demandeAchat.etatDemande == 1" severity="success" value="Validé"></p-tag>
-                      <p-tag *ngIf="demandeAchat.etatDemande == 2" severity="danger" value="Annuler"></p-tag>
-                      <p-tag *ngIf="demandeAchat.etatDemande == 3" severity="danger" value="Refusé"></p-tag>
-                      <p-tag *ngIf="demandeAchat.etatDemande == 4" severity="warning" value="Modifié"></p-tag>
-                    </p>
-                  </div>
-                </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Nom du client</p>
+                <p class="text">{{ demandeAchat.client.nom }}</p>
               </div>
-              <div class="col-md-6 col-xl-4 offset-xl-2">
-                <div class="d-flex justify-content-between">
-                  <div class="pd-list">
-                    <p class="fw600 mb10 ff-heading dark-color">Prénom(s) du client</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Téléphone du client</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Nombre de tranches</p>
-                  </div>
-                  <div class="pd-list">
-                    <p class="text mb10">{{ demandeAchat.client.prenom }}</p>
-                    <p class="text mb10">{{ demandeAchat.client.telephone }}</p>
-                    <p class="text mb10">{{ demandeAchat.nombreDeTranche }} tranches</p>
-                  </div>
-                </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Prénom(s) du client</p>
+                <p class="text">{{ demandeAchat.client.prenom }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Email du client</p>
+                <p class="text">{{ demandeAchat.client.email }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
+                <p class="text">{{ demandeAchat.client.telephone }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Prix d'achat proposé</p>
+                <p class="text">{{ demandeAchat.prixAchat | number }} FCFA</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Nombre de tranches</p>
+                <p class="text">{{ demandeAchat.nombreDeTranche }} tranches</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Etat</p>
+                <p class="text">
+                  <p-tag *ngIf="demandeAchat.etatDemande == 0" severity="warning" value="En attente"></p-tag>
+                  <p-tag *ngIf="demandeAchat.etatDemande == 1" severity="success" value="Validé"></p-tag>
+                  <p-tag *ngIf="demandeAchat.etatDemande == 2" severity="danger" value="Annuler"></p-tag>
+                  <p-tag *ngIf="demandeAchat.etatDemande == 3" severity="danger" value="Refusé"></p-tag>
+                  <p-tag *ngIf="demandeAchat.etatDemande == 4" severity="warning" value="Modifié"></p-tag>
+                </p>
               </div>
             </div>
 
             <div class="row" *ngIf="user.role.code == 'ROLE_CLIENT'">
-              <div class="col-md-6 col-xl-4">
-                <div class="d-flex justify-content-between">
-                  <div class="pd-list">
-                    <p class="fw600 mb10 ff-heading dark-color">Annonceur</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Téléphone de l'annonceur</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Nombre de tranches</p>
-                  </div>
-                  <div class="pd-list">
-                    <p class="text mb10">{{ demandeAchat.publication.agenceImmobiliere ? demandeAchat.publication.agenceImmobiliere.nomAgence : demandeAchat.publication.personne.nom + ' ' + demandeAchat.publication.personne.prenom }}</p>
-                    <p class="text mb10">{{ demandeAchat.publication.agenceImmobiliere ? demandeAchat.publication.agenceImmobiliere.telephone : demandeAchat.publication.personne.telephone }}</p>
-                    <p class="text mb10">{{ demandeAchat.nombreDeTranche }} tranches</p>
-                  </div>
-                </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Annonceur</p>
+                <p class="text">{{ demandeAchat.publication.agenceImmobiliere ? demandeAchat.publication.agenceImmobiliere.nomAgence : demandeAchat.publication.personne.nom + ' ' + demandeAchat.publication.personne.prenom }}</p>
               </div>
-              <div class="col-md-6 col-xl-4 offset-xl-2">
-                <div class="d-flex justify-content-between">
-                  <div class="pd-list">
-                    <p class="fw600 mb10 ff-heading dark-color">Email de l'annonceur</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Prix d'achat proposé</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Etat</p>
-                  </div>
-                  <div class="pd-list">
-                    <p class="text mb10">{{ demandeAchat.publication.agenceImmobiliere ? demandeAchat.publication.agenceImmobiliere.adresseEmail : demandeAchat.publication.personne.email }}</p>
-                    <p class="text mb10">{{ demandeAchat.prixAchat | number }} FCFA</p>
-                    <p class="text mb10">
-                      <p-tag *ngIf="demandeAchat.etatDemande == 0" severity="warning" value="En attente"></p-tag>
-                      <p-tag *ngIf="demandeAchat.etatDemande == 1" severity="success" value="Validé"></p-tag>
-                      <p-tag *ngIf="demandeAchat.etatDemande == 2" severity="danger" value="Annuler"></p-tag>
-                      <p-tag *ngIf="demandeAchat.etatDemande == 3" severity="danger" value="Refusé"></p-tag>
-                      <p-tag *ngIf="demandeAchat.etatDemande == 4" severity="warning" value="Modifié"></p-tag>
-                    </p>
-                  </div>
-                </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Email de l'annonceur</p>
+                <p class="text">{{ demandeAchat.publication.agenceImmobiliere ? demandeAchat.publication.agenceImmobiliere.adresseEmail : demandeAchat.publication.personne.email }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Téléphone de l'annonceur</p>
+                <p class="text">{{ demandeAchat.publication.agenceImmobiliere ? demandeAchat.publication.agenceImmobiliere.telephone : demandeAchat.publication.personne.telephone }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Prix d'achat proposé</p>
+                <p class="text">{{ demandeAchat.prixAchat | number }} FCFA</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Nombre de tranches</p>
+                <p class="text">{{ demandeAchat.nombreDeTranche }} tranches</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Etat</p>
+                <p class="text">
+                  <p-tag *ngIf="demandeAchat.etatDemande == 0" severity="warning" value="En attente"></p-tag>
+                  <p-tag *ngIf="demandeAchat.etatDemande == 1" severity="success" value="Validé"></p-tag>
+                  <p-tag *ngIf="demandeAchat.etatDemande == 2" severity="danger" value="Annuler"></p-tag>
+                  <p-tag *ngIf="demandeAchat.etatDemande == 3" severity="danger" value="Refusé"></p-tag>
+                  <p-tag *ngIf="demandeAchat.etatDemande == 4" severity="warning" value="Modifié"></p-tag>
+                </p>
               </div>
             </div>
 
@@ -228,31 +222,29 @@
             <p-divider></p-divider>
             <h4 class="title fz17 mb30">Détails de la publication</h4>
             <div class="row">
-              <div class="col-md-6 col-xl-4">
-                <div class="d-flex justify-content-between">
-                  <div class="pd-list">
-                    <p class="fw600 mb10 ff-heading dark-color">Code</p>
-                    <p class="fw600 mb10 ff-heading dark-color">Prix de vente</p>
-                    <p class="fw600 mb10 ff-heading dark-color" *ngIf="demandeAchat.publication.fraisDeVisite">Frais de visite</p>
-                  </div>
-                  <div class="pd-list">
-                    <p class="text mb10">{{ demandeAchat.publication.codePublication }}</p>
-                    <p class="text mb10">{{ demandeAchat.publication.prixDuBien | number }} FCFA</p>
-                    <p class="text mb10" *ngIf="demandeAchat.publication.fraisDeVisite">{{ demandeAchat.publication.fraisDeVisite | number }} FCFA</p>
-                  </div>
-                </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Code publication</p>
+                <p class="text">{{ demandeAchat.publication.codePublication }}</p>
               </div>
-              <div class="col-md-6 col-xl-4 offset-xl-2">
-                <div class="d-flex justify-content-between">
-                  <div class="pd-list">
-                    <p class="fw600 mb10 ff-heading dark-color">Type de transaction</p>
-                    <p class="fw600 mb10 ff-heading dark-color" *ngIf="demandeAchat.publication.commission">Commission</p>
-                  </div>
-                  <div class="pd-list">
-                    <p class="text mb10">{{ demandeAchat.publication.typeDeTransaction }}</p>
-                    <p class="text mb10" *ngIf="demandeAchat.publication.commission">{{ demandeAchat.publication.commission }} %</p>
-                  </div>
-                </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Type de transaction</p>
+                <p class="text">{{ demandeAchat.publication.typeDeTransaction }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Prix de vente</p>
+                <p class="text">{{ demandeAchat.publication.prixDuBien | number }} FCFA</p>
+              </div>
+              <div class="col-sm-6 col-xl-4">
+                <p class="fw600 mb5 ff-heading dark-color">Date de publication</p>
+                <p class="text">{{ demandeAchat.publication.datePublication | date: "dd-MM-yyyy" }}</p>
+              </div>
+              <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.commission">
+                <p class="fw600 mb5 ff-heading dark-color">Commission</p>
+                <p class="text">{{ demandeAchat.publication.commission }} %</p>
+              </div>
+              <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.fraisDeVisite">
+                <p class="fw600 mb5 ff-heading dark-color">Frais de visite</p>
+                <p class="text">{{ demandeAchat.publication.fraisDeVisite | number }} FCFA</p>
               </div>
             </div>
 
@@ -531,4 +523,1106 @@
     </div>
   </div>
   <!-- End Modification d'une demande d'achat -->
+
+  <!-- Start Formulaire Proposition Contrat -->
+  <div *ngIf="affichage == 4">
+    <div class="row align-items-center pb40">
+      <div class="col-xxl-5">
+        <div class="dashboard_title_area">
+          <h4>Proposition d'un contrat de vente</h4>
+          <p class="text"></p>
+        </div>
+      </div>
+      <div class="col-xxl-7">
+        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30">
+          <p-steps [model]="menus" [readonly]="false" [activeIndex]="activeIndex" (activeIndexChange)="onActiveIndexChange($event)"></p-steps>
+
+          <!-- Start Etape 1e -->
+          <div *ngIf="activeIndex == 0" class="ps-widget bgc-white bdrs12 p30 position-relative">
+            <form  [formGroup]="contratVenteFormStep1" class="form-style1">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Prix de vente</label>
+                    <p-inputNumber class="pInputNumber p-fluid" placeholder="Prix de vente" [(ngModel)]="contratVente.prixVente" inputId="prixVente" name="prixVente" mode="currency" currency="CFA" locale="de-DE" [required]="true"
+                     formControlName="prixVente" [max]="demandeAchat.prixAchat">
+                    </p-inputNumber>
+                    <div [hidden]="!prixVente?.hasError('required') || !prixVente.touched" class="error">
+                      Le prix de vente est requis.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="mb20">
+                    <label class="heading-color ff-heading fw600 mb10">Nombre de tranches du paiement</label>
+                    <p-inputNumber class="pInputNumber p-fluid" placeholder="Nombre de tranches" [(ngModel)]="contratVente.nombreDeTranche" inputId="nombreDeTranche" name="nombreDeTranche" suffix=" tranche(s)" [required]="true"
+                     formControlName="nombreDeTranche">
+                    </p-inputNumber>
+                    <div [hidden]="!nombreDeTranche?.hasError('required') || !nombreDeTranche.touched" class="error">
+                      Le nombre de tranches est requis.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="d-sm-flex justify-content-between">
+                    <button class="ud-btn btn-annuler" type="button" (click)="resetContratVenteForm()">Annuler</button>
+                    <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': contratVenteFormStep1.invalid }" (click)="etape2()">Suivant<i class="pi pi-arrow-right"></i></button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <!-- End Etape 1e -->
+
+          <!-- Start Etape 2 -->
+          <div *ngIf="activeIndex == 1" class="ps-widget bgc-white bdrs12 p30 position-relative">
+            <div class="row">
+              <form  [formGroup]="contratVenteFormStep2" class="form-style1">
+                <div class="row">
+                  <h5>Témoins - Vendeur</h5>
+                  <div class="col-lg-6">
+                    <div class="mb20">
+                      <label class="heading-color ff-heading fw600 mb10">Nom & Prénom(s) (1)</label>
+                      <input type="text" pInputText class="pInputText p-fluid form-control" placeholder="Nom & Prénoms(s) Témoin(1) Vendeur" formControlName="nomPrenomTemoin1Vendeur" [(ngModel)]="contratVente.nomPrenomTemoin1Vendeur"/>
+                      <div [hidden]="!nomPrenomTemoin1Vendeur?.hasError('required') || !nomPrenomTemoin1Vendeur.touched" class="error">
+                        Le nom et prénom(s) est requis.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="mb20">
+                      <label class="heading-color ff-heading fw600 mb10">Contact (1)</label>
+                      <input type="text" pInputText class="pInputText p-fluid form-control" placeholder="Contact Témoin(1) Vendeur" formControlName="contactTemoin1Vendeur" [(ngModel)]="contratVente.contactTemoin1Vendeur"/>
+                      <div [hidden]="!contactTemoin1Vendeur?.hasError('required') || !contactTemoin1Vendeur.touched" class="error">
+                        Le contact est requis.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="mb20">
+                      <label class="heading-color ff-heading fw600 mb10">Nom & Prénom(s) (2)</label>
+                      <input type="text" pInputText class="pInputText p-fluid form-control" placeholder="Nom & Prénom(s) Témoin(2) Vendeur" formControlName="nomPrenomTemoin2Vendeur" [(ngModel)]="contratVente.nomPrenomTemoin2Vendeur"/>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="mb20">
+                      <label class="heading-color ff-heading fw600 mb10">Contact (2)</label>
+                      <input type="text" pInputText class="pInputText p-fluid form-control" placeholder="Contact Témoin(2) Vendeur" formControlName="contactTemoin2Vendeur" [(ngModel)]="contratVente.contactTemoin2Vendeur"/>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="mb20">
+                      <label class="heading-color ff-heading fw600 mb10">Nom & Prénom(s) (3)</label>
+                      <input type="text" pInputText class="pInputText p-fluid form-control" placeholder="Nom & Prénom(s) Témoin(3) Vendeur" formControlName="nomPrenomTemoin3Vendeur" [(ngModel)]="contratVente.nomPrenomTemoin3Vendeur"/>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="mb20">
+                      <label class="heading-color ff-heading fw600 mb10">Contact (3)</label>
+                      <input type="text" pInputText class="pInputText p-fluid form-control" placeholder="Contact Témoin(3) Vendeur" formControlName="contactTemoin3Vendeur" [(ngModel)]="contratVente.contactTemoin3Vendeur"/>
+                    </div>
+                  </div>
+
+                  <h5>Témoins - Acquéreur</h5>
+
+                  <div class="col-lg-6">
+                    <div class="mb20">
+                      <label class="heading-color ff-heading fw600 mb10">Nom & Prénom(s) (1)</label>
+                      <input type="text" pInputText class="pInputText p-fluid form-control" placeholder="Nom & Prénom(s) Témoin(1) Acheteur" formControlName="nomPrenomTemoin1Acheteur" [(ngModel)]="contratVente.nomPrenomTemoin1Acheteur"/>
+                      <div [hidden]="!nomPrenomTemoin1Acheteur?.hasError('required') || !nomPrenomTemoin1Acheteur.touched" class="error">
+                        Le nom & prénom(s) est requis.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="mb20">
+                      <label class="heading-color ff-heading fw600 mb10">Contact (1)</label>
+                      <input type="text" pInputText class="pInputText p-fluid form-control" placeholder="Contact Témoin(1) Acheteur" formControlName="contactTemoin1Acheteur" [(ngModel)]="contratVente.contactTemoin1Acheteur"/>
+                      <div [hidden]="!contactTemoin1Acheteur?.hasError('required') || !contactTemoin1Acheteur.touched" class="error">
+                        Le contact est requis.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="mb20">
+                      <label class="heading-color ff-heading fw600 mb10">Nom & Prénom(s) (2)</label>
+                      <input type="text" pInputText class="pInputText p-fluid form-control" placeholder="Nom & Prénom(s) Témoin(2) Acheteur" formControlName="nomPrenomTemoin2Acheteur" [(ngModel)]="contratVente.nomPrenomTemoin2Acheteur"/>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="mb20">
+                      <label class="heading-color ff-heading fw600 mb10">Contact (2)</label>
+                      <input type="text" pInputText class="pInputText p-fluid form-control" placeholder="Contact Témoin(2) Acheteur" formControlName="contactTemoin2Acheteur" [(ngModel)]="contratVente.contactTemoin2Acheteur"/>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="mb20">
+                      <label class="heading-color ff-heading fw600 mb10">Nom & Prénom(s) (3)</label>
+                      <input type="text" pInputText class="pInputText p-fluid form-control" placeholder="Nom & Prénom(s) Témoin(3) Acheteur" formControlName="nomPrenomTemoin3Acheteur" [(ngModel)]="contratVente.nomPrenomTemoin3Acheteur"/>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="mb20">
+                      <label class="heading-color ff-heading fw600 mb10">Contact (3)</label>
+                      <input type="text" pInputText class="pInputText p-fluid form-control" placeholder="Contact Témoin(3) Acheteur" formControlName="contactTemoin3Acheteur" [(ngModel)]="contratVente.contactTemoin3Acheteur"/>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <div class="d-sm-flex justify-content-between">
+                      <button class="ud-btn btn-retour" (click)="etape1()"><i class="pi pi-arrow-left"></i> Précédent</button>
+                      <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': contratVenteFormStep2.invalid }" (click)="etape3()">Suivant<i class="pi pi-arrow-right"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- End Etape 2-->
+
+          <!-- Start Etape 3 -->
+          <div *ngIf="activeIndex == 2" class="ps-widget bgc-white bdrs12 p30 position-relative">
+            <div class="row" *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR'">
+              <form  [formGroup]="contratVenteFormStep3" class="form-style1">
+                <div class="row">
+
+                  <div class="col-lg-6">
+                    <div class="mb20">
+                      <label class="heading-color ff-heading fw600 mb10">Commission en pourcentage</label>
+                      <p-inputNumber class="pInputNumber p-fluid" placeholder="La commission en nombre de mois" [(ngModel)]="contratVente.commission" formControlName="commission" inputId="commission" suffix=" %"
+                       name="commission" [max]="(contratVente.demandeAchat.publication ? contratVente.demandeAchat.publication.commission : 12)"> </p-inputNumber>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="mb20">
+                      <label class="heading-color ff-heading fw600 mb10">Frais de visite</label>
+                      <p-inputNumber class="pInputNumber p-fluid" placeholder="Frais de visite" [(ngModel)]="contratVente.fraisDeVisite" formControlName="fraisDeVisite" inputId="fraisDeVisite" name="fraisDeVisite" mode="currency" currency="CFA" locale="de-DE">
+                      </p-inputNumber>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <div class="d-sm-flex justify-content-between">
+                      <button class="ud-btn btn-retour" (click)="etape2()"><i class="pi pi-arrow-left"></i> Précédent</button>
+                      <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': contratVenteFormStep3.invalid }" (click)="etape3()">Suivant<i class="pi pi-arrow-right"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="row" *ngIf="user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_GERANT'">
+              <div class="col-lg-12">
+                <div class="row" *ngIf="demandeAchat.publication.bienImmobilier.estDelegue">
+                  <div class="row">
+                    <h4 class="title title-detail fz17 mb10">Client</h4>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom</p>
+                      <p class="text">{{ demandeAchat.client.nom }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Prénom(s)</p>
+                      <p class="text">{{ demandeAchat.client.prenom }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Email</p>
+                      <p class="text">{{ demandeAchat.client.email }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
+                      <p class="text">{{ demandeAchat.client.telephone }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Prix de vente</p>
+                      <p class="text">{{ contratVente.prixVente | number }} FCFA</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nombre de tranches du paiement</p>
+                      <p class="text">{{ contratVente.nombreDeTranche | number }} tranches</p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <h4 class="title title-detail fz17 mb10">Propriétaire</h4>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.personne.nom }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Prénom(s)</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.personne.prenom }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Email</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.personne.email }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.personne.telephone }}</p>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="contratVente.nomPrenomTemoin1Acheteur && contratVente.contactTemoin1Acheteur">
+                    <h4 class="title title-detail fz17 mb10">Témoins - Acquéreur</h4>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(1)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin1Acheteur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(1)</p>
+                      <p class="text">{{ contratVente.contactTemoin1Acheteur }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.nomPrenomTemoin2Acheteur">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(2)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin2Acheteur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.contactTemoin2Acheteur">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(2)</p>
+                      <p class="text">{{ contratVente.contactTemoin2Acheteur }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.nomPrenomTemoin2Acheteur">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(3)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin2Acheteur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.contactTemoin3Acheteur">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(3)</p>
+                      <p class="text">{{ contratVente.contactTemoin3Acheteur }}</p>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="contratVente.nomPrenomTemoin1Vendeur && contratVente.contactTemoin1Vendeur">
+                    <h4 class="title title-detail fz17 mb10">Témoins - Vendeur</h4>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(1)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin1Vendeur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(1)</p>
+                      <p class="text">{{ contratVente.contactTemoin1Vendeur }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.nomPrenomTemoin2Vendeur">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(2)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin2Vendeur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.contactTemoin2Vendeur">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(2)</p>
+                      <p class="text">{{ contratVente.contactTemoin2Vendeur }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.nomPrenomTemoin3Vendeur">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(3)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin3Vendeur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.contactTemoin3Vendeur">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(3)</p>
+                      <p class="text">{{ contratVente.contactTemoin3Vendeur }}</p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <h4 class="title title-detail fz17 mb10">Bien immobilier</h4>
+                    <p class="fw600 mb5 ff-heading dark-color" *ngIf="demandeAchat.publication.bienImmobilier.description">Description</p>
+                    <p class="text justify-text" *ngIf="demandeAchat.publication.bienImmobilier.description">
+                      {{ demandeAchat.publication.bienImmobilier.description }}
+                    </p>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Code du bien</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.codeBien }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorieInForm()">
+                      <p class="fw600 mb5 ff-heading dark-color">Catégorie</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.categorie }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Pays</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.quartier.ville.region.pays.libelle }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Région</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.quartier.ville.region.libelle }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Ville</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.quartier.ville.libelle }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Quartier</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.quartier.libelle }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.bienImmobilier.adresse">
+                      <p class="fw600 mb5 ff-heading dark-color">Adresse</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.adresse }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.bienImmobilier.surface">
+                      <p class="fw600 mb5 ff-heading dark-color">Surface</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.surface | number }} m²</p>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="demandeAchat.publication.agenceImmobiliere">
+                    <h4 class="title title-detail fz17 mb20">Agence</h4>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom</p>
+                      <p class="text">{{ demandeAchat.publication.agenceImmobiliere.nomAgence }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Email</p>
+                      <p class="text">{{ demandeAchat.publication.agenceImmobiliere.adresseEmail }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
+                      <p class="text">{{ demandeAchat.publication.agenceImmobiliere.telephone }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Commission</p>
+                      <p class="text">{{ contratVente.commission }} %</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Frais de visite</p>
+                      <p class="text">{{ contratVente.fraisDeVisite | number }} FCFA</p>
+                    </div>
+
+                  </div>
+
+                  <div class="row" *ngIf="!demandeAchat.publication.agenceImmobiliere">
+                    <h4 class="title title-detail fz17 mb20" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Démarcheur</h4>
+                    <h4 class="title title-detail fz17 mb20" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_GERANT'">Gérant</h4>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR' || demandeAchat.publication.personne.role.code == 'ROLE_GERANT'">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom</p>
+                      <p class="text">{{ demandeAchat.publication.personne.nom }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR' || demandeAchat.publication.personne.role.code == 'ROLE_GERANT'">
+                      <p class="fw600 mb5 ff-heading dark-color">Prénom(s)</p>
+                      <p class="text">{{ demandeAchat.publication.personne.prenom }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR' || demandeAchat.publication.personne.role.code == 'ROLE_GERANT'">
+                      <p class="fw600 mb5 ff-heading dark-color">Email</p>
+                      <p class="text">{{ demandeAchat.publication.personne.email }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR' || demandeAchat.publication.personne.role.code == 'ROLE_GERANT'">
+                      <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
+                      <p class="text">{{ demandeAchat.publication.personne.telephone }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
+                      <p class="fw600 mb5 ff-heading dark-color">Commission</p>
+                      <p class="text">{{ contratVente.commission }} %</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
+                      <p class="fw600 mb5 ff-heading dark-color">Frais de visite</p>
+                      <p class="text">{{ contratVente.fraisDeVisite | number }} FCFA</p>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="row" *ngIf="!demandeAchat.publication.bienImmobilier.estDelegue">
+                  <div class="row">
+                    <h4 class="title title-detail fz17 mb10">Client</h4>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom</p>
+                      <p class="text">{{ demandeAchat.client.nom }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Prénom(s)</p>
+                      <p class="text">{{ demandeAchat.client.prenom }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Email</p>
+                      <p class="text">{{ demandeAchat.client.email }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
+                      <p class="text">{{ demandeAchat.client.telephone }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Prix de vente</p>
+                      <p class="text">{{ contratVente.prixVente | number }} FCFA</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nombre de tranches du paiement</p>
+                      <p class="text">{{ contratVente.nombreDeTranche | number }} tranches</p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <h4 class="title title-detail fz17 mb10">Propriétaire</h4>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.personne.nom }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Prénom(s)</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.personne.prenom }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Email</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.personne.email }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.personne.telephone }}</p>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="contratVente.nomPrenomTemoin1Acheteur && contratVente.contactTemoin1Acheteur">
+                    <h4 class="title title-detail fz17 mb10">Témoins - Acquéreur</h4>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(1)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin1Acheteur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(1)</p>
+                      <p class="text">{{ contratVente.contactTemoin1Acheteur }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.nomPrenomTemoin2Acheteur">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(2)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin2Acheteur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.contactTemoin2Acheteur">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(2)</p>
+                      <p class="text">{{ contratVente.contactTemoin2Acheteur }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.nomPrenomTemoin2Acheteur">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(3)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin2Acheteur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.contactTemoin3Acheteur">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(3)</p>
+                      <p class="text">{{ contratVente.contactTemoin3Acheteur }}</p>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="contratVente.nomPrenomTemoin1Vendeur && contratVente.contactTemoin1Vendeur">
+                    <h4 class="title title-detail fz17 mb10">Témoins - Vendeur</h4>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(1)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin1Vendeur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(1)</p>
+                      <p class="text">{{ contratVente.contactTemoin1Vendeur }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.nomPrenomTemoin2Vendeur">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(2)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin2Vendeur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.contactTemoin2Vendeur">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(2)</p>
+                      <p class="text">{{ contratVente.contactTemoin2Vendeur }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.nomPrenomTemoin3Vendeur">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(3)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin3Vendeur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.contactTemoin3Vendeur">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(3)</p>
+                      <p class="text">{{ contratVente.contactTemoin3Vendeur }}</p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <h4 class="title title-detail fz17 mb10">Bien immobilier</h4>
+                    <p class="fw600 mb5 ff-heading dark-color" *ngIf="demandeAchat.publication.bienImmobilier.description">Description</p>
+                    <p class="text justify-text" *ngIf="demandeAchat.publication.bienImmobilier.description">
+                      {{ demandeAchat.publication.bienImmobilier.description }}
+                    </p>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Code du bien</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.codeBien }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Type de bien</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.typeDeBien.designation }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorieInForm()">
+                      <p class="fw600 mb5 ff-heading dark-color">Catégorie</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.categorie }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Pays</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.quartier.ville.region.pays.libelle }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Région</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.quartier.ville.region.libelle }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Ville</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.quartier.ville.libelle }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Quartier</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.quartier.libelle }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.bienImmobilier.adresse">
+                      <p class="fw600 mb5 ff-heading dark-color">Adresse</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.adresse }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.bienImmobilier.surface">
+                      <p class="fw600 mb5 ff-heading dark-color">Surface</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.surface | number }} m²</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 mt30">
+                <div class="d-sm-flex justify-content-between">
+                  <button class="ud-btn btn-retour" type="button" (click)="etape2()"><i class="pi pi-arrow-left"></i> Précédent</button>
+                  <button class="ud-btn btn-valider" (click)="ajouterContratVente()" [ngClass]="{ 'disabled-link': contratVenteFormStep1.invalid || contratVenteFormStep2.invalid }">Enregistrer</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Start Etape 3 -->
+
+          <!-- Start Etape 4 -->
+          <div *ngIf="activeIndex == 3" class="ps-widget bgc-white bdrs12 p30 position-relative">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="row" *ngIf="demandeAchat.publication.bienImmobilier.estDelegue">
+                  <div class="row">
+                    <h4 class="title title-detail fz17 mb10">Client</h4>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom</p>
+                      <p class="text">{{ demandeAchat.client.nom }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Prénom(s)</p>
+                      <p class="text">{{ demandeAchat.client.prenom }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Email</p>
+                      <p class="text">{{ demandeAchat.client.email }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
+                      <p class="text">{{ demandeAchat.client.telephone }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Prix de vente</p>
+                      <p class="text">{{ contratVente.prixVente | number }} FCFA</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nombre de tranches du paiement</p>
+                      <p class="text">{{ contratVente.nombreDeTranche | number }} tranches</p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <h4 class="title title-detail fz17 mb10">Propriétaire</h4>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.personne.nom }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Prénom(s)</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.personne.prenom }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Email</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.personne.email }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.personne.telephone }}</p>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="contratVente.nomPrenomTemoin1Acheteur && contratVente.contactTemoin1Acheteur">
+                    <h4 class="title title-detail fz17 mb10">Témoins - Acquéreur</h4>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(1)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin1Acheteur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(1)</p>
+                      <p class="text">{{ contratVente.contactTemoin1Acheteur }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.nomPrenomTemoin2Acheteur">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(2)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin2Acheteur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.contactTemoin2Acheteur">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(2)</p>
+                      <p class="text">{{ contratVente.contactTemoin2Acheteur }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.nomPrenomTemoin2Acheteur">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(3)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin2Acheteur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.contactTemoin3Acheteur">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(3)</p>
+                      <p class="text">{{ contratVente.contactTemoin3Acheteur }}</p>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="contratVente.nomPrenomTemoin1Vendeur && contratVente.contactTemoin1Vendeur">
+                    <h4 class="title title-detail fz17 mb10">Témoins - Vendeur</h4>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(1)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin1Vendeur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(1)</p>
+                      <p class="text">{{ contratVente.contactTemoin1Vendeur }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.nomPrenomTemoin2Vendeur">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(2)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin2Vendeur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.contactTemoin2Vendeur">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(2)</p>
+                      <p class="text">{{ contratVente.contactTemoin2Vendeur }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.nomPrenomTemoin3Vendeur">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(3)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin3Vendeur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.contactTemoin3Vendeur">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(3)</p>
+                      <p class="text">{{ contratVente.contactTemoin3Vendeur }}</p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <h4 class="title title-detail fz17 mb10">Bien immobilier</h4>
+                    <p class="fw600 mb5 ff-heading dark-color" *ngIf="demandeAchat.publication.bienImmobilier.description">Description</p>
+                    <p class="text justify-text" *ngIf="demandeAchat.publication.bienImmobilier.description">
+                      {{ demandeAchat.publication.bienImmobilier.description }}
+                    </p>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Code du bien</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.codeBien }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Type de bien</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.typeDeBien.designation }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorieInForm()">
+                      <p class="fw600 mb5 ff-heading dark-color">Catégorie</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.categorie }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Pays</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.quartier.ville.region.pays.libelle }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Région</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.quartier.ville.region.libelle }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Ville</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.quartier.ville.libelle }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Quartier</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.quartier.libelle }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.bienImmobilier.adresse">
+                      <p class="fw600 mb5 ff-heading dark-color">Adresse</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.adresse }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.bienImmobilier.surface">
+                      <p class="fw600 mb5 ff-heading dark-color">Surface</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.surface | number }} m²</p>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="demandeAchat.publication.agenceImmobiliere">
+                    <h4 class="title title-detail fz17 mb20">Agence</h4>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom</p>
+                      <p class="text">{{ demandeAchat.publication.agenceImmobiliere.nomAgence }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Email</p>
+                      <p class="text">{{ demandeAchat.publication.agenceImmobiliere.adresseEmail }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
+                      <p class="text">{{ demandeAchat.publication.agenceImmobiliere.telephone }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Commission</p>
+                      <p class="text">{{ contratVente.commission }} %</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Frais de visite</p>
+                      <p class="text">{{ contratVente.fraisDeVisite | number }} FCFA</p>
+                    </div>
+
+                  </div>
+
+                  <div class="row" *ngIf="!demandeAchat.publication.agenceImmobiliere">
+                    <h4 class="title title-detail fz17 mb20" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Démarcheur</h4>
+                    <h4 class="title title-detail fz17 mb20" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_GERANT'">Gérant</h4>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR' || demandeAchat.publication.personne.role.code == 'ROLE_GERANT'">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom</p>
+                      <p class="text">{{ demandeAchat.publication.personne.nom }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR' || demandeAchat.publication.personne.role.code == 'ROLE_GERANT'">
+                      <p class="fw600 mb5 ff-heading dark-color">Prénom(s)</p>
+                      <p class="text">{{ demandeAchat.publication.personne.prenom }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR' || demandeAchat.publication.personne.role.code == 'ROLE_GERANT'">
+                      <p class="fw600 mb5 ff-heading dark-color">Email</p>
+                      <p class="text">{{ demandeAchat.publication.personne.email }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR' || demandeAchat.publication.personne.role.code == 'ROLE_GERANT'">
+                      <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
+                      <p class="text">{{ demandeAchat.publication.personne.telephone }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
+                      <p class="fw600 mb5 ff-heading dark-color">Commission</p>
+                      <p class="text">{{ contratVente.commission }} %</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
+                      <p class="fw600 mb5 ff-heading dark-color">Frais de visite</p>
+                      <p class="text">{{ contratVente.fraisDeVisite | number }} FCFA</p>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="row" *ngIf="!demandeAchat.publication.bienImmobilier.estDelegue">
+                  <div class="row">
+                    <h4 class="title title-detail fz17 mb10">Client</h4>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom</p>
+                      <p class="text">{{ demandeAchat.client.nom }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Prénom(s)</p>
+                      <p class="text">{{ demandeAchat.client.prenom }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Email</p>
+                      <p class="text">{{ demandeAchat.client.email }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
+                      <p class="text">{{ demandeAchat.client.telephone }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Prix de vente</p>
+                      <p class="text">{{ contratVente.prixVente | number }} FCFA</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nombre de tranches du paiement</p>
+                      <p class="text">{{ contratVente.nombreDeTranche | number }} tranches</p>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="contratVente.nomPrenomTemoin1Acheteur && contratVente.contactTemoin1Acheteur">
+                    <h4 class="title title-detail fz17 mb10">Témoins - Acquéreur</h4>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(1)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin1Acheteur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(1)</p>
+                      <p class="text">{{ contratVente.contactTemoin1Acheteur }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.nomPrenomTemoin2Acheteur">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(2)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin2Acheteur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.contactTemoin2Acheteur">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(2)</p>
+                      <p class="text">{{ contratVente.contactTemoin2Acheteur }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.nomPrenomTemoin2Acheteur">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(3)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin2Acheteur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.contactTemoin3Acheteur">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(3)</p>
+                      <p class="text">{{ contratVente.contactTemoin3Acheteur }}</p>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="contratVente.nomPrenomTemoin1Vendeur && contratVente.contactTemoin1Vendeur">
+                    <h4 class="title title-detail fz17 mb10">Témoins - Vendeur</h4>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(1)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin1Vendeur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(1)</p>
+                      <p class="text">{{ contratVente.contactTemoin1Vendeur }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.nomPrenomTemoin2Vendeur">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(2)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin2Vendeur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.contactTemoin2Vendeur">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(2)</p>
+                      <p class="text">{{ contratVente.contactTemoin2Vendeur }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.nomPrenomTemoin3Vendeur">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom & Prénom(s) Témoin(3)</p>
+                      <p class="text">{{ contratVente.nomPrenomTemoin3Vendeur }}</p>
+                    </div>
+                    <div class="col-sm-6 col-xl-4" *ngIf="contratVente.contactTemoin3Vendeur">
+                      <p class="fw600 mb5 ff-heading dark-color">Contact Témoin(3)</p>
+                      <p class="text">{{ contratVente.contactTemoin3Vendeur }}</p>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <h4 class="title title-detail fz17 mb10">Bien immobilier</h4>
+                    <p class="fw600 mb5 ff-heading dark-color" *ngIf="demandeAchat.publication.bienImmobilier.description">Description</p>
+                    <p class="text justify-text" *ngIf="demandeAchat.publication.bienImmobilier.description">
+                      {{ demandeAchat.publication.bienImmobilier.description }}
+                    </p>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Code du bien</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.codeBien }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Type de bien</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.typeDeBien.designation }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorieInForm()">
+                      <p class="fw600 mb5 ff-heading dark-color">Catégorie</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.categorie }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Pays</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.quartier.ville.region.pays.libelle }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Région</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.quartier.ville.region.libelle }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Ville</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.quartier.ville.libelle }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Quartier</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.quartier.libelle }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.bienImmobilier.adresse">
+                      <p class="fw600 mb5 ff-heading dark-color">Adresse</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.adresse }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.bienImmobilier.surface">
+                      <p class="fw600 mb5 ff-heading dark-color">Surface</p>
+                      <p class="text">{{ demandeAchat.publication.bienImmobilier.surface | number }} m²</p>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="demandeAchat.publication.agenceImmobiliere">
+                    <h4 class="title title-detail fz17 mb20">Agence</h4>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom</p>
+                      <p class="text">{{ demandeAchat.publication.agenceImmobiliere.nomAgence }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Email</p>
+                      <p class="text">{{ demandeAchat.publication.agenceImmobiliere.adresseEmail }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
+                      <p class="text">{{ demandeAchat.publication.agenceImmobiliere.telephone }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Commission</p>
+                      <p class="text">{{ contratVente.commission }} %</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4">
+                      <p class="fw600 mb5 ff-heading dark-color">Frais de visite</p>
+                      <p class="text">{{ contratVente.fraisDeVisite | number }} FCFA</p>
+                    </div>
+
+                  </div>
+
+                  <div class="row" *ngIf="!demandeAchat.publication.agenceImmobiliere">
+                    <h4 class="title title-detail fz17 mb20" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Démarcheur</h4>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom</p>
+                      <p class="text">{{ demandeAchat.publication.personne.nom }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
+                      <p class="fw600 mb5 ff-heading dark-color">Prénom(s)</p>
+                      <p class="text">{{ demandeAchat.publication.personne.prenom }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
+                      <p class="fw600 mb5 ff-heading dark-color">Email</p>
+                      <p class="text">{{ demandeAchat.publication.personne.email }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
+                      <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
+                      <p class="text">{{ demandeAchat.publication.personne.telephone }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
+                      <p class="fw600 mb5 ff-heading dark-color">Commission</p>
+                      <p class="text">{{ contratVente.commission }} %</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
+                      <p class="fw600 mb5 ff-heading dark-color">Frais de visite</p>
+                      <p class="text">{{ contratVente.fraisDeVisite | number }} FCFA</p>
+                    </div>
+
+                    <h4 class="title title-detail fz17 mb20" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_PROPRIETAIRE'">Propriétaire</h4>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_PROPRIETAIRE'">
+                      <p class="fw600 mb5 ff-heading dark-color">Nom</p>
+                      <p class="text">{{ demandeAchat.publication.personne.nom }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_PROPRIETAIRE'">
+                      <p class="fw600 mb5 ff-heading dark-color">Prénom(s)</p>
+                      <p class="text">{{ demandeAchat.publication.personne.prenom }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_PROPRIETAIRE'">
+                      <p class="fw600 mb5 ff-heading dark-color">Email</p>
+                      <p class="text">{{ demandeAchat.publication.personne.email }}</p>
+                    </div>
+
+                    <div class="col-sm-6 col-xl-4" *ngIf="demandeAchat.publication.personne.role.code == 'ROLE_PROPRIETAIRE'">
+                      <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
+                      <p class="text">{{ demandeAchat.publication.personne.telephone }}</p>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12 mt30">
+                <div class="d-sm-flex justify-content-between">
+                  <button class="ud-btn btn-retour" type="button" (click)="etape2()"><i class="pi pi-arrow-left"></i> Précédent</button>
+                  <button class="ud-btn btn-valider" (click)="ajouterContratVente()" [ngClass]="{ 'disabled-link': contratVenteFormStep1.invalid || contratVenteFormStep2.invalid || contratVenteFormStep3 }">Enregistrer</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Etape 4 -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Formulaire Proposition Contrat -->
 </div>

@@ -58,3 +58,6 @@
   cursor: not-allowed; /* Affiche un curseur "non autorisé" */
 }
 
+.title-detail {
+  color: #3B82F6;
+}

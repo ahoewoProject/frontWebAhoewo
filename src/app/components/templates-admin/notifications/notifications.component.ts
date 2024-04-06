@@ -171,25 +171,18 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   pageConcerneeUrl(url: string): string {
     let redirectURL = '';
     if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
-      this.behaviorService.setActiveLink('/admin' + url);
       redirectURL = '/admin' + url;
     } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.behaviorService.setActiveLink('/responsable' + url);
-      redirectURL = '/responsable' + url;
+      redirectURL = '/responsable/agences-immobilieres' + url;
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.behaviorService.setActiveLink('/agent-immobilier' + url);
-      redirectURL = '/agent-immobilier' + url;
+      redirectURL = '/agent-immobilier/agences-immobilieres' + url;
     } else if (this.user.role.code == 'ROLE_CLIENT') {
-      this.behaviorService.setActiveLink('/client' + url);
       redirectURL = '/client' + url;
     } else if (this.user.role.code == 'ROLE_DEMARCHEUR') {
-      this.behaviorService.setActiveLink('/demarcheur' + url);
       redirectURL = '/demarcheur' + url;
     } else if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
-      this.behaviorService.setActiveLink('/proprietaire' + url);
       redirectURL = '/proprietaire' + url;
     } else if (this.user.role.code == 'ROLE_GERANT') {
-      this.behaviorService.setActiveLink('/gerant' + url);
       redirectURL = '/gerant' + url;
     }
 

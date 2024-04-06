@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmEventType, ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
 import { MotifRejet } from 'src/app/models/MotifRejet';
 import { MotifRejetForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetForm';
@@ -12,6 +13,7 @@ import { BienImmobilierService } from 'src/app/services/gestionDesBiensImmobilie
 import { CaracteristiquesService } from 'src/app/services/gestionDesBiensImmobiliers/caracteristiques.service';
 import { ImagesBienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/images-bien-immobilier.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
+import { ContratLocationService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-location.service';
 import { DemandeLocationService } from 'src/app/services/gestionDesLocationsEtVentes/demande-location.service';
 import { MotifRejetService } from 'src/app/services/motif-rejet.service';
 import { environment } from 'src/environments/environment';
@@ -28,8 +30,10 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
   recherche: string = '';
   affichage = 1;
   responsiveOptions: any[] | undefined;
+  menus: MenuItem[] | undefined;
   elementsParPage = 5;
   numeroDeLaPage = 0;
+  activeIndex: number = 0;
 
   demandeLocation = this.demandeLocationService.demandeLocation;
   demandesLocations!: Page<DemandeLocation>;
@@ -44,16 +48,23 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
   motifRefusForm = new MotifRejetForm();
   images: ImagesBienImmobilier[] = [];
 
+  contratLocation = this.contratLocationService.contratLocation;
+
   demandeLocationId: any;
   demandeLocationReussie: any;
   listMotifs: MotifRejet[] = [];
+  typesDeContrat: string[] = [];
+  typeDeContratSelectionne: any;
+
+  contratLocationStep1Form: any;
+  contratLocationStep2Form: any;
 
   constructor(private demandeLocationService: DemandeLocationService, private activatedRoute: ActivatedRoute,
     private router: Router, private personneService: PersonneService,
     private motifRejetService: MotifRejetService, private imagesBienImmobilierService: ImagesBienImmobilierService,
     private bienImmobilierService: BienImmobilierService, private bienImmAssocieService: BienImmAssocieService,
     private messageService: MessageService, private confirmationService: ConfirmationService,
-    private caracteristiquesServices: CaracteristiquesService,
+    private caracteristiquesServices: CaracteristiquesService, private contratLocationService: ContratLocationService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -65,7 +76,17 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
     this.demandeLocationReussie = this.activatedRoute.snapshot.queryParams['demandeLocationReussie'];
 
     this.initResponsiveOptions();
+    if (this.user.role.code == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
+      this.menusOfAgence();
+    } else if (this.user.role.code == 'ROLE_DEMARCHEUR') {
+      this.menusOfDemarcheur();
+    } else {
+      this.menusOfOtherUser();
+    }
     this.initActivatedRoute();
+    this.listeTypesDeContrat();
+    this.initContratLocationStep1Form();
+    this.initContratLocationStep2Form();
   }
 
   initActivatedRoute(): void {
@@ -96,6 +117,137 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
           numVisible: 1
       }
     ];
+  }
+
+  menusOfAgence(): void {
+    this.menus = [
+      {
+          label: 'Client'
+      },
+      {
+          label: 'Agence'
+      },
+      {
+          label: 'Confirmation'
+      },
+    ];
+  }
+
+  menusOfDemarcheur(): void {
+    this.menus = [
+      {
+          label: 'Client'
+      },
+      {
+          label: 'Demarcheur'
+      },
+      {
+          label: 'Confirmation'
+      },
+    ];
+  }
+
+  menusOfOtherUser(): void {
+    this.menus = [
+      {
+          label: 'Client'
+      },
+      {
+          label: 'Confirmation'
+      },
+    ];
+  }
+
+  onActiveIndexChange(event: number) {
+    this.activeIndex = event;
+  }
+
+  listeTypesDeContrat(): void {
+    this.typesDeContrat = ['Contrat de bail habitation', 'Contrat de bail construction'];
+    this.typeDeContratSelectionne = this.typesDeContrat[0];
+  }
+
+  initContratLocationStep1Form(): void {
+    this.contratLocationStep1Form = new FormGroup({
+      typeContrat: new FormControl('', [Validators.required]),
+      loyer: new FormControl('', [Validators.required]),
+      avance: new FormControl(''),
+      caution: new FormControl(''),
+      jourSupplementPaiement: new FormControl(''),
+      debutPaiement: new FormControl('', [Validators.required]),
+      dateDebut: new FormControl('', [Validators.required]),
+      dateFin: new FormControl(''),
+    })
+  }
+
+  initContratLocationStep2Form(): void {
+    this.contratLocationStep2Form = new FormGroup({
+      commission: new FormControl(''),
+      fraisDeVisite: new FormControl(''),
+    })
+  }
+
+  get typeContrat() {
+    return this.contratLocationStep1Form.get('typeContrat');
+  }
+
+  get loyer() {
+    return this.contratLocationStep1Form.get('loyer');
+  }
+
+  get avance() {
+    return this.contratLocationStep1Form.get('avance');
+  }
+
+  get caution() {
+    return this.contratLocationStep1Form.get('caution');
+  }
+
+  get jourSupplementPaiement() {
+    return this.contratLocationStep1Form.get('jourSupplementPaiement');
+  }
+
+  get debutPaiement() {
+    return this.contratLocationStep1Form.get('debutPaiement');
+  }
+
+  get dateDebut() {
+    return this.contratLocationStep1Form.get('dateDebut');
+  }
+
+  get dateFin() {
+    return this.contratLocationStep1Form.get('dateFin');
+  }
+
+  get commission() {
+    return this.contratLocationStep2Form.get('commission');
+  }
+
+  get fraisDeVisite() {
+    return this.contratLocationStep2Form.get('fraisDeVisite');
+  }
+
+  calculerProchainPaiement(dateDebut: Date, jourSupplementPaiement: number, debutPaiement: number): Date {
+    const prochainPaiementDate = new Date(dateDebut);
+    prochainPaiementDate.setDate(prochainPaiementDate.getDate() + jourSupplementPaiement);
+    prochainPaiementDate.setMonth(prochainPaiementDate.getMonth() + debutPaiement);
+    return prochainPaiementDate;
+  }
+
+  resetContratLocationStep1Form(): void {
+    this.contratLocationStep1Form.reset();
+  }
+
+  etape1(): void {
+    this.activeIndex = 0;
+  }
+
+  etape2(): void {
+    this.activeIndex = 1;
+  }
+
+  etape3(): void {
+    this.activeIndex = 2;
   }
 
   listeDemandesLocations(numeroDeLaPage: number, elementsParPage: number) {
@@ -312,7 +464,7 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
           this.messageSuccess = "La demande de location a été validée avec succès !";
           this.messageService.add({
             severity: 'success',
-            summary: 'Validation d\'une demande de la location confirmée',
+            summary: 'Validation d\'une demande de location confirmée',
             detail: this.messageSuccess
           })
         });
@@ -323,20 +475,97 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
           case ConfirmEventType.REJECT:
             this.messageService.add({
               severity: 'error',
-              summary: 'Validation d\'une demande de la location rejetée',
+              summary: 'Validation d\'une demande de location rejetée',
               detail: "Vous avez rejeté la validation de cette demande de location!"
             });
             break;
           case ConfirmEventType.CANCEL:
             this.messageService.add({
               severity: 'warn',
-              summary: 'Validation d\'une demande de la location annulée',
+              summary: 'Validation d\'une demande de location annulée',
               detail: "Vous avez annulé la validation de cette demande de location !"
             });
             break;
         }
       }
     });
+  }
+
+  afficherPageAjoutContrat(id: number): void {
+    this.demandeLocationService.findById(id).subscribe(
+      (data: DemandeLocation) => {
+        this.demandeLocation = data;
+        this.contratLocation.client = this.demandeLocation.client;
+        this.contratLocation.demandeLocation = this.demandeLocation;
+        this.contratLocation.loyer = this.demandeLocation.prixDeLocation;
+        this.contratLocation.avance = this.demandeLocation.avance;
+        this.contratLocation.caution = this.demandeLocation.caution;
+        this.contratLocation.commission = this.demandeLocation.publication.commission;
+        this.contratLocation.fraisDeVisite = this.demandeLocation.publication.fraisDeVisite;
+        console.log(data)
+      }
+    );
+    this.affichage = 4;
+  }
+
+  ajouterContratLocation(): void {
+    this.contratLocation.typeContrat = this.typeDeContratSelectionne;
+    this.contratLocation.bienImmobilier = this.demandeLocation.publication.bienImmobilier;
+    if (this.demandeLocation.publication.bienImmobilier.estDelegue) {
+      this.contratLocation.proprietaire = this.demandeLocation.publication.bienImmobilier.personne;
+
+      if (this.demandeLocation.publication.agenceImmobiliere) {
+        this.contratLocation.agenceImmobiliere = this.demandeLocation.publication.agenceImmobiliere;
+      } else if (this.demandeLocation.publication.personne &&
+        this.demandeLocation.publication.personne.role &&
+        this.demandeLocation.publication.personne.role.code == 'ROLE_DEMARCHEUR') {
+        this.contratLocation.demarcheur = this.demandeLocation.publication.personne
+      } else if (this.demandeLocation.publication.personne &&
+        this.demandeLocation.publication.personne.role &&
+        this.demandeLocation.publication.personne.role.code == 'ROLE_GERANT') {
+        this.contratLocation.gerant = this.demandeLocation.publication.personne
+      }
+    } else {
+      if (this.demandeLocation.publication.agenceImmobiliere) {
+        this.contratLocation.agenceImmobiliere = this.demandeLocation.publication.agenceImmobiliere;
+      } else if (this.demandeLocation.publication.personne &&
+        this.demandeLocation.publication.personne.role &&
+        this.demandeLocation.publication.personne.role.code == 'ROLE_DEMARCHEUR') {
+        this.contratLocation.demarcheur = this.demandeLocation.publication.personne
+      } else if (this.demandeLocation.publication.personne &&
+        this.demandeLocation.publication.personne.role &&
+        this.demandeLocation.publication.personne.role.code == 'ROLE_PROPRIETAIRE') {
+        this.contratLocation.proprietaire = this.demandeLocation.publication.bienImmobilier.personne;
+      }
+    }
+    this.contratLocationService.ajouterContratLocation(this.contratLocation).subscribe(
+      (response) => {
+        if (response.id > 0) {
+          this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrats'], { queryParams: { ajoutContratLocationReussie: true } });
+        } else {
+          this.messageService.add({
+            severity:'error',
+            summary: 'Echec d\'ajout du contrat de location',
+            detail: 'Le contrat de location n\' a pas été ajouté !'
+          })
+        }
+      },
+      (error) => {
+        if (error.error == "Un contrat de location existe déjà pour cette demande de location.") {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Ajout du contrat de location non réussie',
+            detail: error.error
+          });
+        } else if (error.error == "Un contrat de location est déjà en cours pour ce bien immobilier.") {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Ajout du contrat de non réussie',
+            detail: error.error
+          });
+        }
+      }
+    )
   }
 
   navigateURLBYUSER(user: any): string {
@@ -385,13 +614,13 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
   }
 
   afficherCategorie(): boolean {
-    return this.bienImm.typeDeBien.designation == 'Maison' ||
-    this.bienImm.typeDeBien.designation == 'Villa' ||
-    this.bienImm.typeDeBien.designation == 'Immeuble' ||
-    this.bienImm.typeDeBien.designation == 'Appartement' ||
-    this.bienImm.typeDeBien.designation == 'Chambre salon' ||
-    this.bienImm.typeDeBien.designation == 'Chambre' ||
-    this.bienImm.typeDeBien.designation == 'Bureau';
+    return this.demandeLocation.publication.bienImmobilier.typeDeBien.designation == 'Maison' ||
+    this.demandeLocation.publication.bienImmobilier.typeDeBien.designation == 'Villa' ||
+    this.demandeLocation.publication.bienImmobilier.typeDeBien.designation == 'Immeuble' ||
+    this.demandeLocation.publication.bienImmobilier.typeDeBien.designation == 'Appartement' ||
+    this.demandeLocation.publication.bienImmobilier.typeDeBien.designation == 'Chambre salon' ||
+    this.demandeLocation.publication.bienImmobilier.typeDeBien.designation == 'Chambre' ||
+    this.demandeLocation.publication.bienImmobilier.typeDeBien.designation == 'Bureau';
   }
 
   ngOnDestroy(): void {

@@ -65,6 +65,10 @@
   font-family: 'DM Sans', sans-serif;
 }
 
+.text {
+  font-family: 'Inter var', sans-serif;
+}
+
 .ud-btn i {
   margin-left: 10px;
   font-size: 16px;

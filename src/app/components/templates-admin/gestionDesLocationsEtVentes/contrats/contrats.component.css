@@ -10,21 +10,18 @@
   border-radius: 100%;
 }
 
-:host ::ng-deep .image {
-  border-radius: 10px;
-}
-
-:host ::ng-deep .imageLength0 {
-  border-radius: 10px;
-}
-
-:host ::ng-deep .p-galleria-thumbnail-wrapper {
-  border-radius: 10px;
+:host ::ng-deep .p-tabview-title {
+  font-family: 'DM Sans', sans-serif;
 }
 
 .justify-text {
   text-align: justify;
 }
+
+.title-detail {
+  color: #3B82F6;
+}
+
 
 .error {
   color: #a94442;
@@ -48,10 +45,6 @@
 
 :host ::ng-deep .pInputNumber.ng-dirty.ng-invalid > .p-inputnumber > .p-inputtext {
   border-color: #DDDDDD;
-}
-
-:host ::ng-deep .p-steps-title {
-  font-family: 'DM Sans', sans-serif;
 }
 
 :host ::ng-deep .select1 .p-dropdown {
@@ -81,6 +74,6 @@
   cursor: not-allowed; /* Affiche un curseur "non autorisé" */
 }
 
-.title-detail {
-  color: #3B82F6;
+:host ::ng-deep .p-steps-title {
+  font-family: 'DM Sans', sans-serif;
 }

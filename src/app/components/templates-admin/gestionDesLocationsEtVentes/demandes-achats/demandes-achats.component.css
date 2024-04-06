@@ -35,6 +35,19 @@
   border-color: #DDDDDD;
 }
 
+:host ::ng-deep .pInputText {
+  width: 100%;
+  border-radius: 8px;
+}
+
+:host ::ng-deep .pInputText .p-inputtext {
+  font-size: 100;
+}
+
+:host ::ng-deep .pInputText.ng-dirty.ng-invalid > .p-inputtext {
+  border-color: #DDDDDD;
+}
+
 .error {
   color: #a94442;
   font-family: 'Inter var', sans-serif;
@@ -54,4 +67,17 @@
   pointer-events: none; /* Désactive les événements de pointage, rendant le lien non cliquable */
   opacity: 0.5; /* Réduit l'opacité pour montrer qu'il est désactivé */
   cursor: not-allowed; /* Affiche un curseur "non autorisé" */
+}
+
+.error {
+  color: #a94442;
+  font-family: 'Inter var', sans-serif;
+}
+
+:host ::ng-deep .p-steps-title {
+  font-family: 'DM Sans', sans-serif;
+}
+
+.title-detail {
+  color: #3B82F6;
 }

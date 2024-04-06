@@ -1,17 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmEventType, ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
 import { MotifRejet } from 'src/app/models/MotifRejet';
 import { MotifRejetForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetForm';
 import { Caracteristiques } from 'src/app/models/gestionDesBiensImmobiliers/Caracteristiques';
 import { ImagesBienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/ImagesBienImmobilier';
+import { ContratVente } from 'src/app/models/gestionDesLocationsEtVentes/ContratVente';
 import { DemandeAchat } from 'src/app/models/gestionDesLocationsEtVentes/DemandeAchat';
 import { BienImmAssocieService } from 'src/app/services/gestionDesBiensImmobiliers/bien-imm-associe.service';
 import { BienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/bien-immobilier.service';
 import { CaracteristiquesService } from 'src/app/services/gestionDesBiensImmobiliers/caracteristiques.service';
 import { ImagesBienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/images-bien-immobilier.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
+import { ContratVenteService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-vente.service';
 import { DemandeAchatService } from 'src/app/services/gestionDesLocationsEtVentes/demande-achat.service';
 import { MotifRejetService } from 'src/app/services/motif-rejet.service';
 import { environment } from 'src/environments/environment';
@@ -27,6 +30,7 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
   modalAnnulationVisible: boolean = false;
   recherche: string = '';
   affichage = 1;
+  menus: MenuItem[] | undefined;
   responsiveOptions: any[] | undefined;
   elementsParPage = 5;
   numeroDeLaPage = 0;
@@ -36,6 +40,7 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
   APIEndpoint: string;
   user: any;
   bienImm: any;
+  activeIndex: number = 0;
 
   messageErreur: string = "";
   messageSuccess: string | null = null;
@@ -48,13 +53,18 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
   demandeAchatId: any;
   demandeAchatReussie: any;
   listMotifs: MotifRejet[] = [];
+  contratVenteFormStep1: any;
+  contratVenteFormStep2: any;
+  contratVenteFormStep3: any;
+
+  contratVente = this.contratVenteService.contratVente;
 
   constructor(private demandeAchatService: DemandeAchatService, private activatedRoute: ActivatedRoute,
     private router: Router, private personneService: PersonneService,
     private motifRejetService: MotifRejetService, private imagesBienImmobilierService: ImagesBienImmobilierService,
     private bienImmobilierService: BienImmobilierService, private bienImmAssocieService: BienImmAssocieService,
     private messageService: MessageService, private confirmationService: ConfirmationService,
-    private caracteristiquesServices: CaracteristiquesService,
+    private caracteristiquesServices: CaracteristiquesService, private contratVenteService: ContratVenteService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -66,6 +76,17 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
     this.demandeAchatReussie = this.activatedRoute.snapshot.queryParams['demandeAchatReussie'];
 
     this.initResponsiveOptions();
+    this.initContratVenteStep1Form();
+    this.initContratVenteStep2Form();
+    this.initContratVenteStep3Form();
+    if (this.user.role.code == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
+      this.menusOfAgence();
+    } else if (this.user.role.code == 'ROLE_DEMARCHEUR') {
+      this.menusOfDemarcheur();
+    } else {
+      this.menusOfOtherUser();
+    }
+
     this.initActivatedRoute();
   }
 
@@ -97,6 +118,58 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
           numVisible: 1
       }
     ];
+  }
+
+  menusOfAgence(): void {
+    this.menus = [
+      {
+          label: 'Client'
+      },
+      {
+          label: 'Témoins'
+      },
+      {
+          label: 'Agence'
+      },
+      {
+          label: 'Confirmation'
+      },
+    ];
+  }
+
+  menusOfDemarcheur(): void {
+    this.menus = [
+      {
+          label: 'Client'
+      },
+      {
+          label: 'Témoins'
+      },
+      {
+          label: 'Demarcheur'
+      },
+      {
+          label: 'Confirmation'
+      },
+    ];
+  }
+
+  menusOfOtherUser(): void {
+    this.menus = [
+      {
+          label: 'Client'
+      },
+      {
+          label: 'Témoins'
+      },
+      {
+          label: 'Confirmation'
+      },
+    ];
+  }
+
+  onActiveIndexChange(event: number) {
+    this.activeIndex = event;
   }
 
   listeDemandesAchats(numeroDeLaPage: number, elementsParPage: number) {
@@ -344,6 +417,195 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
     });
   }
 
+  afficherPageContrat(id: number): void {
+    this.demandeAchatService.findById(id).subscribe(
+      (data: DemandeAchat) => {
+        this.demandeAchat = data;
+        this.contratVente.demandeAchat = this.demandeAchat;
+        this.contratVente.prixVente = data.prixAchat;
+        this.contratVente.nombreDeTranche = data.nombreDeTranche;
+      }
+    )
+    this.affichage = 4;
+  }
+
+  initContratVenteStep1Form(): void {
+    this.contratVenteFormStep1 = new FormGroup({
+      prixVente: new FormControl('', [Validators.required]),
+      nombreDeTranche: new FormControl('', [Validators.required]),
+    })
+  }
+
+  get prixVente() {
+    return this.contratVenteFormStep1.get('prixVente')
+  }
+
+  get nombreDeTranche() {
+    return this.contratVenteFormStep1.get('nombreDeTranche')
+  }
+
+  resetContratVenteForm(): void {
+    this.contratVenteFormStep1.reset();
+  }
+
+  initContratVenteStep2Form(): void {
+    this.contratVenteFormStep2 = new FormGroup({
+      nomPrenomTemoin1Vendeur: new FormControl('', [Validators.required]),
+      contactTemoin1Vendeur: new FormControl('', [Validators.required]),
+      nomPrenomTemoin2Vendeur: new FormControl(''),
+      contactTemoin2Vendeur: new FormControl(''),
+      nomPrenomTemoin3Vendeur: new FormControl(''),
+      contactTemoin3Vendeur: new FormControl(''),
+
+      nomPrenomTemoin1Acheteur: new FormControl('', [Validators.required]),
+      contactTemoin1Acheteur: new FormControl('', [Validators.required]),
+      nomPrenomTemoin2Acheteur: new FormControl(''),
+      contactTemoin2Acheteur: new FormControl(''),
+      nomPrenomTemoin3Acheteur: new FormControl(''),
+      contactTemoin3Acheteur: new FormControl(''),
+    })
+  }
+
+  get nomPrenomTemoin1Vendeur() {
+    return this.contratVenteFormStep2.get('nomPrenomTemoin1Vendeur')
+  }
+
+  get contactTemoin1Vendeur() {
+    return this.contratVenteFormStep2.get('contactTemoin1Vendeur')
+  }
+
+  get nomPrenomTemoin2Vendeur() {
+    return this.contratVenteFormStep2.get('nomPrenomTemoin2Vendeur')
+  }
+
+  get contactTemoin2Vendeur() {
+    return this.contratVenteFormStep2.get('contactTemoin2Vendeur')
+  }
+
+  get nomPrenomTemoin3Vendeur() {
+    return this.contratVenteFormStep2.get('nomPrenomTemoin3Vendeur')
+  }
+
+  get contactTemoin3Vendeur() {
+    return this.contratVenteFormStep2.get('contactTemoin3Vendeur')
+  }
+
+  get nomPrenomTemoin1Acheteur() {
+    return this.contratVenteFormStep2.get('nomPrenomTemoin1Acheteur')
+  }
+
+  get contactTemoin1Acheteur() {
+    return this.contratVenteFormStep2.get('contactTemoin1Acheteur')
+  }
+
+  get nomPrenomTemoin2Acheteur() {
+    return this.contratVenteFormStep2.get('nomPrenomTemoin2Acheteur')
+  }
+
+  get contactTemoin2Acheteur() {
+    return this.contratVenteFormStep2.get('contactTemoin2Acheteur')
+  }
+
+  get nomPrenomTemoin3Acheteur() {
+    return this.contratVenteFormStep2.get('nomPrenomTemoin3Acheteur')
+  }
+
+  get contactTemoin3Acheteur() {
+    return this.contratVenteFormStep2.get('contactTemoin3Acheteur')
+  }
+
+  initContratVenteStep3Form(): void {
+    this.contratVenteFormStep3 = new FormGroup({
+      commission: new FormControl(''),
+      fraisDeVisite: new FormControl(''),
+    })
+  }
+
+  get commission() {
+    return this.contratVenteFormStep3.get('commission');
+  }
+
+  get fraisDeVisite() {
+    return this.contratVenteFormStep3.get('fraisDeVisite');
+  }
+
+  etape1(): void {
+    this.activeIndex = 0;
+  }
+
+  etape2(): void {
+    this.activeIndex = 1;
+  }
+
+  etape3(): void {
+    this.activeIndex = 2;
+  }
+
+  etape4(): void {
+    this.activeIndex = 3;
+  }
+
+  ajouterContratVente(): void {
+    this.contratVente.bienImmobilier = this.demandeAchat.publication.bienImmobilier;
+    this.contratVente.client = this.demandeAchat.client;
+    if (this.demandeAchat.publication.bienImmobilier.estDelegue) {
+      this.contratVente.proprietaire = this.demandeAchat.publication.bienImmobilier.personne;
+
+      if (this.demandeAchat.publication.agenceImmobiliere) {
+        this.contratVente.agenceImmobiliere = this.demandeAchat.publication.agenceImmobiliere;
+      } else if (this.demandeAchat.publication.personne &&
+        this.demandeAchat.publication.personne.role &&
+        this.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR') {
+        this.contratVente.demarcheur = this.demandeAchat.publication.personne
+      } else if (this.demandeAchat.publication.personne &&
+        this.demandeAchat.publication.personne.role &&
+        this.demandeAchat.publication.personne.role.code == 'ROLE_GERANT') {
+        this.contratVente.gerant = this.demandeAchat.publication.personne
+      }
+    } else {
+      if (this.demandeAchat.publication.agenceImmobiliere) {
+        this.contratVente.agenceImmobiliere = this.demandeAchat.publication.agenceImmobiliere;
+      } else if (this.demandeAchat.publication.personne &&
+        this.demandeAchat.publication.personne.role &&
+        this.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR') {
+        this.contratVente.demarcheur = this.demandeAchat.publication.personne
+      } else if (this.demandeAchat.publication.personne &&
+        this.demandeAchat.publication.personne.role &&
+        this.demandeAchat.publication.personne.role.code == 'ROLE_PROPRIETAIRE') {
+        this.contratVente.proprietaire = this.demandeAchat.publication.bienImmobilier.personne;
+      }
+    }
+    this.contratVenteService.ajouterContratVente(this.contratVente).subscribe(
+      (response) => {
+        if (response.id > 0) {
+          this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrats'], { queryParams: { ajoutContratVenteReussie: true } });
+        } else {
+          this.messageService.add({
+            severity:'error',
+            summary: 'Echec d\'ajout du contrat de vente',
+            detail: 'Le contrat de vente n\' a pas été ajouté !'
+          })
+        }
+      },
+      (error) => {
+        console.log(error)
+        if (error.error == "Un contrat de vente existe déjà pour cette demande d'achat.") {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Ajout du contrat de vente non réussie',
+            detail: error.error
+          });
+        } else if (error.error == "Un contrat de vente est déjà validé pour ce bien immobilier.") {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Ajout du contrat de non réussie',
+            detail: error.error
+          });
+        }
+      }
+    )
+  }
+
   navigateURLBYUSER(user: any): string {
     let roleBasedURL = '';
 
@@ -398,6 +660,17 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
     this.bienImm.typeDeBien.designation == 'Chambre' ||
     this.bienImm.typeDeBien.designation == 'Bureau';
   }
+
+  afficherCategorieInForm(): boolean {
+    return this.demandeAchat.publication.bienImmobilier.typeDeBien.designation == 'Maison' ||
+    this.demandeAchat.publication.bienImmobilier.typeDeBien.designation == 'Villa' ||
+    this.demandeAchat.publication.bienImmobilier.typeDeBien.designation == 'Immeuble' ||
+    this.demandeAchat.publication.bienImmobilier.typeDeBien.designation == 'Appartement' ||
+    this.demandeAchat.publication.bienImmobilier.typeDeBien.designation == 'Chambre salon' ||
+    this.demandeAchat.publication.bienImmobilier.typeDeBien.designation == 'Chambre' ||
+    this.demandeAchat.publication.bienImmobilier.typeDeBien.designation == 'Bureau';
+  }
+
 
   newDemandeAchat(): void {
     this.demandeAchat = new DemandeAchat();

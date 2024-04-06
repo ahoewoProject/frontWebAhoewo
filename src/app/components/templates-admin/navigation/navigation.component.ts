@@ -89,7 +89,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
         break;
       case 'ROLE_RESPONSABLE':
         this.notificationService.notificationsNonLuesByOwner();
-        roleBasedURL = '/responsable';
+        roleBasedURL = '/responsable/agences-immobilieres';
         break;
       case 'ROLE_DEMARCHEUR':
         this.notificationService.notificationsNonLuesByOwner();
@@ -101,7 +101,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
         break;
       case 'ROLE_AGENTIMMOBILIER':
         this.notificationService.notificationsNonLuesByOwner();
-        roleBasedURL = '/agent-immobilier';
+        roleBasedURL = '/agent-immobilier/agences-immobilieres';
         break;
       case 'ROLE_CLIENT':
         this.notificationService.notificationsNonLuesByOwner();

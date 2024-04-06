@@ -595,7 +595,7 @@
               </div>
               <div class="col-lg-12" *ngIf="typeDeDemandeSelectionne == 'Demande d\'achat'">
                 <div class="mb20">
-                  <p-inputNumber class="pInputNumber p-fluid" placeholder="Nombre de tranches" formControlName="nombreDeTranche" [(ngModel)]="demandeRequest.nombreDeTranche" inputId="nombreDeTranche" suffix=" tranches">
+                  <p-inputNumber class="pInputNumber p-fluid" placeholder="Nombre de tranches du paiement" formControlName="nombreDeTranche" [(ngModel)]="demandeRequest.nombreDeTranche" inputId="nombreDeTranche" suffix=" tranches">
                   </p-inputNumber>
                   <div class="error" [hidden]="!nombreDeTranche?.hasError('required') || !nombreDeTranche.touched">Le nombre de tranche pour le paiement est obligatoire</div>
                 </div>

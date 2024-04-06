@@ -37,7 +37,7 @@
                   <th scope="col">#</th>
                   <th scope="col">Titre</th>
                   <th scope="col">Etat</th>
-                  <th scope="col">Date notification</th>
+                  <!-- <th scope="col">Date envoi</th> -->
                   <th scope="col">Actions</th>
                 </tr>
               </thead>
@@ -49,9 +49,9 @@
                       <p-tag *ngIf="notification.lu == true" severity="success" value="Lue"></p-tag>
                       <p-tag *ngIf="notification.lu == false" severity="danger" value="Non lue"></p-tag>
                     </td>
-                    <td class="vam">
+                    <!-- <td class="vam">
                       {{ notification.dateNotification | date: "dd-MM-yyyy" }}
-                    </td>
+                    </td> -->
                     <td class="vam">
                       <div class="d-flex">
                         <button pButton type="button" icon="pi pi-eye"

@@ -13,6 +13,7 @@ import { PublicationsComponent } from 'src/app/components/templates-admin/gestio
 import { DemandesVisitesComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-visites/demandes-visites.component';
 import { DemandesLocationsComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-locations/demandes-locations.component';
 import { DemandesAchatsComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-achats/demandes-achats.component';
+import { ContratsComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/contrats/contrats.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -31,7 +32,10 @@ const routes: Routes = [
       { path: 'demandes-locations', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
       { path: 'demandes-locations/:id', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
       { path: 'demandes-achats', component: DemandesAchatsComponent, canActivate: [AuthGuard] },
-      { path: 'demandes-achats/:id', component: DemandesAchatsComponent, canActivate: [AuthGuard] }
+      { path: 'demandes-achats/:id', component: DemandesAchatsComponent, canActivate: [AuthGuard] },
+      { path: 'contrats', component: ContratsComponent, canActivate: [AuthGuard] },
+      { path: 'contrats/locations/:id', component: ContratsComponent, canActivate: [AuthGuard] },
+      { path: 'contrats/ventes/:id', component: ContratsComponent, canActivate: [AuthGuard] }
     ]
   }
 ];
