@@ -75,3 +75,11 @@
   width: 100%;
   border-radius: 8px;
 }
+
+.justify-text {
+  text-align: justify;
+}
+
+.title-detail {
+  color: #3B82F6;
+}

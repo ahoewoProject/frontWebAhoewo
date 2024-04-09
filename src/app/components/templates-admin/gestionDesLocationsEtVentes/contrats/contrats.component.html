@@ -42,7 +42,7 @@
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col">Code</th>
-                      <th scope="col">{{ user.role.code == 'ROLE_CLIENT' ? 'Demande location' : 'Client' }}</th>
+                      <th scope="col">{{ user.role.code == 'ROLE_CLIENT' ? 'Demande location' : 'Locataire' }}</th>
                       <th scope="col">Bien</th>
                       <th scope="col">Etat</th>
                       <th scope="col">Actions</th>
@@ -124,7 +124,7 @@
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col">Code</th>
-                      <th scope="col">{{ user.role.code == 'ROLE_CLIENT' ? 'Demande achat' : 'Client' }}</th>
+                      <th scope="col">{{ user.role.code == 'ROLE_CLIENT' ? 'Demande achat' : 'Acquéreur' }}</th>
                       <th scope="col">Bien</th>
                       <th scope="col">Etat</th>
                       <th scope="col">Actions</th>
@@ -167,7 +167,7 @@
                   (onPageChange)="paginationListeContratsVentes($event)" [rows]="contratsVentes.size"
                   [totalRecords]="contratsVentes.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
                   [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true"
-                  currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} villes">
+                  currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} contrats de ventes">
                 </p-paginator>
               </div>
               <div *ngIf="contratsVentes.totalElements == 0" class="mbp_pagination text-center mt30">
@@ -264,7 +264,7 @@
 
                 <div class="row" *ngIf="contratLocation.demandeLocation.publication.bienImmobilier.estDelegue">
                   <div class="row">
-                    <h4 class="title title-detail fz17 mb10">Client</h4>
+                    <h4 class="title title-detail fz17 mb10">Locataire</h4>
 
                     <div class="col-sm-6 col-xl-4">
                       <p class="fw600 mb5 ff-heading dark-color">Nom</p>
@@ -481,7 +481,7 @@
 
                 <div class="row" *ngIf="!contratLocation.demandeLocation.publication.bienImmobilier.estDelegue">
                   <div class="row">
-                    <h4 class="title title-detail fz17 mb10">Client</h4>
+                    <h4 class="title title-detail fz17 mb10">Locataire</h4>
 
                     <div class="col-sm-6 col-xl-4">
                       <p class="fw600 mb5 ff-heading dark-color">Nom</p>
@@ -785,7 +785,7 @@
 
                 <div class="row" *ngIf="contratVente.bienImmobilier.estDelegue">
                   <div class="row">
-                    <h4 class="title title-detail fz17 mb10">Client</h4>
+                    <h4 class="title title-detail fz17 mb10">Acquéreur</h4>
 
                     <div class="col-sm-6 col-xl-4">
                       <p class="fw600 mb5 ff-heading dark-color">Nom</p>
@@ -815,7 +815,7 @@
                   </div>
 
                   <div class="row">
-                    <h4 class="title title-detail fz17 mb10">Propriétaire</h4>
+                    <h4 class="title title-detail fz17 mb10">Vendeur</h4>
                     <div class="col-sm-6 col-xl-4">
                       <p class="fw600 mb5 ff-heading dark-color">Nom</p>
                       <p class="text">{{ contratVente.bienImmobilier.personne.nom }}</p>
@@ -1029,7 +1029,7 @@
 
                 <div class="row" *ngIf="!contratVente.demandeAchat.publication.bienImmobilier.estDelegue">
                   <div class="row">
-                    <h4 class="title title-detail fz17 mb10">Client</h4>
+                    <h4 class="title title-detail fz17 mb10">Acquéreur</h4>
 
                     <div class="col-sm-6 col-xl-4">
                       <p class="fw600 mb5 ff-heading dark-color">Nom</p>
@@ -1183,7 +1183,7 @@
                   </div>
 
                   <div class="row" *ngIf="contratVente.demandeAchat.publication.agenceImmobiliere">
-                    <h4 class="title title-detail fz17 mb20">Agence</h4>
+                    <h4 class="title title-detail fz17 mb20">Vendeur</h4>
 
                     <div class="col-sm-6 col-xl-4">
                       <p class="fw600 mb5 ff-heading dark-color">Nom</p>
@@ -1213,7 +1213,7 @@
                   </div>
 
                   <div class="row" *ngIf="!contratVente.demandeAchat.publication.agenceImmobiliere">
-                    <h4 class="title title-detail fz17 mb20" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Démarcheur</h4>
+                    <h4 class="title title-detail fz17 mb20" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Vendeur</h4>
 
                     <div class="col-sm-6 col-xl-4" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
                       <p class="fw600 mb5 ff-heading dark-color">Nom</p>
@@ -1245,7 +1245,7 @@
                       <p class="text">{{ contratVente.fraisDeVisite | number }} FCFA</p>
                     </div>
 
-                    <h4 class="title title-detail fz17 mb20" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_PROPRIETAIRE'">Propriétaire</h4>
+                    <h4 class="title title-detail fz17 mb20" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_PROPRIETAIRE'">Vendeur</h4>
 
                     <div class="col-sm-6 col-xl-4" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_PROPRIETAIRE'">
                       <p class="fw600 mb5 ff-heading dark-color">Nom</p>

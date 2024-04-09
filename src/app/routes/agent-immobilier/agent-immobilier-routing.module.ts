@@ -1,3 +1,4 @@
+import { SuivisEntretiensComponent } from './../../components/templates-admin/gestionDesLocationsEtVentes/suivis-entretiens/suivis-entretiens.component';
 import { PublicationsComponent } from '../../components/templates-admin/gestionDesPublications/publications/publications.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -34,6 +35,8 @@ const routes: Routes = [
       { path: 'agences-immobilieres/contrats', component: ContratsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/contrats/locations/:id', component: ContratsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/contrats/ventes/:id', component: ContratsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/contrats/suivis-entretiens', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/suivis-entretiens/:id', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
     ]
   }
 ];

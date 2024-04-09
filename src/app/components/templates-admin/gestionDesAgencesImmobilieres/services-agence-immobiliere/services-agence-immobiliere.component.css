@@ -27,3 +27,7 @@
 :host ::ng-deep .select .p-dropdown-item {
   margin-left: -3%;
 }
+
+.justify-text {
+  text-align: justify;
+}

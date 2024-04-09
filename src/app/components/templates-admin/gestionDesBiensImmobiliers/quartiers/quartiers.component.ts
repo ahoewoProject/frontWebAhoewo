@@ -20,8 +20,8 @@ export class QuartiersComponent implements OnInit, OnDestroy {
   visibleAddForm = 0;
   visibleUpdateForm = 0;
 
-  numeroDeLaPage = 0;
-  elementsParPage = 5;
+  numeroDeLaPage!: number;
+  elementsParPage!: number;
 
   quartier = this.quartierService.quartier;
   quartiers!: Page<Quartier>;
@@ -39,6 +39,7 @@ export class QuartiersComponent implements OnInit, OnDestroy {
   quartierForm: any;
 
   ngOnInit(): void {
+    this.loadStorage();
     this.listerVilles();
     this.listerQuartiers(this.numeroDeLaPage, this.elementsParPage);
     this.initQuartierForm();
@@ -70,6 +71,10 @@ export class QuartiersComponent implements OnInit, OnDestroy {
   pagination(event: any) {
     this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
+    console.log(this.numeroDeLaPage);
+    localStorage.setItem('numeroDeLaPage', this.numeroDeLaPage.toString());
+    localStorage.setItem('elementsParPage', this.elementsParPage.toString());
+
     this.listerQuartiers(this.numeroDeLaPage, this.elementsParPage);
   }
 
@@ -78,11 +83,28 @@ export class QuartiersComponent implements OnInit, OnDestroy {
   }
 
   voirListe(): void {
+    this.loadStorage();
     this.listerQuartiers(this.numeroDeLaPage, this.elementsParPage);
     this.quartierForm.reset();
     this.affichage = 1;
     this.visibleAddForm = 0;
     this.visibleUpdateForm = 0;
+  }
+
+  loadStorage(): void {
+    const savedNumeroDeLaPage = localStorage.getItem('numeroDeLaPage');
+    if (savedNumeroDeLaPage !== null) {
+      this.numeroDeLaPage = parseInt(savedNumeroDeLaPage, 10);
+    } else {
+      this.numeroDeLaPage = 0;
+    }
+
+    const savedElementsParPage = localStorage.getItem('elementsParPage');
+    if (savedElementsParPage !== null) {
+      this.elementsParPage = parseInt(savedElementsParPage, 10);
+    } else {
+      this.elementsParPage = 5;
+    }
   }
 
   annuler(): void {

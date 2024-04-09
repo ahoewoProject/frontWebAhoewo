@@ -204,7 +204,7 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
   }
 
   voirListe(): void {
-    this.affichage = 1
+    this.affichage = 1;
     this.router.navigate([this.navigateURLBYUSER(this.user) + '/demandes-visites'])
   }
 
@@ -217,7 +217,8 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
     this.demandeVisiteService.refuser(this.demandeVisiteId, this.motifRefusForm).subscribe(
       (response) => {
         this.modalRefusVisible = false;
-        this.voirListe();
+        this.detailDemandeVisite(this.demandeVisiteId);
+        this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-visites/' + this.demandeVisiteId);
         this.messageSuccess = "Le demande de visite a été refusée avec succès !";
         this.messageService.add({
           severity: 'success',
@@ -232,7 +233,8 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
     this.demandeVisiteService.annuler(this.demandeVisiteId, this.motifAnnulationForm).subscribe(
       (response) => {
         this.modalAnnulationVisible = false;
-        this.voirListe();
+        this.detailDemandeVisite(this.demandeVisiteId);
+        this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-visites/' + this.demandeVisiteId);
         this.messageSuccess = "La demande de visite a été annulée avec succès !";
         this.messageService.add({
           severity: 'success',
@@ -317,7 +319,8 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
       accept: () => {
         this.demandeVisiteService.valider(id).subscribe(
           (response) => {
-          this.voirListe();
+            this.detailDemandeVisite(id);
+            this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-visites/' + id);
           this.messageSuccess = "La demande de visite a été validée avec succès !";
           this.messageService.add({
             severity: 'success',

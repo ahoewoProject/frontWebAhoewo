@@ -364,7 +364,8 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
     this.demandeLocationService.refuser(this.demandeLocationId, this.motifRefusForm).subscribe(
       (response) => {
         this.modalRefusVisible = false;
-        this.voirListe();
+        this.detailDemandeLocation(this.demandeLocationId);
+        this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-locations/' + this.demandeLocationId);
         this.messageSuccess = "La demande de location a été refusée avec succès !";
         this.messageService.add({
           severity: 'success',
@@ -379,7 +380,8 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
     this.demandeLocationService.annuler(this.demandeLocationId, this.motifAnnulationForm).subscribe(
       (response) => {
         this.modalAnnulationVisible = false;
-        this.voirListe();
+        this.detailDemandeLocation(this.demandeLocationId);
+        this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-locations/' + this.demandeLocationId);
         this.messageSuccess = "La demande de location a été annulée avec succès !";
         this.messageService.add({
           severity: 'success',
@@ -460,7 +462,8 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
       accept: () => {
         this.demandeLocationService.valider(id).subscribe(
           (response) => {
-          this.voirListe();
+          this.detailDemandeLocation(id);
+          this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-locations/' + id);
           this.messageSuccess = "La demande de location a été validée avec succès !";
           this.messageService.add({
             severity: 'success',

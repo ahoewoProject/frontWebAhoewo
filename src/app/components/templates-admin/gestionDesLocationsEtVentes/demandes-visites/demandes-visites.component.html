@@ -140,7 +140,7 @@
         <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
           <div class="row">
 
-            <h4 class="title fz17 mb30">Détails de la demande de visite</h4>
+            <h4 class="title title-detail fz17 mb30">Demande de visite</h4>
             <div class="row" *ngIf="user.role.code !== 'ROLE_CLIENT'">
               <div class="col-sm-6 col-xl-4">
                 <p class="fw600 mb5 ff-heading dark-color">Nom du client</p>
@@ -213,12 +213,12 @@
 
             <p-divider *ngIf="listMotifs.length !== 0"></p-divider>
             <div *ngFor="let listMotif of listMotifs; let i = index;">
-              <h4 class="title fz17 mb20">Motif {{ user.role.code == 'ROLE_CLIENT' ? 'de refus' : 'd\'annulation'}} #{{ i + 1 }}</h4>
+              <h4 class="title title-detail fz17 mb20">Motif {{ user.role.code == 'ROLE_CLIENT' ? 'de refus' : 'd\'annulation'}} #{{ i + 1 }}</h4>
               <p class="text justify-text">{{ listMotif.motif }}</p>
             </div>
 
             <p-divider></p-divider>
-            <h4 class="title fz17 mb30">Détails de la publication</h4>
+            <h4 class="title title-detail fz17 mb30">Publication</h4>
             <div class="row">
               <div class="col-sm-6 col-xl-4">
                 <p class="fw600 mb5 ff-heading dark-color">Code publication</p>
@@ -255,36 +255,32 @@
             </div>
 
             <p-divider></p-divider>
-            <div class="col-lg-8">
-              <div *ngIf="images.length == 0">
-                <p-image class="w-100" imageClass="imageLength0" src="assets/images/home/house.jpg" alt="" width="650" loading="lazy"></p-image>
-              </div>
-
-              <div *ngIf="images.length !== 0">
-                <p-galleria [value]="images" [showIndicators]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px', 'margin': '0 auto' }" [numVisible]="5">
-
-                  <ng-template pTemplate="item" let-item>
-                      <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}"  style="width: 100%; border-radius:10px;" loading="lazy"/>
-                  </ng-template>
-
-                  <ng-template pTemplate="thumbnail" *ngIf="images.length > 4" let-item>
-                    <div class="grid grid-nogutter justify-content-center">
-                      <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%; border-radius:8px;" loading="lazy"/>
-                    </div>
-                  </ng-template>
-
-                </p-galleria>
-              </div>
-            </div>
-            <div class="col-lg-4">
-              <h4 class="title fz17 mb30" *ngIf="bienImm.description">Description du bien</h4>
-              <p class="text justify-text" *ngIf="bienImm.description">
-                  {{ bienImm.description }}
-              </p>
+            <h4 class="title title-detail fz17 mb30">Bien immobilier</h4>
+            <div class="text-center" *ngIf="images.length == 0">
+              <p-image class="w-100" imageClass="imageLength0" src="assets/images/home/house.jpg" alt="" width="650" loading="lazy"></p-image>
             </div>
 
-            <p-divider></p-divider>
-            <h4 class="title fz17 mb30">Détails du bien</h4>
+            <div *ngIf="images.length !== 0">
+              <p-galleria [value]="images" [showIndicators]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px', 'margin': '0 auto' }" [numVisible]="5">
+
+                <ng-template pTemplate="item" let-item>
+                    <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}"  style="width: 100%; border-radius:10px;" loading="lazy"/>
+                </ng-template>
+
+                <ng-template pTemplate="thumbnail" *ngIf="images.length > 4" let-item>
+                  <div class="grid grid-nogutter justify-content-center">
+                    <img src="{{this.APIEndpoint+'api/image/bien-immobilier/'+item.id}}" style="width: 100%; border-radius:8px;" loading="lazy"/>
+                  </div>
+                </ng-template>
+
+              </p-galleria>
+            </div>
+
+            <h4 class="title fz17 mb10 mt30" *ngIf="demandeVisite.publication.bienImmobilier.description">Description</h4>
+            <p class="text justify-text" *ngIf="demandeVisite.publication.bienImmobilier.description">
+                {{ demandeVisite.publication.bienImmobilier.description }}
+            </p>
+
             <div class="row">
               <div class="col-md-6 col-xl-4">
                 <div class="d-flex justify-content-between">
@@ -331,8 +327,7 @@
               </div>
             </div>
 
-            <p-divider *ngIf="bienImm.typeDeBien.designation != 'Terrain'"></p-divider>
-            <h4 class="title fz17 mb30" *ngIf="bienImm.typeDeBien.designation != 'Terrain'">Caractéristiques du bien</h4>
+            <h4 class="title fz17 mb10 mt30" *ngIf="bienImm.typeDeBien.designation != 'Terrain'">Caractéristiques du bien</h4>
             <div class="row">
               <div class="col-md-6 col-xl-4">
                 <div class="d-flex justify-content-between">
@@ -398,7 +393,7 @@
                   <p *ngIf="caracteristique.eauForage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
                   <p *ngIf="caracteristique.electriciteCeet" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
                   <p *ngIf="caracteristique.ascenseur" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
-                  <p *ngIf="caracteristique.aLetage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
+                  <p *ngIf="caracteristique.etage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
                   <p *ngIf="caracteristique.dalle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
                   <p *ngIf="caracteristique.cuisineExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
                   <p *ngIf="caracteristique.wcDoucheExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>

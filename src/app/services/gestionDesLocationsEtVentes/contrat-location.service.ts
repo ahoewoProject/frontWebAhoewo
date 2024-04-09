@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { MotifRejetForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetForm';
+import { Contrat } from 'src/app/models/gestionDesLocationsEtVentes/Contrat';
 import { ContratLocation } from 'src/app/models/gestionDesLocationsEtVentes/ContratLocation';
 import { environment } from 'src/environments/environment';
 
@@ -17,6 +18,12 @@ export class ContratLocationService {
   constructor(private httpClient: HttpClient) {
     const APIEndpoint = environment.APIEndpoint;
     this.url = APIEndpoint + 'api/';
+  }
+
+  // Affichage des contrats de locations;
+  // url: http://localhost:4040/api/contrats/locations
+  listContratsLocations(): Observable<Array<ContratLocation>> {
+    return this.httpClient.get<Array<ContratLocation>>(this.url + 'contrats/locations');
   }
 
   // Affichage des contrats de locations paginées;
@@ -47,7 +54,7 @@ export class ContratLocationService {
   }
 
   // Valider un contrat de location ;
-  // url: http://localhost:4040/api/contrat-location/valider
+  // url: http://localhost:4040/api/contrat-location/valider/{id}
   validerContratLocation(id: number): Observable<any> {
     return this.httpClient.get<any>(this.url + 'contrat-location/valider/' + id);
   }

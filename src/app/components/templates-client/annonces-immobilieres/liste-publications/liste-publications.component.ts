@@ -42,7 +42,8 @@ export class ListePublicationsComponent implements OnInit {
   rechercheAvanceePublicationForm: RechercheAvanceePublicationForm = new RechercheAvanceePublicationForm();
   rechercheSimplePublicationForm: RechercheSimplePublicationForm = new RechercheSimplePublicationForm();
   typeDeTransactionSelectionne = '';
-
+  categorieSelectionnee = '';
+  listeDesCategories: string[] = [];
   publications!: Page<Publication>;
   APIEndpoint: string;
 
@@ -338,6 +339,14 @@ export class ListePublicationsComponent implements OnInit {
 
   typeDeBienChoisi(event: any): void {
     this.typeDeBienSelectionne = event.value;
+
+    if (this.typeDeBienSelectionne.designation == 'Immeuble' || this.typeDeBienSelectionne.designation == 'Appartement' || this.typeDeBienSelectionne.designation == 'Bureau') {
+      this.listeDesCategories = ['Non meublé','Meublé'];
+      this.categorieSelectionnee = this.listeDesCategories[0];
+    } else if (this.typeDeBienSelectionne.designation == 'Chambre' || this.typeDeBienSelectionne.designation == 'Chambre salon' || this.typeDeBienSelectionne.designation == 'Villa' || this.typeDeBienSelectionne.designation == 'Maison') {
+      this.listeDesCategories = ['Non meublée', 'Meublée'];
+      this.categorieSelectionnee = this.listeDesCategories[0];
+    }
   }
 
   typeDeTransactionChoisi(value: string): void {
@@ -350,7 +359,16 @@ export class ListePublicationsComponent implements OnInit {
 
   afficherNombreSalon(): boolean {
     return this.typeDeBienSelectionne.designation == 'Villa'
+  }
 
+  afficherCategorie(): boolean {
+    return this.typeDeBienSelectionne.designation == 'Maison' ||
+    this.typeDeBienSelectionne.designation == 'Villa' ||
+    this.typeDeBienSelectionne.designation == 'Immeuble' ||
+    this.typeDeBienSelectionne.designation == 'Appartement' ||
+    this.typeDeBienSelectionne.designation == 'Chambre salon' ||
+    this.typeDeBienSelectionne.designation == 'Chambre' ||
+    this.typeDeBienSelectionne.designation == 'Bureau';
   }
 
   afficherNombreChambreSalon(): boolean {

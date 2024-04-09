@@ -76,3 +76,6 @@ margin-left: 0; /* Suppression de la marge négative */
   font-family: 'DM Sans', sans-serif;
 }
 
+.justify-text {
+  text-align: justify;
+}

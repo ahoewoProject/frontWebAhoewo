@@ -5,3 +5,7 @@
 :host ::ng-deep .p-dialog-header-close {
   border-radius: 100%;
 }
+
+.justify-text {
+  text-align: justify;
+}

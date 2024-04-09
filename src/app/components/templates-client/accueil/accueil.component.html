@@ -269,6 +269,19 @@
             </div>
           </div>
         </div>
+        <div class="col-sm-6" *ngIf="afficherCategorie()">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Catégorie</h6>
+            <div class="form-style1">
+              <p-dropdown
+                class="selectInModal" [options]="listeDesCategories"
+                placeholder="Choisir une catégorie"
+                (onChange)="categorieChoisie($event)"
+                [(ngModel)]="categorieSelectionnee">
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
         <div class="col-sm-6">
           <div class="widget-wrapper">
             <h6 class="list-title">Prix minimum</h6>
@@ -583,7 +596,7 @@
           <div class="checkbox-style1" *ngIf="afficherALEtage()">
             <div class="checkbox">
               <div class="mb10">
-                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="À l'étage" [(ngModel)]="rechercheAvanceePublicationForm.aLetage">
+                <p-checkbox [binary]="true" labelStyleClass="checkboxLabel" label="À l'étage" [(ngModel)]="rechercheAvanceePublicationForm.etage">
                 </p-checkbox>
               </div>
             </div>

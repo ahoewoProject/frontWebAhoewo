@@ -281,7 +281,8 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
     this.demandeAchatService.refuser(this.demandeAchatId, this.motifRefusForm).subscribe(
       (response) => {
         this.modalRefusVisible = false;
-        this.voirListe();
+        this.detailDemandeAchat(this.demandeAchatId);
+        this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-achats/' + this.demandeAchatId);
         this.messageSuccess = "La demande d'achat a été refusée avec succès !";
         this.messageService.add({
           severity: 'success',
@@ -301,7 +302,8 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
     this.demandeAchatService.annuler(this.demandeAchatId, this.motifAnnulationForm).subscribe(
       (response) => {
         this.modalAnnulationVisible = false;
-        this.voirListe();
+        this.detailDemandeAchat(this.demandeAchatId);
+        this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-achats/' + this.demandeAchatId);
         this.messageSuccess = "La demande d'achat a été annulée avec succès !";
         this.messageService.add({
           severity: 'success',
@@ -386,7 +388,8 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
       accept: () => {
         this.demandeAchatService.valider(id).subscribe(
           (response) => {
-          this.voirListe();
+            this.detailDemandeAchat(id);
+            this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-achats/' + id);
           this.messageSuccess = "La demande d'achat a été validée avec succès !";
           this.messageService.add({
             severity: 'success',

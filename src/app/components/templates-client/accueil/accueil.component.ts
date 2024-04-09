@@ -50,6 +50,8 @@ export class AccueilComponent implements OnInit {
   quartierSelectionne = new Quartier();
   typeDeBienSelectionne = new TypeDeBien();
   typeDeTransactionSelectionne = '';
+  categorieSelectionnee = '';
+  listeDesCategories: string[] = [];
   APIEndpoint: string;
 
   constructor(private agenceImmobiliereService: AgenceImmobiliereService,
@@ -245,10 +247,32 @@ export class AccueilComponent implements OnInit {
 
   typeDeBienChoisi(event: any): void {
     this.typeDeBienSelectionne = event.value;
+
+    if (this.typeDeBienSelectionne.designation == 'Immeuble' || this.typeDeBienSelectionne.designation == 'Appartement' || this.typeDeBienSelectionne.designation == 'Bureau') {
+      this.listeDesCategories = ['Non meublé','Meublé'];
+      this.categorieSelectionnee = this.listeDesCategories[0];
+    } else if (this.typeDeBienSelectionne.designation == 'Chambre' || this.typeDeBienSelectionne.designation == 'Chambre salon' || this.typeDeBienSelectionne.designation == 'Villa' || this.typeDeBienSelectionne.designation == 'Maison') {
+      this.listeDesCategories = ['Non meublée', 'Meublée'];
+      this.categorieSelectionnee = this.listeDesCategories[0];
+    }
   }
 
   typeDeTransactionChoisi(value: string): void {
     this.typeDeTransactionSelectionne = value;
+  }
+
+  categorieChoisie(event: any): void {
+    this.categorieSelectionnee = event.value;
+  }
+
+  afficherCategorie(): boolean {
+    return this.typeDeBienSelectionne.designation == 'Maison' ||
+    this.typeDeBienSelectionne.designation == 'Villa' ||
+    this.typeDeBienSelectionne.designation == 'Immeuble' ||
+    this.typeDeBienSelectionne.designation == 'Appartement' ||
+    this.typeDeBienSelectionne.designation == 'Chambre salon' ||
+    this.typeDeBienSelectionne.designation == 'Chambre' ||
+    this.typeDeBienSelectionne.designation == 'Bureau';
   }
 
   afficherAvanceEtCaution(): boolean {
@@ -441,6 +465,7 @@ export class AccueilComponent implements OnInit {
     this.rechercheSimplePublicationForm.typeDeTransaction = this.typeDeTransactionSelectionne;
     this.rechercheSimplePublicationForm.typeDeBien = this.typeDeBienSelectionne;
     this.rechercheSimplePublicationForm.quartier = this.quartierSelectionne;
+    this.rechercheSimplePublicationForm.categorie = this.categorieSelectionnee;
 
     sessionStorage.setItem('rechercheSimplePublicationForm', JSON.stringify(this.rechercheSimplePublicationForm));
 
@@ -456,6 +481,7 @@ export class AccueilComponent implements OnInit {
     this.rechercheAvanceePublicationForm.typeDeTransaction = this.typeDeTransactionSelectionne;
     this.rechercheAvanceePublicationForm.typeDeBien = this.typeDeBienSelectionne;
     this.rechercheAvanceePublicationForm.quartier = this.quartierSelectionne;
+    this.rechercheAvanceePublicationForm.categorie = this.categorieSelectionnee;
 
     sessionStorage.setItem('rechercheAvanceePublicationForm', JSON.stringify(this.rechercheAvanceePublicationForm));
 

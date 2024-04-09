@@ -61,7 +61,7 @@
                   <td class="vam">{{ bienImmobilier.typeDeBien.designation }} </td>
                   <td class="vam">{{ bienImmobilier.ville.libelle }} </td>
                   <td class="vam">
-                    <p-tag *ngIf="bienImmobilier.statutBien == 'Disponible'" severity="success" value="Disponible"></p-tag>
+                    <p-tag severity="success" value="{{bienImmobilier.statutBien}}"></p-tag>
                   </td>
                   <td class="vam">
                     <div class="d-flex">
@@ -212,7 +212,7 @@
                   <p class="text mb10" *ngIf="bienImmobilier.adresse">{{ bienImmobilier.adresse }}</p>
                   <p class="text mb10" *ngIf="bienImmobilier.surface">{{ bienImmobilier.surface }} m²</p>
                   <p class="text mb10">
-                    <p-tag *ngIf="bienImmobilier.statutBien == 'Disponible'" severity="success" value="Disponible"></p-tag>
+                    <p-tag severity="success" value="{{bienImmobilier.statutBien}}"></p-tag>
                   </p>
                   <p class="text mb-0">
                     <p-tag *ngIf="bienImmobilier.etatBien == true" severity="success" value="Activé"></p-tag>
@@ -320,7 +320,7 @@
                   <p class="text mb10" *ngIf="bienImmobilier.adresse">{{ bienImmobilier.adresse }}</p>
                   <p class="text mb10" *ngIf="bienImmobilier.surface">{{ bienImmobilier.surface }} m²</p>
                   <p class="text mb10">
-                    <p-tag *ngIf="bienImmobilier.statutBien == 'Disponible'" severity="success" value="Disponible"></p-tag>
+                    <p-tag severity="success" value="{{bienImmobilier.statutBien}}"></p-tag>
                   </p>
                   <p class="text mb-0">
                     <p-tag *ngIf="bienImmobilier.etatBien == true" severity="success" value="Activé"></p-tag>
@@ -398,11 +398,11 @@
                 <p *ngIf="caracteristiqueBien.eauForage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
                 <p *ngIf="caracteristiqueBien.electriciteCeet" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
                 <p *ngIf="caracteristiqueBien.ascenseur" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
-                <p *ngIf="caracteristiqueBien.aLetage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
+                <p *ngIf="caracteristiqueBien.etage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
                 <p *ngIf="caracteristiqueBien.dalle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
                 <p *ngIf="caracteristiqueBien.cuisineExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
                 <p *ngIf="caracteristiqueBien.wcDoucheExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
-                <p *ngIf="caracteristiqueBien.climatisation" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
+                <p *ngIf="caracteristiqueBien.climatisation" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
                 <p *ngIf="caracteristiqueBien.toiletteVisiteur && bienImmobilier.typeDeBien.designation == 'Villa'" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Toilette visiteur</p>
               </div>
             </div>
@@ -1035,11 +1035,11 @@
                     <p *ngIf="caracteristiqueBien.eauForage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
                     <p *ngIf="caracteristiqueBien.electriciteCeet" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
                     <p *ngIf="caracteristiqueBien.ascenseur" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
-                    <p *ngIf="caracteristiqueBien.aLetage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
+                    <p *ngIf="caracteristiqueBien.etage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
                     <p *ngIf="caracteristiqueBien.dalle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
                     <p *ngIf="caracteristiqueBien.cuisineExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
                     <p *ngIf="caracteristiqueBien.wcDoucheExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
-                    <p *ngIf="caracteristiqueBien.climatisation" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
+                    <p *ngIf="caracteristiqueBien.climatisation" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
                     <p *ngIf="caracteristiqueBien.toiletteVisiteur" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Toilette visiteur</p>
                   </div>
                 </div>
@@ -1681,11 +1681,11 @@
                     <p *ngIf="caracteristiqueBien.eauForage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
                     <p *ngIf="caracteristiqueBien.electriciteCeet" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
                     <p *ngIf="caracteristiqueBien.ascenseur" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
-                    <p *ngIf="caracteristiqueBien.aLetage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
+                    <p *ngIf="caracteristiqueBien.etage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
                     <p *ngIf="caracteristiqueBien.dalle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
                     <p *ngIf="caracteristiqueBien.cuisineExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
                     <p *ngIf="caracteristiqueBien.wcDoucheExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
-                    <p *ngIf="caracteristiqueBien.climatisation" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
+                    <p *ngIf="caracteristiqueBien.climatisation" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
                     <p *ngIf="caracteristiqueBien.toiletteVisiteur && bienImmobilier.typeDeBien.designation == 'Villa'" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Toilette visiteur</p>
                   </div>
                 </div>
@@ -1784,7 +1784,7 @@
                   <td class="vam">{{ bienImmAssocie.typeDeBien.designation }} </td>
                   <td class="vam">{{ bienImmAssocie.ville.libelle }} </td>
                   <td class="vam">
-                    <p-tag *ngIf="bienImmAssocie.statutBien == 'Disponible'" severity="success" value="Disponible"></p-tag>
+                    <p-tag severity="success" value="{{bienImmAssocie.statutBien}}"></p-tag>
                   </td>
                   <td class="vam">
                     <div class="d-flex">
@@ -1931,7 +1931,7 @@
                   <p class="text mb10" *ngIf="bienImmAssocie.adresse">{{ bienImmAssocie.adresse }}</p>
                   <p class="text mb10" *ngIf="bienImmAssocie.surface">{{ bienImmAssocie.surface }} m²</p>
                   <p class="text mb10">
-                    <p-tag *ngIf="bienImmAssocie.statutBien == 'Disponible'" severity="success" value="Disponible"></p-tag>
+                    <p-tag severity="success" value="{{bienImmAssocie.statutBien}}"></p-tag>
                   </p>
                   <p class="text mb-0">
                     <p-tag *ngIf="bienImmAssocie.etatBien == true" severity="success" value="Activé"></p-tag>
@@ -2009,7 +2009,7 @@
                 <p *ngIf="caracteristiqueBienAssocie.eauForage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
                 <p *ngIf="caracteristiqueBienAssocie.electriciteCeet" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
                 <p *ngIf="caracteristiqueBienAssocie.ascenseur" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
-                <p *ngIf="caracteristiqueBienAssocie.aLetage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
+                <p *ngIf="caracteristiqueBienAssocie.etage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
                 <p *ngIf="caracteristiqueBienAssocie.dalle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
                 <p *ngIf="caracteristiqueBienAssocie.cuisineExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
                 <p *ngIf="caracteristiqueBienAssocie.wcDoucheExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
@@ -2297,7 +2297,7 @@
                   <div class="checkbox-style1">
                     <div class="checkbox">
                       <div class="mb10">
-                        <p-checkbox [binary]="true" (onChange)="check()" [(ngModel)]="caracteristiqueBienAssocie.aLetage" labelStyleClass="checkboxLabel" label="À l'étage">
+                        <p-checkbox [binary]="true" (onChange)="check()" [(ngModel)]="caracteristiqueBienAssocie.etage" labelStyleClass="checkboxLabel" label="À l'étage">
                         </p-checkbox>
                       </div>
                     </div>
@@ -2528,7 +2528,7 @@
                     <p *ngIf="caracteristiqueBienAssocie.eauForage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
                     <p *ngIf="caracteristiqueBienAssocie.electriciteCeet" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
                     <p *ngIf="caracteristiqueBienAssocie.ascenseur" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
-                    <p *ngIf="caracteristiqueBienAssocie.aLetage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
+                    <p *ngIf="caracteristiqueBienAssocie.etage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
                     <p *ngIf="caracteristiqueBienAssocie.dalle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
                     <p *ngIf="caracteristiqueBienAssocie.cuisineExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
                     <p *ngIf="caracteristiqueBienAssocie.wcDoucheExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
@@ -2824,7 +2824,7 @@
                   <div class="checkbox-style1">
                     <div class="checkbox">
                       <div class="mb10">
-                        <p-checkbox [binary]="true" (onChange)="check()" [(ngModel)]="caracteristiqueBienAssocie.aLetage" labelStyleClass="checkboxLabel" label="À l'étage">
+                        <p-checkbox [binary]="true" (onChange)="check()" [(ngModel)]="caracteristiqueBienAssocie.etage" labelStyleClass="checkboxLabel" label="À l'étage">
                         </p-checkbox>
                       </div>
                     </div>
@@ -2909,7 +2909,7 @@
               <div class="col-md-12 mt30">
                 <div class="d-sm-flex justify-content-between">
                   <button class="ud-btn btn-retour" (click)="etape1()"><i class="pi pi-arrow-left"></i> Précédent</button>
-                  <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': bienStep1Form.invalid || bienStep2Form.invalid }" (click)="etape3()" type="button">Suivant<i class="pi pi-arrow-left"></i></button>
+                  <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': bienStep1Form.invalid || bienStep2Form.invalid }" (click)="etape3()" type="button">Suivant<i class="pi pi-arrow-right"></i></button>
                 </div>
               </div>
             </div>
@@ -3055,7 +3055,7 @@
                     <p *ngIf="caracteristiqueBienAssocie.eauForage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
                     <p *ngIf="caracteristiqueBienAssocie.electriciteCeet" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
                     <p *ngIf="caracteristiqueBienAssocie.ascenseur" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
-                    <p *ngIf="caracteristiqueBienAssocie.aLetage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
+                    <p *ngIf="caracteristiqueBienAssocie.etage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
                     <p *ngIf="caracteristiqueBienAssocie.dalle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
                     <p *ngIf="caracteristiqueBienAssocie.cuisineExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
                     <p *ngIf="caracteristiqueBienAssocie.wcDoucheExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>

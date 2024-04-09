@@ -337,6 +337,9 @@ export class ContratsComponent implements OnInit, OnDestroy {
     this.contratLocationService.getContratsLocations(numeroDeLaPage, elementsParPage).subscribe(
       (data) => {
         this.contratsLocations = data;
+        if (this.ajoutContratLocationReussie) {
+          this.messageService.add({ severity: 'success', summary: 'Proposition de contrat réussie', detail: 'La proposition de contrat de location a été soumise avec succès.' });
+        }
       }
     )
   }
@@ -345,6 +348,9 @@ export class ContratsComponent implements OnInit, OnDestroy {
     this.contratVenteService.getContratsVentes(numeroDeLaPage, elementsParPage).subscribe(
       (data) => {
         this.contratsVentes = data;
+        if (this.ajoutContratVenteReussie) {
+          this.messageService.add({ severity: 'success', summary: 'Proposition de contrat réussie', detail: 'La proposition de contrat de vente a été soumise avec succès.' });
+        }
       }
     )
   }

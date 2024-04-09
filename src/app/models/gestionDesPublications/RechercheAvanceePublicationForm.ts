@@ -6,6 +6,7 @@ export class RechercheAvanceePublicationForm {
   typeDeTransaction!: string;
   typeDeBien!: TypeDeBien;
   quartier!: Quartier;
+  categorie!: string;
   prixMin!: number;
   prixMax!: number;
   fraisDeVisite!: number;
@@ -50,6 +51,6 @@ export class RechercheAvanceePublicationForm {
   plafonne!: boolean;
   dalle!: boolean;
   placard!: boolean;
-  aLetage!: boolean;
+  etage!: boolean;
   toiletteVisiteur!: boolean
 }

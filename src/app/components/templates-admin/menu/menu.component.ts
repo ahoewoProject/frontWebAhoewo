@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs';
 import { BehaviorService } from 'src/app/services/behavior.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 
@@ -16,7 +17,8 @@ export class MenuComponent implements OnInit {
   constructor(
     private personneService: PersonneService,
     private behaviorService: BehaviorService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -24,15 +26,7 @@ export class MenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.behaviorService.activeLink$.subscribe((donnee) => {
-      this.activeLink = donnee;
-    });
-    console.log(this.activeLink);
-  }
 
-  setActiveLink(link: string) {
-    this.activeLink = link;
-    this.behaviorService.setActiveLink(this.activeLink);
   }
 
   isActive(url: string): boolean {

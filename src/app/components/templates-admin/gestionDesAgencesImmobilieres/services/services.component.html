@@ -229,11 +229,11 @@
         <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
 
           <div class="row">
-            <div class="form-group col-md-6">
+            <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Code</p>
               <p>{{ _service.codeService }}</p>
             </div>
-            <div class="form-group col-md-6">
+            <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Nom</p>
               <p>{{ _service.nomService }}</p>
             </div>
@@ -245,18 +245,17 @@
             </div>
 
             <p-divider></p-divider>
-            <div class="form-group col-md-6">
+            <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Etat</p>
               <p>
                 <p-tag *ngIf="_service.etat == 1" severity="success" value="Activé"></p-tag>
                 <p-tag *ngIf="_service.etat == 2" severity="danger" value="Désactivé"></p-tag>
               </p>
             </div>
-
-          <div class="text-end">
-            <a class="ud-btn btn-retour" (click)="voirListe()"  type="button">Retour</a>
-          </div>
         </div>
+      </div>
+      <div class="text-end">
+        <a class="ud-btn btn-retour" (click)="voirListe()"  type="button">Retour</a>
       </div>
     </div>
     </div>

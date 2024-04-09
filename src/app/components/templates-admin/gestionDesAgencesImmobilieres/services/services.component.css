@@ -27,3 +27,7 @@
   color: #a94442;
   font-family: 'Inter var', sans-serif;
 }
+
+.justify-text {
+  text-align: justify;
+}

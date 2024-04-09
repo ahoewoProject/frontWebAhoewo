@@ -6,6 +6,7 @@ import { ProfilComponent } from 'src/app/components/templates-admin/gestionDesCo
 import { ContratsComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/contrats/contrats.component';
 import { DemandesAchatsComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-achats/demandes-achats.component';
 import { DemandesVisitesComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-visites/demandes-visites.component';
+import { SuivisEntretiensComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/suivis-entretiens/suivis-entretiens.component';
 import { NotificationsComponent } from 'src/app/components/templates-admin/notifications/notifications.component';
 import { TemplatesAdminComponent } from 'src/app/components/templates-admin/templates-admin.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
@@ -25,6 +26,8 @@ const routes: Routes = [
       { path: 'contrats', component: ContratsComponent, canActivate: [AuthGuard] },
       { path: 'contrats/locations/:id', component: ContratsComponent, canActivate: [AuthGuard] },
       { path: 'contrats/ventes/:id', component: ContratsComponent, canActivate: [AuthGuard] },
+      { path: 'suivis-entretiens', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
+      { path: 'suivis-entretiens/:id', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
     ]
   }
 ];

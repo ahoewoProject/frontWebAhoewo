@@ -1326,6 +1326,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      console.log(error)
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmAssocieJson');
       this.bienImmobilierData.delete('caracteristiquesJson');
@@ -1425,7 +1426,6 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   //Fonction modification d'un bien associé si l'utilisateur est propriétaire ou démarcheur
   modifierBienAssocieIfUserIsProprietaireOrDemarcheur(id: number): void {
     this.bienImmAssocie.typeDeBien = this.typeDeBienSelectionne;
-    // this.bienImmAssocie.categorie = this.categorieSelectionnee;
     this.bienImmAssocie.bienImmobilier = this.bienImmobilier;
     this.bienImmAssocie.pays = this.bienImmobilier.pays;
     this.bienImmAssocie.region = this.bienImmobilier.region;
@@ -1446,7 +1446,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
           this.bienImmobilierData.delete('images');
           this.bienImmobilierData.delete('bienImmAssocieJson');
           this.bienImmobilierData.delete('caracteristiquesJson');
-          this.voirListeBiensAssocies();
+          this.afficherPageDetailBienImmAssocie(id);
           this.messageSuccess = "Le bien a été modifié avec succès.";
           this.messageService.add({
             severity: 'success',
@@ -1484,7 +1484,6 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   //Fonction modification d'un bien associé si l'utilisateur est responsable ou agent immobilier
   modifierBienAssocieIfUserIsResponsableOrAgentImmobilier(id: number): void {
     this.bienImmAssocie.typeDeBien = this.typeDeBienSelectionne;
-    // this.bienImmAssocie.categorie = this.categorieSelectionnee;
     this.bienImmAssocie.agenceImmobiliere = this.agenceSelectionnee;
     this.bienImmAssocie.bienImmobilier = this.bienImmobilier;;
     this.bienImmAssocie.pays = this.bienImmobilier.pays;
@@ -1506,7 +1505,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
           this.bienImmobilierData.delete('images');
           this.bienImmobilierData.delete('bienImmAssocieJson');
           this.bienImmobilierData.delete('caracteristiquesJson');
-          this.voirListeBiensAssocies();
+          this.afficherPageDetailBienImmAssocie(id);
           this.messageSuccess = "Le bien a été modifié avec succès.";
           this.messageService.add({
             severity: 'success',
@@ -1529,6 +1528,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      console.log(error);
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmAssocieJson');
       this.bienImmobilierData.delete('caracteristiquesJson');

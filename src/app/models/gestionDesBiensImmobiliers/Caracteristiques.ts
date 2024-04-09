@@ -43,7 +43,7 @@ export class Caracteristiques extends EntiteDeBase {
   plafonne!: boolean;
   dalle!: boolean;
   placard!: boolean;
-  aLetage!: boolean;
+  etage!: boolean;
   toiletteVisiteur!: boolean
 
   constructor() {
