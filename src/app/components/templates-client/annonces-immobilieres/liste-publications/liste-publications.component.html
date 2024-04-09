@@ -71,6 +71,19 @@
             </div>
           </div>
         </div>
+        <div class="col-sm-6" *ngIf="afficherCategorie()">
+          <div class="widget-wrapper">
+            <h6 class="list-title">Catégorie</h6>
+            <div class="form-style1">
+              <p-dropdown
+                class="selectInModal" [options]="listeDesCategories"
+                placeholder="Choisir une catégorie"
+                (onChange)="categorieChoisie($event)"
+                [(ngModel)]="categorieSelectionnee">
+              </p-dropdown>
+            </div>
+          </div>
+        </div>
         <div class="col-sm-6">
           <div class="widget-wrapper">
             <h6 class="list-title">Prix minimum</h6>

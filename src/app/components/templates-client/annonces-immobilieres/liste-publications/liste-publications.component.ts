@@ -251,6 +251,7 @@ export class ListePublicationsComponent implements OnInit {
     this.rechercheAvanceePublicationForm.typeDeTransaction = this.typeDeTransactionSelectionne;
     this.rechercheAvanceePublicationForm.typeDeBien = this.typeDeBienSelectionne;
     this.rechercheAvanceePublicationForm.quartier = this.quartierSelectionne;
+    this.rechercheAvanceePublicationForm.categorie = this.categorieSelectionnee;
 
     sessionStorage.setItem('rechercheAvanceePublicationForm', JSON.stringify(this.rechercheAvanceePublicationForm));
 
@@ -347,6 +348,10 @@ export class ListePublicationsComponent implements OnInit {
       this.listeDesCategories = ['Non meublée', 'Meublée'];
       this.categorieSelectionnee = this.listeDesCategories[0];
     }
+  }
+
+  categorieChoisie(event: any): void {
+    this.categorieSelectionnee = event.value;
   }
 
   typeDeTransactionChoisi(value: string): void {

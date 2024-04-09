@@ -9,6 +9,7 @@ import { TypeDeBien } from 'src/app/models/gestionDesBiensImmobiliers/TypeDeBien
 import { Ville } from 'src/app/models/gestionDesBiensImmobiliers/Ville';
 import { Publication } from 'src/app/models/gestionDesPublications/Publication';
 import { RechercheAvanceePublicationForm } from 'src/app/models/gestionDesPublications/RechercheAvanceePublicationForm';
+import { RechercheSimplePublicationForm } from 'src/app/models/gestionDesPublications/RechercheSimplePublicationForm';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { QuartierService } from 'src/app/services/gestionDesBiensImmobiliers/quartier.service';
 import { RegionService } from 'src/app/services/gestionDesBiensImmobiliers/region.service';
@@ -44,7 +45,7 @@ export class AccueilComponent implements OnInit {
   typesDeBienActifs: TypeDeBien[] = [];
 
   rechercheAvanceePublicationForm: RechercheAvanceePublicationForm = new RechercheAvanceePublicationForm();
-  rechercheSimplePublicationForm: RechercheAvanceePublicationForm = new RechercheAvanceePublicationForm();
+  rechercheSimplePublicationForm: RechercheSimplePublicationForm = new RechercheSimplePublicationForm();
   regionSelectionnee = new Region();
   villeSelectionnee = new Ville();
   quartierSelectionne = new Quartier();
@@ -465,7 +466,6 @@ export class AccueilComponent implements OnInit {
     this.rechercheSimplePublicationForm.typeDeTransaction = this.typeDeTransactionSelectionne;
     this.rechercheSimplePublicationForm.typeDeBien = this.typeDeBienSelectionne;
     this.rechercheSimplePublicationForm.quartier = this.quartierSelectionne;
-    this.rechercheSimplePublicationForm.categorie = this.categorieSelectionnee;
 
     sessionStorage.setItem('rechercheSimplePublicationForm', JSON.stringify(this.rechercheSimplePublicationForm));
 
