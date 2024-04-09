@@ -689,60 +689,60 @@
             <div class="col-lg-8">
               <div class="row">
                 <h4 class="title fz17 mb30" *ngIf="agenceImmobiliere.description">Description</h4>
-                <p *ngIf="agenceImmobiliere.description">
+                <p class="text justify-text" *ngIf="agenceImmobiliere.description">
                     {{ agenceImmobiliere.description }}
                 </p>
 
                 <p-divider *ngIf="agenceImmobiliere.description"></p-divider>
                 <div class="col-sm-6 col-xl-4">
                   <p class="fw600 mb10 ff-heading dark-color">Code agence</p>
-                  <p>{{ agenceImmobiliere.codeAgence }}</p>
+                  <p class="text">{{ agenceImmobiliere.codeAgence }}</p>
                 </div>
                 <div class="col-sm-6 col-xl-4">
                   <p class="fw600 mb10 ff-heading dark-color">Nom</p>
-                  <p>{{ agenceImmobiliere.nomAgence }} <i *ngIf="agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+                  <p class="text">{{ agenceImmobiliere.nomAgence }} <i *ngIf="agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
                 </div>
                 <div class="col-sm-6 col-xl-4">
                   <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
-                  <p>{{ agenceImmobiliere.adresseEmail }}</p>
+                  <p class="text">{{ agenceImmobiliere.adresseEmail }}</p>
                 </div>
 
                 <p-divider></p-divider>
                 <div class="col-sm-6 col-xl-4">
                   <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
-                  <p>{{ agenceImmobiliere.telephone }}</p>
+                  <p class="text">{{ agenceImmobiliere.telephone }}</p>
                 </div>
                 <div class="col-sm-6 col-xl-4">
                   <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
-                  <p>{{ agenceImmobiliere.heureOuverture }}</p>
+                  <p class="text">{{ agenceImmobiliere.heureOuverture }}</p>
                 </div>
                 <div class="col-sm-6 col-xl-4">
                   <p class="fw600 mb10 ff-heading dark-color">Heure Fermeture</p>
-                  <p>{{ agenceImmobiliere.heureFermeture }}</p>
+                  <p class="text">{{ agenceImmobiliere.heureFermeture }}</p>
                 </div>
 
                 <p-divider></p-divider>
                 <div class="col-sm-6 col-xl-4">
                   <p class="fw600 mb10 ff-heading dark-color">Pays</p>
-                  <p>{{ agenceImmobiliere.quartier.ville.region.pays.libelle }}</p>
+                  <p class="text">{{ agenceImmobiliere.quartier.ville.region.pays.libelle }}</p>
                 </div>
                 <div class="col-sm-6 col-xl-4">
                   <p class="fw600 mb10 ff-heading dark-color">Région</p>
-                  <p>{{ agenceImmobiliere.quartier.ville.region.libelle }}</p>
+                  <p class="text">{{ agenceImmobiliere.quartier.ville.region.libelle }}</p>
                 </div>
                 <div class="col-sm-6 col-xl-4">
                   <p class="fw600 mb10 ff-heading dark-color">Ville</p>
-                  <p>{{ agenceImmobiliere.quartier.ville.libelle }}</p>
+                  <p class="text">{{ agenceImmobiliere.quartier.ville.libelle }}</p>
                 </div>
 
                 <p-divider></p-divider>
                 <div class="col-sm-6 col-xl-4">
                   <p class="fw600 mb10 ff-heading dark-color">Quartier</p>
-                  <p>{{ agenceImmobiliere.quartier.libelle }}</p>
+                  <p class="text">{{ agenceImmobiliere.quartier.libelle }}</p>
                 </div>
                 <div class="col-sm-6 col-xl-4" *ngIf="agenceImmobiliere.adresse">
                   <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
-                  <p>{{ agenceImmobiliere.adresse }}</p>
+                  <p class="text">{{ agenceImmobiliere.adresse }}</p>
                 </div>
                 <div class="col-sm-6 col-xl-4">
                   <p class="fw600 mb10 ff-heading dark-color">Etat</p>
@@ -895,28 +895,28 @@
             <div class="col-lg-8">
               <div class="row">
                 <p class="fw600 mb10 ff-heading dark-color" *ngIf="affectationResponsableAgence.agenceImmobiliere.description">Description</p>
-                <p *ngIf="affectationResponsableAgence.agenceImmobiliere.description">
+                <p class="text justify-text" *ngIf="affectationResponsableAgence.agenceImmobiliere.description">
                     {{ affectationResponsableAgence.agenceImmobiliere.description }}
                 </p>
 
                 <p-divider *ngIf="affectationResponsableAgence.agenceImmobiliere.description"></p-divider>
                 <div class="form-group col-md-6">
                   <p class="fw600 mb10 ff-heading dark-color">Code agence</p>
-                  <p>{{ affectationResponsableAgence.agenceImmobiliere.codeAgence }}</p>
+                  <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.codeAgence }}</p>
                 </div>
                 <div class="form-group col-md-6">
                   <p class="fw600 mb10 ff-heading dark-color">Nom</p>
-                  <p>{{ affectationResponsableAgence.agenceImmobiliere.nomAgence }} <i *ngIf="affectationResponsableAgence.agenceImmobiliere && affectationResponsableAgence.agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+                  <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.nomAgence }} <i *ngIf="affectationResponsableAgence.agenceImmobiliere && affectationResponsableAgence.agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
                 </div>
 
                 <p-divider></p-divider>
                 <div class="form-group col-md-6">
                   <p class="fw600 mb10 ff-heading dark-color">Email de l'agence</p>
-                  <p>{{ affectationResponsableAgence.agenceImmobiliere.adresseEmail }}</p>
+                  <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.adresseEmail }}</p>
                 </div>
                 <div class="form-group col-md-6">
                   <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
-                  <p>{{ affectationResponsableAgence.agenceImmobiliere.telephone }}</p>
+                  <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.telephone }}</p>
                 </div>
               </div>
             </div>
@@ -926,49 +926,49 @@
             <p-divider></p-divider>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Responsable</p>
-              <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.nom }} {{ affectationResponsableAgence.responsableAgenceImmobiliere.prenom }} <i *ngIf="affectationResponsableAgence.responsableAgenceImmobiliere && affectationResponsableAgence.responsableAgenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></p>
+              <p class="text">{{ affectationResponsableAgence.responsableAgenceImmobiliere.nom }} {{ affectationResponsableAgence.responsableAgenceImmobiliere.prenom }} <i *ngIf="affectationResponsableAgence.responsableAgenceImmobiliere && affectationResponsableAgence.responsableAgenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></p>
             </div>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Téléphone du responsable</p>
-              <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.telephone }}</p>
+              <p class="text">{{ affectationResponsableAgence.responsableAgenceImmobiliere.telephone }}</p>
             </div>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Email du responsable</p>
-              <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.email }}</p>
+              <p class="text">{{ affectationResponsableAgence.responsableAgenceImmobiliere.email }}</p>
             </div>
 
             <p-divider></p-divider>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
-              <p>{{ affectationResponsableAgence.agenceImmobiliere.heureOuverture }}</p>
+              <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.heureOuverture }}</p>
             </div>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Heure fermeture</p>
-              <p>{{ affectationResponsableAgence.agenceImmobiliere.heureFermeture }}</p>
+              <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.heureFermeture }}</p>
             </div>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Pays</p>
-              <p>{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.region.pays.libelle }}</p>
+              <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.region.pays.libelle }}</p>
             </div>
 
             <p-divider></p-divider>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Region</p>
-              <p>{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.region.libelle }}</p>
+              <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.region.libelle }}</p>
             </div>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Ville</p>
-              <p>{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.libelle }}</p>
+              <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.libelle }}</p>
             </div>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Quartier</p>
-              <p>{{ affectationResponsableAgence.agenceImmobiliere.quartier.libelle }}</p>
+              <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.quartier.libelle }}</p>
             </div>
 
             <p-divider></p-divider>
             <div class="col-sm-6 col-xl-4" *ngIf="affectationResponsableAgence.agenceImmobiliere.adresse">
               <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
-              <p>{{ affectationResponsableAgence.agenceImmobiliere.adresse }}</p>
+              <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.adresse }}</p>
             </div>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Etat</p>
@@ -1124,28 +1124,28 @@
             <div class="col-lg-8">
               <div class="row">
                 <p class="fw600 mb10 ff-heading dark-color" *ngIf="affectationResponsableAgence.agenceImmobiliere.description">Description</p>
-                <p *ngIf="affectationResponsableAgence.agenceImmobiliere.description">
+                <p class="text justify-text" *ngIf="affectationResponsableAgence.agenceImmobiliere.description">
                     {{ affectationResponsableAgence.agenceImmobiliere.description }}
                 </p>
 
                 <p-divider *ngIf="affectationResponsableAgence.agenceImmobiliere.description"></p-divider>
                 <div class="form-group col-md-6">
                   <p class="fw600 mb10 ff-heading dark-color">Code agence</p>
-                  <p>{{ affectationResponsableAgence.agenceImmobiliere.codeAgence }}</p>
+                  <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.codeAgence }}</p>
                 </div>
                 <div class="form-group col-md-6">
                   <p class="fw600 mb10 ff-heading dark-color">Nom</p>
-                  <p>{{ affectationResponsableAgence.agenceImmobiliere.nomAgence }} <i *ngIf="affectationResponsableAgence.agenceImmobiliere && affectationResponsableAgence.agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+                  <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.nomAgence }} <i *ngIf="affectationResponsableAgence.agenceImmobiliere && affectationResponsableAgence.agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
                 </div>
 
                 <p-divider></p-divider>
                 <div class="form-group col-md-6">
                   <p class="fw600 mb10 ff-heading dark-color">Email de l'agence</p>
-                  <p>{{ affectationResponsableAgence.agenceImmobiliere.adresseEmail }}</p>
+                  <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.adresseEmail }}</p>
                 </div>
                 <div class="form-group col-md-6">
                   <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
-                  <p>{{ affectationResponsableAgence.agenceImmobiliere.telephone }}</p>
+                  <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.telephone }}</p>
                 </div>
               </div>
             </div>
@@ -1155,50 +1155,50 @@
             <p-divider></p-divider>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Responsable</p>
-              <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.nom }} {{ affectationResponsableAgence.responsableAgenceImmobiliere.prenom }} <i *ngIf="affectationResponsableAgence.responsableAgenceImmobiliere && affectationResponsableAgence.responsableAgenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></p>
+              <p class="text">{{ affectationResponsableAgence.responsableAgenceImmobiliere.nom }} {{ affectationResponsableAgence.responsableAgenceImmobiliere.prenom }} <i *ngIf="affectationResponsableAgence.responsableAgenceImmobiliere && affectationResponsableAgence.responsableAgenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-xl" style="color: #0f77e6;"></i></p>
             </div>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Téléphone du responsable</p>
-              <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.telephone }}</p>
+              <p class="text">{{ affectationResponsableAgence.responsableAgenceImmobiliere.telephone }}</p>
             </div>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Email du responsable</p>
-              <p>{{ affectationResponsableAgence.responsableAgenceImmobiliere.email }}</p>
+              <p class="text">{{ affectationResponsableAgence.responsableAgenceImmobiliere.email }}</p>
             </div>
 
 
             <p-divider></p-divider>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
-              <p>{{ affectationResponsableAgence.agenceImmobiliere.heureOuverture }}</p>
+              <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.heureOuverture }}</p>
             </div>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Heure fermeture</p>
-              <p>{{ affectationResponsableAgence.agenceImmobiliere.heureFermeture }}</p>
+              <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.heureFermeture }}</p>
             </div>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Pays</p>
-              <p>{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.region.pays.libelle }}</p>
+              <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.region.pays.libelle }}</p>
             </div>
 
             <p-divider></p-divider>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Region</p>
-              <p>{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.region.libelle }}</p>
+              <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.region.libelle }}</p>
             </div>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Ville</p>
-              <p>{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.libelle }}</p>
+              <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.quartier.ville.libelle }}</p>
             </div>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Quartier</p>
-              <p>{{ affectationResponsableAgence.agenceImmobiliere.quartier.libelle }}</p>
+              <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.quartier.libelle }}</p>
             </div>
 
             <p-divider></p-divider>
             <div class="col-sm-6 col-xl-4" *ngIf="affectationResponsableAgence.agenceImmobiliere.adresse">
               <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
-              <p>{{ affectationResponsableAgence.agenceImmobiliere.adresse }}</p>
+              <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.adresse }}</p>
             </div>
             <div class="col-sm-6 col-xl-4">
               <p class="fw600 mb10 ff-heading dark-color">Etat</p>
@@ -1326,17 +1326,17 @@
           <div class="row">
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Code</p>
-              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.services.codeService }}</p>
+              <p class="text">{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.services.codeService }}</p>
             </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Nom</p>
-              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.services.nomService }}</p>
+              <p class="text">{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.services.nomService }}</p>
             </div>
 
             <p-divider></p-divider>
             <div>
               <p class="fw600 mb10 ff-heading dark-color">Description</p>
-              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.services.description }}</p>
+              <p class="text justify-text">{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.services.description }}</p>
             </div>
 
             <p-divider></p-divider>
@@ -1351,17 +1351,17 @@
             </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Agence immobilière</p>
-              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.nomAgence }} <i *ngIf="serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+              <p class="text">{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.nomAgence }} <i *ngIf="serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
             </div>
 
             <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">E-mail de l'agence</p>
-              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.adresseEmail }}</p>
+              <p class="text">{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.adresseEmail }}</p>
             </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Téléphone de l'agence</p>
-              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.telephone }}</p>
+              <p class="text">{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.telephone }}</p>
             </div>
           </div>
         </div>

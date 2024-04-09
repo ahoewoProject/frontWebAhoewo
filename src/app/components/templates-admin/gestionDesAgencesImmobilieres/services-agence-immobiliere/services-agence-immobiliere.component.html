@@ -157,27 +157,27 @@
           <div class="row">
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Nom</p>
-              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.services.nomService }}</p>
+              <p class="text">{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.services.nomService }}</p>
             </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Agence immobilière</p>
-              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.nomAgence }} <i *ngIf="serviceAgenceImmobiliere.agenceImmobiliere && serviceAgenceImmobiliere.agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+              <p class="text">{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.nomAgence }} <i *ngIf="serviceAgenceImmobiliere.agenceImmobiliere && serviceAgenceImmobiliere.agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
             </div>
 
             <p-divider></p-divider>
             <div>
               <p class="fw600 mb10 ff-heading dark-color">Description</p>
-              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.services.description }}</p>
+              <p class="text justify-text">{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.services.description }}</p>
             </div>
 
             <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Téléphone de l'agence</p>
-              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.telephone }}</p>
+              <p class="text">{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.telephone }}</p>
             </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">E-mail de l'agence</p>
-              <p>{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.adresseEmail }}</p>
+              <p class="text">{{ serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.agenceImmobiliere.adresseEmail }}</p>
             </div>
 
             <p-divider></p-divider>
