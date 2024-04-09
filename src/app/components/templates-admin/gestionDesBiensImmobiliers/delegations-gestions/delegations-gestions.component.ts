@@ -914,250 +914,266 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
 
   deleguerNotBienAssocie(): void {
     if (this.isUserDemarcheurOrGerant()) {
-      this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
-      this.delegationGestionForm2.categorie = this.categorieSelectionnee;
-      this.delegationGestionForm2.pays = this.paysSelectionne;
-      this.delegationGestionForm2.region = this.regionSelectionnee;
-      this.delegationGestionForm2.ville = this.villeSelectionnee;
-      this.delegationGestionForm2.quartier = this.quartierSelectionne;
-
-      for (const image of this.imagesBienImmobilier) {
-        this.delegationGestionData.append('images', image);
-      }
-
-      this.delegationGestionData.append('delegationGestionJson', JSON.stringify(this.delegationGestionForm2));
-      this.delegationGestionData.append('caracteristiquesJson', JSON.stringify(this.caracteristique));
-
-      this.delegationGestionService.enregistrerDelegationGestion(this.delegationGestionData).subscribe(
-        (response) => {
-          console.log(response)
-          if (response.id > 0) {
-            this.delegationGestionData.delete('images');
-            this.delegationGestionData.delete('delegationGestionJson');
-            this.delegationGestionData.delete('caracteristiquesJson');
-            this.voirListeDelegationsGestions();
-            this.messageSuccess = "Le délégation de gestion a été enregistrer avec succès.";
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Enregistrement réussi',
-              detail: this.messageSuccess
-            });
-          } else {
-            this.delegationGestionData.delete('images');
-            this.delegationGestionData.delete('delegationGestionJson');
-            this.delegationGestionData.delete('caracteristiquesJson');
-            this.messageErreur = "Erreur lors de l'enregistrement !"
-            this.afficherFormulaireEnregistrerDelegation();
-            this.messageService.add({
-              severity: 'error',
-              summary: "Erreur d'ajout",
-              detail: this.messageErreur
-            });
-          }
-      },
-      (error) => {
-        this.delegationGestionData.delete('images');
-        this.delegationGestionData.delete('delegationGestionJson');
-        this.delegationGestionData.delete('caracteristiquesJson');
-        if (error.error === "La matricule du propriétaire est introuvable !") {
-          this.messageErreur = "La matricule du propriétaire est introuvable !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: "Erreur d'enregistrement",
-            detail: this.messageErreur
-          });
-        } else if (error.error === "Le code de l'immeuble ou de la maison est introuvable !") {
-          this.messageErreur = "Le code de l'immeuble ou de la maison est introuvable !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: "Erreur d'enregistrement",
-            detail: this.messageErreur
-          });
-        }
-      })
+      this.deleguerNotBienAssocieIfUserDemarcheurOrGerant();
     } else {
-      this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
-      this.delegationGestionForm2.categorie = this.categorieSelectionnee;
-      this.delegationGestionForm2.agenceImmobiliere = this.agenceSelectionnee;
-      this.delegationGestionForm2.pays = this.paysSelectionne;
-      this.delegationGestionForm2.region = this.regionSelectionnee;
-      this.delegationGestionForm2.ville = this.villeSelectionnee;
-      this.delegationGestionForm2.quartier = this.quartierSelectionne;
+      this.deleguerNotBienAssocieIfUserNotDemarcheurOrGerant();
+    }
+  }
 
-      for (const image of this.imagesBienImmobilier) {
-        this.delegationGestionData.append('images', image);
-      }
+  deleguerNotBienAssocieIfUserDemarcheurOrGerant(): void {
+    this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
+    this.delegationGestionForm2.categorie = this.categorieSelectionnee;
+    this.delegationGestionForm2.pays = this.paysSelectionne;
+    this.delegationGestionForm2.region = this.regionSelectionnee;
+    this.delegationGestionForm2.ville = this.villeSelectionnee;
+    this.delegationGestionForm2.quartier = this.quartierSelectionne;
 
-      this.delegationGestionData.append('delegationGestionJson', JSON.stringify(this.delegationGestionForm2));
-      this.delegationGestionData.append('caracteristiquesJson', JSON.stringify(this.caracteristique));
+    for (const image of this.imagesBienImmobilier) {
+      this.delegationGestionData.append('images', image);
+    }
 
-      this.delegationGestionService.enregistrerDelegationGestion(this.delegationGestionData).subscribe(
-        (response) => {
-          if (response.id > 0) {
-            this.delegationGestionData.delete('images');
-            this.delegationGestionData.delete('delegationGestionJson');
-            this.delegationGestionData.delete('caracteristiquesJson');
-            this.voirListeDelegationsGestions();
-            this.messageSuccess = "Le délégation de gestion a été enregistrer avec succès.";
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Enregistrement réussi',
-              detail: this.messageSuccess
-            });
-          } else {
-            this.delegationGestionData.delete('images');
-            this.delegationGestionData.delete('delegationGestionJson');
-            this.delegationGestionData.delete('caracteristiquesJson');
-            this.messageErreur = "Erreur lors de l'enregistrement !"
-            this.afficherFormulaireEnregistrerDelegation();
-            this.messageService.add({
-              severity: 'error',
-              summary: "Erreur d'enregistrement",
-              detail: this.messageErreur
-            });
-          }
-      },
-      (error) => {
-        this.delegationGestionData.delete('images');
-        this.delegationGestionData.delete('delegationGestionJson');
-        this.delegationGestionData.delete('caracteristiquesJson');
-        if (error.error === "La matricule du propriétaire est introuvable !") {
-          this.messageErreur = "La matricule du propriétaire est introuvable !";
+    this.delegationGestionData.append('delegationGestionJson', JSON.stringify(this.delegationGestionForm2));
+    this.delegationGestionData.append('caracteristiquesJson', JSON.stringify(this.caracteristique));
+
+    this.delegationGestionService.enregistrerDelegationGestion(this.delegationGestionData).subscribe(
+      (response) => {
+        console.log(response)
+        if (response.id > 0) {
+          this.delegationGestionData.delete('images');
+          this.delegationGestionData.delete('delegationGestionJson');
+          this.delegationGestionData.delete('caracteristiquesJson');
+          this.voirListeDelegationsGestions();
+          this.messageSuccess = "Le délégation de gestion a été enregistrer avec succès.";
           this.messageService.add({
-            severity: 'warn',
-            summary: "Erreur d'enregistrement",
+            severity: 'success',
+            summary: 'Enregistrement réussi',
+            detail: this.messageSuccess
+          });
+        } else {
+          this.delegationGestionData.delete('images');
+          this.delegationGestionData.delete('delegationGestionJson');
+          this.delegationGestionData.delete('caracteristiquesJson');
+          this.messageErreur = "Erreur lors de l'enregistrement !"
+          this.afficherFormulaireEnregistrerDelegation();
+          this.messageService.add({
+            severity: 'error',
+            summary: "Erreur d'ajout",
             detail: this.messageErreur
           });
-        } else if (error.error === "Le code de l'immeuble ou de la maison est introuvable !") {
-          this.messageErreur = "Le code de l'immeuble ou de la maison est introuvable !";
+        }
+    },
+    (error) => {
+      this.delegationGestionData.delete('images');
+      this.delegationGestionData.delete('delegationGestionJson');
+      this.delegationGestionData.delete('caracteristiquesJson');
+      if (error.error === "La matricule du propriétaire est introuvable !") {
+        this.messageErreur = "La matricule du propriétaire est introuvable !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'enregistrement",
+          detail: this.messageErreur
+        });
+      } else if (error.error === "Le code de l'immeuble ou de la maison est introuvable !") {
+        this.messageErreur = "Le code de l'immeuble ou de la maison est introuvable !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'enregistrement",
+          detail: this.messageErreur
+        });
+      }
+    })
+  }
+
+  deleguerNotBienAssocieIfUserNotDemarcheurOrGerant(): void {
+    this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
+    this.delegationGestionForm2.categorie = this.categorieSelectionnee;
+    this.delegationGestionForm2.agenceImmobiliere = this.agenceSelectionnee;
+    this.delegationGestionForm2.pays = this.paysSelectionne;
+    this.delegationGestionForm2.region = this.regionSelectionnee;
+    this.delegationGestionForm2.ville = this.villeSelectionnee;
+    this.delegationGestionForm2.quartier = this.quartierSelectionne;
+
+    for (const image of this.imagesBienImmobilier) {
+      this.delegationGestionData.append('images', image);
+    }
+
+    this.delegationGestionData.append('delegationGestionJson', JSON.stringify(this.delegationGestionForm2));
+    this.delegationGestionData.append('caracteristiquesJson', JSON.stringify(this.caracteristique));
+
+    this.delegationGestionService.enregistrerDelegationGestion(this.delegationGestionData).subscribe(
+      (response) => {
+        if (response.id > 0) {
+          this.delegationGestionData.delete('images');
+          this.delegationGestionData.delete('delegationGestionJson');
+          this.delegationGestionData.delete('caracteristiquesJson');
+          this.voirListeDelegationsGestions();
+          this.messageSuccess = "Le délégation de gestion a été enregistrer avec succès.";
           this.messageService.add({
-            severity: 'warn',
+            severity: 'success',
+            summary: 'Enregistrement réussi',
+            detail: this.messageSuccess
+          });
+        } else {
+          this.delegationGestionData.delete('images');
+          this.delegationGestionData.delete('delegationGestionJson');
+          this.delegationGestionData.delete('caracteristiquesJson');
+          this.messageErreur = "Erreur lors de l'enregistrement !"
+          this.afficherFormulaireEnregistrerDelegation();
+          this.messageService.add({
+            severity: 'error',
             summary: "Erreur d'enregistrement",
             detail: this.messageErreur
           });
         }
-      })
-    }
+    },
+    (error) => {
+      this.delegationGestionData.delete('images');
+      this.delegationGestionData.delete('delegationGestionJson');
+      this.delegationGestionData.delete('caracteristiquesJson');
+      if (error.error === "La matricule du propriétaire est introuvable !") {
+        this.messageErreur = "La matricule du propriétaire est introuvable !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'enregistrement",
+          detail: this.messageErreur
+        });
+      } else if (error.error === "Le code de l'immeuble ou de la maison est introuvable !") {
+        this.messageErreur = "Le code de l'immeuble ou de la maison est introuvable !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'enregistrement",
+          detail: this.messageErreur
+        });
+      }
+    })
   }
 
   deleguerBienAssocie(): void {
     if (this.isUserDemarcheurOrGerant()) {
-      this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
-      this.delegationGestionForm2.categorie = this.categorieSelectionnee;
-
-      for (const image of this.imagesBienImmobilier) {
-        this.delegationGestionData.append('images', image);
-      }
-
-      this.delegationGestionData.append('delegationGestionJson', JSON.stringify(this.delegationGestionForm2));
-      this.delegationGestionData.append('caracteristiquesJson', JSON.stringify(this.caracteristique));
-
-      this.delegationGestionService.enregistrerDelegationGestion(this.delegationGestionData).subscribe(
-        (response) => {
-          console.log(response)
-          if (response.id > 0) {
-            this.delegationGestionData.delete('images');
-            this.delegationGestionData.delete('delegationGestionJson');
-            this.delegationGestionData.delete('caracteristiquesJson');
-            this.voirListeDelegationsGestions();
-            this.messageSuccess = "Le délégation de gestion a été enregistrer avec succès.";
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Enregistrement réussi',
-              detail: this.messageSuccess
-            });
-          } else {
-            this.delegationGestionData.delete('images');
-            this.delegationGestionData.delete('delegationGestionJson');
-            this.delegationGestionData.delete('caracteristiquesJson');
-            this.messageErreur = "Erreur lors de l'enregistrement !"
-            this.afficherFormulaireEnregistrerDelegation();
-            this.messageService.add({
-              severity: 'error',
-              summary: "Erreur d'ajout",
-              detail: this.messageErreur
-            });
-          }
-      },
-      (error) => {
-        this.delegationGestionData.delete('images');
-        this.delegationGestionData.delete('delegationGestionJson');
-        this.delegationGestionData.delete('caracteristiquesJson');
-        if (error.error === "La matricule du propriétaire est introuvable !") {
-          this.messageErreur = "La matricule du propriétaire est introuvable !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: "Erreur d'enregistrement",
-            detail: this.messageErreur
-          });
-        } else if (error.error === "Le code de l'immeuble ou de la maison est introuvable !") {
-          this.messageErreur = "Le code de l'immeuble ou de la maison est introuvable !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: "Erreur d'enregistrement",
-            detail: this.messageErreur
-          });
-        }
-      })
+      this.deleguerBienAssocieIfUserDemarcheurOrGerant();
     } else {
-      this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
-      this.delegationGestionForm2.categorie = this.categorieSelectionnee;
-      this.delegationGestionForm2.agenceImmobiliere = this.agenceSelectionnee;
+      this.deleguerBienAssocieIfUserNotDemarcheurOrGerant();
+    }
+  }
 
-      for (const image of this.imagesBienImmobilier) {
-        this.delegationGestionData.append('images', image);
-      }
+  deleguerBienAssocieIfUserDemarcheurOrGerant(): void {
+    this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
+    this.delegationGestionForm2.categorie = this.categorieSelectionnee;
 
-      this.delegationGestionData.append('delegationGestionJson', JSON.stringify(this.delegationGestionForm2));
-      this.delegationGestionData.append('caracteristiquesJson', JSON.stringify(this.caracteristique));
+    for (const image of this.imagesBienImmobilier) {
+      this.delegationGestionData.append('images', image);
+    }
 
-      this.delegationGestionService.enregistrerDelegationGestion(this.delegationGestionData).subscribe(
-        (response) => {
-          if (response.id > 0) {
-            this.delegationGestionData.delete('images');
-            this.delegationGestionData.delete('delegationGestionJson');
-            this.delegationGestionData.delete('caracteristiquesJson');
-            this.voirListeDelegationsGestions();
-            this.messageSuccess = "Le délégation de gestion a été enregistrer avec succès.";
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Enregistrement réussi',
-              detail: this.messageSuccess
-            });
-          } else {
-            this.delegationGestionData.delete('images');
-            this.delegationGestionData.delete('delegationGestionJson');
-            this.delegationGestionData.delete('caracteristiquesJson');
-            this.messageErreur = "Erreur lors de l'enregistrement !"
-            this.afficherFormulaireEnregistrerDelegation();
-            this.messageService.add({
-              severity: 'error',
-              summary: "Erreur d'enregistrement",
-              detail: this.messageErreur
-            });
-          }
-      },
-      (error) => {
-        this.delegationGestionData.delete('images');
-        this.delegationGestionData.delete('delegationGestionJson');
-        this.delegationGestionData.delete('caracteristiquesJson');
-        if (error.error === "La matricule du propriétaire est introuvable !") {
-          this.messageErreur = "La matricule du propriétaire est introuvable !";
+    this.delegationGestionData.append('delegationGestionJson', JSON.stringify(this.delegationGestionForm2));
+    this.delegationGestionData.append('caracteristiquesJson', JSON.stringify(this.caracteristique));
+
+    this.delegationGestionService.enregistrerDelegationGestion(this.delegationGestionData).subscribe(
+      (response) => {
+        console.log(response)
+        if (response.id > 0) {
+          this.delegationGestionData.delete('images');
+          this.delegationGestionData.delete('delegationGestionJson');
+          this.delegationGestionData.delete('caracteristiquesJson');
+          this.voirListeDelegationsGestions();
+          this.messageSuccess = "Le délégation de gestion a été enregistrer avec succès.";
           this.messageService.add({
-            severity: 'warn',
-            summary: "Erreur d'enregistrement",
+            severity: 'success',
+            summary: 'Enregistrement réussi',
+            detail: this.messageSuccess
+          });
+        } else {
+          this.delegationGestionData.delete('images');
+          this.delegationGestionData.delete('delegationGestionJson');
+          this.delegationGestionData.delete('caracteristiquesJson');
+          this.messageErreur = "Erreur lors de l'enregistrement !"
+          this.afficherFormulaireEnregistrerDelegation();
+          this.messageService.add({
+            severity: 'error',
+            summary: "Erreur d'ajout",
             detail: this.messageErreur
           });
-        } else if (error.error === "Le code de l'immeuble ou de la maison est introuvable !") {
-          this.messageErreur = "Le code de l'immeuble ou de la maison est introuvable !";
+        }
+    },
+    (error) => {
+      this.delegationGestionData.delete('images');
+      this.delegationGestionData.delete('delegationGestionJson');
+      this.delegationGestionData.delete('caracteristiquesJson');
+      if (error.error === "La matricule du propriétaire est introuvable !") {
+        this.messageErreur = "La matricule du propriétaire est introuvable !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'enregistrement",
+          detail: this.messageErreur
+        });
+      } else if (error.error === "Le code de l'immeuble ou de la maison est introuvable !") {
+        this.messageErreur = "Le code de l'immeuble ou de la maison est introuvable !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'enregistrement",
+          detail: this.messageErreur
+        });
+      }
+    })
+  }
+
+  deleguerBienAssocieIfUserNotDemarcheurOrGerant(): void {
+    this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
+    this.delegationGestionForm2.categorie = this.categorieSelectionnee;
+    this.delegationGestionForm2.agenceImmobiliere = this.agenceSelectionnee;
+
+    for (const image of this.imagesBienImmobilier) {
+      this.delegationGestionData.append('images', image);
+    }
+
+    this.delegationGestionData.append('delegationGestionJson', JSON.stringify(this.delegationGestionForm2));
+    this.delegationGestionData.append('caracteristiquesJson', JSON.stringify(this.caracteristique));
+
+    this.delegationGestionService.enregistrerDelegationGestion(this.delegationGestionData).subscribe(
+      (response) => {
+        if (response.id > 0) {
+          this.delegationGestionData.delete('images');
+          this.delegationGestionData.delete('delegationGestionJson');
+          this.delegationGestionData.delete('caracteristiquesJson');
+          this.voirListeDelegationsGestions();
+          this.messageSuccess = "Le délégation de gestion a été enregistrer avec succès.";
           this.messageService.add({
-            severity: 'warn',
+            severity: 'success',
+            summary: 'Enregistrement réussi',
+            detail: this.messageSuccess
+          });
+        } else {
+          this.delegationGestionData.delete('images');
+          this.delegationGestionData.delete('delegationGestionJson');
+          this.delegationGestionData.delete('caracteristiquesJson');
+          this.messageErreur = "Erreur lors de l'enregistrement !"
+          this.afficherFormulaireEnregistrerDelegation();
+          this.messageService.add({
+            severity: 'error',
             summary: "Erreur d'enregistrement",
             detail: this.messageErreur
           });
         }
-      })
-    }
+    },
+    (error) => {
+      this.delegationGestionData.delete('images');
+      this.delegationGestionData.delete('delegationGestionJson');
+      this.delegationGestionData.delete('caracteristiquesJson');
+      if (error.error === "La matricule du propriétaire est introuvable !") {
+        this.messageErreur = "La matricule du propriétaire est introuvable !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'enregistrement",
+          detail: this.messageErreur
+        });
+      } else if (error.error === "Le code de l'immeuble ou de la maison est introuvable !") {
+        this.messageErreur = "Le code de l'immeuble ou de la maison est introuvable !";
+        this.messageService.add({
+          severity: 'warn',
+          summary: "Erreur d'enregistrement",
+          detail: this.messageErreur
+        });
+      }
+    })
   }
 
   validateUpdateBienForm(): void {
@@ -1291,7 +1307,6 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
 
   modifierOtherTypeDeBien(id: number): void {
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
-    // this.bienImmobilier.categorie = this.categorieSelectionnee;
 
     for (const image of this.imagesBienImmobilier) {
       this.bienImmobilierData.append('images', image);
@@ -1345,13 +1360,7 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
   modifierBienImmAssocie(id: number): void {
 
     this.bienImmAssocie.typeDeBien = this.typeDeBienSelectionne;
-    // this.bienImmAssocie.categorie = this.categorieSelectionnee;
     this.bienImmAssocie.bienImmobilier = this.bienImmAssocie.bienImmobilier;
-    // this.bienImmAssocie.pays = this.bienImmobilier.pays;
-    // this.bienImmAssocie.region = this.bienImmobilier.region;
-    // this.bienImmAssocie.ville = this.bienImmobilier.ville;
-    // this.bienImmAssocie.quartier = this.bienImmobilier.quartier;
-    // this.bienImmAssocie.adresse = this.bienImmobilier.adresse;
 
     for (const image of this.imagesBienImmobilier) {
       this.bienImmobilierData.append('images', image);
@@ -1452,11 +1461,6 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     return this.publicationForm.get('prixDuBien');
   }
 
-  // listeTypeDeTransactions(): void {
-  //   this.typesDeTransactions = ['Location', 'Vente'];
-  //   this.typeDeTransactionSelectionne = this.typesDeTransactions[0];
-  // }
-
   bienChoisi(bien: BienImmobilier): void {
     if (this.isTypeBienTerrain(bien.typeDeBien.designation)) {
       this.typesDeTransactions = ['Vente'];
@@ -1488,7 +1492,13 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        if (error.error == "Une publication avec ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
+        if (error.error =  "Un contrat de location est toujours en cours pour ce bien immobilier.") {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Publication non réussie',
+            detail: error.error
+          })
+        } else if (error.error == "Une publication avec ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
           this.messageService.add({
             severity: 'warn',
             summary: 'Publication non réussie',
@@ -1512,17 +1522,14 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
   }
 
   redirectToPublicationPage(): void {
+    this.resetPublicationForm();
     if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.behaviorService.setActiveLink('/responsable/agences-immobilieres/publications');
       this.router.navigate(['/responsable/agences-immobilieres/publications'], { queryParams: { publicationReussie: true }});
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.behaviorService.setActiveLink('/agent-immobilier/agences-immobilieres/publications');
       this.router.navigate(['/agent-immobilier/agences-immobilieres/publications'], { queryParams: { publicationReussie: true }});
     } else if (this.user.role.code == 'ROLE_DEMARCHEUR') {
-      this.behaviorService.setActiveLink('/demarcheur/publications');
       this.router.navigate(['/demarcheur/publications'], { queryParams: { publicationReussie: true }});
     } else if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
-      this.behaviorService.setActiveLink('/proprietaire/publications');
       this.router.navigate(['/proprietaire/publications'], { queryParams: { publicationReussie: true }});
     }
   }
