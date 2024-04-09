@@ -267,21 +267,21 @@
 
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Nom & prénom(s) du demandeur</p>
-              <p>{{ demandeCertification.personne.nom }} {{ demandeCertification.personne.prenom }} <i *ngIf="demandeCertification.personne.estCertifie && (demandeCertification.personne.role.code == 'ROLE_RESPONSABLE' || demandeCertification.personne.role.code == 'ROLE_PROPRIETAIRE' || demandeCertification.personne.role.code == 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+              <p class="text">{{ demandeCertification.personne.nom }} {{ demandeCertification.personne.prenom }} <i *ngIf="demandeCertification.personne.estCertifie && (demandeCertification.personne.role.code == 'ROLE_RESPONSABLE' || demandeCertification.personne.role.code == 'ROLE_PROPRIETAIRE' || demandeCertification.personne.role.code == 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
             </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du demandeur</p>
-              <p>{{ demandeCertification.personne.email }}</p>
+              <p class="text">{{ demandeCertification.personne.email }}</p>
             </div>
 
             <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Numero de téléphone du demandeur</p>
-              <p>{{ demandeCertification.personne.telephone }}</p>
+              <p class="text">{{ demandeCertification.personne.telephone }}</p>
             </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Etat du compte du demandeur</p>
-              <p>
+              <p class="text">
                 <p-tag *ngIf="demandeCertification.personne.etatCompte == true" severity="success" value="Activé"></p-tag>
                 <p-tag *ngIf="demandeCertification.personne.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
               </p>
@@ -290,21 +290,21 @@
             <p-divider *ngIf="demandeCertification.agenceImmobiliere"></p-divider>
             <div *ngIf="demandeCertification.agenceImmobiliere" class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Agence immobilière</p>
-              <p>{{ demandeCertification.agenceImmobiliere.nomAgence }} <i *ngIf="demandeCertification.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+              <p class="text">{{ demandeCertification.agenceImmobiliere.nomAgence }} <i *ngIf="demandeCertification.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
             </div>
             <div *ngIf="demandeCertification.agenceImmobiliere" class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Numero de téléphone de l'agence immobilière</p>
-              <p>{{ demandeCertification.agenceImmobiliere.telephone }}</p>
+              <p class="text">{{ demandeCertification.agenceImmobiliere.telephone }}</p>
             </div>
 
             <p-divider></p-divider>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Date de la demande de certification</p>
-              <p>{{ demandeCertification.dateDemande | date: "dd-MM-yyyy" }}</p>
+              <p class="text">{{ demandeCertification.dateDemande | date: "dd-MM-yyyy" }}</p>
             </div>
             <div class="form-group col-md-6">
               <p class="fw600 mb10 ff-heading dark-color">Statut de la demande de certification</p>
-              <p>
+              <p class="text">
                 <p-tag *ngIf="demandeCertification.statutDemande == 1" severity="success" value="Validé"></p-tag>
                 <p-tag *ngIf="demandeCertification.statutDemande == 0" severity="warning" value="En attente"></p-tag>
               </p>
