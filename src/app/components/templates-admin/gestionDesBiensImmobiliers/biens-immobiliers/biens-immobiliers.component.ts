@@ -1876,7 +1876,13 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        if (error.error == "Une publication avec ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
+        if (error.error =  "Un contrat de location est toujours en cours pour ce bien immobilier.") {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Publication non réussie',
+            detail: error.error
+          })
+        } else if (error.error == "Une publication avec ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
           this.messageService.add({
             severity: 'warn',
             summary: 'Publication non réussie',
@@ -1900,17 +1906,14 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   }
 
   redirectToPublicationPage(): void {
+    this.resetPublicationForm();
     if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.behaviorService.setActiveLink('/responsable/agences-immobilieres/publications');
       this.router.navigate(['/responsable/agences-immobilieres/publications'], { queryParams: { publicationReussie: true }});
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.behaviorService.setActiveLink('/agent-immobilier/agences-immobilieres/publications');
       this.router.navigate(['/agent-immobilier/agences-immobilieres/publications'], { queryParams: { publicationReussie: true }});
     } else if (this.user.role.code == 'ROLE_DEMARCHEUR') {
-      this.behaviorService.setActiveLink('/demarcheur/publications');
       this.router.navigate(['/demarcheur/publications'], { queryParams: { publicationReussie: true }});
     } else if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
-      this.behaviorService.setActiveLink('/proprietaire/publications');
       this.router.navigate(['/proprietaire/publications'], { queryParams: { publicationReussie: true }});
     }
   }
