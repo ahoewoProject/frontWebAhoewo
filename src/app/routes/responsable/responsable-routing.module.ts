@@ -18,6 +18,8 @@ import { DemandesLocationsComponent } from 'src/app/components/templates-admin/g
 import { DemandesAchatsComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-achats/demandes-achats.component';
 import { ContratsComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/contrats/contrats.component';
 import { SuivisEntretiensComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/suivis-entretiens/suivis-entretiens.component';
+import { PaiementsComponent } from 'src/app/components/templates-admin/gestionDesPaiements/paiements/paiements.component';
+import { PlanificationsPaiementsComponent } from 'src/app/components/templates-admin/gestionDesPaiements/planifications-paiements/planifications-paiements.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -46,6 +48,10 @@ const routes: Routes = [
       { path: 'agences-immobilieres/contrats/ventes/:id', component: ContratsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/suivis-entretiens', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/suivis-entretiens/:id', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/planifications-paiements', component: PlanificationsPaiementsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/planifications-paiements/:id', component: PlanificationsPaiementsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/paiements', component: PaiementsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/paiements/:id', component: PaiementsComponent, canActivate: [AuthGuard] }
     ]
   }
 ];

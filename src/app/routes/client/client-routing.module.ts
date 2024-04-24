@@ -7,6 +7,8 @@ import { ContratsComponent } from 'src/app/components/templates-admin/gestionDes
 import { DemandesAchatsComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-achats/demandes-achats.component';
 import { DemandesVisitesComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-visites/demandes-visites.component';
 import { SuivisEntretiensComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/suivis-entretiens/suivis-entretiens.component';
+import { PaiementsComponent } from 'src/app/components/templates-admin/gestionDesPaiements/paiements/paiements.component';
+import { PlanificationsPaiementsComponent } from 'src/app/components/templates-admin/gestionDesPaiements/planifications-paiements/planifications-paiements.component';
 import { NotificationsComponent } from 'src/app/components/templates-admin/notifications/notifications.component';
 import { TemplatesAdminComponent } from 'src/app/components/templates-admin/templates-admin.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
@@ -28,6 +30,10 @@ const routes: Routes = [
       { path: 'contrats/ventes/:id', component: ContratsComponent, canActivate: [AuthGuard] },
       { path: 'suivis-entretiens', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
       { path: 'suivis-entretiens/:id', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
+      { path: 'planifications-paiements', component: PlanificationsPaiementsComponent, canActivate: [AuthGuard] },
+      { path: 'planifications-paiements/:id', component: PlanificationsPaiementsComponent, canActivate: [AuthGuard] },
+      { path: 'paiements', component: PaiementsComponent, canActivate: [AuthGuard] },
+      { path: 'paiements/:id', component: PaiementsComponent, canActivate: [AuthGuard] }
     ]
   }
 ];
