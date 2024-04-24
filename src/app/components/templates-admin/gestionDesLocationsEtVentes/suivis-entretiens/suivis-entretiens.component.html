@@ -1,382 +1,361 @@
 <div class="dashboard__content property-page bgc-f7">
-  <div class="row pb40 d-block d-lg-none">
-    <!-- Menu responsive -->
-    <app-menu-responsive></app-menu-responsive>
-    <!-- End Menu responsive -->
-  </div>
-
-  <p-toast></p-toast>
-
-  <!-- Liste des suivis d'entretiens -->
-  <div *ngIf="affichage == 1">
-    <div class="row align-items-center pb40">
-      <div class="col-xxl-3">
-        <div class="dashboard_title_area">
-          <h4>Suivi des entretiens</h4>
-        </div>
-      </div>
-      <div class="col-xxl-9">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <div class="item1 mb15-sm">
-            <div class="search_area">
-              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
-              <label><span class="flaticon-search"></span></label>
-            </div>
-          </div>
-          &nbsp;
-          <a *ngIf="user.role.code == 'ROLE_CLIENT'" type="button" (click)="afficherPageAjouter()" class="ud-btn btn-thm">Ajouter un entretien</a>
-        </div>
-      </div>
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
     </div>
-    <div class="row">
-      <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
-          <div class="packages_table table-responsive">
-            <table class="table-style3 table at-savesearch">
-              <thead class="t-head">
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Code</th>
-                  <th scope="col">Contrat</th>
-                  <th scope="col" *ngIf="user.role.code != 'ROLE_CLIENT'">Locataire</th>
-                  <th scope="col" *ngIf="user.role.code == 'ROLE_CLIENT'">Bien</th>
-                  <th scope="col">Etat</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="t-body">
-                <tr *ngFor="let suiviEntretien of suivisEntretiens.content | genericFilter: recherche; let i = index">
-                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
-                  <td class="vam">{{ suiviEntretien.codeSuiviEntretien }}</td>
-                  <td class="vam">{{ suiviEntretien.contratLocation.codeContrat ? suiviEntretien.contratLocation.codeContrat : 'Non définie' }} </td>
-                  <td class="vam" *ngIf="user.role.code != 'ROLE_CLIENT'">{{ suiviEntretien.contratLocation.client.nom + ' ' + suiviEntretien.contratLocation.client.prenom }} </td>
-                  <td class="vam" *ngIf="user.role.code == 'ROLE_CLIENT'">{{ suiviEntretien.contratLocation.bienImmobilier.codeBien + ' / ' + suiviEntretien.contratLocation.bienImmobilier.typeDeBien.designation }} </td>
-                  <td class="vam">
-                    <p-tag *ngIf="suiviEntretien.etatSuiviEntretien == 'En attente'" severity="warning" value="En attente"></p-tag>
-                    <p-tag *ngIf="suiviEntretien.etatSuiviEntretien == 'En cours'" severity="warning" value="En cours"></p-tag>
-                    <p-tag *ngIf="suiviEntretien.etatSuiviEntretien == 'Terminé'" severity="success" value="Terminé"></p-tag>
-                  </td>
-                  <td class="vam">
-                    <div class="d-flex">
-                      <button pButton type="button" icon="pi pi-eye"
-                        (click)="afficherPageDetail(suiviEntretien.id)"
-                        pTooltip="Détails" tooltipPosition="top" class="p-button-text p-button-info">
-                      </button>
 
-                      <button
-                        pButton type="button" icon="pi pi-pencil pi-lg"
-                        (click)="afficherPageModifier(suiviEntretien.id)"
-                        pTooltip="Modifier" tooltipPosition="top" class="p-button-text p-button-warning">
-                      </button>
+    <p-toast></p-toast>
 
-                      <button *ngIf="suiviEntretien.etatSuiviEntretien == 'En attente'"
-                        pButton type="button" icon="pi pi-check-circle pi-lg" (click)="debuterEntretien(suiviEntretien.id)"
-                        pTooltip="Débuter cet entretien" tooltipPosition="right" class="p-button-text p-button-success">
-                      </button>
-
-                      <button *ngIf="suiviEntretien.etatSuiviEntretien == 'En cours'"
-                        pButton type="button" icon="pi pi-power-off pi-lg" (click)="terminerEntretien(suiviEntretien.id)"
-                        pTooltip="Terminer cet entretien" tooltipPosition="right" class="p-button-text p-button-danger">
-                      </button>
+    <!-- Liste des suivis d'entretiens -->
+    <div *ngIf="affichage == 1">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-3">
+                <div class="dashboard_title_area">
+                    <h4>Suivi des entretiens</h4>
+                </div>
+            </div>
+            <div class="col-xxl-9">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <div class="item1 mb15-sm">
+                        <div class="search_area">
+                            <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
+                            <label><span class="flaticon-search"></span></label>
+                        </div>
                     </div>
-                  </td>
-              </tbody>
-            </table>
-          </div>
-
-          <div *ngIf="suivisEntretiens.totalElements !== 0" class="mbp_pagination text-center mt30">
-            <p-paginator
-              (onPageChange)="pagination($event)" [rows]="suivisEntretiens.size"
-              [totalRecords]="suivisEntretiens.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
-              [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} entretiens">
-            </p-paginator>
-          </div>
-          <div *ngIf="suivisEntretiens.totalElements == 0" class="mbp_pagination text-center mt30">
-            <p class="mt10 pagination_page_count text-center">Aucun entretien enregistrée pour le moment</p>
-          </div>
+                    &nbsp;
+                    <a *ngIf="user.role.code == 'ROLE_CLIENT'" type="button" (click)="afficherPageAjouter()" class="ud-btn btn-thm">Ajouter un entretien</a>
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="row">
+            <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <div class="packages_table table-responsive">
+                        <table class="table-style3 table at-savesearch">
+                            <thead class="t-head">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Code</th>
+                                    <th scope="col">Contrat</th>
+                                    <th scope="col" *ngIf="user.role.code != 'ROLE_CLIENT'">Locataire</th>
+                                    <th scope="col" *ngIf="user.role.code == 'ROLE_CLIENT'">Bien</th>
+                                    <th scope="col">Etat</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="t-body">
+                                <tr *ngFor="let suiviEntretien of suivisEntretiens.content | genericFilter: recherche; let i = index">
+                                    <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
+                                    <td class="vam">{{ suiviEntretien.codeSuiviEntretien }}</td>
+                                    <td class="vam">{{ suiviEntretien.contratLocation.codeContrat ? suiviEntretien.contratLocation.codeContrat : 'Non définie' }} </td>
+                                    <td class="vam" *ngIf="user.role.code != 'ROLE_CLIENT'">{{ suiviEntretien.contratLocation.client.nom + ' ' + suiviEntretien.contratLocation.client.prenom }} </td>
+                                    <td class="vam" *ngIf="user.role.code == 'ROLE_CLIENT'">{{ suiviEntretien.contratLocation.bienImmobilier.codeBien + ' / ' + suiviEntretien.contratLocation.bienImmobilier.typeDeBien.designation }} </td>
+                                    <td class="vam">
+                                        <p-tag *ngIf="suiviEntretien.etatSuiviEntretien == 'En attente'" severity="warning" value="En attente"></p-tag>
+                                        <p-tag *ngIf="suiviEntretien.etatSuiviEntretien == 'En cours'" severity="info" value="En cours"></p-tag>
+                                        <p-tag *ngIf="suiviEntretien.etatSuiviEntretien == 'Terminé'" severity="success" value="Terminé"></p-tag>
+                                    </td>
+                                    <td class="vam">
+                                        <div class="d-flex">
+                                            <button pButton type="button" icon="pi pi-eye" (click)="afficherPageDetail(suiviEntretien.id)" pTooltip="Détails" tooltipPosition="top" class="p-button-text p-button-info">
+                      </button>
+
+                                            <button pButton type="button" icon="pi pi-pencil pi-lg" (click)="afficherPageModifier(suiviEntretien.id)" pTooltip="Modifier" tooltipPosition="top" class="p-button-text p-button-warning">
+                      </button>
+
+                                            <button *ngIf="suiviEntretien.etatSuiviEntretien == 'En attente'" pButton type="button" icon="pi pi-check-circle pi-lg" (click)="debuterEntretien(suiviEntretien.id)" pTooltip="Débuter cet entretien" tooltipPosition="right" class="p-button-text p-button-success">
+                      </button>
+
+                                            <button *ngIf="suiviEntretien.etatSuiviEntretien == 'En cours'" pButton type="button" icon="pi pi-power-off pi-lg" (click)="terminerEntretien(suiviEntretien.id)" pTooltip="Terminer cet entretien" tooltipPosition="right" class="p-button-text p-button-danger">
+                      </button>
+                                        </div>
+                                    </td>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div *ngIf="suivisEntretiens.totalElements !== 0" class="mbp_pagination text-center mt30">
+                        <p-paginator (onPageChange)="pagination($event)" [rows]="suivisEntretiens.size" [totalRecords]="suivisEntretiens.totalElements" [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} entretiens">
+                        </p-paginator>
+                    </div>
+                    <div *ngIf="suivisEntretiens.totalElements == 0" class="mbp_pagination text-center mt30">
+                        <p class="mt10 pagination_page_count text-center">Aucun entretien enregistrée pour le moment</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+    <!-- End Liste des suivis d'entretien -->
 
-  </div>
-  <!-- End Liste des suivis d'entretien -->
+    <!-- Details d'un suivi d'entretien -->
+    <div *ngIf="affichage == 2">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-8">
+                <div class="dashboard_title_area">
+                    <h4>Détails d'un suivi d'entretien</h4>
+                </div>
+            </div>
+            <div class="col-xxl-4">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
 
-  <!-- Details d'un suivi d'entretien -->
-  <div *ngIf="affichage == 2">
-    <div  class="row align-items-center pb40">
-      <div class="col-xxl-8">
-        <div class="dashboard_title_area">
-          <h4>Détails d'un suivi d'entretien</h4>
+                    <div class="row">
+                        <h4 class="title title-detail fz17 mb10">Entretien</h4>
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Code</p>
+                            <p class="text">{{ suiviEntretien.codeSuiviEntretien }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Libelle de l'entretien</p>
+                            <p class="text">{{ suiviEntretien.libelle }}</p>
+                        </div>
+
+                        <div *ngIf="suiviEntretien.description">
+                            <p class="fw600 mb10 ff-heading dark-color">Description de l'entretien</p>
+                            <p class="text justify-text">{{ suiviEntretien.description }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Date prévue</p>
+                            <p class="text justify-text">
+                                {{ suiviEntretien.datePrevue | date: "dd-MM-yyyy" }}
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+                            <p>
+                                <p-tag *ngIf="suiviEntretien.etatSuiviEntretien == 'En attente'" severity="warning" value="{{suiviEntretien.etatSuiviEntretien}}"></p-tag>
+                                <p-tag *ngIf="suiviEntretien.etatSuiviEntretien == 'En cours'" severity="info" value="{{suiviEntretien.etatSuiviEntretien}}"></p-tag>
+                                <p-tag *ngIf="suiviEntretien.etatSuiviEntretien == 'Terminé'" severity="success" value="{{suiviEntretien.etatSuiviEntretien}}"></p-tag>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <h4 class="title title-detail fz17 mb10">Contrat</h4>
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Code</p>
+                            <p class="text">{{ suiviEntretien.contratLocation.codeContrat }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Type de contrat</p>
+                            <p class="text">{{ suiviEntretien.contratLocation.typeContrat }}</p>
+                        </div>
+                        <div class="col-sm-6" *ngIf="user.role.code != 'ROLE_CLIENT'">
+                            <p class="fw600 mb10 ff-heading dark-color">Locataire</p>
+                            <p class="text">{{ suiviEntretien.contratLocation.client.nom + ' ' + suiviEntretien.contratLocation.client.prenom }}</p>
+                        </div>
+                        <div class="col-sm-6" *ngIf="user.role.code == 'ROLE_CLIENT'">
+                            <p class="fw600 mb10 ff-heading dark-color">Propriétaire</p>
+                            <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.agenceImmobiliere ? suiviEntretien.contratLocation.bienImmobilier.agenceImmobiliere.nomAgence : suiviEntretien.contratLocation.bienImmobilier.personne.nom + ' ' + suiviEntretien.contratLocation.bienImmobilier.personne.prenom
+                                }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <h4 class="title title-detail fz17 mb10">Bien immobilier</h4>
+                        <div *ngIf="suiviEntretien.contratLocation.bienImmobilier.description">
+                            <p class="fw600 mb10 ff-heading dark-color">Description du bien</p>
+                            <p class="text justify-text">{{ suiviEntretien.contratLocation.bienImmobilier.description }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Code du bien</p>
+                            <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.codeBien }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Type de bien</p>
+                            <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.typeDeBien.designation }}</p>
+                        </div>
+
+                        <div class="col-sm-6" *ngIf="afficherCategorie()">
+                            <p class="fw600 mb5 ff-heading dark-color">Catégorie</p>
+                            <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.categorie }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Pays</p>
+                            <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.quartier.ville.region.pays.libelle }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Région</p>
+                            <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.quartier.ville.region.libelle }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Ville</p>
+                            <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.quartier.ville.libelle }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Quartier</p>
+                            <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.quartier.libelle }}</p>
+                        </div>
+
+                        <div class="col-sm-6" *ngIf="suiviEntretien.contratLocation.bienImmobilier.adresse">
+                            <p class="fw600 mb5 ff-heading dark-color">Adresse</p>
+                            <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.adresse }}</p>
+                        </div>
+
+                        <div class="col-sm-6" *ngIf="suiviEntretien.contratLocation.bienImmobilier.surface">
+                            <p class="fw600 mb5 ff-heading dark-color">Surface</p>
+                            <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.surface | number }} m²</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-end">
+                <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
+            </div>
         </div>
-      </div>
-      <div class="col-xxl-4">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
-        </div>
-      </div>
     </div>
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+    <!-- End Details d'un suivi d'entretien -->
 
-          <div class="row">
-            <h4 class="title title-detail fz17 mb10">Entretien</h4>
-            <div class="col-sm-6">
-              <p class="fw600 mb10 ff-heading dark-color">Code entretien</p>
-              <p class="text">{{ suiviEntretien.codeSuiviEntretien }}</p>
+    <!-- Start Formulaire d'ajout d'un entretien -->
+    <div *ngIf="affichage == 3">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-3">
+                <div class="dashboard_title_area">
+                    <h4>Ajout d'un entretien</h4>
+                </div>
             </div>
-            <div class="col-sm-6">
-              <p class="fw600 mb10 ff-heading dark-color">Libelle de l'entretien</p>
-              <p class="text">{{ suiviEntretien.libelle }}</p>
+            <div class="col-xxl-9">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+                </div>
             </div>
-
-            <div *ngIf="suiviEntretien.description">
-              <p class="fw600 mb10 ff-heading dark-color">Description de l'entretien</p>
-              <p class="text justify-text">{{ suiviEntretien.description }}</p>
-            </div>
-
-            <div class="col-sm-6">
-              <p class="fw600 mb10 ff-heading dark-color">Etat</p>
-              <p>
-                <p-tag *ngIf="suiviEntretien.etatSuiviEntretien == 'En attente'" severity="warning" value="{{suiviEntretien.etatSuiviEntretien}}"></p-tag>
-                <p-tag *ngIf="suiviEntretien.etatSuiviEntretien == 'En cours'" severity="warning" value="{{suiviEntretien.etatSuiviEntretien}}"></p-tag>
-                <p-tag *ngIf="suiviEntretien.etatSuiviEntretien == 'Terminé'" severity="success" value="{{suiviEntretien.etatSuiviEntretien}}"></p-tag>
-              </p>
-            </div>
-          </div>
-
-          <div class="row">
-            <h4 class="title title-detail fz17 mb10">Contrat</h4>
-            <div class="col-sm-6">
-              <p class="fw600 mb10 ff-heading dark-color">Code contrat</p>
-              <p class="text">{{ suiviEntretien.contratLocation.codeContrat }}</p>
-            </div>
-
-            <div class="col-sm-6">
-              <p class="fw600 mb10 ff-heading dark-color">Type de contrat</p>
-              <p class="text">{{ suiviEntretien.contratLocation.typeContrat }}</p>
-            </div>
-            <div class="col-sm-6" *ngIf="user.role.code != 'ROLE_CLIENT'">
-              <p class="fw600 mb10 ff-heading dark-color">Locataire</p>
-              <p class="text">{{ suiviEntretien.contratLocation.client.nom + ' ' + suiviEntretien.contratLocation.client.prenom }}</p>
-            </div>
-            <div class="col-sm-6" *ngIf="user.role.code == 'ROLE_CLIENT'">
-              <p class="fw600 mb10 ff-heading dark-color">Propriétaire</p>
-              <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.agenceImmobiliere ? suiviEntretien.contratLocation.bienImmobilier.agenceImmobiliere.nomAgence : suiviEntretien.contratLocation.bienImmobilier.personne.nom + ' ' + suiviEntretien.contratLocation.bienImmobilier.personne.prenom }}</p>
-            </div>
-          </div>
-
-          <div class="row">
-            <h4 class="title title-detail fz17 mb10">Bien immobilier</h4>
-            <div *ngIf="suiviEntretien.contratLocation.bienImmobilier.description">
-              <p class="fw600 mb10 ff-heading dark-color">Description du bien</p>
-              <p class="text justify-text">{{ suiviEntretien.contratLocation.bienImmobilier.description }}</p>
-            </div>
-
-            <div class="col-sm-6">
-              <p class="fw600 mb5 ff-heading dark-color">Code du bien</p>
-              <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.codeBien }}</p>
-            </div>
-            <div class="col-sm-6">
-              <p class="fw600 mb5 ff-heading dark-color">Type de bien</p>
-              <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.typeDeBien.designation }}</p>
-            </div>
-
-            <div class="col-sm-6" *ngIf="afficherCategorie()">
-              <p class="fw600 mb5 ff-heading dark-color">Catégorie</p>
-              <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.categorie }}</p>
-            </div>
-
-            <div class="col-sm-6">
-              <p class="fw600 mb5 ff-heading dark-color">Pays</p>
-              <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.quartier.ville.region.pays.libelle }}</p>
-            </div>
-
-            <div class="col-sm-6">
-              <p class="fw600 mb5 ff-heading dark-color">Région</p>
-              <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.quartier.ville.region.libelle }}</p>
-            </div>
-
-            <div class="col-sm-6">
-              <p class="fw600 mb5 ff-heading dark-color">Ville</p>
-              <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.quartier.ville.libelle }}</p>
-            </div>
-
-            <div class="col-sm-6">
-              <p class="fw600 mb5 ff-heading dark-color">Quartier</p>
-              <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.quartier.libelle }}</p>
-            </div>
-
-            <div class="col-sm-6" *ngIf="suiviEntretien.contratLocation.bienImmobilier.adresse">
-              <p class="fw600 mb5 ff-heading dark-color">Adresse</p>
-              <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.adresse }}</p>
-            </div>
-
-            <div class="col-sm-6" *ngIf="suiviEntretien.contratLocation.bienImmobilier.surface">
-              <p class="fw600 mb5 ff-heading dark-color">Surface</p>
-              <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.surface | number }} m²</p>
-            </div>
-          </div>
         </div>
-      </div>
-      <div class="text-end">
-        <a class="ud-btn btn-retour" (click)="voirListe()"  type="button">Retour</a>
-      </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <form [formGroup]="suiviEntretienForm" (ngSubmit)="ajouterSuiviEntretien()" class="form-style1">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Contrat de location</label>
+                                    <p-dropdown class="select1" emptyFilterMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé" [options]="contratsLocations" placeholder="Choisir un contrat" formControlName="contratLocation" [filter]="true" filterBy="codeContrat" filterPlaceholder="Rechercher"
+                                        [(ngModel)]="contratLocationSelectionne" [showClear]="true" (onChange)="contratLocationChoisie($event)" optionLabel="codeContrat">
+                                    </p-dropdown>
+                                    <!-- <div class="error" [hidden]="!contratLocation?.hasError('required') || !contratLocation.touched">La selection du pays est obligatoire</div> -->
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Libelle</label>
+                                    <input pInputText class="pInputText p-fluid" id="libelle" name="libelle" placeholder="Le libelle de l'entretien" formControlName="libelle" [(ngModel)]="suiviEntretien.libelle" required>
+                                    <div class="error" [hidden]="libelle.valid || libelle.pristine && !libelle.touched ">Le libelle de l'entretien est obligatoire</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Description</label>
+                                    <textarea id="description" name="description" placeholder="La description de l'entretien" formControlName="description" style="height: 160px;" [(ngModel)]="suiviEntretien.description"></textarea>
+                                    <!-- <div class="error" [hidden]="descriptionDuService.valid || descriptionDuService.pristine && !descriptionDuService.touched ">La description du service non trouvé est obligatoire</div> -->
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Date prévue</label>
+                                    <p-calendar class="pCalendar p-fluid" placeholder="La date prévue pour l'entretien" [(ngModel)]="suiviEntretien.datePrevue" formControlName="datePrevue" inputId="datePrevue" name="datePrevue" [required]="true">
+                                    </p-calendar>
+                                    <div class="error" [hidden]="!datePrevue?.hasError('required') || !datePrevue.touched">La date prévue est requise</div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-12">
+                            <div class="text-end">
+                                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button> &nbsp;
+                                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': suiviEntretienForm.invalid }" type="submit">Ajouter</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <!-- End Details d'un suivi d'entretien -->
+    <!-- End Formulaire d'ajout d'un entretien -->
 
-  <!-- Start Formulaire d'ajout d'un entretien -->
-  <div *ngIf="affichage == 3">
-    <div class="row align-items-center pb40">
-      <div class="col-xxl-3">
-        <div class="dashboard_title_area">
-          <h4>Ajout d'un entretien</h4>
-        </div>
-      </div>
-      <div class="col-xxl-9">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
-          <form [formGroup]="suiviEntretienForm" (ngSubmit)="ajouterSuiviEntretien()" class="form-style1">
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Contrat de location</label>
-                  <p-dropdown
-                    class="select1" emptyFilterMessage="Aucun résultat trouvé"
-                    emptyMessage="Aucun résultat trouvé"
-                    [options]="contratsLocations" placeholder="Choisir un contrat"
-                    formControlName="contratLocation" [filter]="true" filterBy="codeContrat"
-                    filterPlaceholder="Rechercher"
-                    [(ngModel)]="contratLocationSelectionne"
-                    [showClear]="true" (onChange)="contratLocationChoisie($event)" optionLabel="codeContrat">
-                  </p-dropdown>
-                  <!-- <div class="error" [hidden]="!contratLocation?.hasError('required') || !contratLocation.touched">La selection du pays est obligatoire</div> -->
+    <!-- Start Formulaire de modification d'un entretien -->
+    <div *ngIf="affichage == 4">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-7">
+                <div class="dashboard_title_area">
+                    <h4>Modification d'un entretien</h4>
                 </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Libelle</label>
-                  <input type="text" class="form-control" id="libelle" name="libelle" placeholder="Le libelle de l'entretien" formControlName="libelle" [(ngModel)]="suiviEntretien.libelle" required>
-                  <div class="error" [hidden]="libelle.valid || libelle.pristine && !libelle.touched ">Le libelle de l'entretien est obligatoire</div>
-                </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Description</label>
-                  <textarea id="description" name="description" placeholder="La description de l'entretien" formControlName="description" style="height: 160px;" [(ngModel)]="suiviEntretien.description"></textarea>
-                  <!-- <div class="error" [hidden]="descriptionDuService.valid || descriptionDuService.pristine && !descriptionDuService.touched ">La description du service non trouvé est obligatoire</div> -->
-                </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Date prévue</label>
-                  <p-calendar class="pCalendar p-fluid" placeholder="Date prévue pour l'entretien" [(ngModel)]="suiviEntretien.datePrevue"
-                    formControlName="datePrevue" inputId="datePrevue" name="datePrevue" [required]="true">
-                  </p-calendar>
-                  <div class="error" [hidden]="!datePrevue?.hasError('required') || !datePrevue.touched">La date prévue est requise</div>
-                </div>
-              </div>
             </div>
-            <br>
-            <div class="col-md-12">
-              <div class="text-end">
-                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
-                &nbsp;
-                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': suiviEntretienForm.invalid }" type="submit">Ajouter</button>
-              </div>
+            <div class="col-xxl-5">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+                </div>
             </div>
-          </form>
         </div>
-      </div>
-    </div>
-  </div>
-  <!-- End Formulaire d'ajout d'un entretien -->
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <form [formGroup]="suiviEntretienForm" (ngSubmit)="modifierSuiviEntretien()" class="form-style1">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Contrat de location</label>
+                                    <p-dropdown class="select1" emptyFilterMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé" [options]="contratsLocations" placeholder="Choisir un contrat" formControlName="contratLocation" [filter]="true" filterBy="codeContrat" filterPlaceholder="Rechercher"
+                                        [(ngModel)]="suiviEntretien.contratLocation" [showClear]="true" (onChange)="contratLocationChoisie($event)" optionLabel="codeContrat">
+                                    </p-dropdown>
+                                    <!-- <div class="error" [hidden]="!contratLocation?.hasError('required') || !contratLocation.touched">La selection du pays est obligatoire</div> -->
+                                </div>
+                            </div>
 
-  <!-- Start Formulaire de modification d'un entretien -->
-  <div *ngIf="affichage == 4">
-    <div class="row align-items-center pb40">
-      <div class="col-xxl-7">
-        <div class="dashboard_title_area">
-          <h4>Modification d'un entretien</h4>
-        </div>
-      </div>
-      <div class="col-xxl-5">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
-          <form [formGroup]="suiviEntretienForm" (ngSubmit)="modifierSuiviEntretien()" class="form-style1">
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Contrat de location</label>
-                  <p-dropdown
-                    class="select1" emptyFilterMessage="Aucun résultat trouvé"
-                    emptyMessage="Aucun résultat trouvé"
-                    [options]="contratsLocations" placeholder="Choisir un contrat"
-                    formControlName="contratLocation" [filter]="true" filterBy="codeContrat"
-                    filterPlaceholder="Rechercher"
-                    [(ngModel)]="suiviEntretien.contratLocation"
-                    [showClear]="true" (onChange)="contratLocationChoisie($event)" optionLabel="codeContrat">
-                  </p-dropdown>
-                  <!-- <div class="error" [hidden]="!contratLocation?.hasError('required') || !contratLocation.touched">La selection du pays est obligatoire</div> -->
-                </div>
-              </div>
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Libelle</label>
+                                    <input type="text" class="form-control" id="libelle" name="libelle" placeholder="Le libelle de l'entretien" formControlName="libelle" [(ngModel)]="suiviEntretien.libelle" required>
+                                    <div class="error" [hidden]="libelle.valid || libelle.pristine && !libelle.touched ">Le libelle de l'entretien est obligatoire</div>
+                                </div>
+                            </div>
 
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Libelle</label>
-                  <input type="text" class="form-control" id="libelle" name="libelle" placeholder="Le libelle de l'entretien" formControlName="libelle" [(ngModel)]="suiviEntretien.libelle" required>
-                  <div class="error" [hidden]="libelle.valid || libelle.pristine && !libelle.touched ">Le libelle de l'entretien est obligatoire</div>
-                </div>
-              </div>
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Description</label>
+                                    <textarea id="description" name="description" placeholder="La description de l'entretien" formControlName="description" style="height: 160px;" [(ngModel)]="suiviEntretien.description"></textarea>
+                                    <!-- <div class="error" [hidden]="descriptionDuService.valid || descriptionDuService.pristine && !descriptionDuService.touched ">La description du service non trouvé est obligatoire</div> -->
+                                </div>
+                            </div>
 
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Description</label>
-                  <textarea id="description" name="description" placeholder="La description de l'entretien" formControlName="description" style="height: 160px;" [(ngModel)]="suiviEntretien.description"></textarea>
-                  <!-- <div class="error" [hidden]="descriptionDuService.valid || descriptionDuService.pristine && !descriptionDuService.touched ">La description du service non trouvé est obligatoire</div> -->
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Date prévue</label>
+                                    <p-calendar class="pCalendar p-fluid" placeholder="Date prévue pour l'entretien" [(ngModel)]="datePrevueSelectionnee" (onSelect)="datePrevueChoisie($event)" formControlName="datePrevue" inputId="datePrevue" name="datePrevue" [required]="true">
+                                    </p-calendar>
+                                    <div class="error" [hidden]="!datePrevue?.hasError('required') || !datePrevue.touched">La date prévue est requise</div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-12">
+                            <div class="text-end">
+                                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button> &nbsp;
+                                <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': suiviEntretienForm.invalid }" type="submit">Modifier</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-              </div>
-
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Date prévue</label>
-                  <p-calendar class="pCalendar p-fluid" placeholder="Date prévue pour l'entretien" [(ngModel)]="datePrevueSelectionnee" (onSelect)="datePrevueChoisie($event)"
-                    formControlName="datePrevue" inputId="datePrevue" name="datePrevue" [required]="true">
-                  </p-calendar>
-                  <div class="error" [hidden]="!datePrevue?.hasError('required') || !datePrevue.touched">La date prévue est requise</div>
-                </div>
-              </div>
             </div>
-            <br>
-            <div class="col-md-12">
-              <div class="text-end">
-                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
-                &nbsp;
-                <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': suiviEntretienForm.invalid }" type="submit">Modifier</button>
-              </div>
-            </div>
-          </form>
         </div>
-      </div>
     </div>
-  </div>
-  <!-- End Formulaire de modification d'un entretien -->
+    <!-- End Formulaire de modification d'un entretien -->
 </div>

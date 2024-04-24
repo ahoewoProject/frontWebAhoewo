@@ -27,7 +27,7 @@
 :host ::ng-deep .pCalendar .p-inputtext {
   border-radius: 8px;
   border: 1px solid #DDDDDD;
-  font-size: 18px;
+  font-size: 17px;
 }
 
 :host ::ng-deep .select1 .p-dropdown {
@@ -40,9 +40,16 @@
   margin-left: -3%;
 }
 
+:host ::ng-deep .pInputText {
+  width: 100%;
+  border-radius: 8px;
+  font-size: 17px;
+}
+
 :host ::ng-deep .pInputNumber {
   width: 100%;
   border-radius: 8px;
+  font-size: 17px;
 }
 
 :host ::ng-deep .pInputNumber.ng-dirty.ng-invalid > .p-inputnumber > .p-inputtext {

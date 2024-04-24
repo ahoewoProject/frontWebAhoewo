@@ -29,6 +29,7 @@
 :host ::ng-deep .pInputNumber {
   width: 100%;
   border-radius: 8px;
+  font-size: 17px;
 }
 
 :host ::ng-deep .pInputNumber.ng-dirty.ng-invalid > .p-inputnumber > .p-inputtext {

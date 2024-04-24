@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
-import { Contrat } from 'src/app/models/gestionDesLocationsEtVentes/Contrat';
 import { ContratLocation } from 'src/app/models/gestionDesLocationsEtVentes/ContratLocation';
 import { SuiviEntretien } from 'src/app/models/gestionDesLocationsEtVentes/SuiviEntretien';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';

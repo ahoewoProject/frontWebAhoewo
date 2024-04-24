@@ -427,6 +427,8 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
         this.contratVente.demandeAchat = this.demandeAchat;
         this.contratVente.prixVente = data.prixAchat;
         this.contratVente.nombreDeTranche = data.nombreDeTranche;
+        this.contratVente.fraisDeVisite  = data.publication.fraisDeVisite;
+        this.contratVente.commission = data.publication.commission
       }
     )
     this.affichage = 4;

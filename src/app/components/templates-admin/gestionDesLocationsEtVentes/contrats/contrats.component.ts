@@ -879,24 +879,14 @@ export class ContratsComponent implements OnInit, OnDestroy {
     this.activeIndex = 3;
   }
 
-  afficherCategorie(): boolean {
-    return this.contratLocation.bienImmobilier.typeDeBien.designation == 'Maison' ||
-    this.contratLocation.bienImmobilier.typeDeBien.designation == 'Villa' ||
-    this.contratLocation.bienImmobilier.typeDeBien.designation == 'Immeuble' ||
-    this.contratLocation.bienImmobilier.typeDeBien.designation == 'Appartement' ||
-    this.contratLocation.bienImmobilier.typeDeBien.designation == 'Chambre salon' ||
-    this.contratLocation.bienImmobilier.typeDeBien.designation == 'Chambre' ||
-    this.contratLocation.bienImmobilier.typeDeBien.designation == 'Bureau';
-  }
-
-  afficherCategorieContratVente(): boolean {
-    return this.contratVente.bienImmobilier.typeDeBien.designation == 'Maison' ||
-    this.contratVente.bienImmobilier.typeDeBien.designation == 'Villa' ||
-    this.contratVente.bienImmobilier.typeDeBien.designation == 'Immeuble' ||
-    this.contratVente.bienImmobilier.typeDeBien.designation == 'Appartement' ||
-    this.contratVente.bienImmobilier.typeDeBien.designation == 'Chambre salon' ||
-    this.contratVente.bienImmobilier.typeDeBien.designation == 'Chambre' ||
-    this.contratVente.bienImmobilier.typeDeBien.designation == 'Bureau';
+  afficherCategorie(designation: string): boolean {
+    return designation == 'Maison' ||
+    designation == 'Villa' ||
+    designation == 'Immeuble' ||
+    designation == 'Appartement' ||
+    designation == 'Chambre salon' ||
+    designation == 'Chambre' ||
+    designation == 'Bureau';
   }
 
   navigateURLBYUSER(user: any): string {
