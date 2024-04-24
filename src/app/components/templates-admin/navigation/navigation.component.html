@@ -33,9 +33,9 @@
                     <div type="button" (click)="redirectToPageConcernee(notification.url)" class="notif_list d-flex align-items-center bdrb1 pb15 mb10">
                       <p-avatar icon="flaticon-bell" styleClass="mr-2" size="large" [style]="{'background-color':'#EF4444', 'color': '#ffffff'}" shape="circle"></p-avatar>
                       <div class="details ml15">
-                        <p class="text mb-0" style="font-weight: 4px;"><b>{{notification.titre}}</b></p>
-                        <p class="text mb-2">{{notification.message}}</p>
-                        <p class="mb-0 text-thm">{{getElapsedTime(notification.dateNotification)}}</p>
+                        <p class="title mb-0" style="font-weight: 4px;"><b>{{notification.titre}}</b></p>
+                        <p class="message mb-2">{{notification.message}}</p>
+                        <p class="mb-0 text-thm message">{{getElapsedTime(notification.dateNotification)}}</p>
                       </div>
                     </div>
                   </div>

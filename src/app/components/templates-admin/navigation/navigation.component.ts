@@ -134,23 +134,23 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   initNotification(): void {
-    interval(1000)
-    .pipe(
-      switchMap(() => {
-        this.notificationService.initListeNotificationsNonLues();
-        return this.notificationService.notificationsNonLuesEvent;
-      })
-    )
-    .subscribe((data: Notification[]) => {
-      this.notificationsNonLues = data;
-      this.notificationsNonLues.forEach((notification) => {
-        if (!this.notificationsDejaAffichees.includes(notification.id)) {
-          this.afficherNotification(notification.titre, notification.message);
-          this.notificationsDejaAffichees.push(notification.id);
-        }
-      });
-      this.initListeNotifications();
-    });
+    // interval(1000)
+    // .pipe(
+    //   switchMap(() => {
+    //     this.notificationService.initListeNotificationsNonLues();
+    //     return this.notificationService.notificationsNonLuesEvent;
+    //   })
+    // )
+    // .subscribe((data: Notification[]) => {
+    //   this.notificationsNonLues = data;
+    //   this.notificationsNonLues.forEach((notification) => {
+    //     if (!this.notificationsDejaAffichees.includes(notification.id)) {
+    //       this.afficherNotification(notification.titre, notification.message);
+    //       this.notificationsDejaAffichees.push(notification.id);
+    //     }
+    //   });
+    //   this.initListeNotifications();
+    // });
   }
 
   redirectToNotificationPage(): string {

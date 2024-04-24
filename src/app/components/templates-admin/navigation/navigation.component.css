@@ -32,3 +32,11 @@
   background-color: red !important;
   color: white !important;
 }
+
+.title {
+  font-family: 'DM sans', sans-serif;
+}
+
+.message {
+  font-family: 'Inter var', sans-serif;
+}
