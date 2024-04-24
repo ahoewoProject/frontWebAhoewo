@@ -35,3 +35,8 @@
 .ng-invalid:not(form) {
   border-left: 5px solid #a94442;
 }
+
+.text {
+  font-family: 'Inter Var', sans-serif;
+  font-size: 16px;
+}
