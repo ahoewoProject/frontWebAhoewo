@@ -159,3 +159,7 @@
   border-radius: 8px;
 }
 
+.text {
+  font-family: 'Inter Var', sans-serif;
+  font-size: 14px;
+}
