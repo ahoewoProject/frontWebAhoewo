@@ -221,9 +221,7 @@ export class PublicationsComponent implements OnInit, OnDestroy {
   }
 
   voirPageDetail(idPublication: number, idBien: number): void {
-    // this.affichage = 2;
     this.getImagesBienImmobilier(idBien);
-    // this.detailPublication(idPublication);
     this.router.navigate([this.navigateURLBYUSER(this.user) + '/publications', idPublication], { queryParams: { idBien: idBien } });
   }
 
@@ -423,6 +421,12 @@ export class PublicationsComponent implements OnInit, OnDestroy {
         },
         (error) => {
           if (error.error =  "Un contrat de location est toujours en cours pour ce bien immobilier.") {
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Publication non réussie',
+              detail: error.error
+            })
+          } else if (error.error == "Un contrat de vente a été confirmé pour ce bien immobilier") {
             this.messageService.add({
               severity: 'warn',
               summary: 'Publication non réussie',
