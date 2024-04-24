@@ -61,7 +61,9 @@
                   <td class="vam">{{ bienImmobilier.typeDeBien.designation }} </td>
                   <td class="vam">{{ bienImmobilier.ville.libelle }} </td>
                   <td class="vam">
-                    <p-tag severity="success" value="{{bienImmobilier.statutBien}}"></p-tag>
+                    <p-tag *ngIf="bienImmobilier.statutBien == 'Disponible'" severity="success" value="{{bienImmobilier.statutBien}}"></p-tag>
+                    <p-tag *ngIf="bienImmobilier.statutBien == 'Loué'" severity="info" value="{{bienImmobilier.statutBien}}"></p-tag>
+                    <p-tag *ngIf="bienImmobilier.statutBien == 'Vendu'" severity="warning" value="{{bienImmobilier.statutBien}}"></p-tag>
                   </td>
                   <td class="vam">
                     <div class="d-flex">
@@ -169,7 +171,7 @@
 
           <p-divider *ngIf="bienImmobilier.description"></p-divider>
           <h4 class="title fz17 mb30" *ngIf="bienImmobilier.description">Description</h4>
-          <p *ngIf="bienImmobilier.description">
+          <p class="text justify-text" *ngIf="bienImmobilier.description">
               {{ bienImmobilier.description }}
           </p>
 
@@ -212,7 +214,9 @@
                   <p class="text mb10" *ngIf="bienImmobilier.adresse">{{ bienImmobilier.adresse }}</p>
                   <p class="text mb10" *ngIf="bienImmobilier.surface">{{ bienImmobilier.surface }} m²</p>
                   <p class="text mb10">
-                    <p-tag severity="success" value="{{bienImmobilier.statutBien}}"></p-tag>
+                    <p-tag *ngIf="bienImmobilier.statutBien == 'Disponible'" severity="success" value="{{bienImmobilier.statutBien}}"></p-tag>
+                    <p-tag *ngIf="bienImmobilier.statutBien == 'Loué'" severity="info" value="{{bienImmobilier.statutBien}}"></p-tag>
+                    <p-tag *ngIf="bienImmobilier.statutBien == 'Vendu'" severity="warning" value="{{bienImmobilier.statutBien}}"></p-tag>
                   </p>
                   <p class="text mb-0">
                     <p-tag *ngIf="bienImmobilier.etatBien == true" severity="success" value="Activé"></p-tag>
@@ -275,7 +279,7 @@
 
           <p-divider *ngIf="bienImmobilier.description"></p-divider>
           <h4 class="title fz17 mb30" *ngIf="bienImmobilier.description">Description</h4>
-          <p *ngIf="bienImmobilier.description">
+          <p class="text justify-text" *ngIf="bienImmobilier.description">
               {{ bienImmobilier.description }}
           </p>
 
@@ -320,7 +324,9 @@
                   <p class="text mb10" *ngIf="bienImmobilier.adresse">{{ bienImmobilier.adresse }}</p>
                   <p class="text mb10" *ngIf="bienImmobilier.surface">{{ bienImmobilier.surface }} m²</p>
                   <p class="text mb10">
-                    <p-tag severity="success" value="{{bienImmobilier.statutBien}}"></p-tag>
+                    <p-tag *ngIf="bienImmobilier.statutBien == 'Disponible'" severity="success" value="{{bienImmobilier.statutBien}}"></p-tag>
+                    <p-tag *ngIf="bienImmobilier.statutBien == 'Loué'" severity="info" value="{{bienImmobilier.statutBien}}"></p-tag>
+                    <p-tag *ngIf="bienImmobilier.statutBien == 'Vendu'" severity="warning" value="{{bienImmobilier.statutBien}}"></p-tag>
                   </p>
                   <p class="text mb-0">
                     <p-tag *ngIf="bienImmobilier.etatBien == true" severity="success" value="Activé"></p-tag>
@@ -334,89 +340,166 @@
           <p-divider *ngIf="caracteristiqueBien != null"></p-divider>
           <h4 class="title fz17 mb30" *ngIf="caracteristiqueBien != null">Caractéristiques </h4>
           <div class="row">
-            <div class="col-md-6 col-xl-4">
-              <div class="d-flex justify-content-between">
-                <div class="pd-list">
-                  <p *ngIf="caracteristiqueBien.nombreChambres" class="fw600 mb10 ff-heading dark-color">Nombre de chambres</p>
-                  <p *ngIf="caracteristiqueBien.nombreChambresSalon" class="fw600 mb10 ff-heading dark-color">Nombre de chambres salon</p>
-                  <p *ngIf="caracteristiqueBien.nombreBureaux" class="fw600 mb10 ff-heading dark-color">Nombre de bureaux</p>
-                  <p *ngIf="caracteristiqueBien.nombreBoutiques" class="fw600 mb10 ff-heading dark-color">Nombre de boutiques</p>
-                  <p *ngIf="caracteristiqueBien.nombreBoutiques" class="fw600 mb10 ff-heading dark-color">Nombre de magasions</p>
-                  <p *ngIf="caracteristiqueBien.nombreAppartements" class="fw600 mb10 ff-heading dark-color">Nombre d'appartements</p>
-                  <p *ngIf="caracteristiqueBien.nombreEtages" class="fw600 mb-0 ff-heading dark-color">Nombre d'étages</p>
-                </div>
-                <div class="pd-list">
-                  <p *ngIf="caracteristiqueBien.nombreChambres" class="text mb10">{{ caracteristiqueBien.nombreChambres }}</p>
-                  <p *ngIf="caracteristiqueBien.nombreChambresSalon" class="text mb10">{{ caracteristiqueBien.nombreChambresSalon }}</p>
-                  <p *ngIf="caracteristiqueBien.nombreBureaux" class="text mb10">{{ caracteristiqueBien.nombreBureaux }}</p>
-                  <p *ngIf="caracteristiqueBien.nombreBoutiques" class="text mb10">{{ caracteristiqueBien.nombreBoutiques }}</p>
-                  <p *ngIf="caracteristiqueBien.nombreBoutiques" class="text mb10">{{ caracteristiqueBien.nombreBoutiques }}</p>
-                  <p *ngIf="caracteristiqueBien.nombreAppartements" class="text mb10">{{ caracteristiqueBien.nombreAppartements }}</p>
-                  <p *ngIf="caracteristiqueBien.nombreEtages" class="text mb-0">{{ caracteristiqueBien.nombreEtages }}</p>
-                </div>
-              </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreChambres">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de chambres</p>
+              <p class="text">{{ caracteristiqueBien.nombreChambres }}</p>
             </div>
-            <div class="col-md-6 col-xl-4 offset-xl-2">
-              <div class="d-flex justify-content-between">
-                <div class="pd-list">
-                  <p *ngIf="caracteristiqueBien.nombreGarages" class="fw600 mb10 ff-heading dark-color">Nombre de garages</p>
-                  <p *ngIf="caracteristiqueBien.nombreCuisineInterne" class="fw600 mb10 ff-heading dark-color">Nombre de cusine interne</p>
-                  <p *ngIf="caracteristiqueBien.nombreCuisineExterne" class="fw600 mb10 ff-heading dark-color">Nombre de cuisine externe</p>
-                  <p *ngIf="caracteristiqueBien.nombreWCDoucheInterne" class="fw600 mb10 ff-heading dark-color">Nombre de WC-Douche interne</p>
-                  <p *ngIf="caracteristiqueBien.nombreWCDoucheExterne" class="fw600 mb10 ff-heading dark-color">Nombre de WC-Douche externe</p>
-                  <p *ngIf="caracteristiqueBien.nombreSalons" class="fw600 mb10 ff-heading dark-color">Nombre de salons</p>
-                  <p *ngIf="caracteristiqueBien.nombrePlacards" class="fw600 mb-0 ff-heading dark-color">Nombre de placards</p>
-                </div>
-                <div class="pd-list">
-                  <p *ngIf="caracteristiqueBien.nombreGarages" class="text mb10">{{ caracteristiqueBien.nombreGarages }}</p>
-                  <p *ngIf="caracteristiqueBien.nombreCuisineInterne" class="text mb10">{{ caracteristiqueBien.nombreCuisineInterne }}</p>
-                  <p *ngIf="caracteristiqueBien.nombreCuisineExterne" class="text mb10">{{ caracteristiqueBien.nombreCuisineExterne }}</p>
-                  <p *ngIf="caracteristiqueBien.nombreWCDoucheInterne" class="text mb10">{{ caracteristiqueBien.nombreWCDoucheInterne }}</p>
-                  <p *ngIf="caracteristiqueBien.nombreWCDoucheExterne" class="text mb10">{{ caracteristiqueBien.nombreWCDoucheExterne }}</p>
-                  <p *ngIf="caracteristiqueBien.nombreSalons" class="text mb10">{{ caracteristiqueBien.nombreSalons }}</p>
-                  <p *ngIf="caracteristiqueBien.nombrePlacards" class="text mb-0">{{ caracteristiqueBien.nombrePlacards }}</p>
-                </div>
-              </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreChambresSalon">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de chambres salon</p>
+              <p class="text">{{ caracteristiqueBien.nombreChambresSalon }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreBureaux">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de bureaux</p>
+              <p class="text">{{ caracteristiqueBien.nombreBureaux }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreBoutiques">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de boutiques</p>
+              <p class="text">{{ caracteristiqueBien.nombreBoutiques }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreMagasins">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de magasions</p>
+              <p class="text">{{ caracteristiqueBien.nombreMagasins }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreAppartements">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre d'appartements</p>
+              <p class="text">{{ caracteristiqueBien.nombreAppartements }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreEtages">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre d'étages</p>
+              <p class="text">{{ caracteristiqueBien.nombreEtages }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreGarages">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de garages</p>
+              <p class="text">{{ caracteristiqueBien.nombreGarages }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreCuisineInterne">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de cusine interne</p>
+              <p class="text">{{ caracteristiqueBien.nombreCuisineInterne }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreCuisineExterne">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de cuisine externe</p>
+              <p class="text">{{ caracteristiqueBien.nombreCuisineExterne }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreWCDoucheInterne">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de WC-Douche interne</p>
+              <p class="text">{{ caracteristiqueBien.nombreWCDoucheInterne }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreWCDoucheExterne" >
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de WC-Douche externe</p>
+              <p class="text">{{ caracteristiqueBien.nombreWCDoucheExterne }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreSalons">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de salons</p>
+              <p class="text">{{ caracteristiqueBien.nombreSalons }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombrePlacards">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de placards</p>
+              <p class="text">{{ caracteristiqueBien.nombrePlacards }}</p>
             </div>
           </div>
           <div class="row mt-4">
-            <div class="col-sm-6 col-md-4">
-              <div class="pd-list mb10-sm">
-                <p *ngIf="caracteristiqueBien.parking" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Parking</p>
-                <p *ngIf="caracteristiqueBien.eauTde" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau TDE</p>
-                <p *ngIf="caracteristiqueBien.compteurEau" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur d'eau</p>
-                <p *ngIf="caracteristiqueBien.wifi" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Wifi</p>
-                <p *ngIf="caracteristiqueBien.placard" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Placards</p>
-                <p *ngIf="caracteristiqueBien.cuisineInterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine interne</p>
-                <p *ngIf="caracteristiqueBien.wcDoucheInterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche interne</p>
-                <p *ngIf="caracteristiqueBien.balcon" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Balcon</p>
-                <p *ngIf="caracteristiqueBien.garage" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Garage</p>
-              </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.parking">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Parking</p>
             </div>
-            <div class="col-sm-6 col-md-4">
-              <div class="pd-list">
-                <p *ngIf="caracteristiqueBien.eauForage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
-                <p *ngIf="caracteristiqueBien.electriciteCeet" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
-                <p *ngIf="caracteristiqueBien.ascenseur" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
-                <p *ngIf="caracteristiqueBien.etage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
-                <p *ngIf="caracteristiqueBien.dalle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
-                <p *ngIf="caracteristiqueBien.cuisineExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
-                <p *ngIf="caracteristiqueBien.wcDoucheExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
-                <p *ngIf="caracteristiqueBien.climatisation" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
-                <p *ngIf="caracteristiqueBien.toiletteVisiteur && bienImmobilier.typeDeBien.designation == 'Villa'" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Toilette visiteur</p>
-              </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.eauTde">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau TDE</p>
             </div>
-            <div class="col-sm-6 col-md-4">
-              <div class="pd-list">
-                <p *ngIf="caracteristiqueBien.plafonne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Plafonné</p>
-                <p *ngIf="caracteristiqueBien.baieVitree" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Baie vitrée</p>
-                <p *ngIf="caracteristiqueBien.solCarelle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Sol carellé</p>
-                <p *ngIf="caracteristiqueBien.cashPowerPersonnel" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cash power personnel</p>
-                <p *ngIf="caracteristiqueBien.compteurAdditionnel" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur additionnel</p>
-                <p *ngIf="caracteristiqueBien.jardin" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Jardin</p>
-                <p *ngIf="caracteristiqueBien.piscine" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Piscine</p>
-                <p *ngIf="caracteristiqueBien.terrasse" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Terrasse<p></p>
-              </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.compteurEau">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur d'eau</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.wifi">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Wifi</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.placard">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Placards</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.cuisineInterne">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine interne</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.wcDoucheInterne">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche interne</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.balcon">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Balcon</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.garage">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Garage</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.eauForage">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.electriciteCeet">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.ascenseur">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.etage">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.dalle">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.cuisineExterne">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.wcDoucheExterne">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.climatisation">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.plafonne">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Plafonné</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.baieVitree">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Baie vitrée</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.solCarelle">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Sol carellé</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.cashPowerPersonnel">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cash power personnel</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.compteurAdditionnel">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur additionnel</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.jardin">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Jardin</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.piscine">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Piscine</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.terrasse">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Terrasse</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.toiletteVisiteur">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Toilette visiteur</p>
             </div>
           </div>
         </div>
@@ -656,7 +739,7 @@
 
               <p-divider *ngIf="bienImmobilier.description"></p-divider>
               <h4 class="title fz17 mb30" *ngIf="bienImmobilier.description">Description</h4>
-              <p *ngIf="bienImmobilier.description">
+              <p class="text justify-text" *ngIf="bienImmobilier.description">
                   {{ bienImmobilier.description }}
               </p>
 
@@ -923,7 +1006,7 @@
 
               <p-divider *ngIf="bienImmobilier.description"></p-divider>
               <h4 class="title fz17 mb30" *ngIf="bienImmobilier.description">Description</h4>
-              <p *ngIf="bienImmobilier.description">
+              <p class="text justify-text" *ngIf="bienImmobilier.description">
                   {{ bienImmobilier.description }}
               </p>
 
@@ -971,89 +1054,166 @@
               <p-divider *ngIf="caracteristiqueBien"></p-divider>
               <h4 class="title fz17 mb30" *ngIf="caracteristiqueBien">Caractéristiques </h4>
               <div class="row">
-                <div class="col-md-6 col-xl-4">
-                  <div class="d-flex justify-content-between">
-                    <div class="pd-list">
-                      <p *ngIf="caracteristiqueBien.nombreChambres" class="fw600 mb10 ff-heading dark-color">Nombre de chambres</p>
-                      <p *ngIf="caracteristiqueBien.nombreChambresSalon" class="fw600 mb10 ff-heading dark-color">Nombre de chambres salon</p>
-                      <p *ngIf="caracteristiqueBien.nombreBureaux" class="fw600 mb10 ff-heading dark-color">Nombre de bureaux</p>
-                      <p *ngIf="caracteristiqueBien.nombreBoutiques" class="fw600 mb10 ff-heading dark-color">Nombre de boutiques</p>
-                      <p *ngIf="caracteristiqueBien.nombreBoutiques" class="fw600 mb10 ff-heading dark-color">Nombre de magasions</p>
-                      <p *ngIf="caracteristiqueBien.nombreAppartements" class="fw600 mb10 ff-heading dark-color">Nombre d'appartements</p>
-                      <p *ngIf="caracteristiqueBien.nombreEtages" class="fw600 mb-0 ff-heading dark-color">Nombre d'étages</p>
-                    </div>
-                    <div class="pd-list">
-                      <p *ngIf="caracteristiqueBien.nombreChambres" class="text mb10">{{ caracteristiqueBien.nombreChambres }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreChambresSalon" class="text mb10">{{ caracteristiqueBien.nombreChambresSalon }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreBureaux" class="text mb10">{{ caracteristiqueBien.nombreBureaux }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreBoutiques" class="text mb10">{{ caracteristiqueBien.nombreBoutiques }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreBoutiques" class="text mb10">{{ caracteristiqueBien.nombreBoutiques }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreAppartements" class="text mb10">{{ caracteristiqueBien.nombreAppartements }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreEtages" class="text mb-0">{{ caracteristiqueBien.nombreEtages }}</p>
-                    </div>
-                  </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreChambres">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de chambres</p>
+                  <p class="text">{{ caracteristiqueBien.nombreChambres }}</p>
                 </div>
-                <div class="col-md-6 col-xl-4 offset-xl-2">
-                  <div class="d-flex justify-content-between">
-                    <div class="pd-list">
-                      <p *ngIf="caracteristiqueBien.nombreGarages" class="fw600 mb10 ff-heading dark-color">Nombre de garages</p>
-                      <p *ngIf="caracteristiqueBien.nombreCuisineInterne" class="fw600 mb10 ff-heading dark-color">Nombre de cusine interne</p>
-                      <p *ngIf="caracteristiqueBien.nombreCuisineExterne" class="fw600 mb10 ff-heading dark-color">Nombre de cuisine externe</p>
-                      <p *ngIf="caracteristiqueBien.nombreWCDoucheInterne" class="fw600 mb10 ff-heading dark-color">Nombre de WC-Douche interne</p>
-                      <p *ngIf="caracteristiqueBien.nombreWCDoucheExterne" class="fw600 mb10 ff-heading dark-color">Nombre de WC-Douche externe</p>
-                      <p *ngIf="caracteristiqueBien.nombreSalons" class="fw600 mb10 ff-heading dark-color">Nombre de salons</p>
-                      <p *ngIf="caracteristiqueBien.nombrePlacards" class="fw600 mb-0 ff-heading dark-color">Nombre de placards</p>
-                    </div>
-                    <div class="pd-list">
-                      <p *ngIf="caracteristiqueBien.nombreGarages" class="text mb10">{{ caracteristiqueBien.nombreGarages }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreCuisineInterne" class="text mb10">{{ caracteristiqueBien.nombreCuisineInterne }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreCuisineExterne" class="text mb10">{{ caracteristiqueBien.nombreCuisineExterne }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreWCDoucheInterne" class="text mb10">{{ caracteristiqueBien.nombreWCDoucheInterne }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreWCDoucheExterne" class="text mb10">{{ caracteristiqueBien.nombreWCDoucheExterne }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreSalons" class="text mb10">{{ caracteristiqueBien.nombreSalons }}</p>
-                      <p *ngIf="caracteristiqueBien.nombrePlacards" class="text mb-0">{{ caracteristiqueBien.nombrePlacards }}</p>
-                    </div>
-                  </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreChambresSalon">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de chambres salon</p>
+                  <p class="text">{{ caracteristiqueBien.nombreChambresSalon }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreBureaux">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de bureaux</p>
+                  <p class="text">{{ caracteristiqueBien.nombreBureaux }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreBoutiques">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de boutiques</p>
+                  <p class="text">{{ caracteristiqueBien.nombreBoutiques }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreMagasins">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de magasions</p>
+                  <p class="text">{{ caracteristiqueBien.nombreMagasins }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreAppartements">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre d'appartements</p>
+                  <p class="text">{{ caracteristiqueBien.nombreAppartements }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreEtages">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre d'étages</p>
+                  <p class="text">{{ caracteristiqueBien.nombreEtages }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreGarages">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de garages</p>
+                  <p class="text">{{ caracteristiqueBien.nombreGarages }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreCuisineInterne">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de cusine interne</p>
+                  <p class="text">{{ caracteristiqueBien.nombreCuisineInterne }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreCuisineExterne">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de cuisine externe</p>
+                  <p class="text">{{ caracteristiqueBien.nombreCuisineExterne }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreWCDoucheInterne">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de WC-Douche interne</p>
+                  <p class="text">{{ caracteristiqueBien.nombreWCDoucheInterne }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreWCDoucheExterne" >
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de WC-Douche externe</p>
+                  <p class="text">{{ caracteristiqueBien.nombreWCDoucheExterne }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreSalons">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de salons</p>
+                  <p class="text">{{ caracteristiqueBien.nombreSalons }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombrePlacards">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de placards</p>
+                  <p class="text">{{ caracteristiqueBien.nombrePlacards }}</p>
                 </div>
               </div>
               <div class="row mt-4">
-                <div class="col-sm-6 col-md-4">
-                  <div class="pd-list mb10-sm">
-                    <p *ngIf="caracteristiqueBien.parking" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Parking</p>
-                    <p *ngIf="caracteristiqueBien.eauTde" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau TDE</p>
-                    <p *ngIf="caracteristiqueBien.compteurEau" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur d'eau</p>
-                    <p *ngIf="caracteristiqueBien.wifi" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Wifi</p>
-                    <p *ngIf="caracteristiqueBien.placard" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Placards</p>
-                    <p *ngIf="caracteristiqueBien.cuisineInterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine interne</p>
-                    <p *ngIf="caracteristiqueBien.wcDoucheInterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche interne</p>
-                    <p *ngIf="caracteristiqueBien.balcon" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Balcon</p>
-                    <p *ngIf="caracteristiqueBien.garage" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Garage</p>
-                  </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.parking">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Parking</p>
                 </div>
-                <div class="col-sm-6 col-md-4">
-                  <div class="pd-list">
-                    <p *ngIf="caracteristiqueBien.eauForage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
-                    <p *ngIf="caracteristiqueBien.electriciteCeet" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
-                    <p *ngIf="caracteristiqueBien.ascenseur" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
-                    <p *ngIf="caracteristiqueBien.etage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
-                    <p *ngIf="caracteristiqueBien.dalle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
-                    <p *ngIf="caracteristiqueBien.cuisineExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
-                    <p *ngIf="caracteristiqueBien.wcDoucheExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
-                    <p *ngIf="caracteristiqueBien.climatisation" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
-                    <p *ngIf="caracteristiqueBien.toiletteVisiteur" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Toilette visiteur</p>
-                  </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.eauTde">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau TDE</p>
                 </div>
-                <div class="col-sm-6 col-md-4">
-                  <div class="pd-list">
-                    <p *ngIf="caracteristiqueBien.plafonne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Plafonné</p>
-                    <p *ngIf="caracteristiqueBien.baieVitree" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Baie vitrée</p>
-                    <p *ngIf="caracteristiqueBien.solCarelle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Sol carellé</p>
-                    <p *ngIf="caracteristiqueBien.cashPowerPersonnel" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cash power personnel</p>
-                    <p *ngIf="caracteristiqueBien.compteurAdditionnel" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur additionnel</p>
-                    <p *ngIf="caracteristiqueBien.jardin" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Jardin</p>
-                    <p *ngIf="caracteristiqueBien.piscine" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Piscine</p>
-                    <p *ngIf="caracteristiqueBien.terrasse" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Terrasse<p></p>
-                  </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.compteurEau">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur d'eau</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.wifi">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Wifi</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.placard">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Placards</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.cuisineInterne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine interne</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.wcDoucheInterne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche interne</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.balcon">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Balcon</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.garage">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Garage</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.eauForage">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.electriciteCeet">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.ascenseur">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.etage">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.dalle">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.cuisineExterne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.wcDoucheExterne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.climatisation">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.plafonne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Plafonné</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.baieVitree">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Baie vitrée</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.solCarelle">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Sol carellé</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.cashPowerPersonnel">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cash power personnel</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.compteurAdditionnel">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur additionnel</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.jardin">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Jardin</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.piscine">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Piscine</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.terrasse">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Terrasse</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.toiletteVisiteur">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Toilette visiteur</p>
                 </div>
               </div>
 
@@ -1303,7 +1463,7 @@
 
               <p-divider *ngIf="bienImmobilier.description"></p-divider>
               <h4 class="title fz17 mb30" *ngIf="bienImmobilier.description">Description</h4>
-              <p *ngIf="bienImmobilier.description">
+              <p class="text justify-text" *ngIf="bienImmobilier.description">
                   {{ bienImmobilier.description }}
               </p>
 
@@ -1569,7 +1729,7 @@
 
               <p-divider *ngIf="bienImmobilier.description"></p-divider>
               <h4 class="title fz17 mb30" *ngIf="bienImmobilier.description">Description</h4>
-              <p *ngIf="bienImmobilier.description">
+              <p class="text justify-text" *ngIf="bienImmobilier.description">
                   {{ bienImmobilier.description }}
               </p>
 
@@ -1617,89 +1777,166 @@
               <p-divider *ngIf="caracteristiqueBien"></p-divider>
               <h4 class="title fz17 mb30" *ngIf="caracteristiqueBien">Caractéristiques </h4>
               <div class="row">
-                <div class="col-md-6 col-xl-4">
-                  <div class="d-flex justify-content-between">
-                    <div class="pd-list">
-                      <p *ngIf="caracteristiqueBien.nombreChambres" class="fw600 mb10 ff-heading dark-color">Nombre de chambres</p>
-                      <p *ngIf="caracteristiqueBien.nombreChambresSalon" class="fw600 mb10 ff-heading dark-color">Nombre de chambres salon</p>
-                      <p *ngIf="caracteristiqueBien.nombreBureaux" class="fw600 mb10 ff-heading dark-color">Nombre de bureaux</p>
-                      <p *ngIf="caracteristiqueBien.nombreBoutiques" class="fw600 mb10 ff-heading dark-color">Nombre de boutiques</p>
-                      <p *ngIf="caracteristiqueBien.nombreBoutiques" class="fw600 mb10 ff-heading dark-color">Nombre de magasions</p>
-                      <p *ngIf="caracteristiqueBien.nombreAppartements" class="fw600 mb10 ff-heading dark-color">Nombre d'appartements</p>
-                      <p *ngIf="caracteristiqueBien.nombreEtages" class="fw600 mb-0 ff-heading dark-color">Nombre d'étages</p>
-                    </div>
-                    <div class="pd-list">
-                      <p *ngIf="caracteristiqueBien.nombreChambres" class="text mb10">{{ caracteristiqueBien.nombreChambres }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreChambresSalon" class="text mb10">{{ caracteristiqueBien.nombreChambresSalon }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreBureaux" class="text mb10">{{ caracteristiqueBien.nombreBureaux }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreBoutiques" class="text mb10">{{ caracteristiqueBien.nombreBoutiques }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreBoutiques" class="text mb10">{{ caracteristiqueBien.nombreBoutiques }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreAppartements" class="text mb10">{{ caracteristiqueBien.nombreAppartements }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreEtages" class="text mb-0">{{ caracteristiqueBien.nombreEtages }}</p>
-                    </div>
-                  </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreChambres">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de chambres</p>
+                  <p class="text">{{ caracteristiqueBien.nombreChambres }}</p>
                 </div>
-                <div class="col-md-6 col-xl-4 offset-xl-2">
-                  <div class="d-flex justify-content-between">
-                    <div class="pd-list">
-                      <p *ngIf="caracteristiqueBien.nombreGarages" class="fw600 mb10 ff-heading dark-color">Nombre de garages</p>
-                      <p *ngIf="caracteristiqueBien.nombreCuisineInterne" class="fw600 mb10 ff-heading dark-color">Nombre de cusine interne</p>
-                      <p *ngIf="caracteristiqueBien.nombreCuisineExterne" class="fw600 mb10 ff-heading dark-color">Nombre de cuisine externe</p>
-                      <p *ngIf="caracteristiqueBien.nombreWCDoucheInterne" class="fw600 mb10 ff-heading dark-color">Nombre de WC-Douche interne</p>
-                      <p *ngIf="caracteristiqueBien.nombreWCDoucheExterne" class="fw600 mb10 ff-heading dark-color">Nombre de WC-Douche externe</p>
-                      <p *ngIf="caracteristiqueBien.nombreSalons" class="fw600 mb10 ff-heading dark-color">Nombre de salons</p>
-                      <p *ngIf="caracteristiqueBien.nombrePlacards" class="fw600 mb-0 ff-heading dark-color">Nombre de placards</p>
-                    </div>
-                    <div class="pd-list">
-                      <p *ngIf="caracteristiqueBien.nombreGarages" class="text mb10">{{ caracteristiqueBien.nombreGarages }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreCuisineInterne" class="text mb10">{{ caracteristiqueBien.nombreCuisineInterne }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreCuisineExterne" class="text mb10">{{ caracteristiqueBien.nombreCuisineExterne }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreWCDoucheInterne" class="text mb10">{{ caracteristiqueBien.nombreWCDoucheInterne }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreWCDoucheExterne" class="text mb10">{{ caracteristiqueBien.nombreWCDoucheExterne }}</p>
-                      <p *ngIf="caracteristiqueBien.nombreSalons" class="text mb10">{{ caracteristiqueBien.nombreSalons }}</p>
-                      <p *ngIf="caracteristiqueBien.nombrePlacards" class="text mb-0">{{ caracteristiqueBien.nombrePlacards }}</p>
-                    </div>
-                  </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreChambresSalon">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de chambres salon</p>
+                  <p class="text">{{ caracteristiqueBien.nombreChambresSalon }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreBureaux">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de bureaux</p>
+                  <p class="text">{{ caracteristiqueBien.nombreBureaux }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreBoutiques">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de boutiques</p>
+                  <p class="text">{{ caracteristiqueBien.nombreBoutiques }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreMagasins">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de magasions</p>
+                  <p class="text">{{ caracteristiqueBien.nombreMagasins }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreAppartements">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre d'appartements</p>
+                  <p class="text">{{ caracteristiqueBien.nombreAppartements }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreEtages">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre d'étages</p>
+                  <p class="text">{{ caracteristiqueBien.nombreEtages }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreGarages">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de garages</p>
+                  <p class="text">{{ caracteristiqueBien.nombreGarages }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreCuisineInterne">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de cusine interne</p>
+                  <p class="text">{{ caracteristiqueBien.nombreCuisineInterne }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreCuisineExterne">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de cuisine externe</p>
+                  <p class="text">{{ caracteristiqueBien.nombreCuisineExterne }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreWCDoucheInterne">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de WC-Douche interne</p>
+                  <p class="text">{{ caracteristiqueBien.nombreWCDoucheInterne }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreWCDoucheExterne" >
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de WC-Douche externe</p>
+                  <p class="text">{{ caracteristiqueBien.nombreWCDoucheExterne }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreSalons">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de salons</p>
+                  <p class="text">{{ caracteristiqueBien.nombreSalons }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombrePlacards">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de placards</p>
+                  <p class="text">{{ caracteristiqueBien.nombrePlacards }}</p>
                 </div>
               </div>
               <div class="row mt-4">
-                <div class="col-sm-6 col-md-4">
-                  <div class="pd-list mb10-sm">
-                    <p *ngIf="caracteristiqueBien.parking" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Parking</p>
-                    <p *ngIf="caracteristiqueBien.eauTde" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau TDE</p>
-                    <p *ngIf="caracteristiqueBien.compteurEau" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur d'eau</p>
-                    <p *ngIf="caracteristiqueBien.wifi" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Wifi</p>
-                    <p *ngIf="caracteristiqueBien.placard" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Placards</p>
-                    <p *ngIf="caracteristiqueBien.cuisineInterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine interne</p>
-                    <p *ngIf="caracteristiqueBien.wcDoucheInterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche interne</p>
-                    <p *ngIf="caracteristiqueBien.balcon" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Balcon</p>
-                    <p *ngIf="caracteristiqueBien.garage" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Garage</p>
-                  </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.parking">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Parking</p>
                 </div>
-                <div class="col-sm-6 col-md-4">
-                  <div class="pd-list">
-                    <p *ngIf="caracteristiqueBien.eauForage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
-                    <p *ngIf="caracteristiqueBien.electriciteCeet" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
-                    <p *ngIf="caracteristiqueBien.ascenseur" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
-                    <p *ngIf="caracteristiqueBien.etage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
-                    <p *ngIf="caracteristiqueBien.dalle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
-                    <p *ngIf="caracteristiqueBien.cuisineExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
-                    <p *ngIf="caracteristiqueBien.wcDoucheExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
-                    <p *ngIf="caracteristiqueBien.climatisation" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
-                    <p *ngIf="caracteristiqueBien.toiletteVisiteur && bienImmobilier.typeDeBien.designation == 'Villa'" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Toilette visiteur</p>
-                  </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.eauTde">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau TDE</p>
                 </div>
-                <div class="col-sm-6 col-md-4">
-                  <div class="pd-list">
-                    <p *ngIf="caracteristiqueBien.plafonne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Plafonné</p>
-                    <p *ngIf="caracteristiqueBien.baieVitree" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Baie vitrée</p>
-                    <p *ngIf="caracteristiqueBien.solCarelle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Sol carellé</p>
-                    <p *ngIf="caracteristiqueBien.cashPowerPersonnel" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cash power personnel</p>
-                    <p *ngIf="caracteristiqueBien.compteurAdditionnel" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur additionnel</p>
-                    <p *ngIf="caracteristiqueBien.jardin" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Jardin</p>
-                    <p *ngIf="caracteristiqueBien.piscine" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Piscine</p>
-                    <p *ngIf="caracteristiqueBien.terrasse" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Terrasse<p></p>
-                  </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.compteurEau">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur d'eau</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.wifi">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Wifi</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.placard">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Placards</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.cuisineInterne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine interne</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.wcDoucheInterne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche interne</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.balcon">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Balcon</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.garage">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Garage</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.eauForage">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.electriciteCeet">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.ascenseur">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.etage">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.dalle">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.cuisineExterne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.wcDoucheExterne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.climatisation">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.plafonne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Plafonné</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.baieVitree">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Baie vitrée</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.solCarelle">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Sol carellé</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.cashPowerPersonnel">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cash power personnel</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.compteurAdditionnel">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur additionnel</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.jardin">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Jardin</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.piscine">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Piscine</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.terrasse">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Terrasse</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.toiletteVisiteur">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Toilette visiteur</p>
                 </div>
               </div>
 
@@ -1784,7 +2021,8 @@
                   <td class="vam">{{ bienImmAssocie.typeDeBien.designation }} </td>
                   <td class="vam">{{ bienImmAssocie.ville.libelle }} </td>
                   <td class="vam">
-                    <p-tag severity="success" value="{{bienImmAssocie.statutBien}}"></p-tag>
+                    <p-tag *ngIf="bienImmAssocie.statutBien == 'Disponible'" severity="success" value="{{bienImmobilier.statutBien}}"></p-tag>
+                    <p-tag *ngIf="bienImmAssocie.statutBien == 'Loué'" severity="info" value="{{bienImmobilier.statutBien}}"></p-tag>
                   </td>
                   <td class="vam">
                     <div class="d-flex">
@@ -1854,6 +2092,11 @@
         <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
           <a class="ud-btn btn-modifier" type="button" (click)="afficherFormulaireModifierBienImmAssocie(bienImmAssocie.id, bienImmAssocie.typeDeBien.designation)">Modifier</a>
           &nbsp;
+          <a type="button"
+            (click)="afficherFormulairePublicationBien(bienImmAssocie)"
+            class="ud-btn btn-annuler">
+          </a>
+          &nbsp;
           <a class="ud-btn btn-retour" type="button" (click)="voirListeBiensAssocies()">Retour</a>
         </div>
       </div>
@@ -1884,7 +2127,7 @@
 
           <p-divider *ngIf="bienImmAssocie.description"></p-divider>
           <h4 class="title fz17 mb30" *ngIf="bienImmAssocie.description">Description</h4>
-          <p *ngIf="bienImmAssocie.description">
+          <p class="text justify-text" *ngIf="bienImmAssocie.description">
               {{ bienImmAssocie.description }}
           </p>
 
@@ -1931,7 +2174,8 @@
                   <p class="text mb10" *ngIf="bienImmAssocie.adresse">{{ bienImmAssocie.adresse }}</p>
                   <p class="text mb10" *ngIf="bienImmAssocie.surface">{{ bienImmAssocie.surface }} m²</p>
                   <p class="text mb10">
-                    <p-tag severity="success" value="{{bienImmAssocie.statutBien}}"></p-tag>
+                    <p-tag *ngIf="bienImmAssocie.statutBien == 'Disponible'" severity="success" value="{{bienImmobilier.statutBien}}"></p-tag>
+                    <p-tag *ngIf="bienImmAssocie.statutBien == 'Loué'" severity="info" value="{{bienImmobilier.statutBien}}"></p-tag>
                   </p>
                   <p class="text mb-0">
                     <p-tag *ngIf="bienImmAssocie.etatBien == true" severity="success" value="Activé"></p-tag>
@@ -1945,90 +2189,169 @@
           <p-divider *ngIf="caracteristiqueBienAssocie != null"></p-divider>
           <h4 class="title fz17 mb30" *ngIf="caracteristiqueBienAssocie != null">Caractéristiques </h4>
           <div class="row">
-            <div class="col-md-6 col-xl-4">
-              <div class="d-flex justify-content-between">
-                <div class="pd-list">
-                  <p *ngIf="caracteristiqueBienAssocie.nombreChambres" class="fw600 mb10 ff-heading dark-color">Nombre de chambres</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreChambresSalon" class="fw600 mb10 ff-heading dark-color">Nombre de chambres salon</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreBureaux" class="fw600 mb10 ff-heading dark-color">Nombre de bureaux</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreBoutiques" class="fw600 mb10 ff-heading dark-color">Nombre de boutiques</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreBoutiques" class="fw600 mb10 ff-heading dark-color">Nombre de magasions</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreAppartements" class="fw600 mb10 ff-heading dark-color">Nombre d'appartements</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreEtages" class="fw600 mb-0 ff-heading dark-color">Nombre d'étages</p>
-                </div>
-                <div class="pd-list">
-                  <p *ngIf="caracteristiqueBienAssocie.nombreChambres" class="text mb10">{{ caracteristiqueBien.nombreChambres }}</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreChambresSalon" class="text mb10">{{ caracteristiqueBien.nombreChambresSalon }}</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreBureaux" class="text mb10">{{ caracteristiqueBien.nombreBureaux }}</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreBoutiques" class="text mb10">{{ caracteristiqueBien.nombreBoutiques }}</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreBoutiques" class="text mb10">{{ caracteristiqueBien.nombreBoutiques }}</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreAppartements" class="text mb10">{{ caracteristiqueBien.nombreAppartements }}</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreEtages" class="text mb-0">{{ caracteristiqueBien.nombreEtages }}</p>
-                </div>
-              </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreChambres">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de chambres</p>
+              <p class="text">{{ caracteristiqueBienAssocie.nombreChambres }}</p>
             </div>
-            <div class="col-md-6 col-xl-4 offset-xl-2">
-              <div class="d-flex justify-content-between">
-                <div class="pd-list">
-                  <p *ngIf="caracteristiqueBienAssocie.nombreGarages" class="fw600 mb10 ff-heading dark-color">Nombre de garages</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreCuisineInterne" class="fw600 mb10 ff-heading dark-color">Nombre de cusine interne</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreCuisineExterne" class="fw600 mb10 ff-heading dark-color">Nombre de cuisine externe</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreWCDoucheInterne" class="fw600 mb10 ff-heading dark-color">Nombre de WC-Douche interne</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreWCDoucheExterne" class="fw600 mb10 ff-heading dark-color">Nombre de WC-Douche externe</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreSalons" class="fw600 mb10 ff-heading dark-color">Nombre de salons</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombrePlacards" class="fw600 mb-0 ff-heading dark-color">Nombre de placards</p>
-                </div>
-                <div class="pd-list">
-                  <p *ngIf="caracteristiqueBienAssocie.nombreGarages" class="text mb10">{{ caracteristiqueBienAssocie.nombreGarages }}</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreCuisineInterne" class="text mb10">{{ caracteristiqueBienAssocie.nombreCuisineInterne }}</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreCuisineExterne" class="text mb10">{{ caracteristiqueBienAssocie.nombreCuisineExterne }}</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreWCDoucheInterne" class="text mb10">{{ caracteristiqueBienAssocie.nombreWCDoucheInterne }}</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreWCDoucheExterne" class="text mb10">{{ caracteristiqueBienAssocie.nombreWCDoucheExterne }}</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombreSalons" class="text mb10">{{ caracteristiqueBienAssocie.nombreSalons }}</p>
-                  <p *ngIf="caracteristiqueBienAssocie.nombrePlacards" class="text mb-0">{{ caracteristiqueBienAssocie.nombrePlacards }}</p>
-                </div>
-              </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreChambresSalon">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de chambres salon</p>
+              <p class="text">{{ caracteristiqueBienAssocie.nombreChambresSalon }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreBureaux">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de bureaux</p>
+              <p class="text">{{ caracteristiqueBienAssocie.nombreBureaux }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreBoutiques">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de boutiques</p>
+              <p class="text">{{ caracteristiqueBienAssocie.nombreBoutiques }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreMagasins">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de magasions</p>
+              <p class="text">{{ caracteristiqueBienAssocie.nombreMagasins }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreAppartements">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre d'appartements</p>
+              <p class="text">{{ caracteristiqueBienAssocie.nombreAppartements }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreEtages">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre d'étages</p>
+              <p class="text">{{ caracteristiqueBienAssocie.nombreEtages }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreGarages">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de garages</p>
+              <p class="text">{{ caracteristiqueBienAssocie.nombreGarages }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreCuisineInterne">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de cusine interne</p>
+              <p class="text">{{ caracteristiqueBienAssocie.nombreCuisineInterne }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreCuisineExterne">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de cuisine externe</p>
+              <p class="text">{{ caracteristiqueBienAssocie.nombreCuisineExterne }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreWCDoucheInterne">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de WC-Douche interne</p>
+              <p class="text">{{ caracteristiqueBienAssocie.nombreWCDoucheInterne }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreWCDoucheExterne" >
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de WC-Douche externe</p>
+              <p class="text">{{ caracteristiqueBienAssocie.nombreWCDoucheExterne }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreSalons">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de salons</p>
+              <p class="text">{{ caracteristiqueBienAssocie.nombreSalons }}</p>
+            </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombrePlacards">
+              <p class="fw600 mb5 ff-heading dark-color">Nombre de placards</p>
+              <p class="text">{{ caracteristiqueBienAssocie.nombrePlacards }}</p>
             </div>
           </div>
           <div class="row mt-4">
-            <div class="col-sm-6 col-md-4">
-              <div class="pd-list mb10-sm">
-                <p *ngIf="caracteristiqueBienAssocie.parking" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Parking</p>
-                <p *ngIf="caracteristiqueBienAssocie.eauTde" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau TDE</p>
-                <p *ngIf="caracteristiqueBienAssocie.compteurEau" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur d'eau</p>
-                <p *ngIf="caracteristiqueBienAssocie.wifi" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Wifi</p>
-                <p *ngIf="caracteristiqueBienAssocie.placard" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Placards</p>
-                <p *ngIf="caracteristiqueBienAssocie.cuisineInterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine interne</p>
-                <p *ngIf="caracteristiqueBienAssocie.wcDoucheInterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche interne</p>
-                <p *ngIf="caracteristiqueBienAssocie.balcon" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Balcon</p>
-                <p *ngIf="caracteristiqueBienAssocie.garage" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Garage</p>
-              </div>
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.parking">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Parking</p>
             </div>
-            <div class="col-sm-6 col-md-4">
-              <div class="pd-list">
-                <p *ngIf="caracteristiqueBienAssocie.eauForage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
-                <p *ngIf="caracteristiqueBienAssocie.electriciteCeet" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
-                <p *ngIf="caracteristiqueBienAssocie.ascenseur" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
-                <p *ngIf="caracteristiqueBienAssocie.etage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
-                <p *ngIf="caracteristiqueBienAssocie.dalle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
-                <p *ngIf="caracteristiqueBienAssocie.cuisineExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
-                <p *ngIf="caracteristiqueBienAssocie.wcDoucheExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
-                <p *ngIf="caracteristiqueBienAssocie.climatisation" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
-              </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.eauTde">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau TDE</p>
             </div>
-            <div class="col-sm-6 col-md-4">
-              <div class="pd-list">
-                <p *ngIf="caracteristiqueBienAssocie.plafonne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Plafonné</p>
-                <p *ngIf="caracteristiqueBienAssocie.baieVitree" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Baie vitrée</p>
-                <p *ngIf="caracteristiqueBienAssocie.solCarelle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Sol carellé</p>
-                <p *ngIf="caracteristiqueBienAssocie.cashPowerPersonnel" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cash power personnel</p>
-                <p *ngIf="caracteristiqueBienAssocie.compteurAdditionnel" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur additionnel</p>
-                <p *ngIf="caracteristiqueBienAssocie.jardin" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Jardin</p>
-                <p *ngIf="caracteristiqueBienAssocie.piscine" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Piscine</p>
-                <p *ngIf="caracteristiqueBienAssocie.terrasse" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Terrasse<p></p>
-              </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.compteurEau">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur d'eau</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.wifi">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Wifi</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.placard">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Placards</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.cuisineInterne">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine interne</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.wcDoucheInterne">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche interne</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.balcon">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Balcon</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.garage">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Garage</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.eauForage">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.electriciteCeet">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.ascenseur">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.etage">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.dalle">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.cuisineExterne">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.wcDoucheExterne">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.climatisation">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.plafonne">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Plafonné</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.baieVitree">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Baie vitrée</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.solCarelle">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Sol carellé</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.cashPowerPersonnel">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cash power personnel</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.compteurAdditionnel">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur additionnel</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.jardin">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Jardin</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.piscine">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Piscine</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.terrasse">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Terrasse</p>
+            </div>
+
+            <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.toiletteVisiteur">
+              <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Toilette visiteur</p>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -2414,7 +2737,7 @@
 
               <p-divider *ngIf="bienImmAssocie.description"></p-divider>
               <h4 class="title fz17 mb30" *ngIf="bienImmAssocie.description">Description</h4>
-              <p *ngIf="bienImmAssocie.description">
+              <p class="text justify-text" *ngIf="bienImmAssocie.description">
                   {{ bienImmAssocie.description }}
               </p>
 
@@ -2464,88 +2787,166 @@
               <p-divider *ngIf="caracteristiqueBienAssocie"></p-divider>
               <h4 class="title fz17 mb30" *ngIf="caracteristiqueBienAssocie">Caractéristiques </h4>
               <div class="row">
-                <div class="col-md-6 col-xl-4">
-                  <div class="d-flex justify-content-between">
-                    <div class="pd-list">
-                      <p *ngIf="caracteristiqueBienAssocie.nombreChambres" class="fw600 mb10 ff-heading dark-color">Nombre de chambres</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreChambresSalon" class="fw600 mb10 ff-heading dark-color">Nombre de chambres salon</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreBureaux" class="fw600 mb10 ff-heading dark-color">Nombre de bureaux</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreBoutiques" class="fw600 mb10 ff-heading dark-color">Nombre de boutiques</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreBoutiques" class="fw600 mb10 ff-heading dark-color">Nombre de magasions</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreAppartements" class="fw600 mb10 ff-heading dark-color">Nombre d'appartements</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreEtages" class="fw600 mb-0 ff-heading dark-color">Nombre d'étages</p>
-                    </div>
-                    <div class="pd-list">
-                      <p *ngIf="caracteristiqueBienAssocie.nombreChambres" class="text mb10">{{ caracteristiqueBien.nombreChambres }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreChambresSalon" class="text mb10">{{ caracteristiqueBien.nombreChambresSalon }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreBureaux" class="text mb10">{{ caracteristiqueBien.nombreBureaux }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreBoutiques" class="text mb10">{{ caracteristiqueBien.nombreBoutiques }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreBoutiques" class="text mb10">{{ caracteristiqueBien.nombreBoutiques }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreAppartements" class="text mb10">{{ caracteristiqueBien.nombreAppartements }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreEtages" class="text mb-0">{{ caracteristiqueBien.nombreEtages }}</p>
-                    </div>
-                  </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreChambres">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de chambres</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreChambres }}</p>
                 </div>
-                <div class="col-md-6 col-xl-4 offset-xl-2">
-                  <div class="d-flex justify-content-between">
-                    <div class="pd-list">
-                      <p *ngIf="caracteristiqueBienAssocie.nombreGarages" class="fw600 mb10 ff-heading dark-color">Nombre de garages</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreCuisineInterne" class="fw600 mb10 ff-heading dark-color">Nombre de cusine interne</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreCuisineExterne" class="fw600 mb10 ff-heading dark-color">Nombre de cuisine externe</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreWCDoucheInterne" class="fw600 mb10 ff-heading dark-color">Nombre de WC-Douche interne</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreWCDoucheExterne" class="fw600 mb10 ff-heading dark-color">Nombre de WC-Douche externe</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreSalons" class="fw600 mb10 ff-heading dark-color">Nombre de salons</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombrePlacards" class="fw600 mb-0 ff-heading dark-color">Nombre de placards</p>
-                    </div>
-                    <div class="pd-list">
-                      <p *ngIf="caracteristiqueBienAssocie.nombreGarages" class="text mb10">{{ caracteristiqueBienAssocie.nombreGarages }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreCuisineInterne" class="text mb10">{{ caracteristiqueBienAssocie.nombreCuisineInterne }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreCuisineExterne" class="text mb10">{{ caracteristiqueBienAssocie.nombreCuisineExterne }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreWCDoucheInterne" class="text mb10">{{ caracteristiqueBienAssocie.nombreWCDoucheInterne }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreWCDoucheExterne" class="text mb10">{{ caracteristiqueBienAssocie.nombreWCDoucheExterne }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreSalons" class="text mb10">{{ caracteristiqueBienAssocie.nombreSalons }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombrePlacards" class="text mb-0">{{ caracteristiqueBienAssocie.nombrePlacards }}</p>
-                    </div>
-                  </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreChambresSalon">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de chambres salon</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreChambresSalon }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreBureaux">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de bureaux</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreBureaux }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreBoutiques">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de boutiques</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreBoutiques }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreMagasins">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de magasions</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreMagasins }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreAppartements">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre d'appartements</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreAppartements }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreEtages">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre d'étages</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreEtages }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreGarages">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de garages</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreGarages }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreCuisineInterne">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de cusine interne</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreCuisineInterne }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreCuisineExterne">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de cuisine externe</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreCuisineExterne }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreWCDoucheInterne">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de WC-Douche interne</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreWCDoucheInterne }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreWCDoucheExterne" >
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de WC-Douche externe</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreWCDoucheExterne }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreSalons">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de salons</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreSalons }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombrePlacards">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de placards</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombrePlacards }}</p>
                 </div>
               </div>
               <div class="row mt-4">
-                <div class="col-sm-6 col-md-4">
-                  <div class="pd-list mb10-sm">
-                    <p *ngIf="caracteristiqueBienAssocie.parking" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Parking</p>
-                    <p *ngIf="caracteristiqueBienAssocie.eauTde" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau TDE</p>
-                    <p *ngIf="caracteristiqueBienAssocie.compteurEau" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur d'eau</p>
-                    <p *ngIf="caracteristiqueBienAssocie.wifi" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Wifi</p>
-                    <p *ngIf="caracteristiqueBienAssocie.placard" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Placards</p>
-                    <p *ngIf="caracteristiqueBienAssocie.cuisineInterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine interne</p>
-                    <p *ngIf="caracteristiqueBienAssocie.wcDoucheInterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche interne</p>
-                    <p *ngIf="caracteristiqueBienAssocie.balcon" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Balcon</p>
-                    <p *ngIf="caracteristiqueBienAssocie.garage" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Garage</p>
-                  </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.parking">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Parking</p>
                 </div>
-                <div class="col-sm-6 col-md-4">
-                  <div class="pd-list">
-                    <p *ngIf="caracteristiqueBienAssocie.eauForage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
-                    <p *ngIf="caracteristiqueBienAssocie.electriciteCeet" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
-                    <p *ngIf="caracteristiqueBienAssocie.ascenseur" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
-                    <p *ngIf="caracteristiqueBienAssocie.etage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
-                    <p *ngIf="caracteristiqueBienAssocie.dalle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
-                    <p *ngIf="caracteristiqueBienAssocie.cuisineExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
-                    <p *ngIf="caracteristiqueBienAssocie.wcDoucheExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
-                    <p *ngIf="caracteristiqueBienAssocie.climatisation" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
-                  </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.eauTde">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau TDE</p>
                 </div>
-                <div class="col-sm-6 col-md-4">
-                  <div class="pd-list">
-                    <p *ngIf="caracteristiqueBienAssocie.plafonne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Plafonné</p>
-                    <p *ngIf="caracteristiqueBienAssocie.baieVitree" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Baie vitrée</p>
-                    <p *ngIf="caracteristiqueBienAssocie.solCarelle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Sol carellé</p>
-                    <p *ngIf="caracteristiqueBienAssocie.cashPowerPersonnel" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cash power personnel</p>
-                    <p *ngIf="caracteristiqueBienAssocie.compteurAdditionnel" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur additionnel</p>
-                    <p *ngIf="caracteristiqueBienAssocie.jardin" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Jardin</p>
-                    <p *ngIf="caracteristiqueBienAssocie.piscine" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Piscine</p>
-                    <p *ngIf="caracteristiqueBienAssocie.terrasse" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Terrasse<p></p>
-                  </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.compteurEau">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur d'eau</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.wifi">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Wifi</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.placard">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Placards</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.cuisineInterne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine interne</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.wcDoucheInterne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche interne</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.balcon">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Balcon</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.garage">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Garage</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.eauForage">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.electriciteCeet">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.ascenseur">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.etage">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.dalle">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.cuisineExterne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.wcDoucheExterne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.climatisation">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.plafonne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Plafonné</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.baieVitree">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Baie vitrée</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.solCarelle">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Sol carellé</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.cashPowerPersonnel">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cash power personnel</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.compteurAdditionnel">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur additionnel</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.jardin">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Jardin</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.piscine">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Piscine</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.terrasse">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Terrasse</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.toiletteVisiteur">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Toilette visiteur</p>
                 </div>
               </div>
 
@@ -2941,7 +3342,7 @@
 
               <p-divider *ngIf="bienImmAssocie.description"></p-divider>
               <h4 class="title fz17 mb30" *ngIf="bienImmAssocie.description">Description</h4>
-              <p *ngIf="bienImmAssocie.description">
+              <p class="text justify-text" *ngIf="bienImmAssocie.description">
                   {{ bienImmAssocie.description }}
               </p>
 
@@ -2991,90 +3392,169 @@
               <p-divider *ngIf="caracteristiqueBienAssocie"></p-divider>
               <h4 class="title fz17 mb30" *ngIf="caracteristiqueBienAssocie">Caractéristiques </h4>
               <div class="row">
-                <div class="col-md-6 col-xl-4">
-                  <div class="d-flex justify-content-between">
-                    <div class="pd-list">
-                      <p *ngIf="caracteristiqueBienAssocie.nombreChambres" class="fw600 mb10 ff-heading dark-color">Nombre de chambres</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreChambresSalon" class="fw600 mb10 ff-heading dark-color">Nombre de chambres salon</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreBureaux" class="fw600 mb10 ff-heading dark-color">Nombre de bureaux</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreBoutiques" class="fw600 mb10 ff-heading dark-color">Nombre de boutiques</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreBoutiques" class="fw600 mb10 ff-heading dark-color">Nombre de magasions</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreAppartements" class="fw600 mb10 ff-heading dark-color">Nombre d'appartements</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreEtages" class="fw600 mb-0 ff-heading dark-color">Nombre d'étages</p>
-                    </div>
-                    <div class="pd-list">
-                      <p *ngIf="caracteristiqueBienAssocie.nombreChambres" class="text mb10">{{ caracteristiqueBien.nombreChambres }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreChambresSalon" class="text mb10">{{ caracteristiqueBien.nombreChambresSalon }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreBureaux" class="text mb10">{{ caracteristiqueBien.nombreBureaux }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreBoutiques" class="text mb10">{{ caracteristiqueBien.nombreBoutiques }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreBoutiques" class="text mb10">{{ caracteristiqueBien.nombreBoutiques }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreAppartements" class="text mb10">{{ caracteristiqueBien.nombreAppartements }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreEtages" class="text mb-0">{{ caracteristiqueBien.nombreEtages }}</p>
-                    </div>
-                  </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreChambres">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de chambres</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreChambres }}</p>
                 </div>
-                <div class="col-md-6 col-xl-4 offset-xl-2">
-                  <div class="d-flex justify-content-between">
-                    <div class="pd-list">
-                      <p *ngIf="caracteristiqueBienAssocie.nombreGarages" class="fw600 mb10 ff-heading dark-color">Nombre de garages</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreCuisineInterne" class="fw600 mb10 ff-heading dark-color">Nombre de cusine interne</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreCuisineExterne" class="fw600 mb10 ff-heading dark-color">Nombre de cuisine externe</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreWCDoucheInterne" class="fw600 mb10 ff-heading dark-color">Nombre de WC-Douche interne</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreWCDoucheExterne" class="fw600 mb10 ff-heading dark-color">Nombre de WC-Douche externe</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreSalons" class="fw600 mb10 ff-heading dark-color">Nombre de salons</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombrePlacards" class="fw600 mb-0 ff-heading dark-color">Nombre de placards</p>
-                    </div>
-                    <div class="pd-list">
-                      <p *ngIf="caracteristiqueBienAssocie.nombreGarages" class="text mb10">{{ caracteristiqueBienAssocie.nombreGarages }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreCuisineInterne" class="text mb10">{{ caracteristiqueBienAssocie.nombreCuisineInterne }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreCuisineExterne" class="text mb10">{{ caracteristiqueBienAssocie.nombreCuisineExterne }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreWCDoucheInterne" class="text mb10">{{ caracteristiqueBienAssocie.nombreWCDoucheInterne }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreWCDoucheExterne" class="text mb10">{{ caracteristiqueBienAssocie.nombreWCDoucheExterne }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombreSalons" class="text mb10">{{ caracteristiqueBienAssocie.nombreSalons }}</p>
-                      <p *ngIf="caracteristiqueBienAssocie.nombrePlacards" class="text mb-0">{{ caracteristiqueBienAssocie.nombrePlacards }}</p>
-                    </div>
-                  </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreChambresSalon">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de chambres salon</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreChambresSalon }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreBureaux">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de bureaux</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreBureaux }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreBoutiques">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de boutiques</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreBoutiques }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreMagasins">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de magasions</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreMagasins }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreAppartements">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre d'appartements</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreAppartements }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreEtages">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre d'étages</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreEtages }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreGarages">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de garages</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreGarages }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreCuisineInterne">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de cusine interne</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreCuisineInterne }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreCuisineExterne">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de cuisine externe</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreCuisineExterne }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreWCDoucheInterne">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de WC-Douche interne</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreWCDoucheInterne }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreWCDoucheExterne" >
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de WC-Douche externe</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreWCDoucheExterne }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombreSalons">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de salons</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombreSalons }}</p>
+                </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.nombrePlacards">
+                  <p class="fw600 mb5 ff-heading dark-color">Nombre de placards</p>
+                  <p class="text">{{ caracteristiqueBienAssocie.nombrePlacards }}</p>
                 </div>
               </div>
               <div class="row mt-4">
-                <div class="col-sm-6 col-md-4">
-                  <div class="pd-list mb10-sm">
-                    <p *ngIf="caracteristiqueBienAssocie.parking" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Parking</p>
-                    <p *ngIf="caracteristiqueBienAssocie.eauTde" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau TDE</p>
-                    <p *ngIf="caracteristiqueBienAssocie.compteurEau" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur d'eau</p>
-                    <p *ngIf="caracteristiqueBienAssocie.wifi" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Wifi</p>
-                    <p *ngIf="caracteristiqueBienAssocie.placard" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Placards</p>
-                    <p *ngIf="caracteristiqueBienAssocie.cuisineInterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine interne</p>
-                    <p *ngIf="caracteristiqueBienAssocie.wcDoucheInterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche interne</p>
-                    <p *ngIf="caracteristiqueBienAssocie.balcon" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Balcon</p>
-                    <p *ngIf="caracteristiqueBienAssocie.garage" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Garage</p>
-                  </div>
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.parking">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Parking</p>
                 </div>
-                <div class="col-sm-6 col-md-4">
-                  <div class="pd-list">
-                    <p *ngIf="caracteristiqueBienAssocie.eauForage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
-                    <p *ngIf="caracteristiqueBienAssocie.electriciteCeet" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
-                    <p *ngIf="caracteristiqueBienAssocie.ascenseur" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
-                    <p *ngIf="caracteristiqueBienAssocie.etage" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
-                    <p *ngIf="caracteristiqueBienAssocie.dalle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
-                    <p *ngIf="caracteristiqueBienAssocie.cuisineExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
-                    <p *ngIf="caracteristiqueBienAssocie.wcDoucheExterne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
-                    <p *ngIf="caracteristiqueBienAssocie.climatisation" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
-                  </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.eauTde">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau TDE</p>
                 </div>
-                <div class="col-sm-6 col-md-4">
-                  <div class="pd-list">
-                    <p *ngIf="caracteristiqueBienAssocie.plafonne" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Plafonné</p>
-                    <p *ngIf="caracteristiqueBienAssocie.baieVitree" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Baie vitrée</p>
-                    <p *ngIf="caracteristiqueBienAssocie.solCarelle" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Sol carellé</p>
-                    <p *ngIf="caracteristiqueBienAssocie.cashPowerPersonnel" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cash power personnel</p>
-                    <p *ngIf="caracteristiqueBienAssocie.compteurAdditionnel" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur additionnel</p>
-                    <p *ngIf="caracteristiqueBienAssocie.jardin" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Jardin</p>
-                    <p *ngIf="caracteristiqueBienAssocie.piscine" class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Piscine</p>
-                    <p *ngIf="caracteristiqueBienAssocie.terrasse" class="text mb-0"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Terrasse<p></p>
-                  </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.compteurEau">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur d'eau</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.wifi">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Wifi</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.placard">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Placards</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.cuisineInterne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine interne</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.wcDoucheInterne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche interne</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.balcon">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Balcon</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.garage">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Garage</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.eauForage">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.electriciteCeet">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.ascenseur">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.etage">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.dalle">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.cuisineExterne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.wcDoucheExterne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.climatisation">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.plafonne">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Plafonné</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.baieVitree">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Baie vitrée</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.solCarelle">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Sol carellé</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.cashPowerPersonnel">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cash power personnel</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.compteurAdditionnel">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur additionnel</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.jardin">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Jardin</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.piscine">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Piscine</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.terrasse">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Terrasse</p>
+                </div>
+
+                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBienAssocie.toiletteVisiteur">
+                  <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Toilette visiteur</p>
                 </div>
               </div>
+
 
               <div class="col-md-12 mt30">
                 <div class="d-sm-flex justify-content-between">
