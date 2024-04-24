@@ -31,3 +31,11 @@
 .justify-text {
   text-align: justify;
 }
+
+:host ::ng-deep .p-dialog-title {
+  font-family: 'DM Sans', sans-serif;
+}
+
+:host ::ng-deep .p-dialog-header-close {
+  border-radius: 100%;
+}

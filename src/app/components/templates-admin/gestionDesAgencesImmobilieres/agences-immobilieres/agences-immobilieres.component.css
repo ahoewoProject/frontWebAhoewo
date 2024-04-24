@@ -51,6 +51,7 @@ margin-left: 0; /* Suppression de la marge négative */
 :host ::ng-deep .p-fileupload-choose {
   background-color: #4ebc87;
   border-color: #4ebc87;
+  font-family: 'DM Sans', sans-serif;
 }
 
 /* :host ::ng-deep .p-fileupload .p-fileupload-buttonbar {
@@ -78,4 +79,12 @@ margin-left: 0; /* Suppression de la marge négative */
 
 .justify-text {
   text-align: justify;
+}
+
+:host ::ng-deep .p-dialog-title {
+  font-family: 'DM Sans', sans-serif;
+}
+
+:host ::ng-deep .p-dialog-header-close {
+  border-radius: 100%;
 }
