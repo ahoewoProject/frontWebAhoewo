@@ -150,6 +150,7 @@
 :host ::ng-deep .pInputNumber {
   width: 100%;
   border-radius: 8px;
+  font-size: 17px;
 }
 
 :host ::ng-deep .pCalendar {
@@ -160,7 +161,7 @@
 :host ::ng-deep .pCalendar .p-inputtext {
   border-radius: 8px;
   border: 1px solid #DDDDDD;
-  font-size: 18px;
+  font-size: 17px;
 }
 
 /* :host ::ng-deep .p-datepicker {
@@ -178,4 +179,9 @@
 
 :host ::ng-deep .pInputNumber.ng-dirty.ng-invalid > .p-inputnumber > .p-inputtext {
   border-color: #DDDDDD;
+}
+
+.text {
+  font-family: 'Inter Var', sans-serif;
+  font-size: 14px;
 }

@@ -315,6 +315,7 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
             this.typesDeDemandes = ['Demande de visite', 'Demande de location'];
           }
           this.typeDeDemandeSelectionne = this.demandeRequest.typeDeDemande;
+          this.demandeRequest.dateHeureVisite = new Date(this.demandeRequest.dateHeureVisite);
           this.validerDemandeForm();
           console.log(this.demandeRequest)
         } else {

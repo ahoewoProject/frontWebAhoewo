@@ -239,7 +239,7 @@
                   <p class="text mb10" *ngIf="publication.bienImmobilier.surface">{{ publication.bienImmobilier.surface }} m²</p>
                   <p class="text mb10">{{ publication.prixDuBien | number }} FCFA</p>
                   <p class="text mb10" *ngIf="publication.caution">{{ publication.caution }} mois</p>
-                  <p class="text mb10" *ngIf="publication.commission">{{ publication.commission }} {{ publication.typeDeTransaction === 'Location' ? 'mois de loyer' : '%' }}</p>
+                  <p class="text mb10" *ngIf="publication.commission">{{ publication.commission }} {{ publication.typeDeTransaction === 'Location' ? 'mois' : '%' }}</p>
                 </div>
               </div>
             </div>
@@ -644,7 +644,7 @@
               <div class="col-lg-12" *ngIf="typeDeDemandeSelectionne == 'Demande de location'">
                 <div class="mb20">
                   <p-inputNumber class="pInputNumber p-fluid" placeholder="Prix de location proposé" formControlName="prixDeLocation" [(ngModel)]="demandeRequest.prixDeLocation" inputId="prixDeLocation" mode="currency" currency="CFA" locale="de-DE"
-                    [max]="publication.prixDuBien">
+                    [max]="publication.prixDuBien" [required]="true">
                   </p-inputNumber>
                   <div class="error" [hidden]="!prixDeLocation?.hasError('required') || !prixDeLocation.touched">Le prix de location est obligatoire</div>
                 </div>
