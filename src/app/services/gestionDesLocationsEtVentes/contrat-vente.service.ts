@@ -19,6 +19,12 @@ export class ContratVenteService {
     this.url = APIEndpoint + 'api/';
   }
 
+  // Affichage des contrats de ventes;
+  // url: http://localhost:4040/api/contrats/ventes
+  listContratsVentes(): Observable<Array<ContratVente>> {
+    return this.httpClient.get<Array<ContratVente>>(this.url + 'contrats/ventes');
+  }
+
   // Affichage des contrats de ventes paginées;
   // url: http://localhost:4040/api/contrats-ventes
   getContratsVentes(numeroDeLaPage: number, elementsParPage: number): Observable<Page<ContratVente>>{
