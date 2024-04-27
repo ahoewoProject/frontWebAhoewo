@@ -357,14 +357,17 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     this.delegationGestionForm.reset();
     this.resetPublicationForm();
     this.caracteristiqueBien = new Caracteristiques();
-    if (this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
+    if(this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
       this.listeBiensParProprietaire(this.numeroDeLaPage, this.elementsParPage);
+      this.affichage = 1;
     } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
       this.listeBiensParAgencesResponsable(this.numeroDeLaPage, this.elementsParPage);
+      this.affichage = 1;
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
       this.listeBiensParAgencesAgent(this.numeroDeLaPage, this.elementsParPage);
+      this.affichage = 1;
     }
-    this.affichage = 1;
+
   }
 
   paginationListeBiens(event: any) {
@@ -617,6 +620,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     this.bienImmobilier.region = this.regionSelectionnee;
     this.bienImmobilier.ville = this.villeSelectionnee;
     this.bienImmobilier.quartier = this.quartierSelectionne;
+    this.bienImmobilier.personne = this.user;
 
     for (const image of this.imagesBienImmobilier) {
       this.bienImmobilierData.append('images', image);
@@ -735,6 +739,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     this.bienImmobilier.region = this.regionSelectionnee;
     this.bienImmobilier.ville = this.villeSelectionnee;
     this.bienImmobilier.quartier = this.quartierSelectionne;
+    this.bienImmobilier.personne = this.user;
 
     for (const image of this.imagesBienImmobilier) {
       this.bienImmobilierData.append('images', image);
@@ -1237,7 +1242,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     this.resetPublicationForm();
     this.caracteristiqueBienAssocie = new Caracteristiques();
     this.listeBiensAssocies(id, this.numeroDeLaPage, this.elementsParPage);
-    this.affichage = 5
+    this.affichage = 5;
   }
 
   paginationListeBiensAssocies(event: any) {
@@ -1289,6 +1294,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     this.bienImmAssocie.ville = this.bienImmobilier.ville;
     this.bienImmAssocie.quartier = this.bienImmobilier.quartier;
     this.bienImmAssocie.adresse = this.bienImmobilier.adresse;
+    this.bienImmAssocie.personne = this.user;
 
     for (const image of this.imagesBienImmobilier) {
       this.bienImmobilierData.append('images', image);
@@ -1946,6 +1952,18 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
 
   resetPublicationForm(): void {
     this.publicationForm.reset();
+  }
+
+  afficherBoutonSiBienDelegue(estDelegue: boolean): boolean {
+    if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
+      if (estDelegue) {
+        return false
+      } else {
+        return true
+      }
+    } else {
+      return true
+    }
   }
 
   ngOnDestroy(): void {
