@@ -87,6 +87,7 @@ import { DetailsAgenceComponent } from './components/templates-client/agences-im
 import { FilterService } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
 import { CalendarModule } from 'primeng/calendar';
+import { EditorModule } from 'primeng/editor';
 import { PublicationsComponent } from './components/templates-admin/gestionDesPublications/publications/publications.component';
 import { ListePublicationsComponent } from './components/templates-client/annonces-immobilieres/liste-publications/liste-publications.component';
 import { DetailsPublicationComponent } from './components/templates-client/annonces-immobilieres/details-publication/details-publication.component';
@@ -97,6 +98,8 @@ import { TranslateLoader, TranslateModule, TranslateService, TranslateStore } fr
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ContratsComponent } from './components/templates-admin/gestionDesLocationsEtVentes/contrats/contrats.component';
 import { SuivisEntretiensComponent } from './components/templates-admin/gestionDesLocationsEtVentes/suivis-entretiens/suivis-entretiens.component';
+import { PlanificationsPaiementsComponent } from './components/templates-admin/gestionDesPaiements/planifications-paiements/planifications-paiements.component';
+import { PaiementsComponent } from './components/templates-admin/gestionDesPaiements/paiements/paiements.component';
 
 @NgModule({
   declarations: [
@@ -149,6 +152,8 @@ import { SuivisEntretiensComponent } from './components/templates-admin/gestionD
     DemandesAchatsComponent,
     ContratsComponent,
     SuivisEntretiensComponent,
+    PlanificationsPaiementsComponent,
+    PaiementsComponent,
   ],
   imports: [
     BrowserModule,
@@ -171,6 +176,7 @@ import { SuivisEntretiensComponent } from './components/templates-admin/gestionD
     PaginatorModule,
     FileUploadModule,
     ToastModule,
+    EditorModule,
     TooltipModule,
     ConfirmDialogModule,
     TagModule,

@@ -70,9 +70,6 @@ export class LoginComponent implements OnInit{
 
   login(): void {
 
-    //console.log(this.loginForm.username);
-    //console.log(this.loginForm.password)
-
     this.loginData.append('username', this.loginForm.username);
     this.loginData.append('password', this.loginForm.password);
 
@@ -85,7 +82,6 @@ export class LoginComponent implements OnInit{
 
   private loginSuccess(response: any): void {
     this.LoginForm.reset();
-    //console.log(response.refresh_token);
 
     const access_token = response.access_token;
     const refresh_token = response.refresh_token;

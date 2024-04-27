@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
@@ -8,20 +9,24 @@
   border-color: #4ebc87;
 } */
 
+
 /* Style pour les boutons de pagination */
+
 .p-paginator .p-paginator-pages button {
-  font-family: "Poppins", sans-serif;;
-  padding: 8px 12px;
-  margin: 0 2px;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    ;
+    padding: 8px 12px;
+    margin: 0 2px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
 }
 
 .p-checkbox .p-checkbox-box.p-highlight {
-  border-color: #42A948;
-  background: #42A948;
+    border-color: #42A948;
+    background: #42A948;
 }
+
 
 /* .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
   background: #ee944e;
@@ -29,36 +34,41 @@
 } */
 
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-  background: #ee944e;
-  color: white;
+    background: #ee944e;
+    color: white;
 }
 
 .p-paginator .p-paginator-pages button:hover {
-  background-color: #ee944e;
-  color: white;
+    background-color: #ee944e;
+    color: white;
 }
+
 
 /* Style pour la flèche de pagination précédente */
+
 .p-paginator .p-paginator-prev {
-  border-radius: 50%;
+    border-radius: 50%;
 }
 
+
 /* Style pour la flèche de pagination suivante */
+
 .p-paginator .p-paginator-next {
-  border-radius: 50%;
+    border-radius: 50%;
 }
 
 .p-paginator .p-paginator-first {
-  border-radius: 50%;
+    border-radius: 50%;
 }
 
 .p-paginator .p-paginator-last {
-  border-radius: 50%;
+    border-radius: 50%;
 }
 
 .p-toast-summary {
-  font-family: "DM Sans", sans-serif;
+    font-family: "DM Sans", sans-serif;
 }
+
 
 /* .p-disabled {
   border-radius: 6px;
@@ -66,41 +76,85 @@
 } */
 
 .badge {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  margin-top: -5px;
-  font-size: 0;
-  z-index: 2
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    margin-top: -5px;
+    font-size: 0;
+    z-index: 2
 }
 
 .span-badge {
-  display: inline-block;
-  color: #fff;
-  background-color: #222;
-  padding: 2px 10px;
-  font-size: 14px;
-  line-height: 20px;
-  text-transform: uppercase;
-  text-align: center;
-  border-radius: 4px;
+    display: inline-block;
+    color: #fff;
+    background-color: #222;
+    padding: 2px 10px;
+    font-size: 14px;
+    line-height: 20px;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: 4px;
 }
 
 .p-tag.p-tag-success {
-  background-color: #0D7914;
-  color: #ffffff;
+    background-color: #0D7914;
+    color: #ffffff;
 }
 
 .p-tag.p-tag-warning {
-  background-color: #DB6B15;
-  color: #ffffff;
+    background-color: #DB6B15;
+    color: #ffffff;
 }
 
 .p-tag {
-  font-family: 'DM Sans' , sans-serif;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .publie-date-heure {
-  font-family: 'DM Sans' , sans-serif;
+    font-family: 'DM Sans', sans-serif;
 }
 
+.p-galleria .p-galleria-item-nav {
+    color: #f8f9fa;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 20% !important;
+}
+
+.p-galleria .p-galleria-thumbnail-container .p-galleria-thumbnail-prev,
+.p-galleria .p-galleria-thumbnail-container .p-galleria-thumbnail-next {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 20% !important;
+}
+
+.p-galleria .p-galleria-thumbnail-container .p-galleria-thumbnail-prev,
+.p-galleria .p-galleria-thumbnail-container .p-galleria-thumbnail-prev {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 20% !important;
+}
+
+.p-datepicker:not(.p-datepicker-inline) {
+    margin-top: 50px;
+    font-family: 'DM sans', sans-serif;
+    background: #ffffff;
+    border: 0 none;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+.p-datepicker-prev {
+    border-radius: 10px;
+}
+
+.p-datepicker-next {
+    border-radius: 10px;
+}
+
+.p-hour-picker .p-link {
+    border-radius: 10px;
+}
+
+.p-minute-picker .p-link {
+    border-radius: 10px;
+}
