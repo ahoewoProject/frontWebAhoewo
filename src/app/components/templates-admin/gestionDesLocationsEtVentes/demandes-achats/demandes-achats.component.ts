@@ -74,7 +74,11 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.demandeAchatReussie = this.activatedRoute.snapshot.queryParams['demandeAchatReussie'];
-
+    const demandeRequest = localStorage.getItem('demandeRequest');
+    if (demandeRequest !== null) {
+        localStorage.removeItem('demandeRequest');
+    }
+    
     this.initResponsiveOptions();
     this.initContratVenteStep1Form();
     this.initContratVenteStep2Form();
@@ -676,9 +680,20 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
     this.demandeAchat.publication.bienImmobilier.typeDeBien.designation == 'Bureau';
   }
 
-
   newDemandeAchat(): void {
     this.demandeAchat = new DemandeAchat();
+  }
+
+  afficherBoutonSiBienDelegue(estDelegue: boolean): boolean {
+    if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
+      if (estDelegue) {
+        return false
+      } else {
+        return true
+      }
+    } else {
+      return true
+    }
   }
 
   ngOnDestroy(): void {
