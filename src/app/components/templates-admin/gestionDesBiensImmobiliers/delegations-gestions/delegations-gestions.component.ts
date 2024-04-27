@@ -1410,8 +1410,11 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     })
   }
 
-  afficherFormulairePublicationBien(bien: BienImmobilier): void {
+  afficherFormulairePublicationBien(delegationGestion: DelegationGestion, bien: BienImmobilier): void {
     this.bienChoisi(bien);
+    localStorage.setItem('delegationGestion', JSON.stringify(delegationGestion));
+    const idd = JSON.parse(localStorage.getItem('delegationGestion')!);
+    console.log(idd);
     this.bienAPublie = bien;
     this.affichage = 5;
   }
@@ -1483,7 +1486,7 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
           this.redirectToPublicationPage();
         } else {
           this.messageErreur = "Une erreur s'est produite lors de l'ajout !";
-          this.afficherFormulairePublicationBien(this.bienAPublie);
+          this.afficherFormulairePublicationBien(JSON.parse(localStorage.getItem('delegationGestion')!), this.bienAPublie);
           this.messageService.add({
             severity: 'error',
             summary: 'Publication échouée',
@@ -1562,6 +1565,24 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
 
   resetPublicationForm(): void {
     this.publicationForm.reset();
+  }
+
+  afficherBoutonSiBienDelegue(estDelegue: boolean): boolean {
+    if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
+      if (estDelegue) {
+        return false
+      } else {
+        return true
+      }
+    } else {
+      return true
+    }
+  }
+
+  retourDetailDelegationGestion(): void {
+    const delegationGestionInStore = JSON.parse(localStorage.getItem('delegationGestion')!);
+    console.log(delegationGestionInStore)
+    this.afficherPageDetail(delegationGestionInStore.id, delegationGestionInStore.bienImmobilier.id);
   }
 
   ngOnDestroy(): void {
