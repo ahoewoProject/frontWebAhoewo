@@ -74,7 +74,11 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.demandeLocationReussie = this.activatedRoute.snapshot.queryParams['demandeLocationReussie'];
-
+    const demandeRequest = localStorage.getItem('demandeRequest');
+    if (demandeRequest !== null) {
+        localStorage.removeItem('demandeRequest');
+    }
+    
     this.initResponsiveOptions();
     if (this.user.role.code == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
       this.menusOfAgence();
@@ -624,6 +628,18 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
     this.demandeLocation.publication.bienImmobilier.typeDeBien.designation == 'Chambre salon' ||
     this.demandeLocation.publication.bienImmobilier.typeDeBien.designation == 'Chambre' ||
     this.demandeLocation.publication.bienImmobilier.typeDeBien.designation == 'Bureau';
+  }
+
+  afficherBoutonSiBienDelegue(estDelegue: boolean): boolean {
+    if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
+      if (estDelegue) {
+        return false
+      } else {
+        return true
+      }
+    } else {
+      return true
+    }
   }
 
   ngOnDestroy(): void {
