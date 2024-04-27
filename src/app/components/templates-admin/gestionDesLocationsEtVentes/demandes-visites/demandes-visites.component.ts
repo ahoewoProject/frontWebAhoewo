@@ -23,6 +23,7 @@ import { environment } from 'src/environments/environment';
 })
 export class DemandesVisitesComponent implements OnInit, OnDestroy {
 
+  minDate: Date = new Date();
   modalRefusVisible: boolean = false;
   modalAnnulationVisible: boolean = false;
   recherche: string = '';
@@ -64,6 +65,10 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.demandeVisiteReussie = this.activatedRoute.snapshot.queryParams['demandeVisiteReussie'];
+    const demandeRequest = localStorage.getItem('demandeRequest');
+    if (demandeRequest !== null) {
+        localStorage.removeItem('demandeRequest');
+    }
 
     this.initResponsiveOptions();
     this.initActivatedRoute();
@@ -404,6 +409,18 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
     this.bienImm.typeDeBien.designation == 'Chambre salon' ||
     this.bienImm.typeDeBien.designation == 'Chambre' ||
     this.bienImm.typeDeBien.designation == 'Bureau';
+  }
+
+  afficherBoutonSiBienDelegue(estDelegue: boolean): boolean {
+    if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
+      if (estDelegue) {
+        return false
+      } else {
+        return true
+      }
+    } else {
+      return true
+    }
   }
 
   ngOnDestroy(): void {
