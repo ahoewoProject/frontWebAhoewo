@@ -25,13 +25,9 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   notifications!: Page<Notification>;
   messageSuccess: string | null = null;
 
-  constructor(
-    private notificationService: NotificationsService,
-    private messageService: MessageService,
-    private personneService: PersonneService,
-    private confirmationService: ConfirmationService,
-    private behaviorService: BehaviorService,
-    private router: Router
+  constructor(private notificationService: NotificationsService, private messageService: MessageService,
+    private personneService: PersonneService, private confirmationService: ConfirmationService,
+    private behaviorService: BehaviorService, private router: Router
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -52,6 +48,28 @@ export class NotificationsComponent implements OnInit, OnDestroy {
               (response) => {
                 this.notificationService.initListeNotificationsNonLues();
                 this.notificationService.getNotificationsByAdmin(numeroDeLaPage, elementsParPage).subscribe(
+                  (response) => {
+                    this.notifications = response;
+                  }
+                )
+              }
+            )
+          }
+        });
+      }
+    );
+  }
+
+  listeNotificationsByNotaire(numeroDeLaPage: number, elementsParPage: number): void {
+    this.notificationService.getNotificationsByNotaire(numeroDeLaPage, elementsParPage).subscribe(
+      (response) => {
+        this.notifications = response;
+        this.notifications.content.forEach((notification) => {
+          if (notification.lu == false) {
+            this.notificationService.lireNotification(notification.id).subscribe(
+              (response) => {
+                this.notificationService.initListeNotificationsNonLues();
+                this.notificationService.getNotificationsByNotaire(numeroDeLaPage, elementsParPage).subscribe(
                   (response) => {
                     this.notifications = response;
                   }
@@ -91,6 +109,8 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     this.elementsParPage = event.rows;
     if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
       this.listeNotificationsByAdmin(this.numeroDeLaPage, this.elementsParPage);
+    } else if (this.user.role.code == 'ROLE_NOTAIRE') {
+      this.listeNotificationsByNotaire(this.numeroDeLaPage, this.elementsParPage);
     } else {
       this.listeNotificationsByOwner(this.numeroDeLaPage, this.elementsParPage);
     }
@@ -104,6 +124,8 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   initListeNotifications(numeroDeLaPage: number, elementsParPage: number): void {
     if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
       this.listeNotificationsByAdmin(numeroDeLaPage, elementsParPage);
+    } else if (this.user.role.code == 'ROLE_NOTAIRE') {
+      this.listeNotificationsByNotaire(numeroDeLaPage, elementsParPage);
     } else {
       this.listeNotificationsByOwner(numeroDeLaPage, elementsParPage);
     }
@@ -172,6 +194,8 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     let redirectURL = '';
     if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
       redirectURL = '/admin' + url;
+    } else if (this.user.role.code == 'ROLE_NOTAIRE') {
+      redirectURL = '/notaire' + url;
     } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
       redirectURL = '/responsable/agences-immobilieres' + url;
     } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {

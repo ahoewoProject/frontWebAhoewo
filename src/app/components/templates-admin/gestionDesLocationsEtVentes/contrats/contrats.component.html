@@ -23,8 +23,7 @@
                             <label><span class="flaticon-search"></span></label>
                         </div>
                     </div>
-                    <!-- &nbsp;
-          <a type="button" *ngIf="visibleAddForm == 0" (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">Ajouter une ville</a> -->
+
                 </div>
             </div>
         </div>
@@ -184,7 +183,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <!-- End Liste des contrats -->
 
@@ -215,7 +213,7 @@
             Terminer
           </a> &nbsp;
                     <a class="ud-btn btn-modifier" type="button" (click)="afficherPageModifierContratLocation(contratLocation.id)" *ngIf="contratLocation.etatContrat == 'En attente'
-            || contratLocation.etatContrat == 'Modifié'">
+            || contratLocation.etatContrat == 'Modifié' && afficherBoutonSiBienDelegue(contratLocation.demandeLocation.publication.bienImmobilier.estDelegue)">
             Modifier
           </a> &nbsp;
                     <a type="button" (click)="voirListe()" class="ud-btn btn-retour">Retour</a>
@@ -728,7 +726,7 @@
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end" *ngIf="user.role.code != 'ROLE_CLIENT'">
                     <a href="{{this.APIEndpoint+'api/contrat-vente/generer-pdf/'+contratVente.id}}" class="ud-btn btn-valider">Imprimer</a> &nbsp;
                     <a class="ud-btn btn-modifier" type="button" (click)="afficherPageModifierContratVente(contratVente.id)" *ngIf="contratVente.etatContrat == 'En attente'
-            || contratVente.etatContrat == 'Modifié'">
+            || contratVente.etatContrat == 'Modifié' && afficherBoutonSiBienDelegue(contratVente.demandeAchat.publication.bienImmobilier.estDelegue)">
             Modifier
           </a> &nbsp;
                     <a type="button" (click)="voirListe()" class="ud-btn btn-retour">Retour</a>

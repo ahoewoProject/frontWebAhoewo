@@ -23,11 +23,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
   activeLink: any;
   notificationsDejaAffichees: number[] = [];
 
-  constructor(
-    private personneService: PersonneService,
-    private router: Router,
-    private behaviorService: BehaviorService,
-    private notificationService: NotificationsService,
+  constructor(private personneService: PersonneService, private router: Router,
+    private behaviorService: BehaviorService, private notificationService: NotificationsService,
     private serviceWorker: ServiceWorkerService
   )
   {
@@ -38,9 +35,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.serviceWorker.requestPermission();
 
-    this.behaviorService.activeLink$.subscribe((donnee) => {
-      this.activeLink = donnee;
-    });
+    // this.behaviorService.activeLink$.subscribe((donnee) => {
+    //   this.activeLink = donnee;
+    // });
 
     if (this.user) {
       this.initNotification();
@@ -82,6 +79,10 @@ export class NavigationComponent implements OnInit, OnDestroy {
       case 'ROLE_ADMINISTRATEUR':
         this.notificationService.notificationsNonLuesByAdmin();
         roleBasedURL = '/admin';
+        break;
+      case 'ROLE_NOTAIRE':
+        this.notificationService.notificationsNonLuesByNotaire();
+        roleBasedURL = '/notaire';
         break;
       case 'ROLE_PROPRIETAIRE':
         this.notificationService.notificationsNonLuesByOwner();
@@ -134,23 +135,23 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   initNotification(): void {
-    // interval(1000)
-    // .pipe(
-    //   switchMap(() => {
-    //     this.notificationService.initListeNotificationsNonLues();
-    //     return this.notificationService.notificationsNonLuesEvent;
-    //   })
-    // )
-    // .subscribe((data: Notification[]) => {
-    //   this.notificationsNonLues = data;
-    //   this.notificationsNonLues.forEach((notification) => {
-    //     if (!this.notificationsDejaAffichees.includes(notification.id)) {
-    //       this.afficherNotification(notification.titre, notification.message);
-    //       this.notificationsDejaAffichees.push(notification.id);
-    //     }
-    //   });
-    //   this.initListeNotifications();
-    // });
+    interval(1000)
+    .pipe(
+      switchMap(() => {
+        this.notificationService.initListeNotificationsNonLues();
+        return this.notificationService.notificationsNonLuesEvent;
+      })
+    )
+    .subscribe((data: Notification[]) => {
+      this.notificationsNonLues = data;
+      this.notificationsNonLues.forEach((notification) => {
+        if (!this.notificationsDejaAffichees.includes(notification.id)) {
+          this.afficherNotification(notification.titre, notification.message);
+          this.notificationsDejaAffichees.push(notification.id);
+        }
+      });
+      this.initListeNotifications();
+    });
   }
 
   redirectToNotificationPage(): string {
@@ -207,6 +208,14 @@ export class NavigationComponent implements OnInit, OnDestroy {
     );
   }
 
+  listeNotificationsByNotaire(): void {
+    this.notificationService.getNotificationsByNotaire(0, 3).subscribe(
+      (response) => {
+        this.notifications = response;
+      }
+    );
+  }
+
   listeNotificationsByOwner(): void {
     this.notificationService.getNotificationsByOwner(0, 3).subscribe(
       (response) => {
@@ -218,6 +227,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
   initListeNotifications(): void {
     if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
       this.listeNotificationsByAdmin();
+    } else if (this.user.role.code == 'ROLE_NOTAIRE') {
+      this.listeNotificationsByNotaire();
     } else {
       this.listeNotificationsByOwner();
     }

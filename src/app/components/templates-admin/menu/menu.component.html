@@ -1,736 +1,736 @@
 <div class="dashboard_sidebar_list">
 
-  <!-- Start Menu Administrateur -->
-  <div *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
-    <!-- Start Menu Tableau de bord -->
-    <div>
-      <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/admin/dashboard']" routerLinkActive="-is-active">
-        <i class="flaticon-home mr15"></i>Tableau de bord
-      </a>
-    </div>
-    <!-- Start Menu Tableau de bord -->
+    <!-- Start Menu Administrateur -->
+    <div *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
+        <!-- Start Menu Tableau de bord -->
+        <div>
+            <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/admin/dashboard']" routerLinkActive="-is-active">
+                <i class="flaticon-home mr15"></i>Tableau de bord
+            </a>
+        </div>
+        <!-- Start Menu Tableau de bord -->
 
-    <!-- Start Menu Gestion des comptes -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/admin/roles']" routerLinkActive="-is-active">
-        <i class="fa-light fa-gears mr15"></i>Rôles
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/admin/administrateurs']" routerLinkActive="-is-active">
-        <i class="fa-light fa-user-gear mr15"></i>Administrateurs
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/admin/notaires']" routerLinkActive="-is-active">
-        <i class="fa-light fa-user-shield mr15"></i>Notaires
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/admin/proprietaires']" routerLinkActive="-is-active">
-        <i class="fa-light fa-user-group mr15"></i>Propriétaires
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a routerLink="/admin/responsables" routerLinkActive="-is-active">
-        <i class="fa-light fa-user-group mr15"></i>Responsables
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a routerLink="/admin/agents-immobiliers" routerLinkActive="-is-active">
-        <i class="fa-light fa-user-group mr15"></i>Agents immobiliers
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/admin/demarcheurs']" routerLinkActive="-is-active">
-        <i class="fa-light fa-user-group mr15"></i>Démarcheurs
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/admin/gerants']" routerLinkActive="-is-active">
-        <i class="fa-light fa-user-group mr15"></i>Gérants
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/admin/clients']" routerLinkActive="-is-active">
-        <i class="fa-light fa-user-group mr15"></i>Clients
-      </a>
-    </div>
-    <!-- End Menu Gestion des comptes -->
+        <!-- Start Menu Gestion des comptes -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/admin/roles']" routerLinkActive="-is-active">
+                <i class="fa-light fa-gears mr15"></i>Rôles
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/admin/administrateurs']" routerLinkActive="-is-active">
+                <i class="fa-light fa-user-gear mr15"></i>Administrateurs
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/admin/notaires']" routerLinkActive="-is-active">
+                <i class="fa-light fa-user-shield mr15"></i>Notaires
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/admin/proprietaires']" routerLinkActive="-is-active">
+                <i class="fa-light fa-user-group mr15"></i>Propriétaires
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a routerLink="/admin/responsables" routerLinkActive="-is-active">
+                <i class="fa-light fa-user-group mr15"></i>Responsables
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a routerLink="/admin/agents-immobiliers" routerLinkActive="-is-active">
+                <i class="fa-light fa-user-group mr15"></i>Agents immobiliers
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/admin/demarcheurs']" routerLinkActive="-is-active">
+                <i class="fa-light fa-user-group mr15"></i>Démarcheurs
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/admin/gerants']" routerLinkActive="-is-active">
+                <i class="fa-light fa-user-group mr15"></i>Gérants
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/admin/clients']" routerLinkActive="-is-active">
+                <i class="fa-light fa-user-group mr15"></i>Clients
+            </a>
+        </div>
+        <!-- End Menu Gestion des comptes -->
 
-    <!-- Start Menu Gestion des agences immobilières -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/admin/agences-immobilieres']" routerLinkActive="-is-active">
-        <i class="fa-light fa-key mr15"></i>&nbsp;Agences immobilières
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/admin/services']" routerLinkActive="-is-active">
-        <i class="fa-light fa-briefcase mr15"></i>&nbsp;Services
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/admin/autres-services'] || ['/admin/autres-services', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-briefcase mr15"></i>&nbsp;Autres services
-      </a>
-    </div>
-    <!-- End Menu Gestion des agences immobilières -->
+        <!-- Start Menu Gestion des agences immobilières -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/admin/agences-immobilieres']" routerLinkActive="-is-active">
+                <i class="fa-light fa-key mr15"></i>&nbsp;Agences immobilières
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/admin/services']" routerLinkActive="-is-active">
+                <i class="fa-light fa-briefcase mr15"></i>&nbsp;Services
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/admin/autres-services'] || ['/admin/autres-services', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-briefcase mr15"></i>&nbsp;Autres services
+            </a>
+        </div>
+        <!-- End Menu Gestion des agences immobilières -->
 
-    <!-- Start Menu Gestion des biens immobiliers -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
+        <!-- Start Menu Gestion des biens immobiliers -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/admin/pays']" routerLinkActive="-is-active">
+                <i class="fa-light fa-globe mr15"></i>&nbsp;Pays
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/admin/regions']" routerLinkActive="-is-active">
+                <i class="fa-light fa-globe mr15"></i>&nbsp;Régions
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/admin/villes']" routerLinkActive="-is-active">
+                <i class="fa-light fa-globe mr15"></i>&nbsp;Villes
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/admin/quartiers']" routerLinkActive="-is-active">
+                <i class="fa-light fa-globe mr15"></i>&nbsp;Quartiers
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/admin/types-de-bien']" routerLinkActive="-is-active">
+                <i class="fa-light fa-house-building mr15"></i>Types de bien
+            </a>
+        </div>
+        <!-- End Menu Gestion des biens immobiliers -->
     </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/admin/pays']" routerLinkActive="-is-active">
-        <i class="fa-light fa-globe mr15"></i>&nbsp;Pays
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/admin/regions']" routerLinkActive="-is-active">
-        <i class="fa-light fa-globe mr15"></i>&nbsp;Régions
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/admin/villes']" routerLinkActive="-is-active">
-        <i class="fa-light fa-globe mr15"></i>&nbsp;Villes
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/admin/quartiers']" routerLinkActive="-is-active">
-        <i class="fa-light fa-globe mr15"></i>&nbsp;Quartiers
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/admin/types-de-bien']" routerLinkActive="-is-active">
-        <i class="fa-light fa-house-building mr15"></i>Types de bien
-      </a>
-    </div>
-    <!-- End Menu Gestion des biens immobiliers -->
-  </div>
-  <!-- End Menu Administrateur -->
+    <!-- End Menu Administrateur -->
 
-  <!-- Start Menu Notaire -->
-  <div *ngIf="user.role.code == 'ROLE_NOTAIRE'">
-    <!-- Start Menu Tableau de bord -->
-    <div>
-      <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/notaire/dashboard']" routerLinkActive="-is-active">
-        <i class="flaticon-home mr15"></i>Tableau de bord
-      </a>
-    </div>
-    <!-- Start Menu Tableau de bord -->
+    <!-- Start Menu Notaire -->
+    <div *ngIf="user.role.code == 'ROLE_NOTAIRE'">
+        <!-- Start Menu Tableau de bord -->
+        <div>
+            <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/notaire/dashboard']" routerLinkActive="-is-active">
+                <i class="flaticon-home mr15"></i>Tableau de bord
+            </a>
+        </div>
+        <!-- Start Menu Tableau de bord -->
 
-    <!-- Start Menu Gestion des comptes -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
+        <!-- Start Menu Gestion des comptes -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/notaire/demandes-certifications'] || ['/notaire/demandes-certifications', 'id']" routerLinkActive="-is-active">
+                <i class="pi pi-verified mr15"></i>&nbsp;Certifications
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/notaire/notifications']" routerLinkActive="-is-active">
+                <i class="flaticon-bell mr15"></i>&nbsp;Certifications
+            </a>
+        </div>
+        <!-- End Menu Gestion des comptes -->
     </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/notaire/demandes-certifications']" routerLinkActive="-is-active">
-        <i class="pi pi-verified mr15"></i>&nbsp;Certifications
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/notaire/notifications']" routerLinkActive="-is-active">
-        <i class="flaticon-bell mr15"></i>&nbsp;Certifications
-      </a>
-    </div>
-    <!-- End Menu Gestion des comptes -->
-  </div>
-  <!-- End Menu Notaire -->
+    <!-- End Menu Notaire -->
 
-  <!-- Start Propriétaire -->
-  <div *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'">
-    <!-- Start Menu Tableau de bord -->
-    <div>
-      <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/proprietaire/dashboard']" routerLinkActive="-is-active">
-        <i class="flaticon-home mr15"></i>Tableau de bord</a>
-    </div>
-    <!-- Start Menu Tableau de bord -->
+    <!-- Start Propriétaire -->
+    <div *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'">
+        <!-- Start Menu Tableau de bord -->
+        <div>
+            <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/proprietaire/dashboard']" routerLinkActive="-is-active">
+                <i class="flaticon-home mr15"></i>Tableau de bord</a>
+        </div>
+        <!-- Start Menu Tableau de bord -->
 
-    <!-- Start Menu Gestion des comptes -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/proprietaire/gerants']" routerLinkActive="-is-active">
-        <i class="fa-light fa-user-group mr15"></i>Gérants
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/proprietaire/demandes-certifications']" routerLinkActive="-is-active">
-        <i class="pi pi-verified mr15"></i>&nbsp;Certifications
-      </a>
-    </div>
-    <!-- End Menu Gestion des comptes -->
+        <!-- Start Menu Gestion des comptes -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/proprietaire/gerants']" routerLinkActive="-is-active">
+                <i class="fa-light fa-user-group mr15"></i>Gérants
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/proprietaire/demandes-certifications'] || ['/proprietaire/demandes-certifications', 'id']" routerLinkActive="-is-active">
+                <i class="pi pi-verified mr15"></i>&nbsp;Certifications
+            </a>
+        </div>
+        <!-- End Menu Gestion des comptes -->
 
-    <!-- Start Menu Gestion des biens immobiliers -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/proprietaire/biens-immobiliers']" routerLinkActive="-is-active">
-        <i class="fa-light fa-house-building mr15"></i>Biens immobiliers
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/proprietaire/delegations-gestions']" routerLinkActive="-is-active">
-        <i class="fa-light fa-handshake mr15"></i>Biens délégués
-      </a>
-    </div>
-    <!-- End Menu Gestion des biens immobiliers -->
+        <!-- Start Menu Gestion des biens immobiliers -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/proprietaire/biens-immobiliers']" routerLinkActive="-is-active">
+                <i class="fa-light fa-house-building mr15"></i>Biens immobiliers
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/proprietaire/delegations-gestions']" routerLinkActive="-is-active">
+                <i class="fa-light fa-handshake mr15"></i>Biens délégués
+            </a>
+        </div>
+        <!-- End Menu Gestion des biens immobiliers -->
 
-    <!-- Start Menu Gestion de la publication des biens -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/proprietaire/publications'] || ['/proprietaire/publications', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-share-all mr15"></i>Publication des biens
-      </a>
-    </div>
-    <!-- End Menu Gestion de la publication des biens -->
+        <!-- Start Menu Gestion de la publication des biens -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/proprietaire/publications'] || ['/proprietaire/publications', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-share-all mr15"></i>Publication des biens
+            </a>
+        </div>
+        <!-- End Menu Gestion de la publication des biens -->
 
-    <!-- Start Menu Gestion des locations et ventes -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/proprietaire/demandes-visites'] || ['/proprietaire/demandes-visites', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/proprietaire/demandes-locations'] || ['/proprietaire/demandes-locations', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/proprietaire/demandes-achats'] || ['/proprietaire/demandes-achats', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/proprietaire/contrats'] || ['/proprietaire/contrats/locations', 'id'] || ['/proprietaire/contrats/ventes', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-folders mr15"></i>Contrats
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/proprietaire/suivis-entretiens'] || ['/proprietaire/suivis-entretiens', 'id']" routerLinkActive="-is-active" fragment="suiviEntretien"><i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens</a>
-    </div>
-    <!-- End Menu Gestion des locations et ventes -->
+        <!-- Start Menu Gestion des locations et ventes -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/proprietaire/demandes-visites'] || ['/proprietaire/demandes-visites', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/proprietaire/demandes-locations'] || ['/proprietaire/demandes-locations', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/proprietaire/demandes-achats'] || ['/proprietaire/demandes-achats', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/proprietaire/contrats'] || ['/proprietaire/contrats/locations', 'id'] || ['/proprietaire/contrats/ventes', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-folders mr15"></i>Contrats
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/proprietaire/suivis-entretiens'] || ['/proprietaire/suivis-entretiens', 'id']" routerLinkActive="-is-active" fragment="suiviEntretien"><i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens</a>
+        </div>
+        <!-- End Menu Gestion des locations et ventes -->
 
-    <!-- Start Menu Gestion des paiements -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
+        <!-- Start Menu Gestion des paiements -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/proprietaire/planifications-paiements'] || ['/proprietaire/planifications-paiements', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/proprietaire/paiements'] || ['/proprietaire/paiements', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
+        </div>
+        <!-- End Menu Gestion des paiements -->
     </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/proprietaire/planifications-paiements'] || ['/proprietaire/planifications-paiements', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/proprietaire/paiements'] || ['/proprietaire/paiements', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
-    </div>
-    <!-- End Menu Gestion des paiements -->
-  </div>
-  <!-- End Propriétaire -->
+    <!-- End Propriétaire -->
 
-  <!-- End Gérant -->
-  <div *ngIf="user.role.code == 'ROLE_GERANT'">
-    <!-- Start Menu Tableau de bord -->
-    <div>
-      <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/gerant/dashboard']" routerLinkActive="-is-active">
-        <i class="flaticon-home mr15"></i>Tableau de bord
-      </a>
-    </div>
-    <!-- Start Menu Tableau de bord -->
-    <!-- Start Menu Gestion des biens immobiliers -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/gerant/delegations-gestions']" routerLinkActive="-is-active">
-      <i class="fa-light fa-handshake mr15"></i>Biens délégués
-    </a>
-    </div>
-    <!-- End Menu Gestion des biens immobiliers -->
+    <!-- End Gérant -->
+    <div *ngIf="user.role.code == 'ROLE_GERANT'">
+        <!-- Start Menu Tableau de bord -->
+        <div>
+            <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/gerant/dashboard']" routerLinkActive="-is-active">
+                <i class="flaticon-home mr15"></i>Tableau de bord
+            </a>
+        </div>
+        <!-- Start Menu Tableau de bord -->
+        <!-- Start Menu Gestion des biens immobiliers -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/gerant/delegations-gestions']" routerLinkActive="-is-active">
+                <i class="fa-light fa-handshake mr15"></i>Biens délégués
+            </a>
+        </div>
+        <!-- End Menu Gestion des biens immobiliers -->
 
-    <!-- Start Menu Gestion de la publication des biens -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/gerant/publications'] || ['/gerant/publications', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-share-all mr15"></i>Publication des biens
-      </a>
-    </div>
-    <!-- End Menu Gestion de la publication des biens -->
+        <!-- Start Menu Gestion de la publication des biens -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/gerant/publications'] || ['/gerant/publications', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-share-all mr15"></i>Publication des biens
+            </a>
+        </div>
+        <!-- End Menu Gestion de la publication des biens -->
 
-    <!-- Start Menu Gestion des locations et ventes -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/gerant/demandes-visites'] || ['/gerant/demandes-visites', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/gerant/demandes-locations'] || ['/gerant/demandes-locations', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/gerant/demandes-achats'] || ['/gerant/demandes-achats', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/gerant/contrats'] || ['/gerant/contrats/locations', 'id'] || ['/gerant/contrats/ventes', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-folders mr15"></i>Contrats
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/gerant/suivis-entretiens'] || ['/gerant/suivis-entretiens', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
-      </a>
-    </div>
-    <!-- End Menu Gestion des locations et ventes -->
+        <!-- Start Menu Gestion des locations et ventes -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/gerant/demandes-visites'] || ['/gerant/demandes-visites', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/gerant/demandes-locations'] || ['/gerant/demandes-locations', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/gerant/demandes-achats'] || ['/gerant/demandes-achats', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/gerant/contrats'] || ['/gerant/contrats/locations', 'id'] || ['/gerant/contrats/ventes', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-folders mr15"></i>Contrats
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/gerant/suivis-entretiens'] || ['/gerant/suivis-entretiens', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
+            </a>
+        </div>
+        <!-- End Menu Gestion des locations et ventes -->
 
-    <!-- Start Menu Gestion des paiements -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
+        <!-- Start Menu Gestion des paiements -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/gerant/planifications-paiements'] || ['/gerant/planifications-paiements', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/gerant/paiements'] || ['/gerant/paiements', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
+        </div>
+        <!-- End Menu Gestion des paiements -->
     </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/gerant/planifications-paiements'] || ['/gerant/planifications-paiements', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/gerant/paiements'] || ['/gerant/paiements', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
-    </div>
-    <!-- End Menu Gestion des paiements -->
-  </div>
-  <!-- End Gérant -->
+    <!-- End Gérant -->
 
-  <!-- Start Responsable -->
-  <div *ngIf="user.role.code == 'ROLE_RESPONSABLE'">
-    <!-- Start Menu Tableau de bord -->
-    <div>
-      <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/dashboard']" routerLinkActive="-is-active">
-        <i class="flaticon-home mr15"></i>Tableau de bord
-      </a>
-    </div>
-    <!-- Start Menu Tableau de bord -->
+    <!-- Start Responsable -->
+    <div *ngIf="user.role.code == 'ROLE_RESPONSABLE'">
+        <!-- Start Menu Tableau de bord -->
+        <div>
+            <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/responsable/dashboard']" routerLinkActive="-is-active">
+                <i class="flaticon-home mr15"></i>Tableau de bord
+            </a>
+        </div>
+        <!-- Start Menu Tableau de bord -->
 
-    <!-- Start Menu Gestion des agences immobilières -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/agences-immobilieres']" routerLinkActive="-is-active" [routerLinkActiveOptions]="{ exact: true }">
-        <i class="fa-light fa-key mr15"></i>&nbsp;Agences immobilières
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/demandes-certifications']" routerLinkActive="-is-active">
-        <i class="pi pi-verified mr15"></i>&nbsp;Certifications
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/agences-immobilieres/services'] || ['/responsable/agences-immobilieres/services', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-briefcase mr15"></i>&nbsp;Services
-      </a>
-    </div>
-    <!-- End Menu Gestion des agences immobilières -->
+        <!-- Start Menu Gestion des agences immobilières -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/responsable/agences-immobilieres']" routerLinkActive="-is-active" [routerLinkActiveOptions]="{ exact: true }">
+                <i class="fa-light fa-key mr15"></i>&nbsp;Agences immobilières
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/responsable/demandes-certifications'] || ['/responsable/demandes-certifications', 'id']" routerLinkActive="-is-active">
+                <i class="pi pi-verified mr15"></i>&nbsp;Certifications
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/responsable/agences-immobilieres/services'] || ['/responsable/agences-immobilieres/services', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-briefcase mr15"></i>&nbsp;Services
+            </a>
+        </div>
+        <!-- End Menu Gestion des agences immobilières -->
 
-    <!-- Start Menu Gestion des comptes -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/co-responsables']" routerLinkActive="-is-active">
-        <i class="fa-light fa-user-group mr15"></i>Co - Responsables
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/agents-immobiliers']" routerLinkActive="-is-active">
-        <i class="fa-light fa-user-group mr15"></i>Agents immobiliers</a>
-    </div>
-    <!-- End Menu Gestion des comptes -->
+        <!-- Start Menu Gestion des comptes -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/responsable/co-responsables']" routerLinkActive="-is-active">
+                <i class="fa-light fa-user-group mr15"></i>Co - Responsables
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/responsable/agents-immobiliers']" routerLinkActive="-is-active">
+                <i class="fa-light fa-user-group mr15"></i>Agents immobiliers</a>
+        </div>
+        <!-- End Menu Gestion des comptes -->
 
-    <!-- Start Menu Gestion des biens immobiliers -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/agences-immobilieres/biens-immobiliers']" routerLinkActive="-is-active">
-        <i class="fa-light fa-house-building mr15"></i>Biens immobiliers
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/agences-immobilieres/delegations-gestions']" routerLinkActive="-is-active">
-        <i class="fa-light fa-handshake mr15"></i>Biens délégués
-      </a>
-    </div>
-    <!-- End Menu Gestion des biens immobiliers -->
+        <!-- Start Menu Gestion des biens immobiliers -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/responsable/agences-immobilieres/biens-immobiliers']" routerLinkActive="-is-active">
+                <i class="fa-light fa-house-building mr15"></i>Biens immobiliers
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/responsable/agences-immobilieres/delegations-gestions']" routerLinkActive="-is-active">
+                <i class="fa-light fa-handshake mr15"></i>Biens délégués
+            </a>
+        </div>
+        <!-- End Menu Gestion des biens immobiliers -->
 
-    <!-- Start Menu Gestion de la publication des biens -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/agences-immobilieres/publications'] || ['/responsable/agences-immobilieres/publications', 'id']" routerLinkActive="-is-active">
-      <i class="fa-light fa-share-all mr15"></i>Publication des biens
-    </a>
-    </div>
-    <!-- End Menu Gestion de la publication des biens -->
+        <!-- Start Menu Gestion de la publication des biens -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/responsable/agences-immobilieres/publications'] || ['/responsable/agences-immobilieres/publications', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-share-all mr15"></i>Publication des biens
+            </a>
+        </div>
+        <!-- End Menu Gestion de la publication des biens -->
 
-    <!-- Start Menu Gestion des locations et ventes -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/agences-immobilieres/demandes-visites'] || ['/responsable/agences-immobilieres/demandes-visites', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/agences-immobilieres/demandes-locations'] || ['/responsable/agences-immobilieres/demandes-locations', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/agences-immobilieres/demandes-achats'] || ['/responsable/agences-immobilieres/demandes-achats', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/agences-immobilieres/contrats'] ||
+        <!-- Start Menu Gestion des locations et ventes -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/responsable/agences-immobilieres/demandes-visites'] || ['/responsable/agences-immobilieres/demandes-visites', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/responsable/agences-immobilieres/demandes-locations'] || ['/responsable/agences-immobilieres/demandes-locations', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/responsable/agences-immobilieres/demandes-achats'] || ['/responsable/agences-immobilieres/demandes-achats', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/responsable/agences-immobilieres/contrats'] ||
       ['/responsable/agences-immobilieres/contrats/locations', 'id'] ||
       ['/responsable/agences-immobilieres/contrats/ventes', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-folders mr15"></i>Contrats
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/agences-immobilieres/suivis-entretiens'] ||
+                <i class="fa-light fa-folders mr15"></i>Contrats
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/responsable/agences-immobilieres/suivis-entretiens'] ||
       ['/responsable/agences-immobilieres/suivis-entretiens', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
-      </a>
-    </div>
-    <!-- End Menu Gestion des locations et ventes -->
+                <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
+            </a>
+        </div>
+        <!-- End Menu Gestion des locations et ventes -->
 
-    <!-- Start Menu Gestion des paiements -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/agences-immobilieres/planifications-paiements'] ||
+        <!-- Start Menu Gestion des paiements -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/responsable/agences-immobilieres/planifications-paiements'] ||
       ['/responsable/agences-immobilieres/planifications-paiements', 'id']" routerLinkActive="-is-active">
-      <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/responsable/agences-immobilieres/paiements'] ||
+                <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/responsable/agences-immobilieres/paiements'] ||
       ['/responsable/agences-immobilieres/paiements', 'id']" routerLinkActive="-is-active">
-      <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
+                <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
+        </div>
+        <!-- End Menu Gestion des paiements -->
     </div>
-    <!-- End Menu Gestion des paiements -->
-  </div>
-  <!-- End Responsable -->
+    <!-- End Responsable -->
 
-  <!-- Start Agent immobilier -->
-  <div *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER'">
-    <!-- Start Menu Tableau de bord -->
-    <div>
-      <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/agent-immobilier/dashboard']" routerLinkActive="-is-active">
-        <i class="flaticon-home mr15"></i>Tableau de bord
-      </a>
-    </div>
-    <!-- Start Menu Tableau de bord -->
+    <!-- Start Agent immobilier -->
+    <div *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER'">
+        <!-- Start Menu Tableau de bord -->
+        <div>
+            <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/agent-immobilier/dashboard']" routerLinkActive="-is-active">
+                <i class="flaticon-home mr15"></i>Tableau de bord
+            </a>
+        </div>
+        <!-- Start Menu Tableau de bord -->
 
-    <!-- Start Menu Gestion des agences immobilières -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/agent-immobilier/agences-immobilieres']" routerLinkActive="-is-active" [routerLinkActiveOptions]="{ exact: true }">
-        <i class="fa-light fa-key mr15"></i>&nbsp;Agences immobilières
-      </a>
-    </div>
-    <!-- End Menu Gestion des agences immobilières -->
+        <!-- Start Menu Gestion des agences immobilières -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/agent-immobilier/agences-immobilieres']" routerLinkActive="-is-active" [routerLinkActiveOptions]="{ exact: true }">
+                <i class="fa-light fa-key mr15"></i>&nbsp;Agences immobilières
+            </a>
+        </div>
+        <!-- End Menu Gestion des agences immobilières -->
 
-    <!-- Start Menu Gestion des biens immobiliers -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/agent-immobilier/agences-immobilieres/biens-immobiliers']" routerLinkActive="-is-active">
-        <i class="fa-light fa-house-building mr15"></i>Biens immobiliers
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/agent-immobilier/agences-immobilieres/delegations-gestions']" routerLinkActive="-is-active">
-        <i class="fa-light fa-handshake mr15"></i>Biens délégués
-      </a>
-    </div>
-    <!-- End Menu Gestion des biens immobiliers -->
+        <!-- Start Menu Gestion des biens immobiliers -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/agent-immobilier/agences-immobilieres/biens-immobiliers']" routerLinkActive="-is-active">
+                <i class="fa-light fa-house-building mr15"></i>Biens immobiliers
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/agent-immobilier/agences-immobilieres/delegations-gestions']" routerLinkActive="-is-active">
+                <i class="fa-light fa-handshake mr15"></i>Biens délégués
+            </a>
+        </div>
+        <!-- End Menu Gestion des biens immobiliers -->
 
-    <!-- Start Menu Gestion de la publication des biens -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/agent-immobilier/agences-immobilieres/publications'] || ['/agent-immobilier/agences-immobilieres/publications', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-share-all mr15"></i>Publication des biens
-      </a>
-    </div>
-    <!-- End Menu Gestion de la publication des biens -->
+        <!-- Start Menu Gestion de la publication des biens -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/agent-immobilier/agences-immobilieres/publications'] || ['/agent-immobilier/agences-immobilieres/publications', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-share-all mr15"></i>Publication des biens
+            </a>
+        </div>
+        <!-- End Menu Gestion de la publication des biens -->
 
-    <!-- Start Menu Gestion des locations et ventes -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-visites'] || ['/agent-immobilier/agences-immobilieres/demandes-visites', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-locations'] || ['/agent-immobilier/agences-immobilieres/demandes-locations', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-achats'] || ['/agent-immobilier/agences-immobilieres/demandes-achats', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/agent-immobilier/agences-immobilieres/contrats'] ||
+        <!-- Start Menu Gestion des locations et ventes -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-visites'] || ['/agent-immobilier/agences-immobilieres/demandes-visites', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-locations'] || ['/agent-immobilier/agences-immobilieres/demandes-locations', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-achats'] || ['/agent-immobilier/agences-immobilieres/demandes-achats', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/agent-immobilier/agences-immobilieres/contrats'] ||
       ['/responsable/agences-immobilieres/contrats/locations', 'id'] ||
       ['/responsable/agences-immobilieres/contrats/ventes', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-folders mr15"></i>Contrats
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/agent-immobilier/agences-immobilieres/suivis-entretiens'] ||
+                <i class="fa-light fa-folders mr15"></i>Contrats
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/agent-immobilier/agences-immobilieres/suivis-entretiens'] ||
       ['/responsable/agences-immobilieres/suivis-entretiens', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
-      </a>
-    </div>
-    <!-- End Menu Gestion des locations et ventes -->
+                <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
+            </a>
+        </div>
+        <!-- End Menu Gestion des locations et ventes -->
 
-    <!-- Start Menu Gestion des paiements -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/agent-immobilier/agences-immobilieres/planifications-paiements'] ||
+        <!-- Start Menu Gestion des paiements -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/agent-immobilier/agences-immobilieres/planifications-paiements'] ||
       ['/responsable/agences-immobilieres/planifications-paiements', 'id']" routerLinkActive="-is-active">
-      <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/agent-immobilier/agences-immobilieres/paiements'] ||
+                <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/agent-immobilier/agences-immobilieres/paiements'] ||
       ['/responsable/agences-immobilieres/paiements', 'id']" routerLinkActive="-is-active">
-      <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
+                <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
+        </div>
+        <!-- End Menu Gestion des paiements -->
     </div>
-    <!-- End Menu Gestion des paiements -->
-  </div>
-  <!-- End Agent immobilier -->
+    <!-- End Agent immobilier -->
 
-  <!-- Start Démarcheur -->
-  <div *ngIf="user.role.code == 'ROLE_DEMARCHEUR'">
-    <!-- Start Menu Tableau de bord -->
-    <div>
-      <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/demarcheur/dashboard']" routerLinkActive="-is-active">
-        <i class="flaticon-home mr15"></i>Tableau de bord
-      </a>
-    </div>
-    <!-- Start Menu Tableau de bord -->
+    <!-- Start Démarcheur -->
+    <div *ngIf="user.role.code == 'ROLE_DEMARCHEUR'">
+        <!-- Start Menu Tableau de bord -->
+        <div>
+            <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/demarcheur/dashboard']" routerLinkActive="-is-active">
+                <i class="flaticon-home mr15"></i>Tableau de bord
+            </a>
+        </div>
+        <!-- Start Menu Tableau de bord -->
 
-    <!-- Start Menu Gestion des comptes -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/demarcheur/demandes-certifications']" routerLinkActive="-is-active">
-        <i class="pi pi-verified mr15"></i>&nbsp;Certifications
-      </a>
-    </div>
-    <!-- End Menu Gestion des comptes -->
+        <!-- Start Menu Gestion des comptes -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/demarcheur/demandes-certifications'] || ['/demarcheur/demandes-certifications', 'id']" routerLinkActive="-is-active">
+                <i class="pi pi-verified mr15"></i>&nbsp;Certifications
+            </a>
+        </div>
+        <!-- End Menu Gestion des comptes -->
 
-    <!-- Start Menu Gestion des biens immobiliers -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/demarcheur/biens-immobiliers']" routerLinkActive="-is-active">
-        <i class="fa-light fa-house-building mr15"></i>Biens immobiliers
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/demarcheur/delegations-gestions']" routerLinkActive="-is-active">
-        <i class="fa-light fa-handshake mr15"></i>Biens délégués
-      </a>
-    </div>
-    <!-- End Menu Gestion des biens immobiliers -->
+        <!-- Start Menu Gestion des biens immobiliers -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/demarcheur/biens-immobiliers']" routerLinkActive="-is-active">
+                <i class="fa-light fa-house-building mr15"></i>Biens immobiliers
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/demarcheur/delegations-gestions']" routerLinkActive="-is-active">
+                <i class="fa-light fa-handshake mr15"></i>Biens délégués
+            </a>
+        </div>
+        <!-- End Menu Gestion des biens immobiliers -->
 
-      <!-- Start Menu Gestion de la publication des biens -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/demarcheur/publications'] || ['/demarcheur/publications', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-share-all mr15"></i>Publication des biens
-      </a>
-    </div>
-    <!-- End Menu Gestion de la publication des biens -->
+        <!-- Start Menu Gestion de la publication des biens -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/demarcheur/publications'] || ['/demarcheur/publications', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-share-all mr15"></i>Publication des biens
+            </a>
+        </div>
+        <!-- End Menu Gestion de la publication des biens -->
 
-    <!-- Start Menu Gestion des locations et ventes -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/demarcheur/demandes-visites'] || ['/demarcheur/demandes-visites', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/demarcheur/demandes-locations'] || ['/demarcheur/demandes-locations', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/demarcheur/demandes-achats'] || ['/demarcheur/demandes-achats', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/demarcheur/contrats'] ||
+        <!-- Start Menu Gestion des locations et ventes -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/demarcheur/demandes-visites'] || ['/demarcheur/demandes-visites', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/demarcheur/demandes-locations'] || ['/demarcheur/demandes-locations', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/demarcheur/demandes-achats'] || ['/demarcheur/demandes-achats', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/demarcheur/contrats'] ||
       ['/demarcheur/contrats/locations', 'id'] ||
       ['/demarcheur/contrats/ventes', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-folders mr15"></i>Contrats
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/demarcheur/suivis-entretiens'] ||
+                <i class="fa-light fa-folders mr15"></i>Contrats
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/demarcheur/suivis-entretiens'] ||
       ['/demarcheur/suivis-entretiens', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
-      </a>
-    </div>
-    <!-- End Menu Gestion des locations et ventes -->
+                <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
+            </a>
+        </div>
+        <!-- End Menu Gestion des locations et ventes -->
 
-    <!-- Start Menu Gestion des paiements -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/demarcheur/planifications-paiements'] ||
+        <!-- Start Menu Gestion des paiements -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/demarcheur/planifications-paiements'] ||
       ['/demarcheur/planifications-paiements', 'id']" routerLinkActive="-is-active">
-      <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/demarcheur/paiements'] ||
+                <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/demarcheur/paiements'] ||
       ['/demarcheur/paiements', 'id']" routerLinkActive="-is-active">
-      <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
+                <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
+        </div>
+        <!-- End Menu Gestion des paiements -->
     </div>
-    <!-- End Menu Gestion des paiements -->
-  </div>
-  <!-- End Démarcheur -->
+    <!-- End Démarcheur -->
 
-  <!-- Start Client -->
-  <div *ngIf="user.role.code == 'ROLE_CLIENT'">
-    <!-- Start Menu Tableau de bord -->
-    <div>
-      <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/client/dashboard']" routerLinkActive="-is-active">
-        <i class="flaticon-home mr15"></i>Tableau de bord
-      </a>
-    </div>
-    <!-- Start Menu Tableau de bord -->
+    <!-- Start Client -->
+    <div *ngIf="user.role.code == 'ROLE_CLIENT'">
+        <!-- Start Menu Tableau de bord -->
+        <div>
+            <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/client/dashboard']" routerLinkActive="-is-active">
+                <i class="flaticon-home mr15"></i>Tableau de bord
+            </a>
+        </div>
+        <!-- Start Menu Tableau de bord -->
 
-    <!-- Start Menu Gestion des locations et ventes -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/client/demandes-visites'] || ['/client/demandes-visites', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/client/demandes-locations'] || ['/client/demandes-locations', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/client/demandes-achats'] || ['/client/demandes-achats', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/client/contrats'] ||
+        <!-- Start Menu Gestion des locations et ventes -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/client/demandes-visites'] || ['/client/demandes-visites', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/client/demandes-locations'] || ['/client/demandes-locations', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/client/demandes-achats'] || ['/client/demandes-achats', 'id']" routerLinkActive="-is-active">
+                <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/client/contrats'] ||
       ['/client/contrats/locations', 'id'] || ['/client/contrats/ventes', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-folders mr15"></i>Contrats
-      </a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/client/suivis-entretiens'] ||
+                <i class="fa-light fa-folders mr15"></i>Contrats
+            </a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/client/suivis-entretiens'] ||
       ['/client/suivis-entretiens', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
-      </a>
-    </div>
-    <!-- End Menu Gestion des locations et ventes -->
+                <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
+            </a>
+        </div>
+        <!-- End Menu Gestion des locations et ventes -->
 
-    <!-- Start Menu Gestion des paiements -->
-    <div>
-      <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/client/planifications-paiements'] ||
+        <!-- Start Menu Gestion des paiements -->
+        <div>
+            <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/client/planifications-paiements'] ||
       ['/client/planifications-paiements', 'id']" routerLinkActive="-is-active">
-      <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
-    </div>
-    <div class="sidebar_list_item">
-      <a [routerLink]="['/client/paiements'] ||
+                <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
+        </div>
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/client/paiements'] ||
       ['/client/paiements', 'id']" routerLinkActive="-is-active">
-      <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
+                <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
+        </div>
+        <!-- End Menu Gestion des paiements -->
     </div>
-    <!-- End Menu Gestion des paiements -->
-  </div>
-  <!-- End Client -->
+    <!-- End Client -->
 
-  <!-- Start Menu Déconnecter -->
-  <div class="sidebar_list_item ">
-    <a type="button" (click)="seDeconnecter()" class="items-center"><i class="flaticon-logout mr15"></i>&nbsp;Se déconnecter</a>
-  </div>
-  <!-- End Menu Déconnecter -->
+    <!-- Start Menu Déconnecter -->
+    <div class="sidebar_list_item ">
+        <a type="button" (click)="seDeconnecter()" class="items-center"><i class="flaticon-logout mr15"></i>&nbsp;Se déconnecter</a>
+    </div>
+    <!-- End Menu Déconnecter -->
 </div>
