@@ -23,6 +23,7 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'profil', component: ProfilComponent, canActivate: [AuthGuard] },
       { path: 'demandes-certifications', component: DemandesCertificationsComponent, canActivate: [AuthGuard] },
+      { path: 'demandes-certifications/:id', component: DemandesCertificationsComponent, canActivate: [AuthGuard] },
       { path: 'biens-immobiliers', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
       { path: 'delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
       { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },

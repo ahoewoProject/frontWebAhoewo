@@ -16,6 +16,7 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'profil', component: ProfilComponent, canActivate: [AuthGuard] },
       { path: 'demandes-certifications', component: DemandesCertificationsComponent, canActivate: [AuthGuard] },
+      { path: 'demandes-certifications/:id', component: DemandesCertificationsComponent, canActivate: [AuthGuard] },
       { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
       { path: 'demandes-visites', component: DemandesVisitesComponent, canActivate: [AuthGuard] },
       { path: 'demandes-visites/:id', component: DemandesVisitesComponent, canActivate: [AuthGuard] },

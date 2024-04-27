@@ -29,6 +29,7 @@ const routes: Routes = [
       { path: 'agents-immobiliers', component: AgentsImmobiliersComponent, canActivate: [AuthGuard] },
       { path: 'profil', component: ProfilComponent, canActivate: [AuthGuard] },
       { path: 'demandes-certifications', component: DemandesCertificationsComponent, canActivate: [AuthGuard] },
+      { path: 'demandes-certifications/:id', component: DemandesCertificationsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres', component: AgencesImmobilieresComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/services', component: ServicesAgenceImmobiliereComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/services/:id', component: ServicesAgenceImmobiliereComponent, canActivate: [AuthGuard] },
