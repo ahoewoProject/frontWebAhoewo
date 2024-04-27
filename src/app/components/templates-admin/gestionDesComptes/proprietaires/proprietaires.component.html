@@ -1,166 +1,159 @@
 <div class="dashboard__content bgc-f7">
-  <div class="row pb40 d-block d-lg-none">
-    <!-- Menu responsive -->
-    <app-menu-responsive></app-menu-responsive>
-    <!-- End Menu responsive -->
-  </div>
-
-  <p-toast></p-toast>
-
-  <!-- Liste des proprietaires -->
-  <div *ngIf="affichage == 1">
-    <div class="row align-items-center pb40">
-      <div class="col-xxl-3">
-        <div class="dashboard_title_area">
-          <h4>Liste des propriétaires</h4>
-        </div>
-      </div>
-      <div class="col-xxl-9">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <div class="item1 mb15-sm">
-            <div class="search_area">
-              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
-              <label><span class="flaticon-search"></span></label>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
     </div>
-    <div class="row">
-      <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
-          <div class="packages_table table-responsive">
-            <table class="table-style3 table at-savesearch">
-              <thead class="t-head">
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Nom</th>
-                  <th scope="col">Prénom(s)</th>
-                  <th scope="col">Etat compte</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="t-body">
-                <tr *ngFor="let proprietaire of proprietaires.content | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
-                  <td class="vam">{{ proprietaire.nom }}</td>
-                  <td class="vam">{{ proprietaire.prenom }}  <i *ngIf="proprietaire.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
-                  <td class="vam">
-                    <p-tag *ngIf="proprietaire.etatCompte == true" severity="success" value="Activé"></p-tag>
-                    <p-tag *ngIf="proprietaire.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
-                  </td>
-                  <td class="vam">
-                    <div class="d-flex">
-                      <button pButton type="button" (click)="afficherPageDetail(proprietaire.id)" icon="pi pi-eye"
-                        pTooltip="Détails" tooltipPosition="right" class="p-button-text p-button-info">
-                      </button>
 
-                      <button pButton type="button" *ngIf="proprietaire.etatCompte == true"(click)="desactiverCompte(proprietaire.id)" icon="pi pi-lock"
-                        pTooltip="Désactiver ce compte" tooltipPosition="top" class="p-button-text p-button-danger">
-                      </button>
+    <p-toast></p-toast>
 
-                      <button pButton type="button" *ngIf="proprietaire.etatCompte == false" (click)="activerCompte(proprietaire.id)" icon="pi pi-lock-open"
-                        pTooltip="Activer ce compte" tooltipPosition="left" class="p-button-text p-button-success">
-                      </button>
+    <!-- Liste des proprietaires -->
+    <div *ngIf="affichage == 1">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-3">
+                <div class="dashboard_title_area">
+                    <h4>Liste des propriétaires</h4>
+                </div>
+            </div>
+            <div class="col-xxl-9">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <div class="item1 mb15-sm">
+                        <div class="search_area">
+                            <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
+                            <label><span class="flaticon-search"></span></label>
+                        </div>
                     </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div *ngIf="proprietaires.totalElements !== 0" class="mbp_pagination text-center mt30">
-            <p-paginator
-              (onPageChange)="pagination($event)" [rows]="proprietaires.size"
-              [totalRecords]="proprietaires.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
-              [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} proprietaires">
-            </p-paginator>
-          </div>
-          <div *ngIf="proprietaires.totalElements == 0" class="mbp_pagination text-center mt30">
-            <p class="mt10 pagination_page_count text-center">Aucun propriétaire enregistré pour le moment</p>
-          </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <!-- End Liste des proprietaires -->
+        <div class="row">
+            <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <div class="packages_table table-responsive">
+                        <table class="table-style3 table at-savesearch">
+                            <thead class="t-head">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col">Prénom(s)</th>
+                                    <th scope="col">Etat</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="t-body">
+                                <tr *ngFor="let proprietaire of proprietaires.content | genericFilter: recherche;  let i = index">
+                                    <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
+                                    <td class="vam">{{ proprietaire.nom }}</td>
+                                    <td class="vam">{{ proprietaire.prenom }} <i *ngIf="proprietaire.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
+                                    <td class="vam">
+                                        <p-tag *ngIf="proprietaire.etatCompte == true" severity="success" value="Activé"></p-tag>
+                                        <p-tag *ngIf="proprietaire.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+                                    </td>
+                                    <td class="vam">
+                                        <div class="d-flex">
+                                            <button pButton type="button" (click)="afficherPageDetail(proprietaire.id)" icon="pi pi-eye" pTooltip="Détails" tooltipPosition="right" class="p-button-text p-button-info">
+                      </button>
 
-  <!-- Details d'un proprietaire -->
-  <div *ngIf="affichage == 2">
-    <div  class="row align-items-center pb40">
-      <div class="col-xxl-3">
-        <div class="dashboard_title_area">
-          <h4>Détails d'un propriétaire</h4>
+                                            <button pButton type="button" *ngIf="proprietaire.etatCompte == true" (click)="desactiverCompte(proprietaire.id)" icon="pi pi-lock" pTooltip="Désactiver ce compte" tooltipPosition="top" class="p-button-text p-button-danger">
+                      </button>
+
+                                            <button pButton type="button" *ngIf="proprietaire.etatCompte == false" (click)="activerCompte(proprietaire.id)" icon="pi pi-lock-open" pTooltip="Activer ce compte" tooltipPosition="left" class="p-button-text p-button-success">
+                      </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div *ngIf="proprietaires.totalElements !== 0" class="mbp_pagination text-center mt30">
+                        <p-paginator (onPageChange)="pagination($event)" [rows]="proprietaires.size" [totalRecords]="proprietaires.totalElements" [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} proprietaires">
+                        </p-paginator>
+                    </div>
+                    <div *ngIf="proprietaires.totalElements == 0" class="mbp_pagination text-center mt30">
+                        <p class="mt10 pagination_page_count text-center">Aucun propriétaire enregistré pour le moment</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-xxl-9">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+    </div>
+    <!-- End Liste des proprietaires -->
+
+    <!-- Details d'un proprietaire -->
+    <div *ngIf="affichage == 2">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-3">
+                <div class="dashboard_title_area">
+                    <h4>Détails d'un propriétaire</h4>
+                </div>
+            </div>
+            <div class="col-xxl-9">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
 
-          <div class="row">
+                    <div class="row">
 
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Nom & prénom(s)</p>
-              <p class="text">{{ proprietaire.nom }} {{ proprietaire.prenom }} <i *ngIf="proprietaire.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
-            </div>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur</p>
-              <p class="text">{{ proprietaire.username }}</p>
-            </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Nom & prénom(s)</p>
+                            <p class="text">{{ proprietaire.nom }} {{ proprietaire.prenom }} <i *ngIf="proprietaire.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur</p>
+                            <p class="text">{{ proprietaire.username }}</p>
+                        </div>
 
-            <p-divider></p-divider>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Matricule</p>
-              <p class="text">{{ proprietaire.matricule }}</p>
-            </div>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
-              <p class="text">{{ proprietaire.email }}</p>
-            </div>
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Matricule</p>
+                            <p class="text">{{ proprietaire.matricule }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+                            <p class="text">{{ proprietaire.email }}</p>
+                        </div>
 
 
-            <p-divider></p-divider>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
-              <p class="text">{{ proprietaire.telephone }}</p>
-            </div>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Profil</p>
-              <p class="text">{{ proprietaire.role.libelle }}</p>
-            </div>
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
+                            <p class="text">{{ proprietaire.telephone }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Profil</p>
+                            <p class="text">{{ proprietaire.role.libelle }}</p>
+                        </div>
 
 
-            <p-divider></p-divider>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
-              <p>
-                <p-tag *ngIf="proprietaire.etatCompte == true" severity="success" value="Activé"></p-tag>
-                <p-tag *ngIf="proprietaire.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
-              </p>
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
+                            <p>
+                                <p-tag *ngIf="proprietaire.etatCompte == true" severity="success" value="Activé"></p-tag>
+                                <p-tag *ngIf="proprietaire.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+                            </p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Est certifié</p>
+                            <p>
+                                <p-tag *ngIf="proprietaire.estCertifie == true" severity="success" value="Oui"></p-tag>
+                                <p-tag *ngIf="proprietaire.estCertifie == false" severity="danger" value="Non"></p-tag>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Est certifié</p>
-              <p>
-                <p-tag *ngIf="proprietaire.estCertifie == true" severity="success" value="Oui"></p-tag>
-                <p-tag *ngIf="proprietaire.estCertifie == false" severity="danger" value="Non"></p-tag>
-              </p>
-            </div>
-          </div>
         </div>
-      </div>
+        <div class="text-end">
+            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
+        </div>
     </div>
-    <div class="text-end">
-      <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
-    </div>
-  </div>
-  <!-- End Details d'un proprietaire -->
+    <!-- End Details d'un proprietaire -->
 
 </div>

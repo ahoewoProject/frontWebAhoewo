@@ -1,322 +1,304 @@
 <div class="dashboard__content bgc-f7">
-  <div class="row pb40 d-block d-lg-none">
-    <!-- Menu responsive -->
-    <app-menu-responsive></app-menu-responsive>
-    <!-- End Menu responsive -->
-  </div>
-
-  <p-toast></p-toast>
-
-  <!-- Formulaire d'ajout d'une demande de certification -->
-  <div *ngIf="visibleAddForm == 1 && (user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR')">
-    <div class="row align-items-center pb40">
-      <div class="col-xxl-5">
-        <div class="dashboard_title_area">
-          <h4>Demande de la certification de compte</h4>
-        </div>
-      </div>
-      <div class="col-xxl-7">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
-        </div>
-      </div>
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
     </div>
-    <div class="row">
-      <p-toast></p-toast>
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30">
-          <form class="form-style1">
-            <div class="row">
-              <div class="mb25">
-                <label class="heading-color ff-heading fw600 mb10">
+
+    <p-toast></p-toast>
+
+    <!-- Formulaire d'ajout d'une demande de certification -->
+    <div *ngIf="visibleAddForm == 1 && (user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR')">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-5">
+                <div class="dashboard_title_area">
+                    <h4>Demande de la certification de compte</h4>
+                </div>
+            </div>
+            <div class="col-xxl-7">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <p-toast></p-toast>
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30">
+                    <form class="form-style1">
+                        <div class="row">
+                            <div class="mb25">
+                                <label class="heading-color ff-heading fw600 mb10">
                   <i class="fa fa-id-card"></i> Pièce d'identité | CNI sous format numérique
                 </label>
-                <p-fileUpload
-                  chooseLabel="Choisir la pièce"
-                  [auto]="true"
-                  url="https://www.primefaces.org/cdn/api/upload.php"
-                  (onUpload)="telechargerCNI($event)" accept="application/pdf"
-                  chooseStyleClass="choose-label"
-                  removeStyleClass="remove-label">
-                  <ng-template pTemplate="content">
-                    <ul *ngIf="documentJustificatif">
-                        <li>{{ documentJustificatif.name }}</li>
-                    </ul>
-                  </ng-template>
-                </p-fileUpload>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="text-end">
-                  <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
-                  &nbsp;
-                  <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': documentJustificatif == null }" type="button" (click)="ajouterDemandeCertificationCompte()">Ajouter</button>
+                                <p-fileUpload chooseLabel="Choisir la pièce" [auto]="true" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="telechargerCNI($event)" accept="application/pdf" chooseStyleClass="choose-label" removeStyleClass="remove-label">
+                                    <ng-template pTemplate="content">
+                                        <ul *ngIf="documentJustificatif">
+                                            <li>{{ documentJustificatif.name }}</li>
+                                        </ul>
+                                    </ng-template>
+                                </p-fileUpload>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-end">
+                                    <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button> &nbsp;
+                                    <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': documentJustificatif == null }" type="button" (click)="ajouterDemandeCertificationCompte()">Soumettre</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-              </div>
             </div>
-          </form>
         </div>
-      </div>
     </div>
-  </div>
-  <div *ngIf="visibleAddForm == 1 && user.role.code == 'ROLE_RESPONSABLE'">
-    <div class="row align-items-center pb40">
-      <div class="col-xxl-5">
-        <div class="dashboard_title_area">
-          <h4>Demande de la certification d'une agence</h4>
+    <div *ngIf="visibleAddForm == 1 && user.role.code == 'ROLE_RESPONSABLE'">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-5">
+                <div class="dashboard_title_area">
+                    <h4>Demande de la certification d'une agence</h4>
+                </div>
+            </div>
+            <div class="col-xxl-7">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-xxl-7">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <p-toast></p-toast>
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30">
-          <form [formGroup]="demandeCertificationForm" (ngSubmit)="ajouterDemandeCertificationAgence()" class="form-style1">
-            <div class="row">
+        <div class="row">
+            <p-toast></p-toast>
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30">
+                    <form [formGroup]="demandeCertificationForm" (ngSubmit)="ajouterDemandeCertificationAgence()" class="form-style1">
+                        <div class="row">
 
-              <div class="col-sm-6 col-xl-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">
+                            <div class="col-sm-6 col-xl-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">
                     <i class="fa fa-id-card"></i> Pièce d'identité | CNI sous format numérique
                   </label>
-                  <p-fileUpload
-                    chooseLabel="Choisir la pièce"
-                    [auto]="true"
-                    url="https://www.primefaces.org/cdn/api/upload.php"
-                    (onUpload)="telechargerCNI($event)" accept="application/pdf">
-                    <ng-template pTemplate="content">
-                      <ul *ngIf="documentJustificatif">
-                          <li>{{ documentJustificatif.name }}</li>
-                      </ul>
-                    </ng-template>
-                  </p-fileUpload>
-                </div>
-              </div>
-              <div class="col-sm-6 col-xl-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Agence immobilière</label>
-                  <br>
-                  <p-dropdown
-                    class="select" emptyFilterMessage="Aucun résultat trouvé"
-                    emptyMessage="Aucun résultat trouvé"
-                    [options]="agencesImmobilieres" placeholder="Choisir une agence"
-                    filterPlaceholder="Rechercher une agence"
-                    formControlName="agenceImmobiliere" [filter]="true" filterBy="nomAgence"
-                    [showClear]="true" (onChange)="agenceSelectionnee($event)" optionLabel="nomAgence">
-                  </p-dropdown>
-                  <div class="error" [hidden]="agenceImmobiliere.valid || agenceImmobiliere.pristine && !agenceImmobiliere.touched ">La selection de l'agence est obligatoire</div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-xl-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">
+                                    <p-fileUpload chooseLabel="Choisir la pièce" [auto]="true" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="telechargerCNI($event)" accept="application/pdf">
+                                        <ng-template pTemplate="content">
+                                            <ul *ngIf="documentJustificatif">
+                                                <li>{{ documentJustificatif.name }}</li>
+                                            </ul>
+                                        </ng-template>
+                                    </p-fileUpload>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xl-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Agence immobilière</label>
+                                    <br>
+                                    <p-dropdown class="select" emptyFilterMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé" [options]="agencesImmobilieres" placeholder="Choisir une agence" filterPlaceholder="Rechercher une agence" formControlName="agenceImmobiliere" [filter]="true"
+                                        filterBy="nomAgence" [(ngModel)]="agenceSelectionnee" [showClear]="true" (onChange)="agenceChoisie($event)" optionLabel="nomAgence">
+                                    </p-dropdown>
+                                    <div class="error" [hidden]="agenceImmobiliere.valid || agenceImmobiliere.pristine && !agenceImmobiliere.touched ">La selection de l'agence est obligatoire</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xl-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">
                     <i class="fa fa-id-card"></i> Carte CFE sous format numérique
                   </label>
-                  <p-fileUpload
-                    chooseLabel="Choisir la carte"
-                    [auto]="true"
-                    url="https://www.primefaces.org/cdn/api/upload.php"
-                    (onUpload)="telechargerCarteCfe($event)" accept="application/pdf">
-                    <ng-template pTemplate="content">
-                      <ul *ngIf="carteCfe">
-                          <li>{{ carteCfe.name }}</li>
-                      </ul>
-                    </ng-template>
-                  </p-fileUpload>
+                                    <p-fileUpload chooseLabel="Choisir la carte" [auto]="true" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="telechargerCarteCfe($event)" accept="application/pdf">
+                                        <ng-template pTemplate="content">
+                                            <ul *ngIf="carteCfe">
+                                                <li>{{ carteCfe.name }}</li>
+                                            </ul>
+                                        </ng-template>
+                                    </p-fileUpload>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-end">
+                                    <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button> &nbsp;
+                                    <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': demandeCertificationForm.invalid || (documentJustificatif == null && carteCfe == null) }" type="submit">Soumettre</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-              </div>
             </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="text-end">
-                  <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
-                  &nbsp;
-                  <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': demandeCertificationForm.invalid || (documentJustificatif == null && carteCfe == null) }" type="submit">Ajouter</button>
-                </div>
-              </div>
-            </div>
-          </form>
         </div>
-      </div>
     </div>
-  </div>
-  <!-- End Formulaire d'ajout d'une demande de certification -->
+    <!-- End Formulaire d'ajout d'une demande de certification -->
 
-  <!-- Liste des demandes de certifications -->
-  <div *ngIf="affichage == 1">
-    <div class="row align-items-center pb40">
-      <div class="col-xxl-5">
-        <div class="dashboard_title_area">
-          <h4 *ngIf="user.role.code == 'ROLE_NOTAIRE'">Demandes de certifications</h4>
-          <h4 *ngIf="user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR' ">Demande de certification de compte</h4>
-          <h4 *ngIf="user.role.code == 'ROLE_RESPONSABLE' ">Demande de certification d'une agence</h4>
-          <h6 *ngIf="user.role.code == 'ROLE_RESPONSABLE' && agencesImmobilieres.length == 0" class="text error"><i class="fa-regular fa-triangle-exclamation fa-2xl"></i> Pour demander la certification pour vos agences, veuillez en premier lieu ajouter une de vos <b>agence immobilière</b>.</h6>
-        </div>
-      </div>
-      <div class="col-xxl-7 d-flex justify-content-end">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <div *ngIf="user.role.code == 'ROLE_NOTAIRE'" class="item1 mb15-sm">
-            <div class="search_area">
-              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
-              <label><span class="flaticon-search"></span></label>
+    <!-- Liste des demandes de certifications -->
+    <div *ngIf="affichage == 1">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-5">
+                <div class="dashboard_title_area">
+                    <h4 *ngIf="user.role.code == 'ROLE_NOTAIRE'">Demandes de certifications</h4>
+                    <h4 *ngIf="user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR' ">Demande de certification de compte</h4>
+                    <h4 *ngIf="user.role.code == 'ROLE_RESPONSABLE' ">Demande de certification d'une agence</h4>
+                    <h6 *ngIf="user.role.code == 'ROLE_RESPONSABLE' && agencesImmobilieres.length == 0" class="text error"><i class="fa-regular fa-triangle-exclamation fa-2xl"></i> Pour demander la certification pour vos agences, veuillez en premier lieu ajouter une de vos <b>agence immobilière</b>.</h6>
+                </div>
             </div>
-          </div>
-          &nbsp;
-          <a type="button" *ngIf="visibleAddForm == 0 && demandeCertifications.length == 0 && user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR' && user.etatCompte == true"
-            (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
+            <div class="col-xxl-7 d-flex justify-content-end">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <div *ngIf="user.role.code == 'ROLE_NOTAIRE'" class="item1 mb15-sm">
+                        <div class="search_area">
+                            <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
+                            <label><span class="flaticon-search"></span></label>
+                        </div>
+                    </div>
+                    &nbsp;
+                    <a type="button" *ngIf="visibleAddForm == 0 && demandeCertifications.totalElements == 0 && user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR' && user.etatCompte == true" (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
             Demander la certification de compte
           </a>
-          <a type="button" *ngIf="visibleAddForm == 0 && agencesImmobilieres.length !== 0 && demandeCertifications.length == 0 && user.role.code == 'ROLE_RESPONSABLE' && user.etatCompte == true"
-            (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
+                    <a type="button" *ngIf="visibleAddForm == 0 && agencesImmobilieres.length !== 0 && demandeCertifications.totalElements == 0 && user.role.code == 'ROLE_RESPONSABLE' && user.etatCompte == true" (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
             Demander la certification de son agence
           </a>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="row">
-      <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
-          <div class="packages_table table-responsive">
-            <table class="table-style3 table at-savesearch">
-              <thead class="t-head">
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Date demande</th>
-                  <th scope="col">Demandeur</th>
-                  <th scope="col">Statut demande</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="t-body">
-                <tr *ngFor="let demandeCertif of demandesCertificationsParPage | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ pageActuelle + i + 1 }}</td>
-                  <td class="vam">{{ demandeCertif.dateDemande | date: "dd-MM-yyyy" }}</td>
-                  <td class="vam">{{ demandeCertif.personne.nom }} {{ demandeCertif.personne.prenom }} <i *ngIf="demandeCertif.personne.estCertifie && (demandeCertif.personne.role.code == 'ROLE_RESPONSABLE' || demandeCertif.personne.role.code == 'ROLE_AGENTIMMOBILIER' || demandeCertif.personne.role.code == 'ROLE_PROPRIETAIRE' || demandeCertif.personne.role.code == 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
-                  <td class="vam">
-                    <p-tag *ngIf="demandeCertif.statutDemande == 1" severity="success" value="Validé"></p-tag>
-                    <p-tag *ngIf="demandeCertif.statutDemande == 0" severity="warning" value="En attente"></p-tag>
-                  </td>
-                  <td class="vam">
-                    <div class="d-flex">
+        <div class="row">
+            <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <div class="packages_table table-responsive">
+                        <table class="table-style3 table at-savesearch">
+                            <thead class="t-head">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Code</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Demandeur</th>
+                                    <th scope="col">Statut</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="t-body">
+                                <tr *ngFor="let demandeCertif of demandeCertifications.content | genericFilter: recherche;  let i = index">
+                                    <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
+                                    <td class="vam">{{ demandeCertif.codeCertification }}</td>
+                                    <td class="vam">{{ demandeCertif.dateDemande | date: "dd-MM-yyyy" }}</td>
+                                    <td class="vam">{{ demandeCertif.personne.nom }} {{ demandeCertif.personne.prenom }} <i *ngIf="demandeCertif.personne.estCertifie && (demandeCertif.personne.role.code == 'ROLE_RESPONSABLE' || demandeCertif.personne.role.code == 'ROLE_AGENTIMMOBILIER' || demandeCertif.personne.role.code == 'ROLE_PROPRIETAIRE' || demandeCertif.personne.role.code == 'ROLE_DEMARCHEUR')"
+                                            class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></td>
+                                    <td class="vam">
+                                        <p-tag *ngIf="demandeCertif.statutDemande == 1" severity="success" value="Validé"></p-tag>
+                                        <p-tag *ngIf="demandeCertif.statutDemande == 0" severity="warning" value="En attente"></p-tag>
+                                    </td>
+                                    <td class="vam">
+                                        <div class="d-flex">
 
-                      <button pButton class="p-button-text p-button-info" type="button" (click)="afficherPageDetail(demandeCertif.id)" pTooltip="Détails" tooltipPosition="top" icon="pi pi-eye"></button>
-                      <button pButton class="p-button-text p-button-info" *ngIf="demandeCertif.statutDemande == 0 && user.role.code == 'ROLE_NOTAIRE' && demandeCertif.agenceImmobiliere == null" type="button" (click)="certifierCompte(demandeCertif.personne.id, demandeCertif.id)" pTooltip="Certifier le compte du demandeur" tooltipPosition="left" icon="pi pi-verified"></button>
-                      <button pButton class="p-button-text p-button-info" *ngIf="demandeCertif.statutDemande == 0 && user.role.code == 'ROLE_NOTAIRE' && demandeCertif.agenceImmobiliere" type="button" (click)="certifierAgence(demandeCertif.agenceImmobiliere.id, demandeCertif.id)" pTooltip="Certifier l'agence immobilière" tooltipPosition="left" icon="pi pi-verified"></button>
-                      <a pButton class="p-button-text p-button-info" *ngIf="demandeCertif.agenceImmobiliere == null" href="{{this.APIEndpoint+'api/cni/demande-certification/'+demandeCertif.id}}" pTooltip="Télécharger la cni du demandeur" tooltipPosition="left" icon="pi pi-download"></a>
-                      <a pButton class="p-button-text p-button-info" *ngIf="demandeCertif.agenceImmobiliere" href="{{this.APIEndpoint+'api/carte-cfe/demande-certification/'+demandeCertif.id}}" pTooltip="Télécharger la carte cfe du demandeur" tooltipPosition="left" icon="pi pi-download"></a>
+                                            <button pButton class="p-button-text p-button-info" type="button" (click)="afficherPageDetail(demandeCertif.id)" pTooltip="Détails" tooltipPosition="top" icon="pi pi-eye"></button>
+                                            <button pButton class="p-button-text p-button-info" *ngIf="demandeCertif.statutDemande == 0 && user.role.code == 'ROLE_NOTAIRE' && demandeCertif.agenceImmobiliere == null" type="button" (click)="certifierCompte(demandeCertif.personne.id, demandeCertif.id)"
+                                                pTooltip="Certifier le compte du demandeur" tooltipPosition="left" icon="pi pi-verified"></button>
+                                            <button pButton class="p-button-text p-button-info" *ngIf="demandeCertif.statutDemande == 0 && user.role.code == 'ROLE_NOTAIRE' && demandeCertif.agenceImmobiliere" type="button" (click)="certifierAgence(demandeCertif.agenceImmobiliere.id, demandeCertif.id)"
+                                                pTooltip="Certifier l'agence immobilière" tooltipPosition="left" icon="pi pi-verified"></button>
+                                            <a pButton class="p-button-text p-button-info" *ngIf="demandeCertif.agenceImmobiliere == null" href="{{this.APIEndpoint+'api/cni/demande-certification/'+demandeCertif.id}}" pTooltip="Télécharger la cni du demandeur" tooltipPosition="left" icon="pi pi-download"></a>
+                                            <a pButton class="p-button-text p-button-info" *ngIf="demandeCertif.agenceImmobiliere" href="{{this.APIEndpoint+'api/carte-cfe/demande-certification/'+demandeCertif.id}}" pTooltip="Télécharger la carte cfe du demandeur" tooltipPosition="left" icon="pi pi-download"></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
 
-          <div *ngIf="demandeCertifications.length !== 0 && user.role.code == 'ROLE_NOTAIRE'" class="mbp_pagination text-center mt30">
-            <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="demandeCertifications.length"
-              [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} demandes de certifications"
-              [showPageLinks]="true" [showFirstLastIcon]="true">
-            </p-paginator>
-          </div>
-          <div *ngIf="demandeCertifications.length !== 0 && (user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_DEMARCHEUR')" class="mbp_pagination text-center mt30">
-            <p-paginator
-              (onPageChange)="pagination($event)" [first]="pageActuelle"
-              [rows]="elementsParPage"  [totalRecords]="demandeCertifications.length" [showCurrentPageReport]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} demandes de certifications"
-              [showPageLinks]="true" [showFirstLastIcon]="true">
-            </p-paginator>
-          </div>
-          <div *ngIf="demandeCertifications.length == 0" class="mbp_pagination text-center mt30">
-            <p class="mt10 pagination_page_count text-center">Aucune demande de certification enregistrée pour le moment</p>
-          </div>
+                    <div *ngIf="demandeCertifications.totalElements !== 0 && user.role.code == 'ROLE_NOTAIRE'" class="mbp_pagination text-center mt30">
+                        <p-paginator (onPageChange)="pagination($event)" [first]="numeroDeLaPage" [rows]="elementsParPage" [totalRecords]="demandeCertifications.totalElements" [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} demandes de certifications"
+                            [showPageLinks]="true" [showFirstLastIcon]="true">
+                        </p-paginator>
+                    </div>
+                    <div *ngIf="demandeCertifications.totalElements !== 0 && (user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_DEMARCHEUR')" class="mbp_pagination text-center mt30">
+                        <p-paginator (onPageChange)="pagination($event)" [first]="numeroDeLaPage" [rows]="elementsParPage" [totalRecords]="demandeCertifications.totalElements" [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} demandes de certifications"
+                            [showPageLinks]="true" [showFirstLastIcon]="true">
+                        </p-paginator>
+                    </div>
+                    <div *ngIf="demandeCertifications.totalElements == 0" class="mbp_pagination text-center mt30">
+                        <p class="mt10 pagination_page_count text-center">Aucune demande de certification enregistrée pour le moment</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  <!-- End Liste des demandes de certifications -->
+    <!-- End Liste des demandes de certifications -->
 
-  <!-- Details d'une demande de certification -->
-  <div *ngIf="affichage == 2">
-    <div  class="row align-items-center pb40">
-      <div class="col-xxl-6">
-        <div class="dashboard_title_area">
-          <h4 *ngIf="user.role.code == 'ROLE_NOTAIRE'">Détails d'une demande de certification</h4>
-          <h4 *ngIf="user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_DEMARCHEUR' ">Détails de la demande de certification</h4>
+    <!-- Details d'une demande de certification -->
+    <div *ngIf="affichage == 2">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-6">
+                <div class="dashboard_title_area">
+                    <h4 *ngIf="user.role.code == 'ROLE_NOTAIRE'">Détails d'une demande de certification</h4>
+                    <h4 *ngIf="user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_DEMARCHEUR' ">Détails de la demande de certification</h4>
+                </div>
+            </div>
+            <div class="col-xxl-6">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-xxl-6">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+
+                    <div class="row">
+
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Code certification</p>
+                            <p class="text">{{ demandeCertification.codeCertification }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Nom & prénom(s) du demandeur</p>
+                            <p class="text">{{ demandeCertification.personne.nom }} {{ demandeCertification.personne.prenom }} <i *ngIf="demandeCertification.personne.estCertifie && (demandeCertification.personne.role.code == 'ROLE_RESPONSABLE' || demandeCertification.personne.role.code == 'ROLE_PROPRIETAIRE' || demandeCertification.personne.role.code == 'ROLE_DEMARCHEUR')"
+                                    class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du demandeur</p>
+                            <p class="text">{{ demandeCertification.personne.email }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Numero de téléphone du demandeur</p>
+                            <p class="text">{{ demandeCertification.personne.telephone }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Etat du compte du demandeur</p>
+                            <p class="text">
+                                <p-tag *ngIf="demandeCertification.personne.etatCompte == true" severity="success" value="Activé"></p-tag>
+                                <p-tag *ngIf="demandeCertification.personne.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+                            </p>
+                        </div>
+
+                        <p-divider *ngIf="demandeCertification.agenceImmobiliere"></p-divider>
+                        <div *ngIf="demandeCertification.agenceImmobiliere" class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Agence immobilière</p>
+                            <p class="text">{{ demandeCertification.agenceImmobiliere.nomAgence }} <i *ngIf="demandeCertification.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+                        </div>
+                        <div *ngIf="demandeCertification.agenceImmobiliere" class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Numero de téléphone de l'agence immobilière</p>
+                            <p class="text">{{ demandeCertification.agenceImmobiliere.telephone }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Date de la demande de certification</p>
+                            <p class="text">{{ demandeCertification.dateDemande | date: "dd-MM-yyyy" }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Statut de la demande de certification</p>
+                            <p class="text">
+                                <p-tag *ngIf="demandeCertification.statutDemande == 1" severity="success" value="Validé"></p-tag>
+                                <p-tag *ngIf="demandeCertification.statutDemande == 0" severity="warning" value="En attente"></p-tag>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-
-          <div class="row">
-
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Nom & prénom(s) du demandeur</p>
-              <p class="text">{{ demandeCertification.personne.nom }} {{ demandeCertification.personne.prenom }} <i *ngIf="demandeCertification.personne.estCertifie && (demandeCertification.personne.role.code == 'ROLE_RESPONSABLE' || demandeCertification.personne.role.code == 'ROLE_PROPRIETAIRE' || demandeCertification.personne.role.code == 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
-            </div>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du demandeur</p>
-              <p class="text">{{ demandeCertification.personne.email }}</p>
-            </div>
-
-            <p-divider></p-divider>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Numero de téléphone du demandeur</p>
-              <p class="text">{{ demandeCertification.personne.telephone }}</p>
-            </div>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Etat du compte du demandeur</p>
-              <p class="text">
-                <p-tag *ngIf="demandeCertification.personne.etatCompte == true" severity="success" value="Activé"></p-tag>
-                <p-tag *ngIf="demandeCertification.personne.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
-              </p>
-            </div>
-
-            <p-divider *ngIf="demandeCertification.agenceImmobiliere"></p-divider>
-            <div *ngIf="demandeCertification.agenceImmobiliere" class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Agence immobilière</p>
-              <p class="text">{{ demandeCertification.agenceImmobiliere.nomAgence }} <i *ngIf="demandeCertification.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
-            </div>
-            <div *ngIf="demandeCertification.agenceImmobiliere" class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Numero de téléphone de l'agence immobilière</p>
-              <p class="text">{{ demandeCertification.agenceImmobiliere.telephone }}</p>
-            </div>
-
-            <p-divider></p-divider>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Date de la demande de certification</p>
-              <p class="text">{{ demandeCertification.dateDemande | date: "dd-MM-yyyy" }}</p>
-            </div>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Statut de la demande de certification</p>
-              <p class="text">
-                <p-tag *ngIf="demandeCertification.statutDemande == 1" severity="success" value="Validé"></p-tag>
-                <p-tag *ngIf="demandeCertification.statutDemande == 0" severity="warning" value="En attente"></p-tag>
-              </p>
-            </div>
-          </div>
+        <div class="text-end">
+            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
         </div>
-      </div>
     </div>
-    <div class="text-end">
-      <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
-    </div>
-  </div>
-  <!-- End Details d'une demande de certification -->
+    <!-- End Details d'une demande de certification -->
 
 </div>

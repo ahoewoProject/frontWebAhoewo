@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Page } from 'src/app/interfaces/Page';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
 import { DemandeCertification } from 'src/app/models/gestionDesComptes/DemandeCertification';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
@@ -14,17 +16,17 @@ import { environment } from 'src/environments/environment';
 })
 export class DemandesCertificationsComponent implements OnInit, OnDestroy {
 
-  agenceSelectionne!: AgenceImmobiliere;
+  agenceSelectionnee!: AgenceImmobiliere;
   recherche: string = '';
   affichage = 1;
   visibleAddForm = 0;
   user : any;
 
   elementsParPage = 5; // Nombre d'éléments par page
-  pageActuelle = 0; // Page actuelle
+  numeroDeLaPage = 0; // Page actuelle
 
   demandeCertification = this.demandeCertifService.demandeCertification;
-  demandeCertifications : DemandeCertification[] = [];
+  demandeCertifications!: Page<DemandeCertification>
   agencesImmobilieres : AgenceImmobiliere[] = [];
   messageErreur: string = "";
   messageSuccess: string | null = null;
@@ -34,12 +36,10 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
   carteCfe: any;
   demandeCertificationForm: any
 
-  constructor(
-    private agenceImmobiliereService: AgenceImmobiliereService,
-    private personneService: PersonneService,
-    private demandeCertifService: DemandeCertificationService,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService,
+  constructor(private agenceImmobiliereService: AgenceImmobiliereService, private personneService: PersonneService,
+    private demandeCertifService: DemandeCertificationService, private messageService: MessageService,
+    private confirmationService: ConfirmationService, private activatedRoute: ActivatedRoute,
+    private router: Router
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -48,13 +48,22 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (this.user.role.code == 'ROLE_NOTAIRE') {
-      this.listeDemandeCertifications();
-    } else if (this.user.role.code == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
-      this.listerAgencesImmobilieres();
-      this.listeDemandeCertificationParUtilisateur();
-    }
+    this.initActivatedRoute();
     this.initDemandeCertificationForm();
+    this.listeAgencesImmobilieres();
+  }
+
+  initActivatedRoute(): void {
+    this.activatedRoute.paramMap.subscribe(params => {
+      const id = params.get('id');
+
+      if (id) {
+        this.affichage = 2;
+        this.detailDemandeCertif(parseInt(id));
+      } else {
+        this.listeDemandeCertifications(this.numeroDeLaPage, this.elementsParPage);
+      }
+    });
   }
 
   initDemandeCertificationForm(): void {
@@ -67,71 +76,49 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
     return this.demandeCertificationForm.get('agenceImmobiliere');
   }
 
-  agenceSelectionnee(event: any) {
-    this.agenceSelectionne = event.value;
+  agenceChoisie(event: any) {
+    this.agenceSelectionnee = event.value;
   }
 
-  listeDemandeCertifications() {
-    this.demandeCertifService.getAll().subscribe(
+  listeDemandeCertifications(numeroDeLaPage: number, elementsParPage: number) {
+    this.demandeCertifService.getDemandesCertifications(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         console.log(response);
         this.demandeCertifications = response;
       }
     );
-  }
-
-  listeDemandeCertificationParUtilisateur() {
-    this.demandeCertifService.findByUser().subscribe(
-      (response) => {
-        console.log(response);
-        this.demandeCertifications = response;
-      }
-    )
   }
 
   // Fonction pour recupérer les agences immobilières d'un responsable
-  listerAgencesImmobilieres() {
+  listeAgencesImmobilieres() {
     this.agenceImmobiliereService.findAgencesByResponsable().subscribe(
       (response) => {
         this.agencesImmobilieres = response;
+        this.agenceSelectionnee = this.agencesImmobilieres[0];
       }
     );
   }
 
-  // Récupération des demandes de certifications de la page courante
-  get demandesCertificationsParPage(): any[] {
-    const startIndex = this.pageActuelle;
-    const endIndex = startIndex + this.elementsParPage;
-    return this.demandeCertifications.slice(startIndex, endIndex);
-  }
-
   pagination(event: any) {
-    this.pageActuelle = event.first;
+    this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    this.listeDemandeCertifications()
+    this.listeDemandeCertifications(this.numeroDeLaPage, this.elementsParPage);
   }
 
   voirListe(): void {
-    if (this.user.role.code == 'ROLE_NOTAIRE') {
-      this.listeDemandeCertifications();
-    } else if (this.user.role.code == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
-      this.listeDemandeCertificationParUtilisateur();
-    }
     this.affichage = 1;
     this.visibleAddForm = 0;
     this.documentJustificatif = '';
     this.carteCfe = ''
+    this.listeDemandeCertifications(this.numeroDeLaPage, this.elementsParPage);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/demandes-certifications']);
   }
 
   annuler(): void {
     if (this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
-      this.affichage = 1;
-      this.visibleAddForm = 0;
       this.documentJustificatif = '';
     } else {
       this.demandeCertificationForm.reset();
-      this.affichage = 1;
-      this.visibleAddForm = 0;
       this.documentJustificatif = '';
     }
   }
@@ -207,7 +194,7 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
 
     const formValues = {
       personne: this.user,
-      agenceImmobiliere: this.agenceSelectionne
+      agenceImmobiliere: this.agenceSelectionnee
     }
 
     this.demandeCertificationData.append('demandeCertificationJson', JSON.stringify(formValues))
@@ -251,9 +238,7 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
   }
 
   afficherPageDetail(id: number): void {
-    this.detailDemandeCertif(id);
-    this.affichage = 2;
-    this.visibleAddForm = 0;
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/demandes-certifications/' + id]);
   }
 
   certifierCompte(idPersonne: number, idDemandeCertif: number): void {
@@ -334,6 +319,29 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  navigateURLBYUSER(user: any): string {
+    let roleBasedURL = '';
+
+    switch (user.role.code) {
+      case 'ROLE_NOTAIRE':
+        roleBasedURL = '/notaire';
+        break;
+      case 'ROLE_PROPRIETAIRE':
+        roleBasedURL = '/proprietaire';
+        break;
+      case 'ROLE_RESPONSABLE':
+        roleBasedURL = '/responsable';
+        break;
+      case 'ROLE_DEMARCHEUR':
+        roleBasedURL = '/demarcheur';
+        break;
+      default:
+        break;
+    }
+
+    return roleBasedURL;
   }
 
   ngOnDestroy(): void {

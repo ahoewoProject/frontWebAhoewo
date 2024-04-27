@@ -1,233 +1,225 @@
 <div class="dashboard__content bgc-f7">
-  <div class="row pb40 d-block d-lg-none">
-    <!-- Menu responsive -->
-    <app-menu-responsive></app-menu-responsive>
-    <!-- End Menu responsive -->
-  </div>
-
-  <p-toast></p-toast>
-
-  <!-- Formulaire d'ajout d'un gérant -->
-  <div *ngIf="visibleAddForm == 1">
-    <div class="row align-items-center pb40">
-      <div class="col-xxl-3">
-        <div class="dashboard_title_area">
-          <h4>Ajout d'un gérant</h4>
-        </div>
-      </div>
-      <div class="col-xxl-9">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
-        </div>
-      </div>
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
     </div>
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-          <form [formGroup]="gerantForm" (ngSubmit)="ajouterGerant()" class="form-style1">
-            <div class="row">
-              <p class="error">Les identifiants de connexion seront envoyés à l'adresse e-mail du gérant une fois l'opération de l'enregistrement terminée.</p>
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Nom</label>
-                  <input type="text" class="form-control" id="nom" name="nom" placeholder="Le nom du gérant" formControlName="nom" [(ngModel)]="gerant.nom" required>
-                  <div class="error" [hidden]="nom.valid || nom.pristine && !nom.touched ">Le nom du gérant est obligatoire</div>
+
+    <p-toast></p-toast>
+
+    <!-- Formulaire d'ajout d'un gérant -->
+    <div *ngIf="visibleAddForm == 1">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-3">
+                <div class="dashboard_title_area">
+                    <h4>Ajout d'un gérant</h4>
                 </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Prénom(s)</label>
-                  <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Le(s) prénom(s) du gérant" formControlName="prenom" [(ngModel)]="gerant.prenom" required>
-                  <div class="error" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le(s) prénom(s) du gérant est obligatoire</div>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Email</label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="L'email du gérant" formControlName="email" [(ngModel)]="gerant.email" required>
-                  <div class="error" [hidden]="!email?.hasError('required') || !email.touched">
-                    L'e-mail du gérant est obligatoire
-                  </div>
-                  <div class="error" [hidden]="!email?.hasError('email') || !email.touched">
-                    L'e-mail saisie n'est pas valide.
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Téléphone</label>
-                  <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Le numéro de téléphone du gérant" formControlName="telephone" [(ngModel)]="gerant.telephone" required>
-                  <div class="error" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numéro de téléphone du gérant obligatoire</div>
-                </div>
-              </div>
             </div>
-            <div class="col-md-12">
-              <div class="text-end">
-                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
-                &nbsp;
-                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': gerantForm.invalid }" type="submit">Ajouter</button>
-              </div>
+            <div class="col-xxl-9">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+                </div>
             </div>
-          </form>
         </div>
-      </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+                    <form [formGroup]="gerantForm" (ngSubmit)="ajouterGerant()" class="form-style1">
+                        <div class="row">
+                            <p class="error">Les identifiants de connexion seront envoyés à l'adresse e-mail du gérant une fois l'opération de l'enregistrement terminée.</p>
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Nom</label>
+                                    <input type="text" class="form-control" id="nom" name="nom" placeholder="Le nom du gérant" formControlName="nom" [(ngModel)]="gerant.nom" required>
+                                    <div class="error" [hidden]="nom.valid || nom.pristine && !nom.touched ">Le nom du gérant est obligatoire</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Prénom(s)</label>
+                                    <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Le(s) prénom(s) du gérant" formControlName="prenom" [(ngModel)]="gerant.prenom" required>
+                                    <div class="error" [hidden]="prenom.valid || prenom.pristine && !prenom.touched ">Le(s) prénom(s) du gérant est obligatoire</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="L'email du gérant" formControlName="email" [(ngModel)]="gerant.email" required>
+                                    <div class="error" [hidden]="!email?.hasError('required') || !email.touched">
+                                        L'e-mail du gérant est obligatoire
+                                    </div>
+                                    <div class="error" [hidden]="!email?.hasError('email') || !email.touched">
+                                        L'e-mail saisie n'est pas valide.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Téléphone</label>
+                                    <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Le numéro de téléphone du gérant" formControlName="telephone" [(ngModel)]="gerant.telephone" required>
+                                    <div class="error" [hidden]="telephone.valid || telephone.pristine && !telephone.touched ">Le numéro de téléphone du gérant obligatoire</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="text-end">
+                                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button> &nbsp;
+                                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': gerantForm.invalid }" type="submit">Ajouter</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <!-- End Formulaire d'ajout d'un gérant -->
+    <!-- End Formulaire d'ajout d'un gérant -->
 
-  <!-- Liste des gérants -->
-  <div *ngIf="affichage == 1">
-    <div class="row align-items-center pb40">
-      <div class="col-xxl-3">
-        <div class="dashboard_title_area">
-          <h4>Liste des gérants</h4>
-        </div>
-      </div>
-      <div class="col-xxl-9">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <div class="item1 mb15-sm">
-            <div class="search_area">
-              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
-              <label><span class="flaticon-search"></span></label>
+    <!-- Liste des gérants -->
+    <div *ngIf="affichage == 1">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-3">
+                <div class="dashboard_title_area">
+                    <h4>Liste des gérants</h4>
+                </div>
             </div>
-          </div>
-          &nbsp;
-          <a type="button" *ngIf="visibleAddForm == 0 && user.role.code == 'ROLE_PROPRIETAIRE' && user.etatCompte == true" (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">Ajouter un gérant</a>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
-          <div class="packages_table table-responsive">
-            <table class="table-style3 table at-savesearch">
-              <thead class="t-head">
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Nom</th>
-                  <th scope="col">Prénom(s)</th>
-                  <th scope="col">Etat compte</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="t-body">
-                <tr *ngFor="let gerant of gerants.content | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
-                  <td class="vam">{{ gerant.nom }}</td>
-                  <td class="vam">{{ gerant.prenom }}</td>
-                  <td class="vam">
-                    <p-tag *ngIf="gerant.etatCompte == true" severity="success" value="Activé"></p-tag>
-                    <p-tag *ngIf="gerant.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
-                  </td>
-                  <td class="vam">
-                    <div class="d-flex">
-                      <button pButton type="button" (click)="afficherPageDetail(gerant.id)" icon="pi pi-eye"
-                        pTooltip="Détails" tooltipPosition="right" class="p-button-text p-button-info">
-                      </button>
-
-                      <button pButton type="button" *ngIf="gerant.etatCompte == true && user.etatCompte == true"(click)="desactiverCompte(gerant.id)" icon="pi pi-lock"
-                        pTooltip="Désactiver ce compte" tooltipPosition="top" class="p-button-text p-button-danger">
-                      </button>
-
-                      <button pButton type="button" *ngIf="gerant.etatCompte == false && user.etatCompte == true" (click)="activerCompte(gerant.id)" icon="pi pi-lock-open"
-                        pTooltip="Activer ce compte" tooltipPosition="left" class="p-button-text p-button-success">
-                      </button>
+            <div class="col-xxl-9">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <div class="item1 mb15-sm">
+                        <div class="search_area">
+                            <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
+                            <label><span class="flaticon-search"></span></label>
+                        </div>
                     </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div *ngIf="gerants.totalElements !== 0" class="mbp_pagination text-center mt30">
-            <p-paginator
-              (onPageChange)="pagination($event)" [rows]="gerants.size"
-              [totalRecords]="gerants.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
-              [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true"
-              currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} gérants">
-            </p-paginator>
-          </div>
-          <div *ngIf="gerants.totalElements == 0" class="mbp_pagination text-center mt30">
-            <p class="mt10 pagination_page_count text-center">Aucun gérant enregistré pour le moment</p>
-          </div>
+                    &nbsp;
+                    <a type="button" *ngIf="visibleAddForm == 0 && user.role.code == 'ROLE_PROPRIETAIRE' && user.etatCompte == true" (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">Ajouter un gérant</a>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <!-- End Liste des gérants -->
+        <div class="row">
+            <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <div class="packages_table table-responsive">
+                        <table class="table-style3 table at-savesearch">
+                            <thead class="t-head">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col">Prénom(s)</th>
+                                    <th scope="col">Etat</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="t-body">
+                                <tr *ngFor="let gerant of gerants.content | genericFilter: recherche;  let i = index">
+                                    <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
+                                    <td class="vam">{{ gerant.nom }}</td>
+                                    <td class="vam">{{ gerant.prenom }}</td>
+                                    <td class="vam">
+                                        <p-tag *ngIf="gerant.etatCompte == true" severity="success" value="Activé"></p-tag>
+                                        <p-tag *ngIf="gerant.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+                                    </td>
+                                    <td class="vam">
+                                        <div class="d-flex">
+                                            <button pButton type="button" (click)="afficherPageDetail(gerant.id)" icon="pi pi-eye" pTooltip="Détails" tooltipPosition="right" class="p-button-text p-button-info">
+                      </button>
 
-  <!-- Details d'un gérant -->
-  <div *ngIf="affichage == 3">
-    <div  class="row align-items-center pb40">
-      <div class="col-xxl-3">
-        <div class="dashboard_title_area">
-          <h4>Détails d'un gérant</h4>
+                                            <button pButton type="button" *ngIf="gerant.etatCompte == true && user.etatCompte == true" (click)="desactiverCompte(gerant.id)" icon="pi pi-lock" pTooltip="Désactiver ce compte" tooltipPosition="top" class="p-button-text p-button-danger">
+                      </button>
+
+                                            <button pButton type="button" *ngIf="gerant.etatCompte == false && user.etatCompte == true" (click)="activerCompte(gerant.id)" icon="pi pi-lock-open" pTooltip="Activer ce compte" tooltipPosition="left" class="p-button-text p-button-success">
+                      </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div *ngIf="gerants.totalElements !== 0" class="mbp_pagination text-center mt30">
+                        <p-paginator (onPageChange)="pagination($event)" [rows]="gerants.size" [totalRecords]="gerants.totalElements" [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} gérants">
+                        </p-paginator>
+                    </div>
+                    <div *ngIf="gerants.totalElements == 0" class="mbp_pagination text-center mt30">
+                        <p class="mt10 pagination_page_count text-center">Aucun gérant enregistré pour le moment</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-xxl-9">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+    </div>
+    <!-- End Liste des gérants -->
+
+    <!-- Details d'un gérant -->
+    <div *ngIf="affichage == 3">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-3">
+                <div class="dashboard_title_area">
+                    <h4>Détails d'un gérant</h4>
+                </div>
+            </div>
+            <div class="col-xxl-9">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
 
-          <div class="row">
+                    <div class="row">
 
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Nom</p>
-              <p class="text">{{ gerant.nom }}</p>
-            </div>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Prénom(s)</p>
-              <p class="text">{{ gerant.prenom }}</p>
-            </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Nom</p>
+                            <p class="text">{{ gerant.nom }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Prénom(s)</p>
+                            <p class="text">{{ gerant.prenom }}</p>
+                        </div>
 
-            <p-divider></p-divider>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur</p>
-              <p class="text">
-                  {{ gerant.username }}
-              </p>
-            </div>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Matricule</p>
-              <p class="text">{{ gerant.matricule }}</p>
-            </div>
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur</p>
+                            <p class="text">
+                                {{ gerant.username }}
+                            </p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Matricule</p>
+                            <p class="text">{{ gerant.matricule }}</p>
+                        </div>
 
-            <p-divider></p-divider>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
-              <p class="text">{{ gerant.email }}</p>
-            </div>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
-              <p class="text">{{ gerant.telephone }}</p>
-            </div>
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+                            <p class="text">{{ gerant.email }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
+                            <p class="text">{{ gerant.telephone }}</p>
+                        </div>
 
-            <p-divider></p-divider>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Profil</p>
-              <p class="text">{{ gerant.role.libelle }}</p>
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Profil</p>
+                            <p class="text">{{ gerant.role.libelle }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
+                            <p>
+                                <p-tag *ngIf="gerant.etatCompte == true" severity="success" value="Activé"></p-tag>
+                                <p-tag *ngIf="gerant.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
-              <p>
-                <p-tag *ngIf="gerant.etatCompte == true" severity="success" value="Activé"></p-tag>
-                <p-tag *ngIf="gerant.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
-              </p>
-            </div>
-          </div>
         </div>
-      </div>
+        <div class="text-end">
+            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
+        </div>
     </div>
-    <div class="text-end">
-      <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
-    </div>
-  </div>
-  <!-- End Details d'un gérant -->
+    <!-- End Details d'un gérant -->
 
 </div>
