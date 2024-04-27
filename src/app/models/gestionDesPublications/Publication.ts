@@ -18,6 +18,7 @@ export class Publication extends EntiteDeBase {
   commission!: number;
   personne!: Personne;
   agenceImmobiliere!: AgenceImmobiliere
+  etat!: boolean;
 
   constructor() {
     super();

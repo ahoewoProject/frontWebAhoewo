@@ -5,6 +5,7 @@ import { Personne } from "./Personne";
 export class DemandeCertification extends EntiteDeBase {
 
   id: number;
+  codeCertification!: string;
   dateDemande!: Date;
   documentJustificatif: string;
   carteCfe: string;
