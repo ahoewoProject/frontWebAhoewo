@@ -597,6 +597,18 @@ export class PublicationsComponent implements OnInit, OnDestroy {
     return roleBasedURL;
   }
 
+  afficherBoutonSiBienDelegue(estDelegue: boolean): boolean {
+    if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
+      if (estDelegue) {
+        return false
+      } else {
+        return true
+      }
+    } else {
+      return true
+    }
+  }
+
   ngOnDestroy(): void {
 
   }
