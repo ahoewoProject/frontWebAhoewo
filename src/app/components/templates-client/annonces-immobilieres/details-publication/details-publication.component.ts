@@ -1,5 +1,5 @@
 import { PersonneService } from './../../../../services/gestionDesComptes/personne.service';
-import { DecimalPipe } from '@angular/common';
+import { DecimalPipe, Time } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -30,6 +30,7 @@ import { environment } from 'src/environments/environment';
 })
 export class DetailsPublicationComponent implements OnInit, OnDestroy  {
 
+  minDate: Date = new Date();
   loading: boolean = false;
   loadingContactForm: boolean = false;
   loadingMessage: string = 'Chargement du formulaire en cours !';
