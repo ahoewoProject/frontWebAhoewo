@@ -8,6 +8,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 import { ContratLocationService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-location.service';
 import { ContratVenteService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-vente.service';
 import { PaiementService } from 'src/app/services/gestionDesPaiements/paiement.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-paiements',
@@ -27,6 +28,7 @@ export class PaiementsComponent implements OnInit, OnDestroy {
   paiement = this.paiementService.paiement;
   user: any;
   paiementReussi: any;
+  APIEndpoint: any;
 
   constructor(private paiementService: PaiementService, private router: Router,
     private activatedRoute: ActivatedRoute, private personneService: PersonneService,
@@ -36,6 +38,7 @@ export class PaiementsComponent implements OnInit, OnDestroy {
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
     this.user = JSON.parse(utilisateurConnecte);
+    this.APIEndpoint = environment.APIEndpoint;
   }
 
   ngOnInit(): void {
@@ -121,7 +124,6 @@ export class PaiementsComponent implements OnInit, OnDestroy {
     categorie == 'Chambre' ||
     categorie == 'Bureau';
   }
-
 
   navigateURLBYUSER(user: any): string {
     let roleBasedURL = '';

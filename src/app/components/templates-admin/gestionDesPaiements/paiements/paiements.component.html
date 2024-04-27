@@ -73,7 +73,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <!-- End Liste des paiements -->
 
@@ -87,6 +86,7 @@
             </div>
             <div class="col-xxl-4">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a href="{{this.APIEndpoint+'api/paiement/generer-pdf/'+paiement.id}}" class="ud-btn btn-valider">Imprimer</a> &nbsp;
                     <a class="ud-btn btn-retour" type="button" (click)="retour()">Retour</a>
                 </div>
             </div>

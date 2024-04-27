@@ -288,7 +288,6 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   ajouterPlanificationPaiementAchat(): void {
     this.planificationPaiement.typePlanification = this.typePlanificationSelectionne;
     this.planificationPaiement.contrat = this.contratSelectionne;
-    console.log(this.planificationPaiement);
     this.planificationPaiementService.ajouterPlanificationPaiementLocation(this.planificationPaiement).subscribe(
       (response) => {
         if (response.id > 0) {
@@ -356,7 +355,12 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   }
 
   listeModesPaiements() {
-    this.modesPaiements = ['Manuel', 'Espèce', 'Mobile Money', 'Virement bancaire']
+    if (this.user.role.code == 'ROLE_CLIENT') {
+      this.modesPaiements = ['Mobile Money', 'Virement bancaire'];
+    } else {
+      this.modesPaiements = ['Manuel', 'Espèce'];
+    }
+
   }
 
   modePaiementChoisi(event: any): void {
@@ -402,10 +406,10 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   ajouterPaiement(): void {
     this.paiement.modePaiement = this.modePaiementSelectionne;
     this.paiement.planificationPaiement = this.planificationPaiement;
-    console.log(this.paiement)
     this.paiementService.ajouterPaiement(this.paiement).subscribe(
       (response) => {
         if (response.id > 0) {
+          this.genererPdfPaiement(response.id);
           this.router.navigate([this.navigateURLBYUSER(this.user) + '/paiements'], { queryParams: { paiementReussi: true } });
         }
       },
@@ -421,6 +425,15 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
     )
   }
 
+  genererPdfPaiement(id: number) {
+    this.paiementService.genererPaiementPdf(id).subscribe(
+      (response: Blob) => {
+        const blob = new Blob([response], { type: 'application/pdf' });
+        window.URL.createObjectURL(blob);
+      }
+    )
+  }
+
   afficherCategorie(designation: string): boolean {
     return designation == 'Maison' ||
     designation == 'Villa' ||
@@ -430,7 +443,6 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
     designation == 'Chambre' ||
     designation == 'Bureau';
   }
-
 
   navigateURLBYUSER(user: any): string {
     let roleBasedURL = '';

@@ -90,7 +90,7 @@
             </div>
             <div class="col-xxl-6">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <a *ngIf="planificationPaiement.statutPlanification != 'Payé'" class="ud-btn btn-valider" type="button" (click)="afficherPagePaiement(planificationPaiement.id)">Effectuer un paiement</a> &nbsp;
+                    <a *ngIf="planificationPaiement.statutPlanification != 'Payé' && user.role.code != 'ROLE_CLIENT'" class="ud-btn btn-valider" type="button" (click)="afficherPagePaiement(planificationPaiement.id)">Effectuer un paiement</a> &nbsp;
                     <a class="ud-btn btn-retour" type="button" (click)="retour()">Retour</a>
                 </div>
             </div>
