@@ -38,4 +38,10 @@ export class PaiementService {
   ajouterPaiement(p: Paiement): Observable<Paiement> {
     return this.httpClient.post<Paiement>(this.url + 'paiement/ajouter', p);
   }
+
+  // Générer un pdf (reçu de paiement)
+  // url: http://localhost:4040/api/paiement/generer-pdf/{id}
+  genererPaiementPdf(id: number): Observable<Blob> {
+    return this.httpClient.get<Blob>(this.url + 'paiement/generer-pdf/' + id)
+  }
 }

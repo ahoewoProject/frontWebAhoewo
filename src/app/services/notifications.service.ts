@@ -26,7 +26,9 @@ export class NotificationsService {
     this.user = JSON.parse(utilisateurConnecte);
     if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
       this.notificationsNonLuesByAdmin();
-    } else {
+    } else if (this.user.role.code == 'ROLE_NOTAIRE') {
+      this.notificationsNonLuesByNotaire();
+    }  else {
       this.notificationsNonLuesByOwner();
     }
   }
@@ -37,6 +39,14 @@ export class NotificationsService {
         this.notificationsNonLuesEvent.emit(response);
       }
     );
+  }
+
+  notificationsNonLuesByNotaire(): void {
+    this.getNotificationsNonLuesByNotaire().subscribe(
+      (response) => {
+        this.notificationsNonLuesEvent.emit(response);
+      }
+    )
   }
 
   notificationsNonLuesByOwner(): void {
@@ -53,6 +63,12 @@ export class NotificationsService {
     return this.httpClient.get<Array<Notification>>(this.url + 'notifications/non-lues/admin');
   }
 
+  // Notifications non lues du Notaire;
+  // url: http://localhost:4040/api/notifications/non-lues/notaire
+  getNotificationsNonLuesByNotaire(): Observable<Array<Notification>>{
+    return this.httpClient.get<Array<Notification>>(this.url + 'notifications/non-lues/notaire');
+  }
+
   // Notifications non lues des utilisateurs à par Admin;
   // url: http://localhost:4040/api/notifications/non-lues/owner
   getNotificationsNonLuesByOwner(): Observable<Array<Notification>>{
@@ -66,6 +82,15 @@ export class NotificationsService {
       .set('numeroDeLaPage', numeroDeLaPage.toString())
       .set('elementsParPage', elementsParPage.toString());
     return this.httpClient.get<Page<Notification>>(this.url + 'notifications/admin', {params: params});
+  }
+
+  // Notifications du Notaire;
+  // url: http://localhost:4040/api/notifications/notaire
+  getNotificationsByNotaire(numeroDeLaPage: number, elementsParPage: number): Observable<Page<Notification>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<Notification>>(this.url + 'notifications/notaire', {params: params});
   }
 
   // Notifications des utilisateurs à par Admin;
