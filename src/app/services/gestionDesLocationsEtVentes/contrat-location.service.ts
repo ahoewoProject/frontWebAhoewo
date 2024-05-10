@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { MotifRejetForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetForm';
-import { Contrat } from 'src/app/models/gestionDesLocationsEtVentes/Contrat';
 import { ContratLocation } from 'src/app/models/gestionDesLocationsEtVentes/ContratLocation';
 import { environment } from 'src/environments/environment';
 
@@ -33,6 +32,15 @@ export class ContratLocationService {
       .set('numeroDeLaPage', numeroDeLaPage.toString())
       .set('elementsParPage', elementsParPage.toString());
     return this.httpClient.get<Page<ContratLocation>>(this.url + 'contrats-locations', {params: params});
+  }
+
+  // Affichage des contrats de locations par code bien paginées;
+  // url: http://localhost:4040/api/contrats-locations/par-code-bien/{codeBien}
+  getContratsLocationsByCodeBien(codeBien: string, numeroDeLaPage: number, elementsParPage: number): Observable<Page<ContratLocation>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<ContratLocation>>(this.url + 'contrats-locations/par-code-bien/' + codeBien, {params: params});
   }
 
   // Recherche d'une occurrence d'un contrat de location par la clé primaire ;
@@ -75,5 +83,11 @@ export class ContratLocationService {
   // url: http://localhost:4040/api/contrat-location/mettre-fin/{id}
   mettreFin(id: number): Observable<any>{
     return this.httpClient.get<any>(this.url + 'contrat-location/mettre-fin/' + id);
+  }
+
+  // Télécharger contrat location ;
+  // url: http://localhost:4040/api/contrat-location/generer-pdf/{id}
+  telecharger(id: number): Observable<any> {
+    return this.httpClient.get(this.url + 'contrat-location/generer-pdf/' + id, { responseType: 'blob' });
   }
 }

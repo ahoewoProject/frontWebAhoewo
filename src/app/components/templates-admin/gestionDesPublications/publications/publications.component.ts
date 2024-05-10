@@ -220,6 +220,7 @@ export class PublicationsComponent implements OnInit, OnDestroy {
     )
   }
 
+  //Page détails par url
   voirPageDetail(idPublication: number, idBien: number): void {
     this.getImagesBienImmobilier(idBien);
     this.router.navigate([this.navigateURLBYUSER(this.user) + '/publications', idPublication], { queryParams: { idBien: idBien } });
@@ -271,6 +272,13 @@ export class PublicationsComponent implements OnInit, OnDestroy {
         this.caracteristique = response;
       }
     );
+  }
+
+  //Retour page détails
+  afficherPageDetail(id: number, idBien: number): void {
+    this.detailPublication(id);
+    this.getImagesBienImmobilier(idBien);
+    this.affichage = 2;
   }
 
   listeTypeDeTransactions(): void {
@@ -354,7 +362,6 @@ export class PublicationsComponent implements OnInit, OnDestroy {
 
   voirFormulaireModifier(id: number): void {
     this.detailPublication(id);
-    console.log(this.publication);
     this.affichage = 4;
   }
 
@@ -362,7 +369,7 @@ export class PublicationsComponent implements OnInit, OnDestroy {
     this.publicationService.updatePublication(this.publication.id, this.publication).subscribe(
       (response) => {
         if (response.id > 0) {
-          this.voirListe();
+          this.afficherPageDetail(response.id, response.bienImmobilier.id);
           this.messageSuccess = "La publication a été modifié avec succès !";
           this.messageService.add({
             severity: 'success',
@@ -411,7 +418,8 @@ export class PublicationsComponent implements OnInit, OnDestroy {
       accept: () => {
         this.publicationService.activerPublication(id).subscribe(
         (response) => {
-          this.voirListe();
+          // this.voirListe();
+          this.afficherPageDetail(id, this.publication.bienImmobilier.id);
           this.messageSuccess = "La publication a été activé avec succès !";
           this.messageService.add({
             severity: 'success',
@@ -482,7 +490,8 @@ export class PublicationsComponent implements OnInit, OnDestroy {
       accept: () => {
         this.publicationService.desactiverPublication(id).subscribe(
           (response) => {
-          this.voirListe();
+          // this.voirListe();
+          this.afficherPageDetail(id, this.publication.bienImmobilier.id);
           this.messageSuccess = "La publication a été désactivé avec succès !";
           this.messageService.add({
             severity: 'success',
@@ -512,6 +521,7 @@ export class PublicationsComponent implements OnInit, OnDestroy {
       }
     });
   }
+
 
   resetPublicationForm(): void {
     this.publicationForm.reset();

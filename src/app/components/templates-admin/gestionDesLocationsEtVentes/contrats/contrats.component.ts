@@ -10,6 +10,8 @@ import { ContratVente } from 'src/app/models/gestionDesLocationsEtVentes/Contrat
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { ContratLocationService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-location.service';
 import { ContratVenteService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-vente.service';
+import { SuiviEntretienService } from 'src/app/services/gestionDesLocationsEtVentes/suivi-entretien.service';
+import { PlanificationPaiementService } from 'src/app/services/gestionDesPaiements/planification-paiement.service';
 import { MotifRejetService } from 'src/app/services/motif-rejet.service';
 import { environment } from 'src/environments/environment';
 
@@ -36,6 +38,7 @@ export class ContratsComponent implements OnInit, OnDestroy {
   dateFinSelectionnee!: Date | null;
 
   messageSuccess: string | null = null;
+  messageErreur: string | null = null;
 
   elementsParPageIndex2 = 5;
   numeroDeLaPageIndex2 = 0;
@@ -46,6 +49,8 @@ export class ContratsComponent implements OnInit, OnDestroy {
   contratVente = this.contratVenteService.contratVente;
 
   activeIndex = 0;
+
+  datePrevueSelectionnee!: Date;
 
   contratsLocations!: Page<ContratLocation>;
   contratsVentes!: Page<ContratVente>;
@@ -66,11 +71,22 @@ export class ContratsComponent implements OnInit, OnDestroy {
   contratVenteFormStep2: any;
   contratVenteFormStep3: any;
 
+  planificationPaiementForm: any;
+  planificationPaiement = this.planificationPaiementService.planificationPaiement;
+
+  typesPlanifications: string[] = [];
+  typePlanificationSelectionne!: string;
+  contratSelectionne!: any;
+
+  suiviEntretien = this.suiviEntretienService.suiviEntretien;
+  suiviEntretienForm: any
+
   constructor(private contratLocationService: ContratLocationService,
     private contratVenteService: ContratVenteService, private messageService: MessageService,
     private personneService: PersonneService, private router: Router,
     private motifRejetService: MotifRejetService, private activatedRoute: ActivatedRoute,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService, private planificationPaiementService: PlanificationPaiementService,
+    private suiviEntretienService: SuiviEntretienService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -101,6 +117,12 @@ export class ContratsComponent implements OnInit, OnDestroy {
     this.initContratVenteStep1Form();
     this.initContratVenteStep2Form();
     this.initContratVenteStep3Form();
+    this.initPlanificationPaiementForm();
+    this.planificationPaiementForm.get('montantPaye').valueChanges.subscribe((value: number) => {
+      this.updateRestePayeInputState(value);
+    });
+
+    this.initSuiviEntretienForm();
     if (this.user.role.code == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
       this.menusContratLocationOfAgence();
       this.menusContratVenteOfAgence();
@@ -379,8 +401,10 @@ export class ContratsComponent implements OnInit, OnDestroy {
     this.contratLocationService.findById(id).subscribe(
       (response) => {
         this.contratLocation = response;
-        if (this.user.role.code != 'ROLE_CLIENT') {
+        if (this.user.role.code == 'ROLE_CLIENT') {
           this.listeMotifs(this.contratLocation.codeContrat, this.contratLocation.refuserPar);
+        } else {
+          this.listeMotifs(this.contratLocation.codeContrat, this.contratLocation.annulerPar);
         }
       }
     )
@@ -390,8 +414,10 @@ export class ContratsComponent implements OnInit, OnDestroy {
     this.contratVenteService.findById(id).subscribe(
       (response) => {
         this.contratVente = response;
-        if (this.user.role.code != 'ROLE_CLIENT') {
-          this.listeMotifs(this.contratVente.codeContrat, this.contratVente.refuserPar)
+        if (this.user.role.code == 'ROLE_CLIENT') {
+          this.listeMotifs(this.contratVente.codeContrat, this.contratVente.refuserPar);
+        } else {
+          this.listeMotifs(this.contratVente.codeContrat, this.contratVente.annulerPar);
         }
       }
     )
@@ -899,6 +925,239 @@ export class ContratsComponent implements OnInit, OnDestroy {
     } else {
       return true
     }
+  }
+
+  telechargerContratLocation(id: number): void {
+    this.contratLocationService.telecharger(id).subscribe(
+      response => {
+        const file = new Blob([response], { type: 'application/pdf' });
+
+        // Créer un objet URL pour le fichier PDF
+        const fileURL = URL.createObjectURL(file);
+
+        // Ouvrir le PDF dans un nouvel onglet
+        window.open(fileURL, '_blank');
+      }
+    )
+  }
+
+  telechargerContratVente(id: number): void {
+    this.contratVenteService.telecharger(id).subscribe(
+      response => {
+        const file = new Blob([response], { type: 'application/pdf' });
+
+        // Créer un objet URL pour le fichier PDF
+        const fileURL = URL.createObjectURL(file);
+
+        // Ouvrir le PDF dans un nouvel onglet
+        window.open(fileURL, '_blank');
+      }
+    )
+  }
+
+  initPlanificationPaiementForm(): void {
+    this.planificationPaiementForm = new FormGroup({
+      // typePlanification: new FormControl('', [Validators.required]),
+      // contrat: new FormControl('', [Validators.required]),
+      libelle: new FormControl('', [Validators.required]),
+      montantDu: new FormControl('', [Validators.required]),
+      montantPaye: new FormControl(''),
+      restePaye: new FormControl({value: '', disabled: true}),
+      datePlanifiee: new FormControl('', [Validators.required])
+    })
+  }
+
+  updateRestePayeInputState(montantPaye: number): void {
+    const restePayeControl = this.planificationPaiementForm.get('restePaye');
+    restePayeControl.setValue(this.planificationPaiement.montantDu - montantPaye);
+    restePayeControl.disable();
+  }
+
+  // get typePlanification() {
+  //   return this.planificationPaiementForm.get('typePlanification')
+  // }
+
+  // get contrat () {
+  //   return this.planificationPaiementForm.get('contrat')
+  // }
+
+  get libelle() {
+    return this.planificationPaiementForm.get('libelle')
+  }
+
+  get montantDu() {
+    return this.planificationPaiementForm.get('montantDu')
+  }
+
+  get montantPaye() {
+    return this.planificationPaiementForm.get('montantPaye')
+  }
+
+  get restePaye() {
+    return this.planificationPaiementForm.get('restePaye')
+  }
+
+  get datePlanifiee() {
+    return this.planificationPaiementForm.get('datePlanifiee')
+  }
+
+  resetPlanificationPaiementForm(): void {
+    this.planificationPaiementForm.reset();
+  }
+
+  voirFormulairePlanificationLoc(contratLocation: any): void {
+    this.contratSelectionne = contratLocation;
+    this.typePlanificationSelectionne = 'Paiement de location';
+    this.validerPlanificationForm(this.typePlanificationSelectionne);
+    this.planificationPaiement.montantDu = this.contratSelectionne.loyer;
+    this.affichage = 7;
+  }
+
+  voirFormulairePlanificationAchat(contratVente: any): void {
+    this.contratSelectionne = contratVente;
+    this.typePlanificationSelectionne = 'Paiement d\'achat';
+    this.validerPlanificationForm(this.typePlanificationSelectionne);
+    this.planificationPaiementService.lastPlanificationPaiement(this.contratSelectionne.codeContrat).subscribe(
+      (response) => {
+        if (response) {
+          this.planificationPaiement.montantDu = response.restePaye;
+        } else {
+          this.planificationPaiement.montantDu = this.contratSelectionne.prixVente;
+        }
+      }
+    )
+    this.affichage = 7;
+  }
+
+  ajoutPlanificationPaiement(): void {
+    if (this.typePlanificationSelectionne == 'Paiement de location') {
+      this.ajouterPlanificationPaiementLocation();
+    } else {
+      this.ajouterPlanificationPaiementAchat();
+    }
+  }
+
+  ajouterPlanificationPaiementLocation(): void {
+    this.planificationPaiement.typePlanification = this.typePlanificationSelectionne;
+    this.planificationPaiement.contrat = this.contratSelectionne;
+    console.log(this.planificationPaiement);
+    this.planificationPaiementService.ajouterPlanificationPaiementLocation(this.planificationPaiement).subscribe(
+      (response) => {
+        if (response.id > 0) {
+          this.router.navigate([this.navigateURLBYUSER(this.user) + '/planifications-paiements'], { queryParams: { planificationPaiementReussie: true } });
+        } else {
+          this.messageErreur = "Une erreur s'est produite lors de la planification !";
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Planification de paiement échouée',
+            detail: this.messageErreur
+          })
+        }
+      },
+      (error) => {
+        console.log(error)
+        if (error.error == "Une planification de paiement existe déjà pour ce contrat à la date spécifiée.") {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Planification de paiement non réussie',
+            detail: error.error
+          })
+        }
+      }
+    )
+  }
+
+  ajouterPlanificationPaiementAchat(): void {
+    this.planificationPaiement.typePlanification = this.typePlanificationSelectionne;
+    this.planificationPaiement.contrat = this.contratSelectionne;
+    this.planificationPaiementService.ajouterPlanificationPaiementLocation(this.planificationPaiement).subscribe(
+      (response) => {
+        if (response.id > 0) {
+          this.router.navigate([this.navigateURLBYUSER(this.user) + '/planifications-paiements'], { queryParams: { planificationPaiementReussie: true } });
+        } else {
+          this.messageErreur = "Une erreur s'est produite lors de la planification !";
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Planification de paiement échouée',
+            detail: this.messageErreur
+          })
+        }
+      },
+      (error) => {
+        console.log(error)
+        if (error.error == "Une planification de paiement existe déjà pour ce contrat à la date spécifiée.") {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Planification de paiement non réussie',
+            detail: error.error
+          })
+        }
+      }
+    )
+  }
+
+  validerPlanificationForm(typePlanification: string): void {
+    if (typePlanification == 'Paiement d\'achat') {
+      this.montantPaye.setValidators([Validators.required]);
+      this.restePaye.setValidators([Validators.required]);
+    }
+    this.montantPaye.updateValueAndValidity();
+    this.restePaye.updateValueAndValidity();
+  }
+
+  initSuiviEntretienForm(): void {
+    this.suiviEntretienForm = new FormGroup({
+      // contratLocation: new FormControl(''),
+      libelle: new FormControl('', [Validators.required]),
+      description: new FormControl(''),
+      datePrevue: new FormControl('', [Validators.required]),
+    })
+  }
+
+  // get contratLocation() {
+  //   return this.suiviEntretienForm.get('contratLocation')
+  // }
+
+  get libelleSuiviEntretien() {
+    return this.suiviEntretienForm.get('libelle')
+  }
+
+  get description() {
+    return this.suiviEntretienForm.get('description')
+  }
+
+  get datePrevue() {
+    return this.suiviEntretienForm.get('datePrevue')
+  }
+
+  afficherFormulaireSuiviEntretien(contratLocation: ContratLocation): void {
+    this.suiviEntretien.contratLocation = contratLocation;
+    this.affichage = 8;
+  }
+
+  datePrevueChoisie(event: any): void {
+    this.datePrevueSelectionnee = event;
+  }
+
+  annuler(): void {
+    this.suiviEntretienForm.reset();
+  }
+
+  ajouterSuiviEntretien(): void {
+    this.suiviEntretienService.ajouterSuiviEntretien(this.suiviEntretien).subscribe(
+      (response) => {
+        if (response.id > 0) {
+          this.router.navigate([this.navigateURLBYUSER(this.user) + '/suivis-entretiens'], { queryParams: { suiviEntretienReussi: true } });
+        } else {
+          this.messageErreur = "Une erreur s'est produite lors de l'ajout !";
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Ajout échoué',
+            detail: this.messageErreur
+          })
+        }
+      }
+    )
   }
 
   navigateURLBYUSER(user: any): string {

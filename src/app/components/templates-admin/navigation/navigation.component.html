@@ -1,85 +1,87 @@
 <header class="header-nav nav-innerpage-style menu-home4 dashboard_header main-menu">
-  <!-- Ace Responsive Menu -->
-  <nav class="posr">
-    <div class="container-fluid pr30 pr15-xs pl30 posr menu_bdrt1">
-      <div class="row align-items-center justify-content-between">
-        <div class="col-6 col-lg-auto">
-          <div class="text-center text-lg-start d-flex align-items-center">
-            <div class="dashboard_header_logo position-relative me-2 me-xl-5">
-              <a routerLink="/" class="logo"><img src="assets/images/ahoe-min.png" width="145" height="38" alt=""></a>
-            </div>
-            <div class="fz20 ms-2 ms-xl-5">
-              <a type="button" class="dashboard_sidebar_toggle_icon text-thm1 vam"><img src="assets/images/dark-nav-icon.svg" alt=""></a>
-            </div>
-          </div>
-        </div>
-        <div class="d-none d-lg-block col-lg-auto">
-          <!-- Responsive Menu Structure-->
-          <ul id="respMenu" class="ace-responsive-menu" data-menu-style="horizontal">
-          </ul>
-        </div>
+    <!-- Ace Responsive Menu -->
+    <nav class="posr">
+        <div class="container-fluid pr30 pr15-xs pl30 posr menu_bdrt1">
+            <div class="row align-items-center justify-content-between">
+                <div class="col-6 col-lg-auto">
+                    <div class="text-center text-lg-start d-flex align-items-center">
+                        <div class="dashboard_header_logo position-relative me-2 me-xl-5">
+                            <a routerLink="/" class="logo"><img src="assets/images/ahoe-min.png" width="145" height="38" alt=""></a>
+                        </div>
+                        <div class="fz20 ms-2 ms-xl-5">
+                            <a type="button" class="dashboard_sidebar_toggle_icon text-thm1 vam"><img src="assets/images/dark-nav-icon.svg" alt=""></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-none d-lg-block col-lg-auto">
+                    <!-- Responsive Menu Structure-->
+                    <ul id="respMenu" class="ace-responsive-menu" data-menu-style="horizontal">
+                    </ul>
+                </div>
 
-        <div class="col-6 col-lg-auto">
-          <div class="text-center text-lg-end header_right_widgets">
-            <ul class="mb0 d-flex justify-content-center justify-content-sm-end p-0">
-              <li class="user_setting">
-                <a class="text-center mr5 text-thm2 notif" type="button" data-bs-toggle="dropdown" pTooltip="Notifications" tooltipPosition="bottom" (click)="lireNotification()" *ngIf="notificationsNonLues.length !== 0 || ((user.role.code == 'ROLE_ADMINISTRATEUR' || user.role.code !== 'ROLE_ADMINISTRATEUR') && notificationsNonLues.length === 0)">
+                <div class="col-6 col-lg-auto">
+                    <div class="text-center text-lg-end header_right_widgets">
+                        <ul class="mb0 d-flex justify-content-center justify-content-sm-end p-0">
+                            <li class="user_setting">
+                                <a class="text-center mr5 text-thm2 notif" type="button" data-bs-toggle="dropdown" pTooltip="Notifications" tooltipPosition="bottom" (click)="lireNotification()" *ngIf="notificationsNonLues.length !== 0 || ((user.role.code == 'ROLE_ADMINISTRATEUR' || user.role.code !== 'ROLE_ADMINISTRATEUR') && notificationsNonLues.length === 0)">
                   <span *ngIf="notificationsNonLues.length !== 0" class="flaticon-bell" pBadge [value]="notificationsNonLues.length > 10 ? '10+' : notificationsNonLues.length.toString()"></span>
                   <span *ngIf="notificationsNonLues.length === 0" class="flaticon-bell"></span>
                 </a>
 
-                <div *ngIf="notifications.totalElements > 0" class="dropdown-menu" style="width: 400px;">
-                  <div class="user_setting_content" *ngFor="let notification of notifications.content">
-                    <div type="button" (click)="redirectToPageConcernee(notification.url)" class="notif_list d-flex align-items-center bdrb1 pb15 mb10">
-                      <p-avatar icon="flaticon-bell" styleClass="mr-2" size="large" [style]="{'background-color':'#EF4444', 'color': '#ffffff'}" shape="circle"></p-avatar>
-                      <div class="details ml15">
-                        <p class="title mb-0" style="font-weight: 4px;"><b>{{notification.titre}}</b></p>
-                        <p class="message mb-2">{{notification.message}}</p>
-                        <p class="mb-0 text-thm message">{{getElapsedTime(notification.dateNotification)}}</p>
-                      </div>
-                    </div>
-                  </div>
-                  <a [routerLink]="redirectToNotificationPage()" (click)="setActiveLink(redirectToNotificationPage())" *ngIf="notifications.totalElements > 3" class="notification-plus-button btn-valider w-100">Tout voir <i class="pi pi-arrow-right"></i></a>
-                </div>
-                <div *ngIf="notifications.totalElements == 0" class="dropdown-menu" style="width: 300px;">
-                  <div class="user_setting_content">
-                    <div class="notif_list d-flex align-items-center bdrb1 pb15 mb10">
-                      <p class="text mb-0" style="font-weight: 4px;"><b>Pas de notifications disponibles</b></p>
-                    </div>
-                  </div>
-                  <!-- <a [routerLink]="redirectToNotificationPage()" (click)="setActiveLink(redirectToNotificationPage())" class="notification-plus-button btn-valider w-100">Voir les anciennes notifications</a> -->
-                </div>
-              </li>
+                                <div *ngIf="notifications.totalElements > 0" class="dropdown-menu" style="width: 400px;">
+                                    <div class="user_setting_content" *ngFor="let notification of notifications.content">
+                                        <div type="button" (click)="redirectToPageConcernee(notification.url)" class="notif_list d-flex align-items-center bdrb1 pb15 mb10">
+                                            <p-avatar icon="flaticon-bell" styleClass="mr-2" size="large" [style]="{'background-color':'#EF4444', 'color': '#ffffff'}" shape="circle"></p-avatar>
+                                            <div class="details ml15">
+                                                <p class="title mb-0" style="font-weight: 4px;"><b>{{notification.titre}}</b></p>
+                                                <p class="message mb-2">{{notification.message}}</p>
+                                                <p class="mb-0 text-thm message">{{getElapsedTime(notification.dateNotification)}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a [routerLink]="redirectToNotificationPage()" (click)="setActiveLink(redirectToNotificationPage())" *ngIf="notifications.totalElements > 3" class="notification-plus-button btn-valider w-100">Tout voir <i class="pi pi-arrow-right"></i></a>
+                                </div>
+                                <div *ngIf="notifications.totalElements == 0" class="dropdown-menu" style="width: 300px;">
+                                    <div class="user_setting_content">
+                                        <div class="notif_list d-flex align-items-center bdrb1 pb15 mb10">
+                                            <p class="title text mb-0" style="font-weight: 4px;"><b>Pas de notifications disponibles</b></p>
+                                        </div>
+                                    </div>
+                                    <!-- <a [routerLink]="redirectToNotificationPage()" (click)="setActiveLink(redirectToNotificationPage())" class="notification-plus-button btn-valider w-100">Voir les anciennes notifications</a> -->
+                                </div>
+                            </li>
 
-              <li class=" user_setting">
-                <div class="dropdown">
-                  <a class="btn" href="#" data-bs-toggle="dropdown">
-                    <span style="font-size: 15px; font-family: 'DM Sans', sans-serif;" class="text text-center mr10 notif">{{ user.nom }} {{ user.prenom }} | <b>{{ user.role.libelle }}</b>&nbsp; <i *ngIf="user.estCertifie && (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></span><img src="assets/images/user.jpg" style="width: 40px; height:40px" alt="user.png">
-                  </a>
-                  <div class="dropdown-menu">
-                    <div class="user_setting_content">
-                      <!-- Informations Gestion Par Profil Start -->
-                      <a class="dropdown-item"
-                      [routerLink]="redirectToProfilPage()" routerLinkActive="-is-active">
-                      <i class="flaticon-user mr10"></i>Mes informations</a>
-                      <!-- Informations Gestion Par Profil End -->
+                            <li class=" user_setting">
+                                <div class="dropdown">
+                                    <a class="btn" href="#" data-bs-toggle="dropdown">
+                                        <span style="font-size: 15px; font-family: 'DM Sans', sans-serif;" class="text text-center mr10 notif">{{ user.nom }} {{ user.prenom }} | <b>{{ user.role.libelle }}</b>&nbsp; <i *ngIf="user.estCertifie && (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></span>
+                                        <img
+                                            src="assets/images/user.jpg" style="width: 40px; height:40px" alt="user.png">
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <div class="user_setting_content">
+                                            <!-- Informations Gestion Par Profil Start -->
+                                            <a class="dropdown-item" [routerLink]="redirectToProfilPage()" routerLinkActive="-is-active">
+                                                <i class="flaticon-user mr10"></i>Mes informations</a>
+                                            <!-- Informations Gestion Par Profil End -->
 
-                      <!-- Notifications Gestion Par Profil Start -->
-                      <a class="dropdown-item"
-                      [routerLink]="redirectToNotificationPage()" routerLinkActive="-is-active">
-                      <i class="pi pi-bell mr10"></i>Notifications <p-badge *ngIf="notificationsNonLues.length !== 0" [value]="notificationsNonLues.length > 10 ? '10+' : notificationsNonLues.length.toString()"></p-badge></a>
-                      <!-- Notifications Gestion Par Profil End -->
+                                            <!-- Notifications Gestion Par Profil Start -->
+                                            <a class="dropdown-item" [routerLink]="redirectToNotificationPage()" routerLinkActive="-is-active">
+                                                <i class="pi pi-bell mr10"></i>Notifications
+                                                <p-badge *ngIf="notificationsNonLues.length !== 0" [value]="notificationsNonLues.length > 10 ? '10+' : notificationsNonLues.length.toString()"></p-badge>
+                                            </a>
+                                            <!-- Notifications Gestion Par Profil End -->
 
-                      <a class="dropdown-item" type="button" (click)="seDeconnecter()" ><i class="flaticon-logout mr10"></i>Se déconnecter</a>
+                                            <a class="dropdown-item" type="button" (click)="seDeconnecter()"><i class="flaticon-logout mr10"></i>Se déconnecter</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                  </div>
                 </div>
-              </li>
-            </ul>
-          </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </nav>
-  <!-- End Ace Responsive Menu -->
+    </nav>
+    <!-- End Ace Responsive Menu -->
 </header>

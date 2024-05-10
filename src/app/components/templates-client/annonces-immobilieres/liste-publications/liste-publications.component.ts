@@ -24,7 +24,7 @@ export class ListePublicationsComponent implements OnInit {
 
   loading: boolean = false;
   numeroDeLaPage = 0;
-  elementsParPage = 8;
+  elementsParPage = 9;
   visible: boolean = false;
 
   affichage = 0;
@@ -59,6 +59,11 @@ export class ListePublicationsComponent implements OnInit {
       if (!params['recherche']) {
         sessionStorage.getItem('rechercheSimplePublicationForm') && sessionStorage.removeItem('rechercheSimplePublicationForm');
         sessionStorage.getItem('rechercheAvanceePublicationForm') && sessionStorage.removeItem('rechercheAvanceePublicationForm');
+        this.regionSelectionnee = new Region();
+        this.villeSelectionnee = new Ville();
+        this.quartierSelectionne = new Quartier();
+        this.typeDeBienSelectionne = new TypeDeBien();
+        this.categorieSelectionnee = '';
       }
     });
 
@@ -111,8 +116,8 @@ export class ListePublicationsComponent implements OnInit {
     this.rechercheSimplePublicationForm = JSON.parse(sessionStorage.getItem('rechercheSimplePublicationForm')!);
     this.typeDeTransactionChoisi(this.rechercheSimplePublicationForm.typeDeTransaction);
     this.typeDeBienSelectionne = this.rechercheSimplePublicationForm.typeDeBien;
-    this.regionSelectionnee = JSON.parse(sessionStorage.getItem('region')!);
-    this.villeSelectionnee = JSON.parse(sessionStorage.getItem('ville')!);
+    this.regionSelectionnee = this.rechercheSimplePublicationForm.quartier.ville.region;
+    this.villeSelectionnee = this.rechercheSimplePublicationForm.quartier.ville;
     this.quartierSelectionne = this.rechercheSimplePublicationForm.quartier;
 
     this.rechercheSimpleDePublicationsActives(this.typeDeTransactionSelectionne, this.typeDeBienSelectionne.id,
@@ -124,8 +129,8 @@ export class ListePublicationsComponent implements OnInit {
     this.rechercheAvanceePublicationForm = JSON.parse(sessionStorage.getItem('rechercheAvanceePublicationForm')!);
     this.typeDeTransactionChoisi(this.rechercheAvanceePublicationForm.typeDeTransaction);
     this.typeDeBienSelectionne = this.rechercheAvanceePublicationForm.typeDeBien;
-    this.regionSelectionnee = JSON.parse(sessionStorage.getItem('region')!);
-    this.villeSelectionnee = JSON.parse(sessionStorage.getItem('ville')!);
+    this.regionSelectionnee = this.rechercheAvanceePublicationForm.quartier.ville.region;
+    this.villeSelectionnee = this.rechercheAvanceePublicationForm.quartier.ville;
     this.quartierSelectionne = this.rechercheAvanceePublicationForm.quartier;
 
     this.rechercheAvanceeDePublicationsActives(this.rechercheAvanceePublicationForm, numeroDeLaPage, elementsParPage);
@@ -137,14 +142,13 @@ export class ListePublicationsComponent implements OnInit {
 
   // Liste Publications - Recherche Simple
   rechercheSimpleDePublicationsActives(typeDeTransaction: string, typeDeBienId: number, quartierId: number, numeroDeLaPage: number, elementsParPage: number): void {
-    this.loading = true
+    // this.loading = true;
     setTimeout(() => {
       this.publicationService.rechercheSimpleDePublicationsActives(typeDeTransaction, typeDeBienId, quartierId,
       numeroDeLaPage, elementsParPage).subscribe(
         (response) => {
-          console.log(response);
           this.publications = response;
-          this.loading = false;
+          // this.loading = false;
         }
       );
     }, 5000);
@@ -152,12 +156,12 @@ export class ListePublicationsComponent implements OnInit {
 
   // Liste Publications - Recherche Avancée
   rechercheAvanceeDePublicationsActives(r: RechercheAvanceePublicationForm, numeroDeLaPage: number, elementsParPage: number): void {
-    this.loading = true
+    // this.loading = true;
     setTimeout(() => {
       this.publicationService.rechercheAvanceeDePublicationsActives(r, numeroDeLaPage, elementsParPage).subscribe(
         (response) => {
           this.publications = response;
-          this.loading = false;
+          // this.loading = false;
         }
       );
     }, 5000);
@@ -229,24 +233,23 @@ export class ListePublicationsComponent implements OnInit {
   rechercheSimpleDePublication(): void {
     sessionStorage.getItem('rechercheAvanceePublicationForm') && sessionStorage.removeItem('rechercheAvanceePublicationForm');
 
-    sessionStorage.setItem('region', JSON.stringify(this.regionSelectionnee));
-    sessionStorage.setItem('ville', JSON.stringify(this.villeSelectionnee));
-
     this.rechercheSimplePublicationForm.typeDeTransaction = this.typeDeTransactionSelectionne;
     this.rechercheSimplePublicationForm.typeDeBien = this.typeDeBienSelectionne;
     this.rechercheSimplePublicationForm.quartier = this.quartierSelectionne;
 
     sessionStorage.setItem('rechercheSimplePublicationForm', JSON.stringify(this.rechercheSimplePublicationForm));
 
-    this.router.navigate(['/annonces-immobilieres'], { state: { recherche: 'simple' } });
+    this.rechercheSimpleDePublicationsActives(this.rechercheSimplePublicationForm.typeDeTransaction,
+      this.rechercheSimplePublicationForm.typeDeBien.id, this.rechercheSimplePublicationForm.quartier.id,
+      this.numeroDeLaPage, this.elementsParPage);
+
+    this.router.navigate(['/annonces-immobilieres'], { queryParams: { recherche: 'simple' } });
+
   }
 
   rechercheAvanceeDePublication(): void {
     this.visible = false;
     sessionStorage.getItem('rechercheSimplePublicationForm') && sessionStorage.removeItem('rechercheSimplePublicationForm');
-
-    sessionStorage.setItem('region', JSON.stringify(this.regionSelectionnee));
-    sessionStorage.setItem('ville', JSON.stringify(this.villeSelectionnee));
 
     this.rechercheAvanceePublicationForm.typeDeTransaction = this.typeDeTransactionSelectionne;
     this.rechercheAvanceePublicationForm.typeDeBien = this.typeDeBienSelectionne;
@@ -254,6 +257,8 @@ export class ListePublicationsComponent implements OnInit {
     this.rechercheAvanceePublicationForm.categorie = this.categorieSelectionnee;
 
     sessionStorage.setItem('rechercheAvanceePublicationForm', JSON.stringify(this.rechercheAvanceePublicationForm));
+
+    this.rechercheAvanceeDePublicationsActives(this.rechercheAvanceePublicationForm, this.numeroDeLaPage, this.elementsParPage);
 
     this.router.navigate(['/annonces-immobilieres'], { queryParams: { recherche: 'avancee' } });
   }
@@ -268,6 +273,21 @@ export class ListePublicationsComponent implements OnInit {
     } else {
       this.initActivatedRoute(this.numeroDeLaPage, this.elementsParPage);
     }
+  }
+
+  rafraichirListePublications(): void {
+    sessionStorage.getItem('rechercheSimplePublicationForm') && sessionStorage.removeItem('rechercheSimplePublicationForm');
+    sessionStorage.getItem('rechercheAvanceePublicationForm') && sessionStorage.removeItem('rechercheAvanceePublicationForm');
+
+    this.regionSelectionnee = new Region();
+    this.villeSelectionnee = new Ville();
+    this.quartierSelectionne = new Quartier();
+    this.typeDeBienSelectionne = new TypeDeBien();
+    this.categorieSelectionnee = '';
+
+    this.listePublicationsActives(this.numeroDeLaPage, this.elementsParPage);
+
+    this.router.navigate(['/annonces-immobilieres']);
   }
 
   //Fonction pour recupérer la liste des régions actives

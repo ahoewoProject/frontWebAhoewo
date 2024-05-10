@@ -14,7 +14,10 @@ import { Quartier } from 'src/app/models/gestionDesBiensImmobiliers/Quartier';
 import { Region } from 'src/app/models/gestionDesBiensImmobiliers/Region';
 import { TypeDeBien } from 'src/app/models/gestionDesBiensImmobiliers/TypeDeBien';
 import { Ville } from 'src/app/models/gestionDesBiensImmobiliers/Ville';
-import { BehaviorService } from 'src/app/services/behavior.service';
+import { ContratLocation } from 'src/app/models/gestionDesLocationsEtVentes/ContratLocation';
+import { ContratVente } from 'src/app/models/gestionDesLocationsEtVentes/ContratVente';
+import { PlanificationPaiement } from 'src/app/models/gestionDesPaiements/PlanificationPaiement';
+import { MotifRejet } from 'src/app/models/MotifRejet';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { BienImmAssocieService } from 'src/app/services/gestionDesBiensImmobiliers/bien-imm-associe.service';
 import { BienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/bien-immobilier.service';
@@ -27,7 +30,12 @@ import { RegionService } from 'src/app/services/gestionDesBiensImmobiliers/regio
 import { TypeDeBienService } from 'src/app/services/gestionDesBiensImmobiliers/type-de-bien.service';
 import { VilleService } from 'src/app/services/gestionDesBiensImmobiliers/ville.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
+import { ContratLocationService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-location.service';
+import { ContratVenteService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-vente.service';
+import { PaiementService } from 'src/app/services/gestionDesPaiements/paiement.service';
+import { PlanificationPaiementService } from 'src/app/services/gestionDesPaiements/planification-paiement.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
+import { MotifRejetService } from 'src/app/services/motif-rejet.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -51,14 +59,28 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
   affichage = 1;
   visibleAddForm = 0;
   activeIndex: number = 0;
+  activeIndexContrat: number = 0;
 
   elementsParPage = 5; // Nombre d'éléments par page
   numeroDeLaPage = 0; // Page actuelle
+
+  elementsParPageContratVente = 5;
+  elementsParPageContratLocation = 5
+  numeroDeLaPageContratVente = 0;
+  numeroDeLaPageContratLocation = 0;
+
+  elementsParPagePlanification = 5;
+  numeroDeLaPagePlanification = 0;
 
   delegationGestion = this.delegationGestionService.delegationGestion;
   delegationGestionForm2: DelegationGestionForm2 = new DelegationGestionForm2();
   bienImmobilier!: any;
   bienImmAssocie!: any;
+  codeBien!: any;
+  contrat!: any;
+  contratsLocations!: Page<ContratLocation>;
+  contratsVentes!: Page<ContratVente>;
+  contratBien!: any;
   delegationGestions!: Page<DelegationGestion>;
   images: ImagesBienImmobilier[] = [];
   agencesImmobilieres: AgenceImmobiliere[] = [];
@@ -89,6 +111,11 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
   publicationForm: any;
   publication = this.publicationService.publication;
   bienAPublie: any;
+  listMotifs: MotifRejet[] = [];
+  planificationsPaiements!: Page<PlanificationPaiement>;
+  planificationPaiement: any;
+  codeContrat: any;
+  paiement: any;
 
   constructor(private delegationGestionService: DelegationGestionService, private personneService: PersonneService,
     private messageService: MessageService, private bienImmobilierService: BienImmobilierService,
@@ -98,7 +125,9 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService, private imagesBienImmobilierService: ImagesBienImmobilierService,
     private agenceImmobiliereService: AgenceImmobiliereService, private typeDeBienService: TypeDeBienService,
     private bienImmAssocieService: BienImmAssocieService, private publicationService: PublicationService,
-    private router: Router, private behaviorService: BehaviorService
+    private router: Router, private contratLocationService: ContratLocationService,
+    private contratVenteService: ContratVenteService, private motifRejetService: MotifRejetService,
+    private planificationPaiementService: PlanificationPaiementService, private paiementService: PaiementService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -108,7 +137,7 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.delegationReussie = this.activatedRoute.snapshot.queryParamMap.get('delegationReussie') || '';
-
+    this.initActivatedRoute();
     this.initialiserPublicationForm();
     this.publicationForm.get('prixDuBien').valueChanges.subscribe((value: number) => {
       this.updateCommissionInputState(value);
@@ -125,19 +154,7 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     this.listeRegionsActives();
     this.listeVillesActives();
     this.listeQuartiersActifs();
-
-    if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
-      this.listeDelegationGestionProprietaire(this.numeroDeLaPage, this.elementsParPage);
-      this.messageService.add({ severity: 'success', summary: 'Délagation de gestion réussie', detail: 'Le bien correspondant a été délégué avec succès.' });
-    } else if (this.user.role.code == 'ROLE_DEMARCHEUR' || this.user.role.code == 'ROLE_GERANT') {
-      this.listeDelegationGestionGestionnaire(this.numeroDeLaPage, this.elementsParPage);
-    } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.listeDelegationsGestionsOfAgencesByResponsable(this.numeroDeLaPage, this.elementsParPage);
-      this.listeAgencesImmobilieresParResponsable();
-    } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.listeDelegationsGestionsOfAgencesByAgent(this.numeroDeLaPage, this.elementsParPage);
-      this.listeAgencesImmobilieresParAgent();
-    }
+    this.listeDelegationsGestions(this.numeroDeLaPage, this.elementsParPage);
   }
 
   initResponsiveOptions(): void {
@@ -216,6 +233,21 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     ];
   }
 
+  initActivatedRoute(): void {
+    this.activatedRoute.paramMap.subscribe(params => {
+      const id = params.get('id');
+      const idBien = this.activatedRoute.snapshot.queryParamMap.get('idBien');
+
+      if (id) {
+        this.affichage = 2;
+        this.detailDelegationGestion(parseInt(id));
+        if (idBien) {
+          this.getImagesBienImmobilier(parseInt(idBien))
+        }
+      }
+    });
+  }
+
   initStep1Form(): void {
     this.step1Form = new FormGroup({
       typeDeBien: new FormControl('', [Validators.required]),
@@ -286,39 +318,15 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     return this.step1Form.get('description');
   }
 
-  listeDelegationGestionProprietaire(numeroDeLaPage: number, elementsParPage: number): void {
-    this.delegationGestionService.getAllByProprietairPaginees(numeroDeLaPage, elementsParPage).subscribe(
-      (response) => {
-        this.delegationGestions = response;
+  listeDelegationsGestions(numeroDeLaPage: number, elementsParPage: number): void {
+    this.delegationGestionService.getDelegationsGestionsPaginees(numeroDeLaPage, elementsParPage).subscribe(
+      (data) => {
+        this.delegationGestions = data;
         if (this.delegationReussie) {
           this.messageService.add({ severity: 'success', summary: 'Délégation de gestion réussie', detail: 'Le bien correspondant a été délégué avec succès.' });
         }
       }
-    );
-  }
-
-  listeDelegationGestionGestionnaire(numeroDeLaPage: number, elementsParPage: number): void {
-    this.delegationGestionService.getAllByGestionnairePaginees(numeroDeLaPage, elementsParPage).subscribe(
-      (response) => {
-        this.delegationGestions = response;
-      }
-    );
-  }
-
-  listeDelegationsGestionsOfAgencesByResponsable(numeroDeLaPage: number, elementsParPage: number): void {
-    this.delegationGestionService.getDelegationsGestionsOfAgencesByResponsablePaginees(numeroDeLaPage, elementsParPage).subscribe(
-      (response) => {
-        this.delegationGestions = response;
-      }
-    );
-  }
-
-  listeDelegationsGestionsOfAgencesByAgent(numeroDeLaPage: number, elementsParPage: number): void {
-    this.delegationGestionService.getDelegationsGestionsOfAgencesByAgentPaginees(numeroDeLaPage,elementsParPage).subscribe(
-      (response) => {
-        this.delegationGestions = response;
-      }
-    );
+    )
   }
 
   getImagesBienImmobilier(id: number): void {
@@ -393,37 +401,39 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
   }
 
   voirListeDelegationsGestions(): void {
-    this.step1Form.reset();
-    this.step2Form.reset();
-    this.resetPublicationForm();
-    this.delegationGestionData.delete('images');
-    this.delegationGestionData.delete('delegationGestionJson');
-    this.delegationGestionData.delete('caracteristiquesJson');
-    if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
-      this.listeDelegationGestionProprietaire(this.numeroDeLaPage, this.elementsParPage);
-    } else if (this.user.role.code == 'ROLE_DEMARCHEUR' || this.user.role.code == 'ROLE_GERANT') {
-      this.listeDelegationGestionGestionnaire(this.numeroDeLaPage, this.elementsParPage);
-    } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.listeDelegationsGestionsOfAgencesByResponsable(this.numeroDeLaPage, this.elementsParPage);
-    } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.listeDelegationsGestionsOfAgencesByAgent(this.numeroDeLaPage, this.elementsParPage);
-    }
-    this.delegationReussie = false;
+    // this.step1Form.reset();
+    // this.step2Form.reset();
+    // this.resetPublicationForm();
+    // this.imgURLs = [];
+    // this.imagesBienImmobilier = [];
+    // this.delegationGestionForm2 = new DelegationGestionForm2();
+    // this.typeDeBienSelectionne = new TypeDeBien();
+    // this.categorieSelectionnee = '';
+    // this.paysSelectionne = new Pays();
+    // this.regionSelectionnee = new Region();
+    // this.villeSelectionnee = new Ville();
+    // this.quartierSelectionne = new Quartier();
+    // this.delegationGestionData.delete('images');
+    // this.delegationGestionData.delete('delegationGestionJson');
+    // this.delegationGestionData.delete('caracteristiquesJson');
+    // if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
+    //   this.listeDelegationGestionProprietaire(this.numeroDeLaPage, this.elementsParPage);
+    // } else if (this.user.role.code == 'ROLE_DEMARCHEUR' || this.user.role.code == 'ROLE_GERANT') {
+    //   this.listeDelegationGestionGestionnaire(this.numeroDeLaPage, this.elementsParPage);
+    // } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
+    //   this.listeDelegationsGestionsOfAgencesByResponsable(this.numeroDeLaPage, this.elementsParPage);
+    // } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
+    //   this.listeDelegationsGestionsOfAgencesByAgent(this.numeroDeLaPage, this.elementsParPage);
+    // }
+    // this.delegationReussie = false;
     this.affichage = 1;
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegations-gestions']);
   }
 
   paginationListeDelegationsGestions(event: any) {
     this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
-      this.listeDelegationGestionProprietaire(this.numeroDeLaPage, this.elementsParPage);
-    } else if (this.user.role.code == 'ROLE_DEMARCHEUR' || this.user.role.code == 'ROLE_GERANT') {
-      this.listeDelegationGestionGestionnaire(this.numeroDeLaPage, this.elementsParPage);
-    } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.listeDelegationsGestionsOfAgencesByResponsable(this.numeroDeLaPage, this.elementsParPage);
-    } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.listeDelegationsGestionsOfAgencesByAgent(this.numeroDeLaPage, this.elementsParPage);
-    }
+    this.listeDelegationsGestions(this.numeroDeLaPage, this.elementsParPage)
   }
 
   //Détails caracteristiques d'un bien
@@ -488,6 +498,12 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     this.getImagesBienImmobilier(idBienImmobilier)
     this.detailDelegationGestion(idDelegationGestion);
     this.affichage = 2;
+  }
+
+  //Page détail par url
+  voirPageDetail(idDelegationGestion: number, idBien: number): void {
+    this.getImagesBienImmobilier(idBien);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegations-gestions', idDelegationGestion], { queryParams: { idBien: idBien } });
   }
 
   //Fonction pour sélectionner une agence immobiliere
@@ -923,9 +939,6 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
   deleguerNotBienAssocieIfUserDemarcheurOrGerant(): void {
     this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
     this.delegationGestionForm2.categorie = this.categorieSelectionnee;
-    this.delegationGestionForm2.pays = this.paysSelectionne;
-    this.delegationGestionForm2.region = this.regionSelectionnee;
-    this.delegationGestionForm2.ville = this.villeSelectionnee;
     this.delegationGestionForm2.quartier = this.quartierSelectionne;
 
     for (const image of this.imagesBienImmobilier) {
@@ -988,9 +1001,6 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
     this.delegationGestionForm2.categorie = this.categorieSelectionnee;
     this.delegationGestionForm2.agenceImmobiliere = this.agenceSelectionnee;
-    this.delegationGestionForm2.pays = this.paysSelectionne;
-    this.delegationGestionForm2.region = this.regionSelectionnee;
-    this.delegationGestionForm2.ville = this.villeSelectionnee;
     this.delegationGestionForm2.quartier = this.quartierSelectionne;
 
     for (const image of this.imagesBienImmobilier) {
@@ -1583,6 +1593,273 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     const delegationGestionInStore = JSON.parse(localStorage.getItem('delegationGestion')!);
     console.log(delegationGestionInStore)
     this.afficherPageDetail(delegationGestionInStore.id, delegationGestionInStore.bienImmobilier.id);
+  }
+
+  afficherContratVente(contratBien: BienImmobilier) {
+    return contratBien.typeDeBien.designation == 'Terrain' ||
+    contratBien.typeDeBien.designation == 'Villa' ||
+    contratBien.typeDeBien.designation == 'Maison' ||
+    contratBien.typeDeBien.designation == 'Immeuble';
+  }
+
+  afficherContratLocation(contratBien: BienImmobilier) {
+    return contratBien.typeDeBien.designation == 'Maison' ||
+    contratBien.typeDeBien.designation == 'Immeuble' ||
+    contratBien.typeDeBien.designation == 'Villa' ||
+    contratBien.typeDeBien.designation == 'Chambre' ||
+    contratBien.typeDeBien.designation == 'Chambre salon' ||
+    contratBien.typeDeBien.designation == 'Appartement' ||
+    contratBien.typeDeBien.designation == 'Magasin' ||
+    contratBien.typeDeBien.designation == 'Bureau'
+  }
+
+  voirListeContrats(codeBien: string, contratBien: BienImmobilier): void {
+    this.contratBien = contratBien;
+    this.listeContratsLocationsByCodeBien(codeBien, this.numeroDeLaPageContratLocation, this.elementsParPageContratLocation);
+    this.listeContratsVentesByCodeBien(codeBien, this.numeroDeLaPageContratVente, this.elementsParPageContratVente);
+    this.affichage = 6;
+  }
+
+  listeContratsLocationsByCodeBien(codeBien: string, numeroDeLaPageContratLocation: number, elementsParPageContatLocation: number): void {
+    this.contratLocationService.getContratsLocationsByCodeBien(codeBien, numeroDeLaPageContratLocation, elementsParPageContatLocation).subscribe(
+      (response) => {
+        this.contratsLocations = response;
+      }
+    )
+  }
+
+  listeContratsVentesByCodeBien(codeBien: string, numeroDeLaPageContratVente: number, elementsParPageContratVente: number): void {
+    this.contratVenteService.getContratsVentesByCodeBien(codeBien, numeroDeLaPageContratVente, elementsParPageContratVente).subscribe(
+      (response) => {
+        this.contratsVentes = response;
+      }
+    )
+  }
+
+  paginationContratVente(event: any) {
+    this.numeroDeLaPageContratVente = event.first / event.rows;
+    this.elementsParPageContratVente = event.rows;
+    this.listeContratsVentesByCodeBien(this.codeBien, this.numeroDeLaPageContratVente, this.elementsParPageContratVente);
+  }
+
+  paginationContratLocation(event: any) {
+    this.numeroDeLaPageContratLocation = event.first / event.rows;
+    this.elementsParPageContratLocation = event.rows;
+    this.listeContratsLocationsByCodeBien(this.codeBien, this.numeroDeLaPageContratLocation, this.elementsParPageContratLocation);
+  }
+
+  afficherDetailDelegationGestion() {
+    this.affichage = 2;
+  }
+
+  detailContratLocation(id: number): void {
+    this.contratLocationService.findById(id).subscribe(
+      (response) => {
+        this.contrat = response;
+        if (this.user.role.code == 'ROLE_CLIENT') {
+          this.listeMotifs(this.contrat.codeContrat, this.contrat.refuserPar);
+        } else {
+          this.listeMotifs(this.contrat.codeContrat, this.contrat.annulerPar);
+        }
+      }
+    )
+  }
+
+  detailContratVente(id: number): void {
+    this.contratVenteService.findById(id).subscribe(
+      (response) => {
+        this.contrat = response;
+        if (this.user.role.code == 'ROLE_CLIENT') {
+          this.listeMotifs(this.contrat.codeContrat, this.contrat.refuserPar);
+        } else {
+          this.listeMotifs(this.contrat.codeContrat, this.contrat.annulerPar);
+        }
+      }
+    )
+  }
+
+  afficherPageDetailContratVente(id: number): void {
+    this.detailContratVente(id);
+    this.affichage = 8;
+  }
+
+  afficherPageDetailContratLocation(id: number): void {
+    this.detailContratLocation(id);
+    this.affichage = 7;
+  }
+
+  retourListeContrats() {
+    this.affichage = 6;
+  }
+
+  listeMotifs(code: string, creerPar: number): void {
+    this.motifRejetService.getMotifsByCodeAndCreerPar(code, creerPar).subscribe(
+      (data: MotifRejet[]) => {
+        this.listMotifs = data;
+      }
+    );
+  }
+
+  telechargerContratLocation(id: number): void {
+    this.contratLocationService.telecharger(id).subscribe(
+      response => {
+        const file = new Blob([response], { type: 'application/pdf' });
+
+        // Créer un objet URL pour le fichier PDF
+        const fileURL = URL.createObjectURL(file);
+
+        // Ouvrir le PDF dans un nouvel onglet
+        window.open(fileURL, '_blank');
+      }
+    )
+  }
+
+  telechargerContratVente(id: number): void {
+    this.contratVenteService.telecharger(id).subscribe(
+      response => {
+        const file = new Blob([response], { type: 'application/pdf' });
+
+        // Créer un objet URL pour le fichier PDF
+        const fileURL = URL.createObjectURL(file);
+
+        // Ouvrir le PDF dans un nouvel onglet
+        window.open(fileURL, '_blank');
+      }
+    )
+  }
+
+  calculerProchainPaiement(dateDebut: Date, jourSupplementPaiement: number, debutPaiement: number): Date {
+    const prochainPaiementDate = new Date(dateDebut);
+    prochainPaiementDate.setDate(prochainPaiementDate.getDate() + jourSupplementPaiement);
+    prochainPaiementDate.setMonth(prochainPaiementDate.getMonth() + debutPaiement);
+    return prochainPaiementDate;
+  }
+
+  afficherCategorie(designation: string): boolean {
+    return designation == 'Maison' ||
+    designation == 'Villa' ||
+    designation == 'Immeuble' ||
+    designation == 'Appartement' ||
+    designation == 'Chambre salon' ||
+    designation == 'Chambre' ||
+    designation == 'Bureau';
+  }
+
+  voirListePlanificationsPaiements(contrat: any): void {
+    this.codeContrat = contrat.codeContrat;
+    this.contrat = contrat;
+    this.listePlanificationsPaiementParCodeContrat(this.codeContrat, this.numeroDeLaPagePlanification, this.elementsParPagePlanification);
+    this.affichage = 9;
+  }
+
+  listePlanificationsPaiementParCodeContrat(codeContrat: string, numeroDeLaPagePlanification: number, elementsParPagePlanification: number) {
+    this.planificationPaiementService.getPlanificationsPaiementsByCodeContrat(codeContrat, numeroDeLaPagePlanification, elementsParPagePlanification).subscribe(
+      (response) => {
+        this.planificationsPaiements = response;
+      }
+    )
+  }
+
+  detailPlanificationPaiement(id: number): void {
+    this.planificationPaiementService.findById(id).subscribe(
+      (response) => {
+        this.planificationPaiement = response;
+        if (this.planificationPaiement.typePlanification == 'Paiement de location') {
+          this.detailContratLocation(this.planificationPaiement.contrat.id);
+        } else {
+          this.detailContratVente(this.planificationPaiement.contrat.id);
+        }
+      }
+    )
+  }
+
+  afficherPageDetailPlanificationPaiement(id: number): void {
+    this.detailPlanificationPaiement(id);
+    this.affichage = 10;
+  }
+
+  paginationPlanificationPaiement(event: any) {
+    this.numeroDeLaPagePlanification = event.first / event.rows;
+    this.elementsParPagePlanification = event.rows;
+    this.listePlanificationsPaiementParCodeContrat(this.codeContrat, this.numeroDeLaPagePlanification, this.elementsParPagePlanification);
+  }
+
+  detailPaiementParCodePlanification(codePlanification: string): void {
+    this.paiementService.findByCodePlanification(codePlanification).subscribe(
+      (response) => {
+        this.paiement = response;
+        if (this.paiement.planificationPaiement.typePlanification == 'Paiement de location') {
+          this.detailContratLocation(this.paiement.planificationPaiement.contrat.id);
+        } else {
+          this.detailContratVente(this.paiement.planificationPaiement.contrat.id);
+        }
+      }
+    )
+  }
+
+  detailPaiementParContratId(contratId: number): void {
+    this.paiementService.findByContratId(contratId).subscribe(
+      (response) => {
+        this.paiement = response;
+        if (this.paiement.planificationPaiement.typePlanification == 'Paiement de location') {
+          this.detailContratLocation(this.paiement.planificationPaiement.contrat.id);
+        } else {
+          this.detailContratVente(this.paiement.planificationPaiement.contrat.id);
+        }
+      }
+    )
+  }
+
+  voirPageDetailPaiementParCodePlanification(codePlanification: string): void {
+    this.detailPaiementParCodePlanification(codePlanification);
+    this.affichage = 11;
+  }
+
+  voirPageDetailPaiementParContratId(contratId: number): void {
+    this.detailPaiementParContratId(contratId);
+    this.affichage = 17;
+  }
+
+  telechargerFichePaiement(id: number): void {
+    this.paiementService.telecharger(id).subscribe(
+      (response) => {
+        const file = new Blob([response], { type: 'application/pdf' });
+        const fileUrl = URL.createObjectURL(file);
+        window.open(fileUrl, '_blank');
+      }
+    )
+  }
+
+  navigateURLBYUSER(user: any): string {
+    let roleBasedURL = '';
+
+    switch (user.role.code) {
+      case 'ROLE_ADMINISTRATEUR':
+        roleBasedURL = '/admin';
+        break;
+      case 'ROLE_PROPRIETAIRE':
+        roleBasedURL = '/proprietaire';
+        break;
+      case 'ROLE_RESPONSABLE':
+        roleBasedURL = '/responsable/agences-immobilieres';
+        break;
+      case 'ROLE_DEMARCHEUR':
+        roleBasedURL = '/demarcheur';
+        break;
+      case 'ROLE_GERANT':
+        roleBasedURL = '/gerant';
+        break;
+      case 'ROLE_AGENTIMMOBILIER':
+        roleBasedURL = '/agent-immobilier/agences-immobilieres';
+        break;
+      case 'ROLE_CLIENT':
+        roleBasedURL = '/client';
+        break;
+      default:
+        break;
+    }
+
+    return roleBasedURL;
   }
 
   ngOnDestroy(): void {

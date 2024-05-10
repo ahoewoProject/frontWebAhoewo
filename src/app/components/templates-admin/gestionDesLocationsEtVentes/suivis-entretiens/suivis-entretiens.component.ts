@@ -32,6 +32,7 @@ export class SuivisEntretiensComponent implements OnInit, OnDestroy {
   contratsLocations: ContratLocation[] = [];
   messageSuccess: string | null = null;
   messageErreur: string = "";
+  suiviEntretienReussi: any;
 
   constructor(private suiviEntretienService: SuiviEntretienService, private contratLocationService: ContratLocationService,
     private personneService: PersonneService, private activatedRoute: ActivatedRoute,
@@ -45,6 +46,7 @@ export class SuivisEntretiensComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.suiviEntretienReussi = this.activatedRoute.snapshot.queryParams['suiviEntretienReussi'];
     this.listeContratsLocations();
     this.initSuiviEntretienForm();
     this.initActivatedRoute();
@@ -67,6 +69,9 @@ export class SuivisEntretiensComponent implements OnInit, OnDestroy {
     this.suiviEntretienService.getSuiviEntretiens(numeroDeLaPage, elementsParPage).subscribe(
       (data) => {
         this.suivisEntretiens = data;
+        if (this.suiviEntretienReussi) {
+          this.messageService.add({ severity: 'success', summary: 'Signalement réussi', detail: 'Le souci d\'entretien a été signalé avec succès.' });
+        }
       }
     )
   }
@@ -139,6 +144,10 @@ export class SuivisEntretiensComponent implements OnInit, OnDestroy {
     this.affichage = 3;
   }
 
+  datePrevueChoisie(event: any): void {
+    this.datePrevueSelectionnee = event;
+  }
+
   ajouterSuiviEntretien(): void {
     this.suiviEntretien.contratLocation = this.contratLocationSelectionne;
     this.suiviEntretienService.ajouterSuiviEntretien(this.suiviEntretien).subscribe(
@@ -161,10 +170,6 @@ export class SuivisEntretiensComponent implements OnInit, OnDestroy {
         }
       }
     )
-  }
-
-  datePrevueChoisie(event: any): void {
-    this.datePrevueSelectionnee = event;
   }
 
   afficherPageModifier(id: number): void {

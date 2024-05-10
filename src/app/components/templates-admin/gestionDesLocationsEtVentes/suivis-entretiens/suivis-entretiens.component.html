@@ -23,8 +23,8 @@
                             <label><span class="flaticon-search"></span></label>
                         </div>
                     </div>
-                    &nbsp;
-                    <a *ngIf="user.role.code == 'ROLE_CLIENT'" type="button" (click)="afficherPageAjouter()" class="ud-btn btn-thm">Ajouter un entretien</a>
+                    <!-- &nbsp;
+                    <a *ngIf="user.role.code == 'ROLE_CLIENT'" type="button" (click)="afficherPageAjouter()" class="ud-btn btn-thm">Signaler un souci d'entretien</a> -->
                 </div>
             </div>
         </div>
@@ -159,7 +159,8 @@
                         <div class="col-sm-6" *ngIf="user.role.code == 'ROLE_CLIENT'">
                             <p class="fw600 mb10 ff-heading dark-color">Propriétaire</p>
                             <p class="text">{{ suiviEntretien.contratLocation.bienImmobilier.agenceImmobiliere ? suiviEntretien.contratLocation.bienImmobilier.agenceImmobiliere.nomAgence : suiviEntretien.contratLocation.bienImmobilier.personne.nom + ' ' + suiviEntretien.contratLocation.bienImmobilier.personne.prenom
-                                }}</p>
+                                }}
+                            </p>
                         </div>
                     </div>
 
@@ -228,7 +229,7 @@
         <div class="row align-items-center pb40">
             <div class="col-xxl-3">
                 <div class="dashboard_title_area">
-                    <h4>Ajout d'un entretien</h4>
+                    <h4>Signaler un souci d'entretien</h4>
                 </div>
             </div>
             <div class="col-xxl-9">
@@ -281,7 +282,7 @@
                         <div class="col-md-12">
                             <div class="text-end">
                                 <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button> &nbsp;
-                                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': suiviEntretienForm.invalid }" type="submit">Ajouter</button>
+                                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': suiviEntretienForm.invalid }" type="submit">Enregistrer</button>
                             </div>
                         </div>
                     </form>
@@ -296,7 +297,7 @@
         <div class="row align-items-center pb40">
             <div class="col-xxl-7">
                 <div class="dashboard_title_area">
-                    <h4>Modification d'un entretien</h4>
+                    <h4>Modification d'un souci d'entretien</h4>
                 </div>
             </div>
             <div class="col-xxl-5">

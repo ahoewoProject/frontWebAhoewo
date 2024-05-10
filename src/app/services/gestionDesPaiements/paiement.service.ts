@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { Paiement } from 'src/app/models/gestionDesPaiements/Paiement';
+import { PlanificationPaiement } from 'src/app/models/gestionDesPaiements/PlanificationPaiement';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -33,6 +34,18 @@ export class PaiementService {
     return this.httpClient.get<Paiement>(this.url + 'paiement/' + id);
   }
 
+  // Recherche d'une occurence de paiement par code de planification;
+  // url: http://localhost:4040/api/paiement/code-planification/{codePlanification}
+  findByCodePlanification(codePlanification: string): Observable<Paiement> {
+    return this.httpClient.get<Paiement>(this.url + 'paiement/code-planification/' + codePlanification);
+  }
+
+  // Recherche d'une occurence de paiement par contrat ID;
+  // url: http://localhost:4040/api/paiement/contrat-id/{contratId}
+  findByContratId(contratId: number): Observable<Paiement> {
+    return this.httpClient.get<Paiement>(this.url + 'paiement/contrat-id/' + contratId);
+  }
+
   // Ajout d'un paiement
   // url: http://localhost:4040/api/paiement/ajouter
   ajouterPaiement(p: Paiement): Observable<Paiement> {
@@ -43,5 +56,15 @@ export class PaiementService {
   // url: http://localhost:4040/api/paiement/generer-pdf/{id}
   genererPaiementPdf(id: number): Observable<Blob> {
     return this.httpClient.get<Blob>(this.url + 'paiement/generer-pdf/' + id)
+  }
+
+  effectuerPaiement(p: PlanificationPaiement): Observable<any> {
+    return this.httpClient.post<any>(this.url + 'effectuer-paiement', p);
+  }
+
+  // Télécharger fiche paiement ;
+  // url: http://localhost:4040/api/paiement/generer-pdf/{id}
+  telecharger(id: number): Observable<any> {
+    return this.httpClient.get(this.url + 'paiement/generer-pdf/' + id, { responseType: 'blob' });
   }
 }

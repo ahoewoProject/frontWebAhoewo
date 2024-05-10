@@ -19,64 +19,19 @@ export class DelegationGestionService {
     this.url = APIEndpoint + 'api/';
   }
 
-  // Liste des delegations de gestion par proprietaire
-  // url: http://localhost:4040/api/delegations-gestions/proprietaire
-  getAllByProprietaire(): Observable<DelegationGestion[]> {
-    return this.httpClient.get<DelegationGestion[]>(this.url + 'delegations-gestions/proprietaire');
+  // Liste des delegations de gestion
+  // url: http://localhost:4040/api/delegations-gestions-list
+  getDelegationsGestionsList(): Observable<DelegationGestion[]> {
+    return this.httpClient.get<DelegationGestion[]>(this.url + 'delegations-gestions-list');
   }
 
-  // Liste des delegations de gestion par gestionnaire
-  // url: http://localhost:4040/api/delegations-gestions/gestionnaire
-  getAllByGestionnaire(): Observable<DelegationGestion[]> {
-    return this.httpClient.get<DelegationGestion[]>(this.url + 'delegations-gestions/gestionnaire');
-  }
-
-  // Liste des delegations de gestion des agences par responsable
-  // url: http://localhost:4040/api/delegations-gestions/agences/responsable
-  getDelegationsGestionsOfAgencesByResponsable(): Observable<DelegationGestion[]> {
-    return this.httpClient.get<DelegationGestion[]>(this.url + 'delegations-gestions/agences/responsable');
-  }
-
-  // Liste des delegations de gestion des agences par agent immobiliers
-  // url: http://localhost:4040/api/delegations-gestions/agences/agent
-  getDelegationsGestionsOfAgencesByAgent(): Observable<Page<DelegationGestion>> {
-    return this.httpClient.get<Page<DelegationGestion>>(this.url + 'delegations-gestions/agences/agent');
-  }
-
-    // Liste des delegations de gestion paginées par proprietaire
-  // url: http://localhost:4040/api/delegations-gestions/proprietaire/paginees
-  getAllByProprietairPaginees(numeroDeLaPage: number, elementsParPage: number): Observable<Page<DelegationGestion>> {
+  // Liste des delegations de gestion paginées
+  // url: http://localhost:4040/api/delegations-gestions-paginees
+  getDelegationsGestionsPaginees(numeroDeLaPage: number, elementsParPage: number): Observable<Page<DelegationGestion>> {
     let params = new HttpParams()
       .set('numeroDeLaPage', numeroDeLaPage.toString())
       .set('elementsParPage', elementsParPage.toString());
-    return this.httpClient.get<Page<DelegationGestion>>(this.url + 'delegations-gestions/proprietaire/paginees', {params: params});
-  }
-
-  // Liste des delegations de gestion paginées par gestionnaire
-  // url: http://localhost:4040/api/delegations-gestions/gestionnaire/paginees
-  getAllByGestionnairePaginees(numeroDeLaPage: number, elementsParPage: number): Observable<Page<DelegationGestion>> {
-    let params = new HttpParams()
-      .set('numeroDeLaPage', numeroDeLaPage.toString())
-      .set('elementsParPage', elementsParPage.toString());
-    return this.httpClient.get<Page<DelegationGestion>>(this.url + 'delegations-gestions/gestionnaire/paginees', {params: params});
-  }
-
-  // Liste des delegations de gestion paginées des agences par responsable
-  // url: http://localhost:4040/api/delegations-gestions/agences/responsable/paginees
-  getDelegationsGestionsOfAgencesByResponsablePaginees(numeroDeLaPage: number, elementsParPage: number): Observable<Page<DelegationGestion>> {
-    let params = new HttpParams()
-      .set('numeroDeLaPage', numeroDeLaPage.toString())
-      .set('elementsParPage', elementsParPage.toString());
-    return this.httpClient.get<Page<DelegationGestion>>(this.url + 'delegations-gestions/agences/responsable/paginees', {params: params});
-  }
-
-  // Liste des delegations de gestion paginées des agences par agent immobiliers
-  // url: http://localhost:4040/api/delegations-gestions/agences/agent/paginees
-  getDelegationsGestionsOfAgencesByAgentPaginees(numeroDeLaPage: number, elementsParPage: number): Observable<Page<DelegationGestion>> {
-    let params = new HttpParams()
-      .set('numeroDeLaPage', numeroDeLaPage.toString())
-      .set('elementsParPage', elementsParPage.toString());
-    return this.httpClient.get<Page<DelegationGestion>>(this.url + 'delegations-gestions/agences/agent/paginees', {params: params});
+    return this.httpClient.get<Page<DelegationGestion>>(this.url + 'delegations-gestions-paginees', {params: params});
   }
 
   // Affichage des détails d'une delegation de gestion par sa clé primaire

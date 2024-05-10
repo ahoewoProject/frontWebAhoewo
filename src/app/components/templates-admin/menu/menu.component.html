@@ -142,7 +142,7 @@
         </div>
         <div class="sidebar_list_item">
             <a [routerLink]="['/notaire/notifications']" routerLinkActive="-is-active">
-                <i class="flaticon-bell mr15"></i>&nbsp;Certifications
+                <i class="flaticon-bell mr15"></i>&nbsp;Notifications
             </a>
         </div>
         <!-- End Menu Gestion des comptes -->
@@ -246,6 +246,10 @@
                 <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
         </div>
         <!-- End Menu Gestion des paiements -->
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/proprietaire/parametres']" routerLinkActive="-is-active">
+                <i class="fa-light fa-gear mr15"></i>&nbsp;&nbsp;Paramètres</a>
+        </div>
     </div>
     <!-- End Propriétaire -->
 
@@ -389,7 +393,8 @@
             </a>
         </div>
         <div class="sidebar_list_item">
-            <a [routerLink]="['/responsable/agences-immobilieres/delegations-gestions']" routerLinkActive="-is-active">
+            <a [routerLink]="['/responsable/agences-immobilieres/delegations-gestions'] ||
+            ['/responsable/agences-immobilieres/delegations-gestions', 'id'] || ['/responsable/agences-immobilieres/delegations-gestions/contrats']" routerLinkActive="-is-active">
                 <i class="fa-light fa-handshake mr15"></i>Biens délégués
             </a>
         </div>
@@ -455,6 +460,10 @@
                 <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
         </div>
         <!-- End Menu Gestion des paiements -->
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/responsable/agences-immobilieres/parametres']" routerLinkActive="-is-active">
+                <i class="fa-light fa-gear mr15"></i>&nbsp;&nbsp;Paramètres</a>
+        </div>
     </div>
     <!-- End Responsable -->
 
@@ -661,6 +670,10 @@
                 <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
         </div>
         <!-- End Menu Gestion des paiements -->
+        <div class="sidebar_list_item">
+            <a [routerLink]="['/demarcheur/parametres']" routerLinkActive="-is-active">
+                <i class="fa-light fa-gear mr15"></i>&nbsp;Paramètres</a>
+        </div>
     </div>
     <!-- End Démarcheur -->
 

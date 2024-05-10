@@ -64,11 +64,13 @@
                                             <td class="vam">
                                                 <div class="d-flex">
                                                     <button pButton type="button" icon="pi pi-eye" (click)="afficherPageDetailContratLocation(contratLocation.id)" pTooltip="Détails" tooltipPosition="top" class="p-button-text p-button-info">
-                            </button>
+                          </button>
 
                                                     <button *ngIf="(contratLocation.etatContrat == 'En attente' || contratLocation.etatContrat == 'Modifié') && user.role.code == 'ROLE_CLIENT'" pButton type="button" icon="pi pi-pencil" (click)="afficherModalDemandeModificationContratLoc(contratLocation.id, contratLocation.codeContrat)"
                                                         pTooltip="Demander une modification" tooltipPosition="top" class="p-button-text p-button-warning">
-                            </button>
+                          </button>
+                                                    <button *ngIf="user.role.code == 'ROLE_CLIENT'" pButton type="button" icon="pi pi-wrench" (click)="afficherFormulaireSuiviEntretien(contratLocation)" pTooltip="Signaler un souci d'entretien" tooltipPosition="top" class="p-button-text p-button-primary">
+                          </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -82,7 +84,8 @@
                                 </p-paginator>
                             </div>
                             <div *ngIf="contratsLocations.totalElements == 0" class="mbp_pagination text-center mt30">
-                                <p class="mt10 pagination_page_count text-center">Aucun contrat de location enregistré pour le moment</p>
+                                <p class="mt10 pagination_page_count text-center">Aucun contrat de location enregistré pour le moment
+                                </p>
                             </div>
                         </p-tabPanel>
                         <!-- End Table Contrats de locations -->
@@ -137,11 +140,11 @@
                                             <td class="vam">
                                                 <div class="d-flex">
                                                     <button pButton type="button" icon="pi pi-eye" (click)="afficherPageDetailContratVente(contratVente.id)" pTooltip="Détails" tooltipPosition="top" class="p-button-text p-button-info">
-                            </button>
+                          </button>
 
                                                     <button *ngIf="(contratVente.etatContrat == 'En attente' || contratVente.etatContrat == 'Modifié') && user.role.code == 'ROLE_CLIENT'" pButton type="button" icon="pi pi-pencil" (click)="afficherModalDemandeModificationContratVen(contratVente.id, contratVente.codeContrat)"
                                                         pTooltip="Demander une modification" tooltipPosition="top" class="p-button-text p-button-warning">
-                            </button>
+                          </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -188,7 +191,7 @@
 
     <!-- Start Détail d'un contrat de location -->
     <div *ngIf="affichage == 2">
-        <div class="row align-items-center pb40">
+        <div class="row align-items-center">
             <div class="col-xxl-5">
                 <div class="dashboard_title_area">
                     <h4>Détails d'un contrat de location</h4>
@@ -196,29 +199,37 @@
             </div>
             <div class="col-xxl-7">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end" *ngIf="user.role.code == 'ROLE_CLIENT'">
-                    <a href="{{this.APIEndpoint+'api/contrat-location/generer-pdf/'+contratLocation.id}}" class="ud-btn btn-annuler">Imprimer</a> &nbsp;
+                    <a type="button" (click)="telechargerContratLocation(contratLocation.id)" class="ud-btn btn-annuler">Imprimer</a> &nbsp;
                     <a class="ud-btn btn-valider" type="button" (click)="validerContratLocation(contratLocation.id)" *ngIf="contratLocation.etatContrat == 'En attente'
             || contratLocation.etatContrat == 'Modifié'">
             Valider
-          </a> &nbsp;
+          </a>
                     <a class="ud-btn btn-danger" type="button" (click)="afficherModalRefus()" *ngIf="contratLocation.etatContrat == 'En attente'
             || contratLocation.etatContrat == 'Modifié'">
             Refuser
           </a> &nbsp;
                     <a type="button" (click)="voirListe()" class="ud-btn btn-retour">Retour</a>
                 </div>
-                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end" *ngIf="user.role.code != 'ROLE_CLIENT'">
-                    <a href="{{this.APIEndpoint+'api/contrat-location/generer-pdf/'+contratLocation.id}}" class="ud-btn btn-valider">Imprimer</a> &nbsp;
-                    <a class="ud-btn btn-annuler" type="button" (click)="terminerContratLocation(contratLocation.id)" *ngIf="contratLocation.etatContrat == 'En cours'">
-            Terminer
-          </a> &nbsp;
-                    <a class="ud-btn btn-modifier" type="button" (click)="afficherPageModifierContratLocation(contratLocation.id)" *ngIf="contratLocation.etatContrat == 'En attente'
-            || contratLocation.etatContrat == 'Modifié' && afficherBoutonSiBienDelegue(contratLocation.demandeLocation.publication.bienImmobilier.estDelegue)">
-            Modifier
-          </a> &nbsp;
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a type="button" *ngIf="contratLocation.etatContrat == 'En cours'" (click)="voirFormulairePlanificationLoc(contratLocation)" class="ud-btn btn-annuler">Planifier un paiement de location</a>
+                    <span *ngIf="user.role.code != 'ROLE_CLIENT'">&nbsp;</span>
+                    <a type="button" (click)="telechargerContratLocation(contratLocation.id)" class="ud-btn btn-valider" *ngIf="user.role.code != 'ROLE_CLIENT'">Imprimer</a>
+                    <span *ngIf="user.role.code != 'ROLE_CLIENT'">&nbsp;</span>
+                    <a class="ud-btn btn-annuler" type="button" (click)="terminerContratLocation(contratLocation.id)" *ngIf="contratLocation.etatContrat == 'En cours'">Terminer</a>
+                    <span *ngIf="contratLocation.etatContrat == 'En cours'">&nbsp;</span>
+                    <a class="ud-btn btn-modifier" type="button" (click)="afficherPageModifierContratLocation(contratLocation.id)" *ngIf="(contratLocation.etatContrat == 'En attente' || contratLocation.etatContrat == 'Modifié') && afficherBoutonSiBienDelegue(contratLocation.demandeLocation.publication.bienImmobilier.estDelegue)">Modifier</a>
+                    <span *ngIf="contratLocation.etatContrat == 'En attente' || contratLocation.etatContrat == 'Modifié'">&nbsp;</span>
                     <a type="button" (click)="voirListe()" class="ud-btn btn-retour">Retour</a>
                 </div>
             </div>
+            <p-messages severity="info">
+                <ng-template pTemplate>
+                    <div class="ml-2">
+                        <th scope="col">Contrat : {{ contratLocation.codeContrat }} - Bien : {{ contratLocation.bienImmobilier.typeDeBien.designation }} | {{ contratLocation.bienImmobilier.quartier.ville.region.libelle }} | {{ contratLocation.bienImmobilier.quartier.ville.libelle
+                            }} | {{ contratLocation.bienImmobilier.quartier.libelle }} | {{ contratLocation.bienImmobilier.adresse }} | {{ contratLocation.bienImmobilier.surface }} m²</th>
+                    </div>
+                </ng-template>
+            </p-messages>
         </div>
 
         <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
@@ -328,7 +339,8 @@
 
                                     <div class="col-sm-6 col-xl-4">
                                         <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
-                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.telephone }}</p>
+                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.telephone }}
+                                        </p>
                                     </div>
                                 </div>
 
@@ -346,7 +358,8 @@
 
                                     <div class="col-sm-6 col-xl-4">
                                         <p class="fw600 mb5 ff-heading dark-color">Type de bien</p>
-                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.typeDeBien.designation }}</p>
+                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.typeDeBien.designation }}
+                                        </p>
                                     </div>
 
                                     <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorie(contratLocation.demandeLocation.publication.bienImmobilier.typeDeBien.designation)">
@@ -356,7 +369,8 @@
 
                                     <div class="col-sm-6 col-xl-4">
                                         <p class="fw600 mb5 ff-heading dark-color">Pays</p>
-                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.ville.region.pays.libelle }}</p>
+                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.ville.region.pays.libelle }}
+                                        </p>
                                     </div>
 
                                     <div class="col-sm-6 col-xl-4">
@@ -366,12 +380,14 @@
 
                                     <div class="col-sm-6 col-xl-4">
                                         <p class="fw600 mb5 ff-heading dark-color">Ville</p>
-                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.ville.libelle }}</p>
+                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.ville.libelle }}
+                                        </p>
                                     </div>
 
                                     <div class="col-sm-6 col-xl-4">
                                         <p class="fw600 mb5 ff-heading dark-color">Quartier</p>
-                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.libelle }}</p>
+                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.libelle }}
+                                        </p>
                                     </div>
 
                                     <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.bienImmobilier.adresse">
@@ -381,7 +397,8 @@
 
                                     <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.bienImmobilier.surface">
                                         <p class="fw600 mb5 ff-heading dark-color">Surface</p>
-                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.surface | number }} m²</p>
+                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.surface | number }} m²
+                                        </p>
                                     </div>
                                 </div>
 
@@ -416,7 +433,8 @@
                                 </div>
 
                                 <div class="row" *ngIf="!contratLocation.demandeLocation.publication.agenceImmobiliere">
-                                    <h4 class="title title-detail fz17 mb20" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Démarcheur</h4>
+                                    <h4 class="title title-detail fz17 mb20" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
+                                        Démarcheur</h4>
                                     <h4 class="title title-detail fz17 mb20" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_GERANT'">Gérant</h4>
 
                                     <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_DEMARCHEUR' || contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_GERANT'">
@@ -541,7 +559,8 @@
 
                                     <div class="col-sm-6 col-xl-4">
                                         <p class="fw600 mb5 ff-heading dark-color">Type de bien</p>
-                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.typeDeBien.designation }}</p>
+                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.typeDeBien.designation }}
+                                        </p>
                                     </div>
 
                                     <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorie(contratLocation.demandeLocation.publication.bienImmobilier.typeDeBien.designation)">
@@ -551,7 +570,8 @@
 
                                     <div class="col-sm-6 col-xl-4">
                                         <p class="fw600 mb5 ff-heading dark-color">Pays</p>
-                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.ville.region.pays.libelle }}</p>
+                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.ville.region.pays.libelle }}
+                                        </p>
                                     </div>
 
                                     <div class="col-sm-6 col-xl-4">
@@ -561,12 +581,14 @@
 
                                     <div class="col-sm-6 col-xl-4">
                                         <p class="fw600 mb5 ff-heading dark-color">Ville</p>
-                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.ville.libelle }}</p>
+                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.ville.libelle }}
+                                        </p>
                                     </div>
 
                                     <div class="col-sm-6 col-xl-4">
                                         <p class="fw600 mb5 ff-heading dark-color">Quartier</p>
-                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.libelle }}</p>
+                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.libelle }}
+                                        </p>
                                     </div>
 
                                     <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.bienImmobilier.adresse">
@@ -576,7 +598,8 @@
 
                                     <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.bienImmobilier.surface">
                                         <p class="fw600 mb5 ff-heading dark-color">Surface</p>
-                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.surface | number }} m²</p>
+                                        <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.surface | number }} m²
+                                        </p>
                                     </div>
                                 </div>
 
@@ -611,7 +634,8 @@
                                 </div>
 
                                 <div class="row" *ngIf="!contratLocation.demandeLocation.publication.agenceImmobiliere">
-                                    <h4 class="title title-detail fz17 mb20" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Démarcheur</h4>
+                                    <h4 class="title title-detail fz17 mb20" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
+                                        Démarcheur</h4>
 
                                     <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
                                         <p class="fw600 mb5 ff-heading dark-color">Nom</p>
@@ -643,7 +667,8 @@
                                         <p class="text">{{ contratLocation.fraisDeVisite | number }} FCFA</p>
                                     </div>
 
-                                    <h4 class="title title-detail fz17 mb20" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_PROPRIETAIRE'">Propriétaire</h4>
+                                    <h4 class="title title-detail fz17 mb20" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_PROPRIETAIRE'">
+                                        Propriétaire</h4>
 
                                     <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_PROPRIETAIRE'">
                                         <p class="fw600 mb5 ff-heading dark-color">Nom</p>
@@ -704,7 +729,7 @@
 
     <!-- Start Détail d'un contrat de vente -->
     <div *ngIf="affichage == 3">
-        <div class="row align-items-center pb40">
+        <div class="row align-items-center">
             <div class="col-xxl-5">
                 <div class="dashboard_title_area">
                     <h4>Détails d'un contrat de vente</h4>
@@ -712,11 +737,11 @@
             </div>
             <div class="col-xxl-7">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end" *ngIf="user.role.code == 'ROLE_CLIENT'">
-                    <a href="{{this.APIEndpoint+'api/contrat-vente/generer-pdf/'+contratVente.id}}" class="ud-btn btn-annuler">Imprimer</a> &nbsp;
+                    <a type="button" (click)="telechargerContratVente(contratVente.id)" class="ud-btn btn-annuler">Imprimer</a> &nbsp;
                     <a class="ud-btn btn-valider" type="button" (click)="validerContratVente(contratVente.id)" *ngIf="contratVente.etatContrat == 'En attente'
             || contratVente.etatContrat == 'Modifié'">
             Valider
-          </a> &nbsp;
+          </a>
                     <a class="ud-btn btn-danger" type="button" (click)="afficherModalRefus()" *ngIf="contratVente.etatContrat == 'En attente'
             || contratVente.etatContrat == 'Modifié'">
             Refuser
@@ -724,14 +749,23 @@
                     <a type="button" (click)="voirListe()" class="ud-btn btn-retour">Retour</a>
                 </div>
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end" *ngIf="user.role.code != 'ROLE_CLIENT'">
-                    <a href="{{this.APIEndpoint+'api/contrat-vente/generer-pdf/'+contratVente.id}}" class="ud-btn btn-valider">Imprimer</a> &nbsp;
-                    <a class="ud-btn btn-modifier" type="button" (click)="afficherPageModifierContratVente(contratVente.id)" *ngIf="contratVente.etatContrat == 'En attente'
-            || contratVente.etatContrat == 'Modifié' && afficherBoutonSiBienDelegue(contratVente.demandeAchat.publication.bienImmobilier.estDelegue)">
-            Modifier
-          </a> &nbsp;
+                    <a type="button" *ngIf="contratVente.etatContrat == 'Validé'" (click)="voirFormulairePlanificationAchat(contratVente)" class="ud-btn btn-annuler">Planifier un paiement d'achat</a>
+                    <span *ngIf="user.role.code != 'ROLE_CLIENT'">&nbsp;</span>
+                    <a type="button" (click)="telechargerContratVente(contratVente.id)" class="ud-btn btn-valider">Imprimer</a>
+                    <span *ngIf="user.role.code != 'ROLE_CLIENT'">&nbsp;</span>
+                    <a class="ud-btn btn-modifier" type="button" (click)="afficherPageModifierContratVente(contratVente.id)" *ngIf="(contratVente.etatContrat == 'En attente' || contratVente.etatContrat == 'Modifié') && afficherBoutonSiBienDelegue(contratVente.demandeAchat.publication.bienImmobilier.estDelegue)">Modifier</a>
+                    <span *ngIf="contratVente.etatContrat == 'En attente' || contratVente.etatContrat == 'Modifié'">&nbsp;</span>
                     <a type="button" (click)="voirListe()" class="ud-btn btn-retour">Retour</a>
                 </div>
             </div>
+            <p-messages severity="info">
+                <ng-template pTemplate>
+                    <div class="ml-2">
+                        <th scope="col">Contrat : {{ contratVente.codeContrat }} - Bien : {{ contratVente.bienImmobilier.typeDeBien.designation }} | {{ contratVente.bienImmobilier.quartier.ville.region.libelle }} | {{ contratVente.bienImmobilier.quartier.ville.libelle
+                            }} | {{ contratVente.bienImmobilier.quartier.libelle }} | {{ contratVente.bienImmobilier.adresse }} | {{ contratVente.bienImmobilier.surface }} m²</th>
+                    </div>
+                </ng-template>
+            </p-messages>
         </div>
 
         <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
@@ -877,7 +911,8 @@
 
                                 <div class="row">
                                     <h4 class="title title-detail fz17 mb10">Bien immobilier</h4>
-                                    <p class="fw600 mb5 ff-heading dark-color" *ngIf="contratVente.bienImmobilier.description">Description</p>
+                                    <p class="fw600 mb5 ff-heading dark-color" *ngIf="contratVente.bienImmobilier.description">Description
+                                    </p>
                                     <p class="text justify-text" *ngIf="contratVente.bienImmobilier.description">
                                         {{ contratVente.bienImmobilier.description }}
                                     </p>
@@ -959,7 +994,8 @@
                                 </div>
 
                                 <div class="row" *ngIf="!contratVente.demandeAchat.publication.agenceImmobiliere">
-                                    <h4 class="title title-detail fz17 mb20" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Démarcheur</h4>
+                                    <h4 class="title title-detail fz17 mb20" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Démarcheur
+                                    </h4>
                                     <h4 class="title title-detail fz17 mb20" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_GERANT'">Gérant</h4>
 
                                     <div class="col-sm-6 col-xl-4" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR' || contratVente.demandeAchat.publication.personne.role.code == 'ROLE_GERANT'">
@@ -1104,7 +1140,8 @@
 
                                 <div class="row">
                                     <h4 class="title title-detail fz17 mb10">Bien immobilier</h4>
-                                    <p class="fw600 mb5 ff-heading dark-color" *ngIf="contratVente.bienImmobilier.description">Description</p>
+                                    <p class="fw600 mb5 ff-heading dark-color" *ngIf="contratVente.bienImmobilier.description">Description
+                                    </p>
                                     <p class="text justify-text" *ngIf="contratVente.bienImmobilier.description">
                                         {{ contratVente.bienImmobilier.description }}
                                     </p>
@@ -1365,7 +1402,8 @@
 
                                 <div class="col-lg-6">
                                     <div class="mb20">
-                                        <label class="heading-color ff-heading fw600 mb10">Débuté le paiement du loyer après (*) de mois</label>
+                                        <label class="heading-color ff-heading fw600 mb10">Débuté le paiement du loyer après (*) de
+                      mois</label>
                                         <p-inputNumber class="pInputNumber p-fluid" placeholder="Le nombre de mois" [(ngModel)]="contratLocation.debutPaiement" formControlName="debutPaiement" inputId="debutPaiement" name="debutPaiement" suffix=" mois" [required]="true">
                                         </p-inputNumber>
                                         <div [hidden]="!debutPaiement?.hasError('required') || !debutPaiement.touched" class="error">
@@ -1409,8 +1447,10 @@
 
                                     <div class="col-md-12">
                                         <div class="d-sm-flex justify-content-between">
-                                            <button class="ud-btn btn-retour" (click)="etape1()"><i class="pi pi-arrow-left"></i> Précédent</button>
-                                            <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': contratLocationStep2Form.invalid }" (click)="etape3()">Suivant<i class="pi pi-arrow-right"></i></button>
+                                            <button class="ud-btn btn-retour" (click)="etape1()"><i class="pi pi-arrow-left"></i>
+                        Précédent</button>
+                                            <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': contratLocationStep2Form.invalid }" (click)="etape3()">Suivant<i
+                          class="pi pi-arrow-right"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -1473,7 +1513,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Prochain paiement</p>
-                                            <p class="text">{{ calculerProchainPaiement(contratLocation.dateDebut, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd-MM-yyyy' }}</p>
+                                            <p class="text">{{ calculerProchainPaiement(contratLocation.dateDebut, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd-MM-yyyy' }}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -1486,17 +1527,20 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Prénom(s)</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.prenom }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.prenom }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Email</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.email }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.email }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.telephone }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.telephone }}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -1524,7 +1568,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Pays</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.ville.region.pays.libelle }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.ville.region.pays.libelle }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
@@ -1539,7 +1584,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Quartier</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.libelle }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.libelle }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.bienImmobilier.adresse">
@@ -1549,7 +1595,8 @@
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.bienImmobilier.surface">
                                             <p class="fw600 mb5 ff-heading dark-color">Surface</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.surface | number }} m²</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.surface | number }} m²
+                                            </p>
                                         </div>
                                     </div>
 
@@ -1563,7 +1610,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Email</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.agenceImmobiliere.adresseEmail }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.agenceImmobiliere.adresseEmail }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
@@ -1584,8 +1632,10 @@
                                     </div>
 
                                     <div class="row" *ngIf="!contratLocation.demandeLocation.publication.agenceImmobiliere">
-                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Démarcheur</h4>
-                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_GERANT'">Gérant</h4>
+                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
+                                            Démarcheur</h4>
+                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_GERANT'">Gérant
+                                        </h4>
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_DEMARCHEUR' || contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_GERANT'">
                                             <p class="fw600 mb5 ff-heading dark-color">Nom</p>
@@ -1674,7 +1724,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Prochain paiement</p>
-                                            <p class="text">{{ calculerProchainPaiement(contratLocation.dateDebut, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd-MM-yyyy' }}</p>
+                                            <p class="text">{{ calculerProchainPaiement(contratLocation.dateDebut, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd-MM-yyyy' }}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -1687,17 +1738,20 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Prénom(s)</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.prenom }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.prenom }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Email</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.email }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.email }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.telephone }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.telephone }}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -1725,7 +1779,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Pays</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.ville.region.pays.libelle }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.ville.region.pays.libelle }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
@@ -1740,7 +1795,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Quartier</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.libelle }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.libelle }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.bienImmobilier.adresse">
@@ -1750,7 +1806,8 @@
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.bienImmobilier.surface">
                                             <p class="fw600 mb5 ff-heading dark-color">Surface</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.surface | number }} m²</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.surface | number }} m²
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -1758,7 +1815,8 @@
 
                             <div class="col-md-12 mt30">
                                 <div class="d-sm-flex justify-content-between">
-                                    <button class="ud-btn btn-retour" type="button" (click)="etape1()"><i class="pi pi-arrow-left"></i> Précédent</button>
+                                    <button class="ud-btn btn-retour" type="button" (click)="etape1()"><i class="pi pi-arrow-left"></i>
+                    Précédent</button>
                                     <button class="ud-btn btn-modifier" (click)="modifierContratLocation(contratLocation.id)" [ngClass]="{ 'disabled-link': contratLocationStep1Form.invalid || contratLocationStep2Form.invalid }">Modifier</button>
                                 </div>
                             </div>
@@ -1826,7 +1884,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Prochain paiement</p>
-                                            <p class="text">{{ calculerProchainPaiement(contratLocation.dateDebut, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd-MM-yyyy' }}</p>
+                                            <p class="text">{{ calculerProchainPaiement(contratLocation.dateDebut, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd-MM-yyyy' }}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -1839,17 +1898,20 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Prénom(s)</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.prenom }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.prenom }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Email</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.email }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.email }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Téléphone</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.telephone }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.personne.telephone }}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -1877,7 +1939,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Pays</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.ville.region.pays.libelle }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.ville.region.pays.libelle }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
@@ -1892,7 +1955,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Quartier</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.libelle }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.libelle }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.bienImmobilier.adresse">
@@ -1902,7 +1966,8 @@
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.bienImmobilier.surface">
                                             <p class="fw600 mb5 ff-heading dark-color">Surface</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.surface | number }} m²</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.surface | number }} m²
+                                            </p>
                                         </div>
                                     </div>
 
@@ -1916,7 +1981,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Email</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.agenceImmobiliere.adresseEmail }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.agenceImmobiliere.adresseEmail }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
@@ -1937,8 +2003,10 @@
                                     </div>
 
                                     <div class="row" *ngIf="!contratLocation.demandeLocation.publication.agenceImmobiliere">
-                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Démarcheur</h4>
-                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_GERANT'">Gérant</h4>
+                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
+                                            Démarcheur</h4>
+                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_GERANT'">Gérant
+                                        </h4>
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_DEMARCHEUR' || contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_GERANT'">
                                             <p class="fw600 mb5 ff-heading dark-color">Nom</p>
@@ -2027,7 +2095,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Prochain paiement</p>
-                                            <p class="text">{{ calculerProchainPaiement(contratLocation.dateDebut, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd-MM-yyyy' }}</p>
+                                            <p class="text">{{ calculerProchainPaiement(contratLocation.dateDebut, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd-MM-yyyy' }}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -2055,7 +2124,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Pays</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.ville.region.pays.libelle }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.ville.region.pays.libelle }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
@@ -2070,7 +2140,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Quartier</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.libelle }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.quartier.libelle }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.bienImmobilier.adresse">
@@ -2080,7 +2151,8 @@
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.bienImmobilier.surface">
                                             <p class="fw600 mb5 ff-heading dark-color">Surface</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.surface | number }} m²</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.bienImmobilier.surface | number }} m²
+                                            </p>
                                         </div>
                                     </div>
 
@@ -2094,7 +2166,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Email</p>
-                                            <p class="text">{{ contratLocation.demandeLocation.publication.agenceImmobiliere.adresseEmail }}</p>
+                                            <p class="text">{{ contratLocation.demandeLocation.publication.agenceImmobiliere.adresseEmail }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
@@ -2115,7 +2188,8 @@
                                     </div>
 
                                     <div class="row" *ngIf="!contratLocation.demandeLocation.publication.agenceImmobiliere">
-                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Démarcheur</h4>
+                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
+                                            Démarcheur</h4>
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="contratLocation.demandeLocation.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
                                             <p class="fw600 mb5 ff-heading dark-color">Nom</p>
@@ -2153,7 +2227,8 @@
 
                             <div class="col-md-12 mt30">
                                 <div class="d-sm-flex justify-content-between">
-                                    <button class="ud-btn btn-retour" type="button" (click)="etape2()"><i class="pi pi-arrow-left"></i> Précédent</button>
+                                    <button class="ud-btn btn-retour" type="button" (click)="etape2()"><i class="pi pi-arrow-left"></i>
+                    Précédent</button>
                                     <button class="ud-btn btn-modifier" (click)="modifierContratLocation(contratLocation.id)" [ngClass]="{ 'disabled-link': contratLocationStep1Form.invalid || contratLocationStep2Form.invalid }">Modifier</button>
                                 </div>
                             </div>
@@ -2329,7 +2404,8 @@
 
                                     <div class="col-md-12">
                                         <div class="d-sm-flex justify-content-between">
-                                            <button class="ud-btn btn-retour" (click)="etape1()"><i class="pi pi-arrow-left"></i> Précédent</button>
+                                            <button class="ud-btn btn-retour" (click)="etape1()"><i class="pi pi-arrow-left"></i>
+                        Précédent</button>
                                             <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': contratVenteFormStep2.invalid }" (click)="etape3()">Suivant<i class="pi pi-arrow-right"></i></button>
                                         </div>
                                     </div>
@@ -2363,7 +2439,8 @@
 
                                     <div class="col-md-12">
                                         <div class="d-sm-flex justify-content-between">
-                                            <button class="ud-btn btn-retour" (click)="etape2()"><i class="pi pi-arrow-left"></i> Précédent</button>
+                                            <button class="ud-btn btn-retour" (click)="etape2()"><i class="pi pi-arrow-left"></i>
+                        Précédent</button>
                                             <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': contratVenteFormStep3.invalid }" (click)="etape3()">Suivant<i class="pi pi-arrow-right"></i></button>
                                         </div>
                                     </div>
@@ -2500,7 +2577,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Type de bien</p>
-                                            <p class="text">{{ contratVente.demandeAchat.publication.bienImmobilier.typeDeBien.designation }}</p>
+                                            <p class="text">{{ contratVente.demandeAchat.publication.bienImmobilier.typeDeBien.designation }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorie(contratVente.demandeAchat.publication.bienImmobilier.typeDeBien.designation)">
@@ -2520,7 +2598,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Ville</p>
-                                            <p class="text">{{ contratVente.demandeAchat.publication.bienImmobilier.quartier.ville.libelle }}</p>
+                                            <p class="text">{{ contratVente.demandeAchat.publication.bienImmobilier.quartier.ville.libelle }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
@@ -2570,7 +2649,8 @@
                                     </div>
 
                                     <div class="row" *ngIf="!contratVente.demandeAchat.publication.agenceImmobiliere">
-                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Démarcheur</h4>
+                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Démarcheur
+                                        </h4>
                                         <h4 class="title title-detail fz17 mb20" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_GERANT'">Gérant</h4>
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR' || contratVente.demandeAchat.publication.personne.role.code == 'ROLE_GERANT'">
@@ -2733,7 +2813,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Type de bien</p>
-                                            <p class="text">{{ contratVente.demandeAchat.publication.bienImmobilier.typeDeBien.designation }}</p>
+                                            <p class="text">{{ contratVente.demandeAchat.publication.bienImmobilier.typeDeBien.designation }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorie(contratVente.demandeAchat.publication.bienImmobilier.typeDeBien.designation)">
@@ -2753,7 +2834,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Ville</p>
-                                            <p class="text">{{ contratVente.demandeAchat.publication.bienImmobilier.quartier.ville.libelle }}</p>
+                                            <p class="text">{{ contratVente.demandeAchat.publication.bienImmobilier.quartier.ville.libelle }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
@@ -2776,7 +2858,8 @@
 
                             <div class="col-md-12 mt30">
                                 <div class="d-sm-flex justify-content-between">
-                                    <button class="ud-btn btn-retour" type="button" (click)="etape2()"><i class="pi pi-arrow-left"></i> Précédent</button>
+                                    <button class="ud-btn btn-retour" type="button" (click)="etape2()"><i class="pi pi-arrow-left"></i>
+                    Précédent</button>
                                     <button class="ud-btn btn-modifier" (click)="modifierContratVente(contratVente.id)" [ngClass]="{ 'disabled-link': contratVenteFormStep1.invalid || contratVenteFormStep2.invalid }">Modifier</button>
                                 </div>
                             </div>
@@ -2916,7 +2999,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Type de bien</p>
-                                            <p class="text">{{ contratVente.demandeAchat.publication.bienImmobilier.typeDeBien.designation }}</p>
+                                            <p class="text">{{ contratVente.demandeAchat.publication.bienImmobilier.typeDeBien.designation }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorie(contratVente.demandeAchat.publication.bienImmobilier.typeDeBien.designation)">
@@ -2936,7 +3020,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Ville</p>
-                                            <p class="text">{{ contratVente.demandeAchat.publication.bienImmobilier.quartier.ville.libelle }}</p>
+                                            <p class="text">{{ contratVente.demandeAchat.publication.bienImmobilier.quartier.ville.libelle }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
@@ -2986,7 +3071,8 @@
                                     </div>
 
                                     <div class="row" *ngIf="!contratVente.demandeAchat.publication.agenceImmobiliere">
-                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Démarcheur</h4>
+                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Démarcheur
+                                        </h4>
                                         <h4 class="title title-detail fz17 mb20" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_GERANT'">Gérant</h4>
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR' || contratVente.demandeAchat.publication.personne.role.code == 'ROLE_GERANT'">
@@ -3128,7 +3214,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Type de bien</p>
-                                            <p class="text">{{ contratVente.demandeAchat.publication.bienImmobilier.typeDeBien.designation }}</p>
+                                            <p class="text">{{ contratVente.demandeAchat.publication.bienImmobilier.typeDeBien.designation }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorie(contratVente.demandeAchat.publication.bienImmobilier.typeDeBien.designation)">
@@ -3148,7 +3235,8 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Ville</p>
-                                            <p class="text">{{ contratVente.demandeAchat.publication.bienImmobilier.quartier.ville.libelle }}</p>
+                                            <p class="text">{{ contratVente.demandeAchat.publication.bienImmobilier.quartier.ville.libelle }}
+                                            </p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
@@ -3198,7 +3286,8 @@
                                     </div>
 
                                     <div class="row" *ngIf="!contratVente.demandeAchat.publication.agenceImmobiliere">
-                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Démarcheur</h4>
+                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">Démarcheur
+                                        </h4>
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR'">
                                             <p class="fw600 mb5 ff-heading dark-color">Nom</p>
@@ -3230,7 +3319,8 @@
                                             <p class="text">{{ contratVente.fraisDeVisite | number }} FCFA</p>
                                         </div>
 
-                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_PROPRIETAIRE'">Propriétaire</h4>
+                                        <h4 class="title title-detail fz17 mb20" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_PROPRIETAIRE'">
+                                            Propriétaire</h4>
 
                                         <div class="col-sm-6 col-xl-4" *ngIf="contratVente.demandeAchat.publication.personne.role.code == 'ROLE_PROPRIETAIRE'">
                                             <p class="fw600 mb5 ff-heading dark-color">Nom</p>
@@ -3258,7 +3348,8 @@
 
                             <div class="col-md-12 mt30">
                                 <div class="d-sm-flex justify-content-between">
-                                    <button class="ud-btn btn-retour" type="button" (click)="etape2()"><i class="pi pi-arrow-left"></i> Précédent</button>
+                                    <button class="ud-btn btn-retour" type="button" (click)="etape2()"><i class="pi pi-arrow-left"></i>
+                    Précédent</button>
                                     <button class="ud-btn btn-modifier" (click)="modifierContratVente(contratVente.id)" [ngClass]="{ 'disabled-link': contratVenteFormStep1.invalid || contratVenteFormStep2.invalid || contratVenteFormStep3 }">Modifier</button>
                                 </div>
                             </div>
@@ -3270,4 +3361,137 @@
         </div>
     </div>
     <!-- End Formulaire de modification d'un contrat de vente -->
+
+    <!-- Start Ajout planification -->
+    <div *ngIf="affichage == 7">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-5">
+                <div class="dashboard_title_area">
+                    <h4>Planification d'un paiement</h4>
+                </div>
+            </div>
+            <div class="col-xxl-7">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="retourDetailContrat()">Retour</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <form [formGroup]="planificationPaiementForm" (ngSubmit)="ajoutPlanificationPaiement()" class="form-style1">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Libelle</label>
+                                    <input pInputText class="pInputText p-fluid" id="libelle" name="libelle" placeholder="Le libelle de la planification de paiement" formControlName="libelle" [(ngModel)]="planificationPaiement.libelle" required>
+                                    <div class="error" [hidden]="libelle.valid || libelle.pristine && !libelle.touched ">Le libelle de la planification de paiement est requise</div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Montant dû</label>
+                                    <p-inputNumber class="pInputNumber p-fluid" placeholder="Le montant dû" formControlName="montantDu" [(ngModel)]="planificationPaiement.montantDu" inputId="montantDu" mode="currency" currency="CFA" locale="de-DE" [required]="true"> </p-inputNumber>
+                                    <div class="error" [hidden]="montantDu.valid || montantDu.pristine && !montantDu.touched ">Le montant du de la planification de paiement est requise</div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6" *ngIf="typePlanificationSelectionne == 'Paiement d\'achat'">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Montant à payer</label>
+                                    <p-inputNumber class="pInputNumber p-fluid" placeholder="Le montant à payer" formControlName="montantPaye" [(ngModel)]="planificationPaiement.montantPaye" inputId="montantPaye" mode="currency" currency="CFA" locale="de-DE" [required]="true" [max]="planificationPaiement.montantPaye">
+                                    </p-inputNumber>
+                                    <div class="error" [hidden]="montantPaye.valid || montantPaye.pristine && !montantPaye.touched ">Le montant à payer est requise</div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6" *ngIf="typePlanificationSelectionne == 'Paiement d\'achat'">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Reste à payer</label>
+                                    <p-inputNumber class="pInputNumber p-fluid" placeholder="Le montant restant" formControlName="restePaye" [(ngModel)]="planificationPaiement.restePaye" inputId="restePaye" mode="currency" currency="CFA" locale="de-DE" [required]="true"> </p-inputNumber>
+                                    <div class="error" [hidden]="restePaye.valid || restePaye.pristine && !restePaye.touched ">Le montant restant est requise</div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Date planifiée</label>
+                                    <p-calendar class="pCalendar p-fluid" placeholder="La date planifiée pour le paiement" [(ngModel)]="planificationPaiement.datePlanifiee" formControlName="datePlanifiee" inputId="datePlanifiee" name="datePlanifiee" [required]="true">
+                                    </p-calendar>
+                                    <div class="error" [hidden]="!datePlanifiee?.hasError('required') || !datePlanifiee.touched">La date planifiée est requise</div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-12">
+                            <div class="text-end">
+                                <button class="ud-btn btn-annuler" type="button" (click)="resetPlanificationPaiementForm()">Annuler</button> &nbsp;
+                                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': planificationPaiementForm.invalid }" type="submit">Ajouter</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Ajout planification paiement -->
+
+    <!-- Start Formulaire d'ajout d'un entretien -->
+    <div *ngIf="affichage == 8">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-5">
+                <div class="dashboard_title_area">
+                    <h4>Signaler un souci d'entretien</h4>
+                </div>
+            </div>
+            <div class="col-xxl-7">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button">Retour</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <form [formGroup]="suiviEntretienForm" (ngSubmit)="ajouterSuiviEntretien()" class="form-style1">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Libelle</label>
+                                    <input pInputText class="pInputText p-fluid" id="libelle" name="libelle" placeholder="Le libelle de l'entretien" formControlName="libelle" [(ngModel)]="suiviEntretien.libelle" required>
+                                    <div class="error" [hidden]="libelleSuiviEntretien.valid || libelleSuiviEntretien.pristine && !libelleSuiviEntretien.touched ">Le libelle de l'entretien est obligatoire</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Description</label>
+                                    <textarea id="description" name="description" placeholder="La description de l'entretien" formControlName="description" style="height: 160px;" [(ngModel)]="suiviEntretien.description"></textarea>
+                                    <!-- <div class="error" [hidden]="descriptionDuService.valid || descriptionDuService.pristine && !descriptionDuService.touched ">La description du service non trouvé est obligatoire</div> -->
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Date prévue</label>
+                                    <p-calendar class="pCalendar p-fluid" placeholder="La date prévue pour l'entretien" [(ngModel)]="suiviEntretien.datePrevue" formControlName="datePrevue" inputId="datePrevue" name="datePrevue" [required]="true">
+                                    </p-calendar>
+                                    <div class="error" [hidden]="!datePrevue?.hasError('required') || !datePrevue.touched">La date prévue est requise</div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-12">
+                            <div class="text-end">
+                                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button> &nbsp;
+                                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': suiviEntretienForm.invalid }" type="submit">Enregistrer</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Formulaire d'ajout d'un entretien -->
 </div>

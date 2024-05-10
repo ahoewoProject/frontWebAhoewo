@@ -20,6 +20,7 @@ import { ContratsComponent } from 'src/app/components/templates-admin/gestionDes
 import { SuivisEntretiensComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/suivis-entretiens/suivis-entretiens.component';
 import { PaiementsComponent } from 'src/app/components/templates-admin/gestionDesPaiements/paiements/paiements.component';
 import { PlanificationsPaiementsComponent } from 'src/app/components/templates-admin/gestionDesPaiements/planifications-paiements/planifications-paiements.component';
+import { ParametresComponent } from 'src/app/components/templates-admin/gestionDesComptes/parametres/parametres.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -35,6 +36,8 @@ const routes: Routes = [
       { path: 'agences-immobilieres/services/:id', component: ServicesAgenceImmobiliereComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/biens-immobiliers', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/delegations-gestions/:id', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/delegations-gestions/contrats', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/publications',  component: PublicationsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/publications/:id',  component: PublicationsComponent, canActivate: [AuthGuard] },
@@ -52,7 +55,8 @@ const routes: Routes = [
       { path: 'agences-immobilieres/planifications-paiements', component: PlanificationsPaiementsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/planifications-paiements/:id', component: PlanificationsPaiementsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/paiements', component: PaiementsComponent, canActivate: [AuthGuard] },
-      { path: 'agences-immobilieres/paiements/:id', component: PaiementsComponent, canActivate: [AuthGuard] }
+      { path: 'agences-immobilieres/paiements/:id', component: PaiementsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/parametres', component: ParametresComponent, canActivate: [AuthGuard] },
     ]
   }
 ];

@@ -34,6 +34,15 @@ export class ContratVenteService {
     return this.httpClient.get<Page<ContratVente>>(this.url + 'contrats-ventes', {params: params});
   }
 
+  // Affichage des contrats de ventes par code bien paginées;
+  // url: http://localhost:4040/api/contrats-ventes/par-code-bien/{codeBien}
+  getContratsVentesByCodeBien(codeBien: string, numeroDeLaPage: number, elementsParPage: number): Observable<Page<ContratVente>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<ContratVente>>(this.url + 'contrats-ventes/par-code-bien/' + codeBien, {params: params});
+  }
+
   // Recherche d'une occurrence d'un contrat de vente par la clé primaire ;
   // url: http://localhost:4040/api/contrat-vente/{id}
   findById(id: number): Observable<ContratVente>{
@@ -68,5 +77,11 @@ export class ContratVenteService {
   // url: http://localhost:4040/api/contrat-vente/refuser/{id}
   refuserContratVente(id: number, m: MotifRejetForm): Observable<any>{
     return this.httpClient.post<any>(this.url + 'contrat-vente/refuser/' + id, m);
+  }
+
+  // Télécharger contrat de vente ;
+  // url: http://localhost:4040/api/contrat-vente/generer-pdf/{id}
+  telecharger(id: number): Observable<any> {
+    return this.httpClient.get(this.url + 'contrat-vente/generer-pdf/' + id, { responseType: 'blob' });
   }
 }

@@ -125,6 +125,16 @@ export class PaiementsComponent implements OnInit, OnDestroy {
     categorie == 'Bureau';
   }
 
+  telechargerFichePaiement(id: number): void {
+    this.paiementService.telecharger(id).subscribe(
+      (response) => {
+        const file = new Blob([response], { type: 'application/pdf' });
+        const fileUrl = URL.createObjectURL(file);
+        window.open(fileUrl, '_blank');
+      }
+    )
+  }
+
   navigateURLBYUSER(user: any): string {
     let roleBasedURL = '';
 

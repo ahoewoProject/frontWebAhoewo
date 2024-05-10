@@ -1,3 +1,4 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,12 +20,16 @@ import { PlanificationPaiementService } from 'src/app/services/gestionDesPaiemen
 })
 export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
 
+  url = 'https://sandbox-api.fedapay.com/v1';
+  token = 'sk_sandbox_CilfCtbWmwtBJt5mJqGGS2l7';
+
   recherche: string = '';
   affichage = 1;
   elementsParPage = 5;
   numeroDeLaPage = 0;
 
   planificationsPaiements!: Page<PlanificationPaiement>;
+  planificationsPaiementsList: PlanificationPaiement[] = [];
   planificationPaiement = this.planificationPaiementService.planificationPaiement;
   contratsLocations: ContratLocation[] = [];
   contratsVentes: ContratVente[] = [];
@@ -43,11 +48,13 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   messageErreur: string | null = null;
   user: any;
 
+  planificationPaiementReussie: any;
+
   constructor(private planificationPaiementService: PlanificationPaiementService,
     private contratVenteService: ContratVenteService, private contratLocationService: ContratLocationService,
     private activatedRoute: ActivatedRoute, private router: Router,
     private personneService: PersonneService, private messageService: MessageService,
-    private confirmationService: ConfirmationService, private paiementService: PaiementService
+    private paiementService: PaiementService,
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -55,6 +62,7 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.planificationPaiementReussie = this.activatedRoute.snapshot.queryParams['planificationPaiementReussie'];
     this.initActivatedRoute();
     this.listTypesPlanifications();
     this.listeContratsLocations();
@@ -83,7 +91,10 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   listePlanificationsPaiements(numeroDeLaPage: number, elementsParPage: number): void {
     this.planificationPaiementService.getPlanificationsPaiements(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
-        this.planificationsPaiements = response
+        this.planificationsPaiements = response;
+        if (this.planificationPaiementReussie) {
+          this.messageService.add({ severity: 'success', summary: 'Planification de paiement réussi', detail: 'Le planification paiement a été enregistré avec succès.' });
+        }
       }
     )
   }
@@ -128,6 +139,14 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
       (response) => {
         console.log(response)
         this.contratsVentes = response;
+      }
+    )
+  }
+
+  listePlanificationsPaiementsByCodeContrat(codeContrat: string): void {
+    this.planificationPaiementService.getPlanificationsByCodeContrat(codeContrat).subscribe(
+      (data) => {
+        this.planificationsPaiementsList = data;
       }
     )
   }
@@ -177,7 +196,7 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
     this.contratVenteService.findById(id).subscribe(
       (response) => {
         this.contratVente = response;
-        console.log(this.contratVente)
+        this.listePlanificationsPaiementsByCodeContrat(this.contratVente.codeContrat);
       }
     )
   }
@@ -252,7 +271,8 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   ajouterPlanificationPaiementLocation(): void {
     this.planificationPaiement.typePlanification = this.typePlanificationSelectionne;
     this.planificationPaiement.contrat = this.contratSelectionne;
-    console.log(this.planificationPaiement);
+    this.planificationPaiement.restePaye = this.planificationPaiement.montantDu;
+    this.planificationPaiement.montantPaye = this.planificationPaiement.montantDu;
     this.planificationPaiementService.ajouterPlanificationPaiementLocation(this.planificationPaiement).subscribe(
       (response) => {
         if (response.id > 0) {
@@ -324,6 +344,9 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
     if (typePlanification == 'Paiement d\'achat') {
       this.montantPaye.setValidators([Validators.required]);
       this.restePaye.setValidators([Validators.required]);
+    } else {
+      this.montantPaye.clearValidators();
+      this.restePaye.clearValidators();
     }
     this.montantPaye.updateValueAndValidity();
     this.restePaye.updateValueAndValidity();
@@ -360,7 +383,6 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
     } else {
       this.modesPaiements = ['Manuel', 'Espèce'];
     }
-
   }
 
   modePaiementChoisi(event: any): void {
@@ -477,7 +499,7 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    this.resetPlanificationPaiementForm();
   }
 
 }

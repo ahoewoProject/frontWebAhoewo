@@ -18,7 +18,14 @@ export class TokenInterceptor implements HttpInterceptor {
   // Fonction pour intercepter une requête sortante
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
-    if (request.url === 'https://www.primefaces.org/cdn/api/upload.php') {
+    const allowedUrls = [
+      'https://www.primefaces.org/cdn/api/upload.php',
+    ];
+
+    // Vérifie si l'URL commence par l'une des URL autorisées
+    const isAllowed = allowedUrls.some(url => request.url.startsWith(url));
+
+    if (isAllowed) {
       return next.handle(request);
     }
 

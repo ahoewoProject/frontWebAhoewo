@@ -208,9 +208,16 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
     this.modalAnnulationVisible = true;
   }
 
+  //Retour par Url
   voirListe(): void {
     this.affichage = 1;
     this.router.navigate([this.navigateURLBYUSER(this.user) + '/demandes-visites'])
+  }
+
+  //Retour sans url
+  afficherListe(): void {
+    this.listeDemandesVisites(this.numeroDeLaPage, this.elementsParPage);
+    this.affichage = 1;
   }
 
   dialogueNotVisible(): void {
@@ -253,7 +260,6 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
   afficherPageModifier(id: number): void {
     this.demandeVisiteService.findById(id).subscribe(
       (data: DemandeVisite) => {
-        console.log(data);
         this.dateHeureVisiteSelectionne = new Date(data.dateHeureVisite);
         this.demandeVisite = data;
       }
@@ -263,7 +269,6 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
 
   modifier(id: number): void {
     this.demandeVisite.dateHeureVisite = this.dateHeureVisiteSelectionne;
-    console.log(this.demandeVisite);
     this.demandeVisiteService.editDemandeVisite(id, this.demandeVisite).subscribe(
       (response) => {
         this.voirListe();

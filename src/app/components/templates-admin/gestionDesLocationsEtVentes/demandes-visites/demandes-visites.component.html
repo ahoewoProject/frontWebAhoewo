@@ -60,20 +60,22 @@
                                         <p-tag *ngIf="demandeVisite.etatDemande == 2" severity="danger" value="Annulé"></p-tag>
                                         <p-tag *ngIf="demandeVisite.etatDemande == 3" severity="danger" value="Refusé"></p-tag>
                                         <p-tag *ngIf="demandeVisite.etatDemande == 4" severity="info" value="Modifié"></p-tag>
+                                        <p-tag *ngIf="demandeVisite.etatDemande == 5" severity="info" value="Modifié"></p-tag>
                                     </td>
                                     <td class="vam">
                                         <div class="d-flex">
                                             <button pButton type="button" icon="pi pi-eye" (click)="afficherPageDetail(demandeVisite.id)" pTooltip="Détails" tooltipPosition="top" class="p-button-text p-button-info">
                       </button>
 
-                                            <button pButton type="button" icon="pi pi-pencil pi-lg" *ngIf="(demandeVisite.etatDemande == 0 || demandeVisite.etatDemande == 2 || demandeVisite.etatDemande == 3 || demandeVisite.etatDemande == 4) && user.role.code == 'ROLE_CLIENT'" (click)="afficherPageModifier(demandeVisite.id)"
-                                                pTooltip="Modifier" tooltipPosition="top" class="p-button-text p-button-warning">
+                                            <button pButton type="button" icon="pi pi-pencil pi-lg" *ngIf="(demandeVisite.etatDemande == 0 || demandeVisite.etatDemande == 2 || demandeVisite.etatDemande == 3 || demandeVisite.etatDemande == 4 || demandeVisite.etatDemande == 5) && user.role.code == 'ROLE_CLIENT'"
+                                                (click)="afficherPageModifier(demandeVisite.id)" pTooltip="Modifier" tooltipPosition="top" class="p-button-text p-button-warning">
                       </button>
+
+                                            <button pButton type="button" icon="pi pi-pencil pi-lg" *ngIf="(demandeVisite.etatDemande == 4 || demandeVisite.etatDemande == 5) && user.role.code != 'ROLE_CLIENT'" (click)="afficherPageModifier(demandeVisite.id)" pTooltip="Modifier" tooltipPosition="top"
+                                                class="p-button-text p-button-warning">
+</button>
 
                                             <button *ngIf="(demandeVisite.etatDemande == 0 || demandeVisite.etatDemande == 4) && user.role.code == 'ROLE_CLIENT'" pButton type="button" icon="pi pi-send pi-lg" (click)="relancer(demandeVisite.id)" pTooltip="Relancer" tooltipPosition="right" class="p-button-text p-button-sucess">
-                      </button>
-
-                                            <button *ngIf="demandeVisite.etatDemande == 0 && user.role.code !== 'ROLE_CLIENT'" pButton type="button" icon="pi pi-send pi-lg" (click)="relancer(demandeVisite.id)" pTooltip="Relancer" tooltipPosition="right" class="p-button-text p-button-sucess">
                       </button>
                                         </div>
                                     </td>
@@ -104,8 +106,9 @@
             </div>
             <div class="col-xxl-7">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <a class="ud-btn btn-valider" type="button" *ngIf="user.role.code != 'ROLE_CLIENT' && (demandeVisite.etatDemande == 0 || demandeVisite.etatDemande == 4) && afficherBoutonSiBienDelegue(demandeVisite.publication.bienImmobilier.estDelegue)" (click)="valider(demandeVisite.id)">Valider</a>                    &nbsp;
-                    <a class="ud-btn btn-danger" type="button" *ngIf="demandeVisite.etatDemande == 0 && afficherBoutonSiBienDelegue(demandeVisite.publication.bienImmobilier.estDelegue)" (click)="user.role.code == 'ROLE_CLIENT' ? afficherModalAnnulation(demandeVisite.id) : afficherModalRefus(demandeVisite.id)">
+                    <a class="ud-btn btn-valider" type="button" *ngIf="user.role.code != 'ROLE_CLIENT' && (demandeVisite.etatDemande == 0 || demandeVisite.etatDemande == 4) && afficherBoutonSiBienDelegue(demandeVisite.publication.bienImmobilier.estDelegue)" (click)="valider(demandeVisite.id)">Valider</a>
+                    <a class="ud-btn btn-valider" type="button" *ngIf="user.role.code == 'ROLE_CLIENT' && demandeVisite.etatDemande == 5" (click)="valider(demandeVisite.id)">Valider</a> &nbsp;
+                    <a class="ud-btn btn-danger" type="button" *ngIf="(demandeVisite.etatDemande == 0 || demandeVisite.etatDemande == 4 || demandeVisite.etatDemande == 5) && afficherBoutonSiBienDelegue(demandeVisite.publication.bienImmobilier.estDelegue)" (click)="user.role.code == 'ROLE_CLIENT' ? afficherModalAnnulation(demandeVisite.id) : afficherModalRefus(demandeVisite.id)">
            {{ user.role.code == 'ROLE_CLIENT' ? 'Annuler' : 'Refuser' }}
          </a> &nbsp;
                     <a type="button" (click)="voirListe()" class="ud-btn btn-retour">Retour</a>
@@ -142,7 +145,7 @@
                             </div>
                             <div class="col-sm-6 col-xl-4">
                                 <p class="fw600 mb5 ff-heading dark-color">Date de visite</p>
-                                <p class="text text-capitalize">{{ demandeVisite.dateHeureVisite | date: "dd-MM-yyyy" }}</p>
+                                <p class="text text-capitalize">{{ demandeVisite.dateHeureVisite | date: "dd/MM/yyyy" }}</p>
                             </div>
                             <div class="col-sm-6 col-xl-4">
                                 <p class="fw600 mb5 ff-heading dark-color">Heure de visite</p>
@@ -156,6 +159,7 @@
                                     <p-tag *ngIf="demandeVisite.etatDemande == 2" severity="danger" value="Annulé"></p-tag>
                                     <p-tag *ngIf="demandeVisite.etatDemande == 3" severity="danger" value="Refusé"></p-tag>
                                     <p-tag *ngIf="demandeVisite.etatDemande == 4" severity="info" value="Modifié"></p-tag>
+                                    <p-tag *ngIf="demandeVisite.etatDemande == 5" severity="info" value="Modifié"></p-tag>
                                 </p>
                             </div>
                         </div>
@@ -175,7 +179,7 @@
                             </div>
                             <div class="col-sm-6 col-xl-4">
                                 <p class="fw600 mb5 ff-heading dark-color">Date de visite</p>
-                                <p class="text text-capitalize">{{ demandeVisite.dateHeureVisite | date: "dd-MM-yyyy" }}</p>
+                                <p class="text text-capitalize">{{ demandeVisite.dateHeureVisite | date: "dd/MM/yyyy" }}</p>
                             </div>
                             <div class="col-sm-6 col-xl-4">
                                 <p class="fw600 mb5 ff-heading dark-color">Heure de visite</p>
@@ -188,7 +192,8 @@
                                     <p-tag *ngIf="demandeVisite.etatDemande == 1" severity="success" value="Validé"></p-tag>
                                     <p-tag *ngIf="demandeVisite.etatDemande == 2" severity="danger" value="Annuler"></p-tag>
                                     <p-tag *ngIf="demandeVisite.etatDemande == 3" severity="danger" value="Refusé"></p-tag>
-                                    <p-tag *ngIf="demandeVisite.etatDemande == 4" severity="warning" value="Modifié"></p-tag>
+                                    <p-tag *ngIf="demandeVisite.etatDemande == 4" severity="info" value="Modifié"></p-tag>
+                                    <p-tag *ngIf="demandeVisite.etatDemande == 5" severity="info" value="Modifié"></p-tag>
                                 </p>
                             </div>
                         </div>
@@ -212,7 +217,7 @@
                             </div>
                             <div class="col-sm-6 col-xl-4">
                                 <p class="fw600 mb5 ff-heading dark-color">Date de publication</p>
-                                <p class="text">{{ demandeVisite.publication.datePublication | date: "dd-MM-yyyy" }}</p>
+                                <p class="text">{{ demandeVisite.publication.datePublication | date: "dd/MM/yyyy" }}</p>
                             </div>
                             <div class="col-sm-6 col-xl-4">
                                 <p class="fw600 mb5 ff-heading dark-color">Prix {{ demandeVisite.publication.typeDeTransaction === 'Location' ? 'mensuel' : '' }} du bien</p>
@@ -278,9 +283,9 @@
                                         <p class="text mb10">{{ bienImm.codeBien }}</p>
                                         <p class="text mb10">{{ bienImm.typeDeBien.designation }}</p>
                                         <p class="text mb10" *ngIf="afficherCategorie()">{{ bienImm.categorie }}</p>
-                                        <p class="text mb10">{{ bienImm.pays.libelle }}</p>
-                                        <p class="text mb10">{{ bienImm.region.libelle }}</p>
-                                        <p class="text mb-0">{{ bienImm.ville.libelle }}</p>
+                                        <p class="text mb10">{{ bienImm.quartier.ville.region.pays.libelle }}</p>
+                                        <p class="text mb10">{{ bienImm.quartier.ville.region.libelle }}</p>
+                                        <p class="text mb-0">{{ bienImm.quartier.ville.libelle }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -550,7 +555,7 @@
                                 <div class="mb20">
                                     <label class="heading-color ff-heading fw600 mb10">Date et heure de visite</label>
                                     <p-calendar appendTo="body" class="pCalendar p-fluid" placeholder="La date et l'heure de visite" [showTime]="true" [showSeconds]="false" [(ngModel)]="dateHeureVisiteSelectionne" inputId="dateHeureVisite" name="dateHeureVisite" [required]="true" #dateHeureVisite="ngModel"
-                                        [minDate]="minDate"></p-calendar>
+                                        [minDate]="minDate" dateFormat="dd/mm/yy"></p-calendar>
                                     <div class="error" [hidden]="!dateHeureVisite?.hasError('required') || !dateHeureVisite.touched">La date et l'heure de visite est requise</div>
                                 </div>
                             </div>

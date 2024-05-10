@@ -27,6 +27,15 @@ export class PlanificationPaiementService {
     return this.httpClient.get<Page<PlanificationPaiement>>(this.url + 'planifications-paiements', {params: params});
   }
 
+  // Affichage des planifications de paiements par code contrat paginées;
+  // url: http://localhost:4040/api/planifications-paiements/par-code-contrat/{codeContrat}
+  getPlanificationsPaiementsByCodeContrat(codeContrat: string, numeroDeLaPage: number, elementsParPage: number): Observable<Page<PlanificationPaiement>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<PlanificationPaiement>>(this.url + 'planifications-paiements/par-code-contrat/' + codeContrat, {params: params});
+  }
+
   // Recherche d'une occurrence d'une planification de paiements par la clé primaire ;
   // url: http://localhost:4040/api/planification-paiement/{id}
   findById(id: number): Observable<PlanificationPaiement>{
@@ -37,6 +46,12 @@ export class PlanificationPaiementService {
   // url: http://localhost:4040/api/last-planification-paiement/{codeContrat}
   lastPlanificationPaiement(codeContrat: string): Observable<PlanificationPaiement>{
     return this.httpClient.get<PlanificationPaiement>(this.url + 'last-planification-paiement/' + codeContrat);
+  }
+
+  // Liste des planifications de paiement par code contrat;
+  // url: http://localhost:4040/api/planifications-paiements/{codeContrat}
+  getPlanificationsByCodeContrat(codeContrat: string): Observable<PlanificationPaiement[]> {
+    return this.httpClient.get<PlanificationPaiement[]>(this.url + 'planifications-paiements/' + codeContrat)
   }
 
   // Ajout d'une planification de paiement - location

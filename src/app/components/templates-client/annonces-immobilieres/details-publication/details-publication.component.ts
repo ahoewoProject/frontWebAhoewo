@@ -152,18 +152,6 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
     return this.demandeForm.get('nombreDeTranche');
   }
 
-  // afficherDemandeDialog(): void {
-  //   if (this.publication.typeDeTransaction == 'Vente') {
-  //     this.typesDeDemandes = ['Demande de visite', 'Demande d\'achat'];
-  //     this.typeDeDemandeSelectionne = this.typesDeDemandes[0];
-  //   } else {
-  //     this.typesDeDemandes = ['Demande de visite', 'Demande de location'];
-  //     this.typeDeDemandeSelectionne = this.typesDeDemandes[0];
-  //   }
-  //   this.validerDemandeForm();
-  //   this.visible = true;
-  // }
-
   onSelectDateHeureVisite(event: any): void {
     // this.demandeRequest.dateHeureVisite = event.value;
     console.log(this.demandeRequest.dateHeureVisite)
@@ -407,11 +395,11 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
 
   filtrePublications(activeIndex: number): void {
     this.activeIndex = activeIndex;
-    if (this.activeIndex == 0) {
+    if (activeIndex === 0) {
       this.filtrePublicationsActiveIndex0();
-    } else if (this.activeIndex == 1) {
+    } else if (activeIndex === 1) {
       this.filtrePublicationsActiveIndex1();
-    } else {
+    } else if (activeIndex === 2) {
       this.filtrePublicationsActiveIndex2();
     }
   }

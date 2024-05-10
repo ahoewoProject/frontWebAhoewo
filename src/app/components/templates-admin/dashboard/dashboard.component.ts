@@ -38,19 +38,12 @@ export class DashboardComponent implements OnInit {
   user: any;
   connexionReussie: any;
 
-  constructor(
-    private personneService: PersonneService,
-    private roleService: RoleService,
-    private gerantService: GerantService,
-    private demarcheurService: DemarcheurService,
-    private proprietaireService: ProprietaireService,
-    private responsableAgenceImmobiliereService: ResponsableAgenceImmobiliereService,
-    private clientService: ClientService,
-    private administrateurService: AdministrateurService,
-    private notaireService: NotaireService,
-    private demandeCertificationService: DemandeCertificationService,
-    private activatedRoute: ActivatedRoute,
-    private messageService: MessageService,
+  constructor(private personneService: PersonneService, private roleService: RoleService,
+    private gerantService: GerantService, private demarcheurService: DemarcheurService,
+    private proprietaireService: ProprietaireService, private responsableAgenceImmobiliereService: ResponsableAgenceImmobiliereService,
+    private clientService: ClientService, private administrateurService: AdministrateurService,
+    private notaireService: NotaireService, private demandeCertificationService: DemandeCertificationService,
+    private activatedRoute: ActivatedRoute, private messageService: MessageService,
   )
   {
     this.demandeCertificationService.findByUser().subscribe(

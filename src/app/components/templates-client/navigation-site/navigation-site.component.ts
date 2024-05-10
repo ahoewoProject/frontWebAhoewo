@@ -33,6 +33,8 @@ export class NavigationSiteComponent implements OnInit {
     let dashboardUrl = '';
     if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
       dashboardUrl = '/admin/dashboard';
+    } else if (this.user.role.code == 'ROLE_NOTAIRE') {
+      dashboardUrl = '/notaire/dashboard';
     } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
       dashboardUrl = '/responsable/dashboard';
     } else if (this.user.role.code == 'ROLE_PROPRIETAIRE') {

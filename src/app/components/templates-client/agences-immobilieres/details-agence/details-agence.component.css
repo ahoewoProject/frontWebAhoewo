@@ -3,40 +3,48 @@
 }
 
 :host ::ng-deep .p-accordion-header {
-  font-family: 'DM Sans', sans-serif;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .img {
-  text-align: center;
-  width: 10%;
+    text-align: center;
+    width: 10%;
 }
 
 .error {
-  color: #a94442;
-  font-family: 'Inter var', sans-serif;
+    color: #a94442;
+    font-family: 'Inter var', sans-serif;
 }
 
 .imgForm {
-  text-align: center;
-  width: 25%;
+    text-align: center;
+    width: 25%;
 }
 
 .disabled-link {
-  pointer-events: none; /* Désactive les événements de pointage, rendant le lien non cliquable */
-  opacity: 0.5; /* Réduit l'opacité pour montrer qu'il est désactivé */
-  cursor: not-allowed; /* Affiche un curseur "non autorisé" */
+    pointer-events: none;
+    /* Désactive les événements de pointage, rendant le lien non cliquable */
+    opacity: 0.5;
+    /* Réduit l'opacité pour montrer qu'il est désactivé */
+    cursor: not-allowed;
+    /* Affiche un curseur "non autorisé" */
 }
 
 .ng-valid[required],
 .ng-valid.required {
-  border-left: 5px solid #42A948;
+    border-left: 5px solid #42A948;
 }
 
 .ng-invalid:not(form) {
-  border-left: 5px solid #a94442;
+    border-left: 5px solid #a94442;
 }
 
 .text {
-  font-family: 'Inter Var', sans-serif;
-  font-size: 16px;
+    font-family: 'Inter Var', sans-serif;
+    font-size: 16px;
+}
+
+.text-libelle {
+    font-family: 'Inter Var', sans-serif;
+    font-size: 14px;
 }

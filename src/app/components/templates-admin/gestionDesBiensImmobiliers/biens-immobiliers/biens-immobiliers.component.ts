@@ -14,6 +14,10 @@ import { Quartier } from 'src/app/models/gestionDesBiensImmobiliers/Quartier';
 import { Region } from 'src/app/models/gestionDesBiensImmobiliers/Region';
 import { TypeDeBien } from 'src/app/models/gestionDesBiensImmobiliers/TypeDeBien';
 import { Ville } from 'src/app/models/gestionDesBiensImmobiliers/Ville';
+import { ContratLocation } from 'src/app/models/gestionDesLocationsEtVentes/ContratLocation';
+import { ContratVente } from 'src/app/models/gestionDesLocationsEtVentes/ContratVente';
+import { PlanificationPaiement } from 'src/app/models/gestionDesPaiements/PlanificationPaiement';
+import { MotifRejet } from 'src/app/models/MotifRejet';
 import { BehaviorService } from 'src/app/services/behavior.service';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { BienImmAssocieService } from 'src/app/services/gestionDesBiensImmobiliers/bien-imm-associe.service';
@@ -27,7 +31,12 @@ import { RegionService } from 'src/app/services/gestionDesBiensImmobiliers/regio
 import { TypeDeBienService } from 'src/app/services/gestionDesBiensImmobiliers/type-de-bien.service';
 import { VilleService } from 'src/app/services/gestionDesBiensImmobiliers/ville.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
+import { ContratLocationService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-location.service';
+import { ContratVenteService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-vente.service';
+import { PaiementService } from 'src/app/services/gestionDesPaiements/paiement.service';
+import { PlanificationPaiementService } from 'src/app/services/gestionDesPaiements/planification-paiement.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
+import { MotifRejetService } from 'src/app/services/motif-rejet.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -58,9 +67,18 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   user : any;
   imgURLs: any[] = [];
   activeIndex: number = 0;
+  activeIndexContrat: number =  0;
 
   elementsParPage = 5;
   numeroDeLaPage = 0;
+
+  elementsParPageContratLocation = 5;
+  numeroDeLaPageContratLocation = 0;
+  elementsParPageContratVente = 5;
+  numeroDeLaPageContratVente = 0;
+
+  elementsParPagePlanification = 5;
+  numeroDeLaPagePlanification = 0;
 
   bienImmobilier = this.bienImmobilierService.bienImmobilier;
   bienImmAssocie = this.bienImmAssocieService.bienImmobilierAssocie;
@@ -92,6 +110,17 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   delegationGestionForm1 = new DelegationGestionForm1();
   publication = this.publicationService.publication;
 
+  codeBien: any;
+  contrat: any;
+  contratsLocations!: Page<ContratLocation>;
+  contratsVentes!: Page<ContratVente>;
+  contratBien!: any;
+  listMotifs: MotifRejet[] = [];
+  planificationsPaiements!: Page<PlanificationPaiement>;
+  planificationPaiement: any;
+  codeContrat: any;
+  paiement: any;
+
   constructor(private caracteristiqueService: CaracteristiquesService, private router: Router,
     private typeDeBienService: TypeDeBienService, private paysService: PaysService,
     private regionService: RegionService, private villeService: VilleService,
@@ -100,7 +129,9 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     private messageService: MessageService, private confirmationService: ConfirmationService,
     private bienImmobilierService: BienImmobilierService, private bienImmAssocieService: BienImmAssocieService,
     private behaviorService: BehaviorService, private delegationGestionService: DelegationGestionService,
-    private publicationService: PublicationService
+    private publicationService: PublicationService, private contratVenteService: ContratVenteService,
+    private motifRejetService: MotifRejetService, private contratLocationService: ContratLocationService,
+    private planificationPaiementService: PlanificationPaiementService, private paiementService: PaiementService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -616,9 +647,6 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   //Fonction pour ajouter un bien de type terrain si l'utilisateur est propriétaire ou démarcheur
   ajouterTypeDeBienTerrainIfUserIsProprietaireOrDemarcheur(): void {
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
-    this.bienImmobilier.pays = this.paysSelectionne;
-    this.bienImmobilier.region = this.regionSelectionnee;
-    this.bienImmobilier.ville = this.villeSelectionnee;
     this.bienImmobilier.quartier = this.quartierSelectionne;
     this.bienImmobilier.personne = this.user;
 
@@ -672,9 +700,6 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   ajouterTypeDeBienTerrainIfUserIsNotProprietaireOrDemarcheur(): void {
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
     this.bienImmobilier.agenceImmobiliere = this.agenceSelectionnee;
-    this.bienImmobilier.pays = this.paysSelectionne;
-    this.bienImmobilier.region = this.regionSelectionnee;
-    this.bienImmobilier.ville = this.villeSelectionnee;
     this.bienImmobilier.quartier = this.quartierSelectionne;
 
     for (const image of this.imagesBienImmobilier) {
@@ -735,9 +760,6 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   ajouterOtherTypeDeBienIfUserIsProprietaireOrDemarcheur(): void {
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
     this.bienImmobilier.categorie = this.categorieSelectionnee;
-    this.bienImmobilier.pays = this.paysSelectionne;
-    this.bienImmobilier.region = this.regionSelectionnee;
-    this.bienImmobilier.ville = this.villeSelectionnee;
     this.bienImmobilier.quartier = this.quartierSelectionne;
     this.bienImmobilier.personne = this.user;
 
@@ -795,9 +817,6 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
     this.bienImmobilier.categorie = this.categorieSelectionnee;
     this.bienImmobilier.agenceImmobiliere = this.agenceSelectionnee;
-    this.bienImmobilier.pays = this.paysSelectionne;
-    this.bienImmobilier.region = this.regionSelectionnee;
-    this.bienImmobilier.ville = this.villeSelectionnee;
     this.bienImmobilier.quartier = this.quartierSelectionne;
 
     for (const image of this.imagesBienImmobilier) {
@@ -891,7 +910,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
         if (response.id > 0) {
           this.bienImmobilierData.delete('images');
           this.bienImmobilierData.delete('bienImmobilierJson');
-          this.voirListeBiens();
+          this.afficherPageDetailBienImmobilier(response.id);
           this.messageSuccess = "Le bien a été modifié avec succès.";
           this.messageService.add({
             severity: 'success',
@@ -941,7 +960,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
         if (response.id > 0) {
           this.bienImmobilierData.delete('images');
           this.bienImmobilierData.delete('bienImmobilierJson');
-          this.voirListeBiens();
+          this.afficherPageDetailBienImmobilier(response.id)
           this.messageSuccess = "Le bien a été modifié avec succès.";
           this.messageService.add({
             severity: 'success',
@@ -987,7 +1006,6 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   //Fonction pour modifier un bien de type autre si l'utilisateur est propriétaire ou démarcheur
   modifierOtherTypeDeBienIfUserIsProprietaireOrDemarcheur(id: number): void {
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
-    // this.bienImmobilier.categorie = this.categorieSelectionnee;
 
     for (const image of this.imagesBienImmobilier) {
       this.bienImmobilierData.append('images', image);
@@ -1002,7 +1020,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
           this.bienImmobilierData.delete('images');
           this.bienImmobilierData.delete('bienImmobilierJson');
           this.bienImmobilierData.delete('caracteristiquesJson');
-          this.voirListeBiens();
+          this.afficherPageDetailBienImmobilier(response.id)
           this.messageSuccess = "Le bien a été modifié avec succès.";
           this.messageService.add({
             severity: 'success',
@@ -1041,7 +1059,6 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   //Fonction pour modifier un bien de type autre si l'utilisateur n'est pas propriétaire ou démarcheur
   modifierOtherTypeDeBienIfUserIsNotProprietaireOrDemarcheur(id: number): void {
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
-    // this.bienImmobilier.categorie = this.categorieSelectionnee;
     this.bienImmobilier.agenceImmobiliere = this.agenceSelectionnee;
 
     for (const image of this.imagesBienImmobilier) {
@@ -1057,7 +1074,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
           this.bienImmobilierData.delete('images');
           this.bienImmobilierData.delete('bienImmobilierJson');
           this.bienImmobilierData.delete('caracteristiquesJson');
-          this.voirListeBiens();
+          this.afficherPageDetailBienImmobilier(response.id);
           this.messageSuccess = "Le bien a été modifié avec succès.";
           this.messageService.add({
             severity: 'success',
@@ -1289,9 +1306,6 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     this.bienImmAssocie.typeDeBien = this.typeDeBienSelectionne;
     this.bienImmAssocie.categorie = this.categorieSelectionnee;
     this.bienImmAssocie.bienImmobilier = this.bienImmobilier;
-    this.bienImmAssocie.pays = this.bienImmobilier.pays;
-    this.bienImmAssocie.region = this.bienImmobilier.region;
-    this.bienImmAssocie.ville = this.bienImmobilier.ville;
     this.bienImmAssocie.quartier = this.bienImmobilier.quartier;
     this.bienImmAssocie.adresse = this.bienImmobilier.adresse;
     this.bienImmAssocie.personne = this.user;
@@ -1351,9 +1365,6 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     this.bienImmAssocie.agenceImmobiliere = this.bienImmobilier.agenceImmobiliere;
     this.bienImmAssocie.categorie = this.categorieSelectionnee;
     this.bienImmAssocie.bienImmobilier = this.bienImmobilier;
-    this.bienImmAssocie.pays = this.bienImmobilier.pays;
-    this.bienImmAssocie.region = this.bienImmobilier.region;
-    this.bienImmAssocie.ville = this.bienImmobilier.ville;
     this.bienImmAssocie.quartier = this.bienImmobilier.quartier;
     this.bienImmAssocie.adresse = this.bienImmobilier.adresse;
 
@@ -1433,9 +1444,6 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   modifierBienAssocieIfUserIsProprietaireOrDemarcheur(id: number): void {
     this.bienImmAssocie.typeDeBien = this.typeDeBienSelectionne;
     this.bienImmAssocie.bienImmobilier = this.bienImmobilier;
-    this.bienImmAssocie.pays = this.bienImmobilier.pays;
-    this.bienImmAssocie.region = this.bienImmobilier.region;
-    this.bienImmAssocie.ville = this.bienImmobilier.ville;
     this.bienImmAssocie.quartier = this.bienImmobilier.quartier;
     this.bienImmAssocie.adresse = this.bienImmobilier.adresse;
 
@@ -1492,9 +1500,6 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     this.bienImmAssocie.typeDeBien = this.typeDeBienSelectionne;
     this.bienImmAssocie.agenceImmobiliere = this.agenceSelectionnee;
     this.bienImmAssocie.bienImmobilier = this.bienImmobilier;;
-    this.bienImmAssocie.pays = this.bienImmobilier.pays;
-    this.bienImmAssocie.region = this.bienImmobilier.region;
-    this.bienImmAssocie.ville = this.bienImmobilier.ville;
     this.bienImmAssocie.quartier = this.bienImmobilier.quartier;
     this.bienImmAssocie.adresse = this.bienImmobilier.adresse;
 
@@ -1964,6 +1969,241 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     } else {
       return true
     }
+  }
+
+  afficherContratVente(contratBien: BienImmobilier) {
+    return contratBien.typeDeBien.designation == 'Terrain' ||
+    contratBien.typeDeBien.designation == 'Villa' ||
+    contratBien.typeDeBien.designation == 'Maison' ||
+    contratBien.typeDeBien.designation == 'Immeuble';
+  }
+
+  afficherContratLocation(contratBien: BienImmobilier) {
+    return contratBien.typeDeBien.designation == 'Maison' ||
+    contratBien.typeDeBien.designation == 'Immeuble' ||
+    contratBien.typeDeBien.designation == 'Villa' ||
+    contratBien.typeDeBien.designation == 'Chambre' ||
+    contratBien.typeDeBien.designation == 'Chambre salon' ||
+    contratBien.typeDeBien.designation == 'Appartement' ||
+    contratBien.typeDeBien.designation == 'Magasin' ||
+    contratBien.typeDeBien.designation == 'Bureau'
+  }
+
+  voirListeContrats(codeBien: string, contratBien: BienImmobilier): void {
+    this.contratBien = contratBien;
+    this.listeContratsLocationsByCodeBien(codeBien, this.numeroDeLaPageContratLocation, this.elementsParPageContratLocation);
+    this.listeContratsVentesByCodeBien(codeBien, this.numeroDeLaPageContratVente, this.elementsParPageContratVente);
+    this.affichage = 11;
+  }
+
+  listeContratsLocationsByCodeBien(codeBien: string, numeroDeLaPageContratLocation: number, elementsParPageContatLocation: number): void {
+    this.contratLocationService.getContratsLocationsByCodeBien(codeBien, numeroDeLaPageContratLocation, elementsParPageContatLocation).subscribe(
+      (response) => {
+        this.contratsLocations = response;
+      }
+    )
+  }
+
+  listeContratsVentesByCodeBien(codeBien: string, numeroDeLaPageContratVente: number, elementsParPageContratVente: number): void {
+    this.contratVenteService.getContratsVentesByCodeBien(codeBien, numeroDeLaPageContratVente, elementsParPageContratVente).subscribe(
+      (response) => {
+        this.contratsVentes = response;
+      }
+    )
+  }
+
+  paginationContratVente(event: any) {
+    this.numeroDeLaPageContratVente = event.first / event.rows;
+    this.elementsParPageContratVente = event.rows;
+    this.listeContratsVentesByCodeBien(this.codeBien, this.numeroDeLaPageContratVente, this.elementsParPageContratVente);
+  }
+
+  paginationContratLocation(event: any) {
+    this.numeroDeLaPageContratLocation = event.first / event.rows;
+    this.elementsParPageContratLocation = event.rows;
+    this.listeContratsLocationsByCodeBien(this.codeBien, this.numeroDeLaPageContratLocation, this.elementsParPageContratLocation);
+  }
+
+  afficherDetailDelegationGestion() {
+    this.affichage = 2;
+  }
+
+  detailContratLocation(id: number): void {
+    this.contratLocationService.findById(id).subscribe(
+      (response) => {
+        this.contrat = response;
+        if (this.user.role.code == 'ROLE_CLIENT') {
+          this.listeMotifs(this.contrat.codeContrat, this.contrat.refuserPar);
+        } else {
+          this.listeMotifs(this.contrat.codeContrat, this.contrat.annulerPar);
+        }
+      }
+    )
+  }
+
+  detailContratVente(id: number): void {
+    this.contratVenteService.findById(id).subscribe(
+      (response) => {
+        this.contrat = response;
+        if (this.user.role.code == 'ROLE_CLIENT') {
+          this.listeMotifs(this.contrat.codeContrat, this.contrat.refuserPar);
+        } else {
+          this.listeMotifs(this.contrat.codeContrat, this.contrat.annulerPar);
+        }
+      }
+    )
+  }
+
+  afficherPageDetailContratLocation(id: number): void {
+    this.detailContratLocation(id);
+    this.affichage = 12;
+  }
+
+  afficherPageDetailContratVente(id: number): void {
+    this.detailContratVente(id);
+    this.affichage = 13;
+  }
+
+  retourListeContrats(bienImmobilier: BienImmobilier) {
+    if (this.isTypeBienTerrain(bienImmobilier.typeDeBien.designation) || this.isTypeDeBienSupport(bienImmobilier.typeDeBien.designation)) {
+      this.afficherPageDetailBienImmobilier(bienImmobilier.id)
+    } else {
+      this.afficherPageDetailBienImmAssocie(bienImmobilier.id)
+    }
+  }
+
+  listeMotifs(code: string, creerPar: number): void {
+    this.motifRejetService.getMotifsByCodeAndCreerPar(code, creerPar).subscribe(
+      (data: MotifRejet[]) => {
+        this.listMotifs = data;
+      }
+    );
+  }
+
+  telechargerContratLocation(id: number): void {
+    this.contratLocationService.telecharger(id).subscribe(
+      response => {
+        const file = new Blob([response], { type: 'application/pdf' });
+
+        // Créer un objet URL pour le fichier PDF
+        const fileURL = URL.createObjectURL(file);
+
+        // Ouvrir le PDF dans un nouvel onglet
+        window.open(fileURL, '_blank');
+      }
+    )
+  }
+
+  telechargerContratVente(id: number): void {
+    this.contratVenteService.telecharger(id).subscribe(
+      response => {
+        const file = new Blob([response], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL, '_blank');
+      }
+    )
+  }
+
+  calculerProchainPaiement(dateDebut: Date, jourSupplementPaiement: number, debutPaiement: number): Date {
+    const prochainPaiementDate = new Date(dateDebut);
+    prochainPaiementDate.setDate(prochainPaiementDate.getDate() + jourSupplementPaiement);
+    prochainPaiementDate.setMonth(prochainPaiementDate.getMonth() + debutPaiement);
+    return prochainPaiementDate;
+  }
+
+  afficherCategorie(designation: string): boolean {
+    return designation == 'Maison' ||
+    designation == 'Villa' ||
+    designation == 'Immeuble' ||
+    designation == 'Appartement' ||
+    designation == 'Chambre salon' ||
+    designation == 'Chambre' ||
+    designation == 'Bureau';
+  }
+
+  voirListePlanificationsPaiements(contrat: any): void {
+    this.codeContrat = contrat.codeContrat;
+    this.contrat = contrat;
+    this.listePlanificationsPaiementParCodeContrat(this.codeContrat, this.numeroDeLaPagePlanification, this.elementsParPagePlanification);
+    this.affichage = 14;
+  }
+
+  listePlanificationsPaiementParCodeContrat(codeContrat: string, numeroDeLaPagePlanification: number, elementsParPagePlanification: number) {
+    this.planificationPaiementService.getPlanificationsPaiementsByCodeContrat(codeContrat, numeroDeLaPagePlanification, elementsParPagePlanification).subscribe(
+      (response) => {
+        this.planificationsPaiements = response;
+      }
+    )
+  }
+
+  detailPlanificationPaiement(id: number): void {
+    this.planificationPaiementService.findById(id).subscribe(
+      (response) => {
+        this.planificationPaiement = response;
+        if (this.planificationPaiement.typePlanification == 'Paiement de location') {
+          this.detailContratLocation(this.planificationPaiement.contrat.id);
+        } else {
+          this.detailContratVente(this.planificationPaiement.contrat.id);
+        }
+      }
+    )
+  }
+
+  afficherPageDetailPlanificationPaiement(id: number): void {
+    this.detailPlanificationPaiement(id);
+    this.affichage = 15;
+  }
+
+  paginationPlanificationPaiement(event: any) {
+    this.numeroDeLaPagePlanification = event.first / event.rows;
+    this.elementsParPagePlanification = event.rows;
+    this.listePlanificationsPaiementParCodeContrat(this.codeContrat, this.numeroDeLaPagePlanification, this.elementsParPagePlanification);
+  }
+
+  detailPaiementParCodePlanification(codePlanification: string): void {
+    this.paiementService.findByCodePlanification(codePlanification).subscribe(
+      (response) => {
+        this.paiement = response;
+        if (this.paiement.planificationPaiement.typePlanification == 'Paiement de location') {
+          this.detailContratLocation(this.paiement.planificationPaiement.contrat.id);
+        } else {
+          this.detailContratVente(this.paiement.planificationPaiement.contrat.id);
+        }
+      }
+    )
+  }
+
+  detailPaiementParContratId(contratId: number): void {
+    this.paiementService.findByContratId(contratId).subscribe(
+      (response) => {
+        this.paiement = response;
+        if (this.paiement.planificationPaiement.typePlanification == 'Paiement de location') {
+          this.detailContratLocation(this.paiement.planificationPaiement.contrat.id);
+        } else {
+          this.detailContratVente(this.paiement.planificationPaiement.contrat.id);
+        }
+      }
+    )
+  }
+
+  voirPageDetailPaiementParCodePlanification(codePlanification: string): void {
+    this.detailPaiementParCodePlanification(codePlanification);
+    this.affichage = 16;
+  }
+
+  voirPageDetailPaiementParContratId(contratId: number): void {
+    this.detailPaiementParContratId(contratId);
+    this.affichage = 17;
+  }
+
+  telechargerFichePaiement(id: number): void {
+    this.paiementService.telecharger(id).subscribe(
+      (response) => {
+        const file = new Blob([response], { type: 'application/pdf' });
+        const fileUrl = URL.createObjectURL(file);
+        window.open(fileUrl, '_blank');
+      }
+    )
   }
 
   ngOnDestroy(): void {

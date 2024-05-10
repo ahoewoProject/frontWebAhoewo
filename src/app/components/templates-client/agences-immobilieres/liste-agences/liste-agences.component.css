@@ -30,3 +30,8 @@
 :host ::ng-deep .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item-group {
     font-family: 'DM sans', sans-serif;
 }
+
+.text {
+    font-family: 'Inter Var', sans-serif;
+    font-size: 16px;
+}

@@ -90,7 +90,10 @@
             </div>
             <div class="col-xxl-6">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <a *ngIf="planificationPaiement.statutPlanification != 'Payé' && user.role.code != 'ROLE_CLIENT'" class="ud-btn btn-valider" type="button" (click)="afficherPagePaiement(planificationPaiement.id)">Effectuer un paiement</a> &nbsp;
+                    <!--
+                    <a *ngIf="planificationPaiement.statutPlanification == 'En attente' && user.role.code != 'ROLE_CLIENT'" class="ud-btn btn-valider" type="button" (click)="afficherPagePaiement(planificationPaiement.id)">Effectuer un paiement</a> &nbsp;
+                    <a *ngIf="planificationPaiement.statutPlanification == 'En attente' && planificationPaiement.typePlanification == 'Paiement de location' && user.role.code == 'ROLE_CLIENT'" class="ud-btn btn-valider" type="button" (click)="effectuerPaiement(planificationPaiement)">Effectuer un paiement</a>                    &nbsp;
+                    -->
                     <a class="ud-btn btn-retour" type="button" (click)="retour()">Retour</a>
                 </div>
             </div>
@@ -144,6 +147,49 @@
                             </p>
                         </div>
                     </div>
+
+                    <!--
+                                        <div *ngIf="planificationPaiement.typePlanification == 'Paiement d\'achat'">
+                        <div class="row" *ngFor="let planificationPaiementInList of planificationsPaiementsList; let i = index">
+                            <h4 class="title title-detail fz17 mb10">Planification paiement <span *ngIf="planificationsPaiementsList.length > 1">#{{ i + 1 }}</span></h4>
+                            <div class="col-sm-6">
+                                <p class="fw600 mb10 ff-heading dark-color">Code</p>
+                                <p class="text">{{ planificationPaiementInList.codePlanification }}</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="fw600 mb10 ff-heading dark-color">Type</p>
+                                <p class="text">{{ planificationPaiementInList.typePlanification }}</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="fw600 mb10 ff-heading dark-color">Libelle</p>
+                                <p class="text">{{ planificationPaiementInList.libelle }}</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="fw600 mb10 ff-heading dark-color">Montant dû</p>
+                                <p class="text">{{ planificationPaiementInList.montantDu | number }} FCFA</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="fw600 mb10 ff-heading dark-color">Montant à payer</p>
+                                <p class="text">{{ planificationPaiementInList.montantPaye | number }} FCFA</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="fw600 mb10 ff-heading dark-color">Reste à payer</p>
+                                <p class="text">{{ planificationPaiementInList.restePaye | number }} FCFA</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="fw600 mb10 ff-heading dark-color">Date planifiée</p>
+                                <p class="text">{{ planificationPaiementInList.datePlanifiee | date: "dd-MM-yyyy" }}</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+                                <p>
+                                    <p-tag *ngIf="planificationPaiementInList.statutPlanification == 'En attente'" severity="warning" value="{{planificationPaiementInList.statutPlanification}}"></p-tag>
+                                    <p-tag *ngIf="planificationPaiementInList.statutPlanification == 'Payé'" severity="success" value="{{planificationPaiementInList.statutPlanification}}"></p-tag>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    -->
 
                     <div class="row" *ngIf="planificationPaiement.typePlanification == 'Paiement de location'">
                         <h4 class="title title-detail fz17 mb10">Contrat</h4>

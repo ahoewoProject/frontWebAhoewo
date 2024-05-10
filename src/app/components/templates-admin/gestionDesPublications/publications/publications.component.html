@@ -6,6 +6,7 @@
     </div>
 
     <p-toast></p-toast>
+    <p-confirmDialog [style]="{ width: '50vw' }" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
 
     <!-- Liste des publications -->
     <div *ngIf="affichage == 1">
@@ -24,12 +25,12 @@
                         </div>
                     </div>
                     &nbsp;
-                    <a type="button" (click)="voirFormulaireAjouter()" class="ud-btn btn-thm">Ajouter une publication</a>
+                    <!--
+                    <a type="button" (click)="voirFormulaireAjouter()" class="ud-btn btn-thm">Ajouter une publication</a> -->
                 </div>
             </div>
         </div>
         <div class="row">
-            <p-confirmDialog [style]="{ width: '50vw' }" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
             <div class="col-xl-12">
                 <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
                     <div class="packages_table table-responsive">
@@ -161,7 +162,6 @@
                 </ng-template>
             </p-messages>
         </div>
-
         <div class="row">
             <div class="col-xl-12">
                 <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
@@ -213,6 +213,9 @@
                                     <p class="fw600 mb10 ff-heading dark-color" *ngIf="publication.commission">
                                         Commission
                                     </p>
+                                    <p class="fw600 mb10 ff-heading dark-color">
+                                        Etat
+                                    </p>
                                 </div>
                                 <div class="pd-list">
                                     <p class="text mb10">{{ publication.codePublication }}</p>
@@ -221,7 +224,11 @@
                                         {{ publication.avance }} mois
                                     </p>
                                     <p class="text mb10" *ngIf="publication.commission">
-                                        {{ publication.commission }} {{ publication.typeDeTransaction === "Location" ? "mois de loyer" : "%" }}
+                                        {{ publication.commission }} {{ publication.typeDeTransaction === "Location" ? "mois" : "%" }}
+                                    </p>
+                                    <p class="text mb10">
+                                        <p-tag *ngIf="publication.etat == true" severity="success" value="Activé"></p-tag>
+                                        <p-tag *ngIf="publication.etat == false" severity="danger" value="Désactivé"></p-tag>
                                     </p>
                                 </div>
                             </div>
@@ -253,7 +260,7 @@
                                         {{ publication.prixDuBien | number }} FCFA
                                     </p>
                                     <p class="text mb10">
-                                        {{ publication.datePublication | date : "dd-MM-yyyy" }}
+                                        {{ publication.datePublication | date : "dd/MM/yyyy" }}
                                     </p>
                                     <p class="text mb10" *ngIf="publication.typeDeTransaction == 'Location'">
                                         {{ publication.caution }} mois
@@ -264,7 +271,7 @@
                         user.role.code == 'ROLE_AGENTIMMOBILIER' ||
                         user.role.code == 'ROLE_DEMARCHEUR')
                     ">
-                                        {{ publication.fraisDeVisite }}
+                                        {{ publication.fraisDeVisite }} FCFA
                                     </p>
                                 </div>
                             </div>
@@ -299,9 +306,9 @@
                                     <p class="text mb10" *ngIf="afficherCategorie()">
                                         {{ bienImm.categorie }}
                                     </p>
-                                    <p class="text mb10">{{ bienImm.pays.libelle }}</p>
-                                    <p class="text mb10">{{ bienImm.region.libelle }}</p>
-                                    <p class="text mb-0">{{ bienImm.ville.libelle }}</p>
+                                    <p class="text mb10">{{ bienImm.quartier.ville.region.pays.libelle }}</p>
+                                    <p class="text mb10">{{ bienImm.quartier.ville.region.libelle }}</p>
+                                    <p class="text mb-0">{{ bienImm.quartier.ville.libelle }}</p>
                                 </div>
                             </div>
                         </div>
@@ -738,7 +745,7 @@
             </div>
             <div class="col-xxl-8">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <a class="ud-btn btn-retour" type="button" (click)="voirPageDetail(
+                    <a class="ud-btn btn-retour" type="button" (click)="afficherPageDetail(
                       publication.id,
                       publication.bienImmobilier.id
                     )">Retour</a>

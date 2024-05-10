@@ -17,9 +17,6 @@ export class BienImmobilier extends EntiteDeBase {
   surface!: number;
   typeDeBien: TypeDeBien;
   categorie!: string;
-  pays: Pays;
-  region: Region;
-  ville: Ville;
   quartier: Quartier;
   personne: Personne;
   agenceImmobiliere!: AgenceImmobiliere;
@@ -34,9 +31,6 @@ export class BienImmobilier extends EntiteDeBase {
     this.codeBien = '';
     this.adresse = '';
     this.typeDeBien = new TypeDeBien();
-    this.pays = new Pays();
-    this.region = new Region();
-    this.ville = new Ville();
     this.quartier = new Quartier();
     this.personne = new Personne();
     this.statutBien = '';

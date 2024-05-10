@@ -27,6 +27,15 @@ export class SuiviEntretienService {
     return this.httpClient.get<Page<SuiviEntretien>>(this.url + 'suivis-entretiens', {params: params});
   }
 
+  // Affichage des suivis d'entretiens par code contrat paginées;
+  // url: http://localhost:4040/api/par-code-contrat/suivis-entretiens/{codeContrat}
+  getSuiviEntretiensByCodeContratLocation(codeContrat: string, numeroDeLaPage: number, elementsParPage: number): Observable<Page<SuiviEntretien>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<SuiviEntretien>>(this.url + 'suivis-entretiens/par-code-contrat/' + codeContrat, {params: params});
+  }
+
   // Recherche d'une occurrence d'un suivi d'entretien par la clé primaire ;
   // url: http://localhost:4040/api/suivi-entretien/{id}
   findById(id: number): Observable<SuiviEntretien>{

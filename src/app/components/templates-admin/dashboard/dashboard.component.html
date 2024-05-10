@@ -1,769 +1,845 @@
 <div class="dashboard__content bgc-f7">
-  <div class="row pb40 d-block d-lg-none">
-    <!-- Menu responsive -->
-    <app-menu-responsive></app-menu-responsive>
-    <!-- End Menu responsive -->
-  </div>
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
+    </div>
 
-  <div class="dashboard_title_area">
-    <h3>
-      Bienvenue, M/Mlle {{ user.nom }} {{ user.prenom }}!
-      <i *ngIf="user.estCertifie && (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6;"></i>
-    </h3>
+    <div class="dashboard_title_area">
+        <h3>
+            Bienvenue, M/Mlle {{ user.nom }} {{ user.prenom }}!
+            <i *ngIf="user.estCertifie && (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR')" class="fa-sharp fa-solid fa-badge-check" style="color: #0f77e6;"></i>
+        </h3>
 
-    <h6 class="text">Nous sommes heureux de vous revoir !</h6>
+        <h6 class="text">Nous sommes heureux de vous revoir !</h6>
 
-    <h6 *ngIf="user.etatCompte == false" class="text">
-      <span class="error">
+        <h6 *ngIf="user.etatCompte == false" class="text">
+            <span class="error">
         <i class="fa-regular fa-triangle-exclamation fa-2xl"></i> Votre compte est désactivé. Veuillez contacter l'équipe support technique ahoewo pour obtenir de l'aide supplémentaire.
       </span>
-    </h6>
+        </h6>
 
-    <h6 *ngIf="!user.estCertifie && (user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR')" class="text">
-      <span *ngIf="demandeCertifications.length == 0" class="error">
+        <h6 *ngIf="!user.estCertifie && (user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR')" class="text">
+            <span *ngIf="demandeCertifications.length == 0" class="error">
         <i class="fa-regular fa-triangle-exclamation fa-2xl"></i> Votre compte n'est pas certifié, veuillez demander la certification de compte <br>en cliquant sur le menu <b>certifications</b> !
       </span>
-      <span *ngIf="demandeCertifications.length !== 0" class="error">
+            <span *ngIf="demandeCertifications.length !== 0" class="error">
         <i class="fa-regular fa-triangle-exclamation fa-2xl"></i> Votre compte est en attente de <b>certifications</b> !
       </span>
-    </h6>
+        </h6>
 
-    <h6 *ngIf="!user.estCertifie && user.role.code == 'ROLE_RESPONSABLE'" class="text">
-      <span *ngIf="demandeCertifications.length == 0" class="error">
+        <h6 *ngIf="!user.estCertifie && user.role.code == 'ROLE_RESPONSABLE'" class="text">
+            <span *ngIf="demandeCertifications.length == 0" class="error">
         <i class="fa-regular fa-triangle-exclamation fa-2xl"></i> Votre compte n'est pas certifié, veuillez ajouter votre <b>agence immobilière</b> en cliquant sur le menu <b>agences immobilières</b><br> et demander la certification de cette dernière en cliquant sur le menu <b>certifications</b> !
       </span>
-      <span *ngIf="demandeCertifications.length !== 0" class="error">
+            <span *ngIf="demandeCertifications.length !== 0" class="error">
         <i class="fa-regular fa-triangle-exclamation fa-2xl"></i> Votre compte est en attente de <b>certifications</b> !
       </span>
-    </h6>
-    <br>
-  </div>
+        </h6>
+        <br>
+    </div>
 
-  <div *ngIf="connexionReussie" >
-    <p-toast position="bottom-right" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'1000ms'" [hideTransitionOptions]="'3000ms'" [showTransformOptions]="'translateX(100%)'"></p-toast>
-  </div>
+    <div *ngIf="connexionReussie">
+        <p-toast position="bottom-right" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'1000ms'" [hideTransitionOptions]="'3000ms'" [showTransformOptions]="'translateX(100%)'"></p-toast>
+    </div>
 
-  <!-- Start Vue Administrateur -->
-  <div class="row" *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
-    <div class="col-sm-6 col-xxl-3">
-      <div  class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Rôles</div>
-          <div class="title">{{ _nombreRoles }}</div>
+    <!-- Start Vue Administrateur -->
+    <div class="row" *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
+        <p-tabView>
+            <p-tabPanel header="Gestion des comptes">
+            </p-tabPanel>
+            <p-tabPanel header="Agences immobilières">
+            </p-tabPanel>
+            <p-tabPanel header="Biens immobiliers">
+            </p-tabPanel>
+        </p-tabView>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Rôles</div>
+                    <div class="title">{{ _nombreRoles }}</div>
+                </div>
+                <div style="background-color:#0d7915" class="icon text-center"><i class="fa-light fa-gears" style="color: white;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915" class="icon text-center"><i class="fa-light fa-gears" style="color: white;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div  class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Utilisateurs</div>
-          <div class="title">{{ _nombreUtilisateurs }}</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Utilisateurs</div>
+                    <div class="title">{{ _nombreUtilisateurs }}</div>
+                </div>
+                <div style="background-color: #0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color: #0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Administrateurs</div>
-          <div class="title">{{ _nombreAdministrateurs }}</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Administrateurs</div>
+                    <div class="title">{{ _nombreAdministrateurs }}</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-gear" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-gear" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Notaires</div>
-          <div class="title">{{ _nombreNotaires }}</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Notaires</div>
+                    <div class="title">{{ _nombreNotaires }}</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-shield" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-shield" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Propriétaires</div>
-          <div class="title">{{ _nombreProprietaires }}</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Propriétaires</div>
+                    <div class="title">{{ _nombreProprietaires }}</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Responsables</div>
-          <div class="title">{{ _nombreResponsables }}</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Responsables</div>
+                    <div class="title">{{ _nombreResponsables }}</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Gérants</div>
-          <div class="title">{{ _nombreGerants }}</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Gérants</div>
+                    <div class="title">{{ _nombreGerants }}</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Agents immobiliers</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Agents immobiliers</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Démarcheurs</div>
-          <div class="title">{{ _nombreDemarcheurs }}</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Démarcheurs</div>
+                    <div class="title">{{ _nombreDemarcheurs }}</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Clients</div>
-          <div class="title">{{ _nombreClients }}</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Clients</div>
+                    <div class="title">{{ _nombreClients }}</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Agences immobilières</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Agences immobilières</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-key" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-key" style="color: #ffffff;"></i></div>
-      </div>
     </div>
-  </div>
-  <!-- End Vue Administrateur -->
+    <!-- End Vue Administrateur -->
 
-  <!-- Start Vue Notaire -->
-  <div class="row" *ngIf="user.role.code == 'ROLE_NOTAIRE'">
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes de<br>certifications</div>
-          <div class="title">{{ _nombreDemandeCertification }}</div>
+    <!-- Start Vue Notaire -->
+    <div class="row" *ngIf="user.role.code == 'ROLE_NOTAIRE'">
+        <p-tabView>
+            <p-tabPanel header="Gestion des comptes">
+            </p-tabPanel>
+        </p-tabView>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes de<br>certifications</div>
+                    <div class="title">{{ _nombreDemandeCertification }}</div>
+                </div>
+                <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-sharp fa-light fa-certificate" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-sharp fa-light fa-certificate" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Certifications<br>en attente</div>
-          <div class="title">{{ _nombreDemandeCertificationEnAttente }}</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Certifications<br>en attente</div>
+                    <div class="title">{{ _nombreDemandeCertificationEnAttente }}</div>
+                </div>
+                <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-sharp fa-light fa-certificate" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-sharp fa-light fa-certificate" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Certifications<br>validées</div>
-          <div class="title">{{ _nombreDemandeCertificationValidee }}</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Certifications<br>validées</div>
+                    <div class="title">{{ _nombreDemandeCertificationValidee }}</div>
+                </div>
+                <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-sharp fa-light fa-certificate" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-sharp fa-light fa-certificate" style="color: #ffffff;"></i></div>
-      </div>
     </div>
-  </div>
-  <!-- End Vue Notaire -->
+    <!-- End Vue Notaire -->
 
-  <!-- Start Vue Proprietaire -->
-  <div class="row" *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'">
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Gérants</div>
-          <div class="title">{{ _nombreGerantsParProprietaire }}</div>
+    <!-- Start Vue Proprietaire -->
+    <div class="row" *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'">
+        <p-tabView>
+            <p-tabPanel header="Gestion des comptes">
+            </p-tabPanel>
+            <p-tabPanel header="Biens immobiliers">
+            </p-tabPanel>
+            <p-tabPanel header="Publications des biens">
+            </p-tabPanel>
+            <p-tabPanel header="Locations et ventes">
+            </p-tabPanel>
+            <p-tabPanel header="Gestions des paiements">
+            </p-tabPanel>
+        </p-tabView>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Gérants</div>
+                    <div class="title">{{ _nombreGerantsParProprietaire }}</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Biens immobiliers</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Biens immobiliers</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-house-building" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-house-building" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Biens immobiliers<br>publiés</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Biens immobiliers<br>publiés</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-share-all" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-share-all" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Biens Immobiliers<br>Délégués</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Biens Immobiliers<br>Délégués</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-handshake" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-handshake" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes de visites</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes de visites</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-calendars" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-calendars" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes de locations</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes de locations</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-suitcase" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-suitcase" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes d'achats</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes d'achats</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-sack-dollar" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-sack-dollar" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Contrats</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Contrats</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-folders" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-folders" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Suivi des entretiens</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Suivi des entretiens</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-wrench" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-wrench" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Suivi des paiements</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Suivi des paiements</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-money-check-dollar-pen" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-money-check-dollar-pen" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Paiements</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Paiements</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-money-check-dollar" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-money-check-dollar" style="color: #ffffff;"></i></div>
-      </div>
     </div>
-  </div>
-  <!-- End Vue Proprietaire -->
+    <!-- End Vue Proprietaire -->
 
-  <!-- Start Vue Responsable agence immobilière -->
-  <div class="row" *ngIf="user.role.code == 'ROLE_RESPONSABLE'">
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Agents immobiliers</div>
-          <div class="title">0</div>
+    <!-- Start Vue Responsable agence immobilière -->
+    <div class="row" *ngIf="user.role.code == 'ROLE_RESPONSABLE'">
+        <p-tabView [scrollable]="true">
+            <p-tabPanel header="Gestion des comptes">
+            </p-tabPanel>
+            <p-tabPanel header="Agences immobilières">
+            </p-tabPanel>
+            <p-tabPanel header="Biens immobiliers">
+            </p-tabPanel>
+            <p-tabPanel header="Publications des biens">
+            </p-tabPanel>
+            <p-tabPanel header="Locations et ventes">
+            </p-tabPanel>
+            <p-tabPanel header="Gestions des paiements">
+            </p-tabPanel>
+        </p-tabView>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Agents immobiliers</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Agences imobilières</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Agences imobilières</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-key" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-key" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Vos services</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Vos services</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-briefcase" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-briefcase" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Biens immobiliers</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Biens immobiliers</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Biens immobiliers<br>publiés</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Biens immobiliers<br>publiés</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-share-all" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-share-all" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Biens immobiliers<br>délégués</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Biens immobiliers<br>délégués</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-handshake" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-handshake" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes de visites</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes de visites</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-calendars" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-calendars" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes de locations</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes de locations</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-suitcase" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-suitcase" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes d'achats</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes d'achats</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-sack-dollar" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-sack-dollar" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Contrats</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Contrats</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-folders" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-folders" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Suivi des entretiens</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Suivi des entretiens</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-wrench" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-wrench" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Suivi des paiments</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Suivi des paiments</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-money-check-dollar-pen" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-money-check-dollar-pen" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Paiements</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Paiements</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-money-check-dollar" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-money-check-dollar" style="color: #ffffff;"></i></div>
-      </div>
     </div>
-  </div>
-  <!-- End Vue Responsable agence immobilière -->
+    <!-- End Vue Responsable agence immobilière -->
 
-  <!-- Start Vue Agent Immobilier -->
-  <div class="row" *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER'">
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Agences immobilières</div>
-          <div class="title">0</div>
+    <!-- Start Vue Agent Immobilier -->
+    <div class="row" *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER'">
+        <p-tabView [scrollable]="true">
+            <p-tabPanel header="Agences immobilières">
+            </p-tabPanel>
+            <p-tabPanel header="Biens immobiliers">
+            </p-tabPanel>
+            <p-tabPanel header="Publications des biens">
+            </p-tabPanel>
+            <p-tabPanel header="Locations et ventes">
+            </p-tabPanel>
+            <p-tabPanel header="Gestions des paiements">
+            </p-tabPanel>
+        </p-tabView>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Agences immobilières</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-key" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-key" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Services</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Services</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-briefcase" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-briefcase" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Biens immobiliers</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Biens immobiliers</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Biens immobiliers<br>publiés</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Biens immobiliers<br>publiés</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-share-all" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-share-all" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Biens immobiliers<br>délégués</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Biens immobiliers<br>délégués</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-handshake" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-handshake" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes de visites</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes de visites</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-calendars" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-calendars" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes de locations</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes de locations</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-suitcase" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-suitcase" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes d'achats</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes d'achats</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-sack-dollar" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-sack-dollar" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Contrats</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Contrats</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-folders" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-folders" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Suivi des entretiens</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Suivi des entretiens</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-wrench" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-wrench" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Suivi des paiements</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Suivi des paiements</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-money-check-dollar-pen" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-money-check-dollar-pen" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Paiements</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Paiements</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-money-check-dollar" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-money-check-dollar" style="color: #ffffff;"></i></div>
-      </div>
     </div>
-  </div>
-  <!-- End Vue Agent Immobilier -->
+    <!-- End Vue Agent Immobilier -->
 
-  <!-- Start Vue Gérant -->
-  <div class="row" *ngIf="user.role.code == 'ROLE_GERANT'">
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Biens immobiliers délégués</div>
-          <div class="title">0</div>
+    <!-- Start Vue Gérant -->
+    <div class="row" *ngIf="user.role.code == 'ROLE_GERANT'">
+        <p-tabView>
+            <p-tabPanel header="Biens immobiliers">
+            </p-tabPanel>
+            <p-tabPanel header="Publications des biens">
+            </p-tabPanel>
+            <p-tabPanel header="Locations et ventes">
+            </p-tabPanel>
+            <p-tabPanel header="Gestions des paiements">
+            </p-tabPanel>
+        </p-tabView>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Biens immobiliers délégués</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-house-building" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-house-building" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Biens immobiliers<br>publiés</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Biens immobiliers<br>publiés</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-share-all" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-share-all" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes de visites</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes de visites</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-calendars" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-calendars" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes de locations</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes de locations</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-suitcase" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-suitcase" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes d'achats</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes d'achats</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-sack-dollar" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-sack-dollar" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Contrats</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Contrats</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-folders" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-folders" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Suivi des entretiens</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Suivi des entretiens</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-wrench" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-wrench" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Suivi des paiements</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Suivi des paiements</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-money-check-dollar-pen" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-money-check-dollar-pen" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Paiements</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Paiements</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-money-check-dollar" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#4ebc87;" class="icon text-center"><i class="fa-light fa-money-check-dollar" style="color: #ffffff;"></i></div>
-      </div>
     </div>
-  </div>
-  <!-- End Vue Gérant -->
+    <!-- End Vue Gérant -->
 
-  <!-- Start Vue Demarcheur -->
-  <div class="row" *ngIf="user.role.code == 'ROLE_DEMARCHEUR'">
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Biens immobiliers</div>
-          <div class="title">0</div>
+    <!-- Start Vue Demarcheur -->
+    <div class="row" *ngIf="user.role.code == 'ROLE_DEMARCHEUR'">
+        <p-tabView>
+            <p-tabPanel header="Biens immobiliers">
+            </p-tabPanel>
+            <p-tabPanel header="Publications des biens">
+            </p-tabPanel>
+            <p-tabPanel header="Locations et ventes">
+            </p-tabPanel>
+            <p-tabPanel header="Gestions des paiements">
+            </p-tabPanel>
+        </p-tabView>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Biens immobiliers</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Biens immobiliers<br>publiés</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Biens immobiliers<br>publiés</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-share-all" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-share-all" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Biens immobiliers<br>délégués</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Biens immobiliers<br>délégués</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-handshake" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-handshake" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes de visites</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes de visites</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-calendars" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-calendars" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes de locations</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes de locations</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-suitcase" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-suitcase" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes d'achats</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes d'achats</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-sack-dollar" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-sack-dollar" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Contrats</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Contrats</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-folders" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-folders" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Suivi des entretiens</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Suivi des entretiens</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-wrench" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-wrench" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Suivi des paiements</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Suivi des paiements</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-money-check-dollar-pen" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-money-check-dollar-pen" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Paiements</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Paiements</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-money-check-dollar" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-money-check-dollar" style="color: #ffffff;"></i></div>
-      </div>
     </div>
-  </div>
-  <!-- End Vue Demarcheur -->
+    <!-- End Vue Demarcheur -->
 
-  <!-- Start Vue Client -->
-  <div class="row" *ngIf="user.role.code == 'ROLE_CLIENT'">
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes <br>de visites</div>
-          <div class="title">0</div>
+    <!-- Start Vue Client -->
+    <div class="row" *ngIf="user.role.code == 'ROLE_CLIENT'">
+        <p-tabView>
+            <p-tabPanel header="Locations et ventes">
+            </p-tabPanel>
+            <p-tabPanel header="Gestions des paiements">
+            </p-tabPanel>
+        </p-tabView>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes <br>de visites</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-light fa-calendars" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-light fa-calendars" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes <br>de locations</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes <br>de locations</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-light fa-suitcase" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-light fa-suitcase" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Demandes d'achats</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Demandes d'achats</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-light fa-sack-dollar" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-light fa-sack-dollar" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Contrats</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Contrats</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-light fa-folders" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-light fa-folders" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Suivi des entretiens</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Suivi des entretiens</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-light fa-wrench" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-light fa-wrench" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Suivi des paiements</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Suivi des paiements</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-light fa-money-check-dollar-pen" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-light fa-money-check-dollar-pen" style="color: #ffffff;"></i></div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <div class="d-flex justify-content-between statistics_funfact">
-        <div class="details">
-          <div class="text fz25">Paiements</div>
-          <div class="title">0</div>
+        <div class="col-sm-6 col-xxl-3">
+            <div class="d-flex justify-content-between statistics_funfact">
+                <div class="details">
+                    <div class="text fz25">Paiements</div>
+                    <div class="title">0</div>
+                </div>
+                <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-light fa-money-check-dollar" style="color: #ffffff;"></i></div>
+            </div>
         </div>
-        <div style="background-color:#ee944e;" class="icon text-center"><i class="fa-light fa-money-check-dollar" style="color: #ffffff;"></i></div>
-      </div>
     </div>
-  </div>
-  <!-- End Vue Client -->
+    <!-- End Vue Client -->
 </div>

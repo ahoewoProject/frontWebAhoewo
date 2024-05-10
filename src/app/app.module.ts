@@ -100,6 +100,8 @@ import { ContratsComponent } from './components/templates-admin/gestionDesLocati
 import { SuivisEntretiensComponent } from './components/templates-admin/gestionDesLocationsEtVentes/suivis-entretiens/suivis-entretiens.component';
 import { PlanificationsPaiementsComponent } from './components/templates-admin/gestionDesPaiements/planifications-paiements/planifications-paiements.component';
 import { PaiementsComponent } from './components/templates-admin/gestionDesPaiements/paiements/paiements.component';
+import { ParametresComponent } from './components/templates-admin/gestionDesComptes/parametres/parametres.component';
+import { FedaPayCheckoutModule } from 'fedapay-angular';
 
 @NgModule({
   declarations: [
@@ -154,6 +156,7 @@ import { PaiementsComponent } from './components/templates-admin/gestionDesPaiem
     SuivisEntretiensComponent,
     PlanificationsPaiementsComponent,
     PaiementsComponent,
+    ParametresComponent,
   ],
   imports: [
     BrowserModule,
@@ -206,7 +209,7 @@ import { PaiementsComponent } from './components/templates-admin/gestionDesPaiem
     MessagesModule,
     MenuModule,
     CalendarModule,
-    CommonModule
+    CommonModule,
   ],
   providers: [
     MessageService,
@@ -231,3 +234,4 @@ export class AppModule {
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
 }
+

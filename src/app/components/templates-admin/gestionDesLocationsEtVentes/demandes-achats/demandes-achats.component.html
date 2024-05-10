@@ -273,9 +273,9 @@
                                         <p class="text mb10">{{ bienImm.codeBien }}</p>
                                         <p class="text mb10">{{ bienImm.typeDeBien.designation }}</p>
                                         <p class="text mb10" *ngIf="afficherCategorie()">{{ bienImm.categorie }}</p>
-                                        <p class="text mb10">{{ bienImm.pays.libelle }}</p>
-                                        <p class="text mb10">{{ bienImm.region.libelle }}</p>
-                                        <p class="text mb-0">{{ bienImm.ville.libelle }}</p>
+                                        <p class="text mb10">{{ bienImm.quartier.ville.region.pays.libelle }}</p>
+                                        <p class="text mb10">{{ bienImm.quartier.ville.region.libelle }}</p>
+                                        <p class="text mb-0">{{ bienImm.quartier.ville.libelle }}</p>
                                     </div>
                                 </div>
                             </div>
