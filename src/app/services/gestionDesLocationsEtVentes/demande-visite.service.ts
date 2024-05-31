@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
-import { MotifRejetForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetForm';
+import { MotifForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifForm';
 import { DemandeVisite } from 'src/app/models/gestionDesLocationsEtVentes/DemandeVisite';
 import { environment } from 'src/environments/environment';
 
@@ -17,6 +17,12 @@ export class DemandeVisiteService {
   constructor(private httpClient: HttpClient) {
     const APIEndpoint = environment.APIEndpoint;
     this.url = APIEndpoint + 'api/';
+  }
+
+  // Affichage - liste des demandes de visites;
+  // url: http://localhost:4040/api/demandes-visites-list
+  getDemandesVisitesList(): Observable<Array<DemandeVisite>>{
+    return this.httpClient.get<Array<DemandeVisite>>(this.url + 'demandes-visites-list');
   }
 
   // Affichage des demandes de visites paginées;
@@ -60,13 +66,13 @@ export class DemandeVisiteService {
 
   // Refuser une demande de visite ;
   // url: http://localhost:4040/api/demande-visite/refuser/{id}
-  refuser(id: number, m: MotifRejetForm): Observable<any>{
+  refuser(id: number, m: MotifForm): Observable<any>{
     return this.httpClient.post<any>(this.url + 'demande-visite/refuser/' + id, m);
   }
 
   // Annuler une demande de visite ;
   // url: http://localhost:4040/api/demande-visite/annuler/{id}
-  annuler(id: number, m: MotifRejetForm): Observable<any>{
+  annuler(id: number, m: MotifForm): Observable<any>{
     return this.httpClient.post<any>(this.url + 'demande-visite/annuler/' + id, m);
   }
 }

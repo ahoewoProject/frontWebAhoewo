@@ -1,0 +1,94 @@
+<div class="row">
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Demandes de <br>visites</div>
+                <div class="title">{{ nbreDemandeVisite }}</div>
+            </div>
+            <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-calendars" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Demandes de <br>locations</div>
+                <div class="title">{{ nbreDemandeLocation }}</div>
+            </div>
+            <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-suitcase" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Demandes <br>d'achats</div>
+                <div class="title">{{ nbreDemandeAchat }}</div>
+            </div>
+            <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-sack-dollar" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Contrats de <br>locations</div>
+                <div class="title">{{ nbreContratLocation }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--red-600)' }" class="icon text-center"><i class="fa-light fa-folders" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Contrats de <br>ventes</div>
+                <div class="title">{{ nbreContratVente }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--green-400)' }" class="icon text-center"><i class="fa-light fa-folders" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Suivi des <br>entretiens</div>
+                <div class="title">{{ nbreSuiviEntretien }}</div>
+            </div>
+            <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-wrench" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-xxl-6">
+        <div class="card flex justify-content-center statistics_funfact">
+            <h5 class="graph-title">Demandes de visites</h5>
+            <p-chart type="doughnut" [data]="dataDemandeVisite" [options]="optionsDemandeVisite" height="230" />
+        </div>
+    </div>
+    <div class="col-sm-12 col-xxl-6">
+        <div class="card flex justify-content-center statistics_funfact">
+            <h5 class="graph-title">Demandes de locations</h5>
+            <p-chart type="doughnut" [data]="dataDemandeLocation" [options]="optionsDemandeLocation" height="230" />
+        </div>
+    </div>
+    <div class="col-sm-12 col-xxl-6">
+        <div class="card flex justify-content-center statistics_funfact">
+            <h5 class="graph-title">Demandes d'achats</h5>
+            <p-chart type="doughnut" [data]="dataDemandeAchat" [options]="optionsDemandeAchat" height="230" />
+        </div>
+    </div>
+    <div class="col-sm-12 col-xxl-6">
+        <div class="card flex justify-content-center statistics_funfact">
+            <h5 class="graph-title">Contrats de ventes</h5>
+            <p-chart type="doughnut" [data]="dataContratVente" [options]="optionsContratVente" height="230" />
+        </div>
+    </div>
+    <div class="col-sm-12 col-xxl-6">
+        <div class="card flex justify-content-center statistics_funfact">
+            <h5 class="graph-title">Contrats de locations</h5>
+            <p-chart type="doughnut" [data]="dataContratLocation" [options]="optionsContratLocation" height="230" />
+        </div>
+    </div>
+    <div class="col-sm-12 col-xxl-6">
+        <div class="card flex justify-content-center statistics_funfact">
+            <h5 class="graph-title">Suvis entretiens</h5>
+            <p-chart type="doughnut" [data]="dataSuiviEntretien" [options]="optionsSuiviEntretien" height="230" />
+        </div>
+    </div>
+</div>

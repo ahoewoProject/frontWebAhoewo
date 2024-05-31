@@ -184,6 +184,7 @@ export class SuivisEntretiensComponent implements OnInit, OnDestroy {
   }
 
   modifierSuiviEntretien(): void{
+    this.suiviEntretien.datePrevue =  this.datePrevueSelectionnee;
     this.suiviEntretienService.modifierSuiviEntretien(this.suiviEntretien.id, this.suiviEntretien).subscribe(
       (response) => {
         if (response.id > 0) {

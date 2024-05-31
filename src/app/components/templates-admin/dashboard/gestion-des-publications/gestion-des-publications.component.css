@@ -1,0 +1,16 @@
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border-radius: 16px;
+    border-color: #fff;
+}
+
+.graph-title {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 900;
+}

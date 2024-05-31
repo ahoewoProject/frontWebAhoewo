@@ -119,12 +119,12 @@
     <!-- Details d'un bien immobilier - Type De Bien (Terrain) -->
     <div *ngIf="affichage == 2 && bienImmobilier.typeDeBien.designation == 'Terrain'">
         <div class="row align-items-center pb40">
-            <div class="col-xxl-5">
+            <div class="col-xxl-4">
                 <div class="dashboard_title_area">
                     <h4>Détails d'un bien immobilier</h4>
                 </div>
             </div>
-            <div class="col-xxl-7">
+            <div class="col-xxl-8">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
                     <a class="ud-btn btn-valider" *ngIf="afficherBoutonSiBienDelegue(bienImmobilier.estDelegue)" type="button" (click)="afficherFormulairePublicationBien(bienImmobilier)">Publier</a> &nbsp;
                     <a class="ud-btn btn-annuler" type="button" (click)="voirListeContrats(bienImmobilier.codeBien, bienImmobilier)">Contrats</a> &nbsp;
@@ -228,12 +228,12 @@
     <!-- Details d'un bien immobilier - Type De Bien(Autres) -->
     <div *ngIf="affichage == 2 && bienImmobilier.typeDeBien.designation !== 'Terrain'">
         <div class="row align-items-center pb40">
-            <div class="col-xxl-5">
+            <div class="col-xxl-4">
                 <div class="dashboard_title_area">
                     <h4>Détails d'un bien immobilier</h4>
                 </div>
             </div>
-            <div class="col-xxl-7">
+            <div class="col-xxl-8">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
                     <a class="ud-btn btn-valider" *ngIf="afficherBoutonSiBienDelegue(bienImmobilier.estDelegue)" type="button" (click)="afficherFormulairePublicationBien(bienImmobilier)">Publier</a>&nbsp;
                     <a class="ud-btn btn-annuler" type="button" (click)="voirListeContrats(bienImmobilier.codeBien, bienImmobilier)">Contrats</a> &nbsp;
@@ -570,7 +570,7 @@
                                     <div class="mb20">
                                         <label class="heading-color ff-heading fw600 mb10">Agence immobilière</label>
                                         <p-dropdown class="select" emptyFilterMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé" [options]="agencesImmobilieres" placeholder="Choisir l'agence" formControlName="agenceImmobiliere" [filter]="true" filterBy="nomAgence,codeAgence"
-                                            filterPlaceholder="Rechercher" (onChange)="agenceChoisie($event)" optionLabel="nomAgence">
+                                            [(ngModel)]="agenceSelectionnee" filterPlaceholder="Rechercher" (onChange)="agenceChoisie($event)" optionLabel="nomAgence">
                                         </p-dropdown>
                                         <div class="error" [hidden]="!agenceImmobiliere?.hasError('required') || !agenceImmobiliere.touched">La selection de l'agence est obligatoire</div>
                                     </div>
@@ -723,7 +723,7 @@
                                             <p class="fw600 mb-0 ff-heading dark-color">Ville</p>
                                         </div>
                                         <div class="pd-list">
-                                            <p *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="text mb10">{{ bienImmobilier.agenceImmobiliere.nomAgence }}</p>
+                                            <p *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="text mb10">{{ agenceSelectionnee.nomAgence }}</p>
                                             <p class="text mb10">{{ typeDeBienSelectionne.designation }}</p>
                                             <p class="text mb10">{{ paysSelectionne.libelle }}</p>
                                             <p class="text mb10">{{ regionSelectionnee.libelle }}</p>
@@ -740,7 +740,7 @@
                                             <p class="fw600 mb10 ff-heading dark-color" *ngIf="bienImmobilier.surface">Surface</p>
                                         </div>
                                         <div class="pd-list">
-                                            <p *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="text mb10">{{ bienImmobilier.agenceImmobiliere.telephone }}</p>
+                                            <p *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="text mb10">{{ agenceSelectionnee.telephone }}</p>
                                             <p class="text mb10">{{ quartierSelectionne.libelle }}</p>
                                             <p class="text mb10" *ngIf="bienImmobilier.adresse">{{ bienImmobilier.adresse }}</p>
                                             <p class="text mb10" *ngIf="bienImmobilier.surface">{{ bienImmobilier.surface }} m²</p>
@@ -3735,8 +3735,7 @@
                   </button>
                                                     <button pButton type="button" icon="pi pi-list" (click)="voirListePlanificationsPaiements(contratLocation)" pTooltip="Planifications de paiements" tooltipPosition="top" class="p-button-text p-button-secondary">
                   </button>
-                                                    <button *ngIf="contratLocation.etatContrat == 'En cours' || contratLocation.etatContrat == 'Terminé'" pButton type="button" icon="pi pi-credit-card" (click)="voirPageDetailPaiementParContratId(contratLocation.id)" pTooltip="Paiement" tooltipPosition="top"
-                                                        class="p-button-text p-button-success"></button>
+                                                    <button *ngIf="contratLocation.etatContrat == 'En cours' || contratLocation.etatContrat == 'Terminé'" pButton type="button" icon="pi pi-credit-card" (click)="voirListePaiements(contratLocation)" pTooltip="Paiements" tooltipPosition="top" class="p-button-text p-button-success"></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -3788,7 +3787,7 @@
                   </button>
                                                     <button pButton type="button" icon="pi pi-list" (click)="voirListePlanificationsPaiements(contratVente)" pTooltip="Planifications de paiements" tooltipPosition="top" class="p-button-text p-button-secondary">
                   </button>
-                                                    <button *ngIf="contratVente.etatContrat == 'confirmé'" pButton type="button" icon="pi pi-credit-card" (click)="voirPageDetailPaiementParContratId(contratVente.id)" pTooltip="Paiement" tooltipPosition="top" class="p-button-text p-button-success"></button>
+                                                    <button *ngIf="contratVente.etatContrat == 'Confirmé' || contratVente.etatContrat == 'Validé'" pButton type="button" icon="pi pi-credit-card" click)="voirListePaiements(contratLocation)" pTooltip="Paiements" tooltipPosition="top" class="p-button-text p-button-success"></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -3832,8 +3831,8 @@
             <p-messages severity="info">
                 <ng-template pTemplate>
                     <div class="ml-2">
-                        <th scope="col">Bien : {{ contrat.bienImmobilier.typeDeBien.designation }} | {{contrat.bienImmobilier.quartier.ville.region.libelle}} | {{contrat.bienImmobilier.quartier.ville.libelle}} | {{contrat.bienImmobilier.quartier.libelle}} | {{ contrat.bienImmobilier.adresse
-                            }} | {{ contrat.bienImmobilier.surface }} m²</th>
+                        <th scope="col">Contrat : {{ contrat.codeContrat }} - Bien : {{ contrat.bienImmobilier.typeDeBien.designation }} | {{ contrat.bienImmobilier.quartier.ville.region.libelle }} | {{ contrat.bienImmobilier.quartier.ville.libelle }} | {{ contrat.bienImmobilier.quartier.libelle
+                            }} | {{ contrat.bienImmobilier.adresse }} | {{ contrat.bienImmobilier.surface }} m²</th>
                     </div>
                 </ng-template>
             </p-messages>
@@ -3846,7 +3845,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div *ngFor="let listMotif of listMotifs; let i = index;">
-                                <h4 class="title title-detail fz17 mb20">{{ listMotif.libelle }} | {{ listMotif.creerLe | date: 'dd-MM-yyyy' }}</h4>
+                                <h4 class="title title-detail fz17 mb20">{{ listMotif.libelle }} | {{ listMotif.creerLe | date: 'dd/MM/yyyy' }}</h4>
                                 <p class="text justify-text">{{ listMotif.motif }}</p>
                             </div>
                             <p-divider *ngIf="listMotifs.length !== 0"></p-divider>
@@ -3900,17 +3899,17 @@
 
                                     <div class="col-sm-6 col-xl-4">
                                         <p class="fw600 mb5 ff-heading dark-color">Date début contrat</p>
-                                        <p class="text">{{ contrat.dateDebut | date: 'dd-MM-yyyy' }}</p>
+                                        <p class="text">{{ contrat.dateDebut | date: 'dd/MM/yyyy' }}</p>
                                     </div>
 
                                     <div class="col-sm-6 col-xl-4">
                                         <p class="fw600 mb5 ff-heading dark-color">Date fin contrat</p>
-                                        <p class="text">{{ contrat.dateFin ? (contrat.dateFin | date: 'dd-MM-yyyy') : 'Non connue' }}</p>
+                                        <p class="text">{{ contrat.dateFin ? (contrat.dateFin | date: 'dd/MM/yyyy') : 'Non connue' }}</p>
                                     </div>
 
                                     <div class="col-sm-6 col-xl-4">
                                         <p class="fw600 mb5 ff-heading dark-color">Prochain paiement</p>
-                                        <p class="text">{{ calculerProchainPaiement(contrat.dateDebut, contrat.jourSupplementPaiement, contrat.debutPaiement) | date: 'dd-MM-yyyy' }}</p>
+                                        <p class="text">{{ calculerProchainPaiement(contrat.dateDebut, contrat.jourSupplementPaiement, contrat.debutPaiement) | date: 'dd/MM/yyyy' }}</p>
                                     </div>
 
                                     <div class="col-sm-6 col-xl-4">
@@ -4125,17 +4124,17 @@
 
                                     <div class="col-sm-6 col-xl-4">
                                         <p class="fw600 mb5 ff-heading dark-color">Date début contrat</p>
-                                        <p class="text">{{ contrat.dateDebut | date: 'dd-MM-yyyy' }}</p>
+                                        <p class="text">{{ contrat.dateDebut | date: 'dd/MM/yyyy' }}</p>
                                     </div>
 
                                     <div class="col-sm-6 col-xl-4">
                                         <p class="fw600 mb5 ff-heading dark-color">Date fin contrat</p>
-                                        <p class="text">{{ contrat.dateFin ? (contrat.dateFin | date: 'dd-MM-yyyy') : 'Non connue' }}</p>
+                                        <p class="text">{{ contrat.dateFin ? (contrat.dateFin | date: 'dd/MM/yyyy') : 'Non connue' }}</p>
                                     </div>
 
                                     <div class="col-sm-6 col-xl-4">
                                         <p class="fw600 mb5 ff-heading dark-color">Prochain paiement</p>
-                                        <p class="text">{{ calculerProchainPaiement(contrat.dateDebut, contrat.jourSupplementPaiement, contrat.debutPaiement) | date: 'dd-MM-yyyy' }}</p>
+                                        <p class="text">{{ calculerProchainPaiement(contrat.dateDebut, contrat.jourSupplementPaiement, contrat.debutPaiement) | date: 'dd/MM/yyyy' }}</p>
                                     </div>
 
                                     <div class="col-sm-6 col-xl-4">
@@ -4330,8 +4329,8 @@
             <p-messages severity="info">
                 <ng-template pTemplate>
                     <div class="ml-2">
-                        <th scope="col">Bien : {{ contrat.bienImmobilier.typeDeBien.designation }} | {{contrat.bienImmobilier.quartier.ville.region.libelle}} | {{contrat.bienImmobilier.quartier.ville.libelle}} | {{contrat.bienImmobilier.quartier.libelle}} | {{ contrat.bienImmobilier.adresse
-                            }} | {{ contrat.bienImmobilier.surface }} m²</th>
+                        <th scope="col">Contrat : {{ contrat.codeContrat }} - Bien : {{ contrat.bienImmobilier.typeDeBien.designation }} | {{ contrat.bienImmobilier.quartier.ville.region.libelle }} | {{ contrat.bienImmobilier.quartier.ville.libelle }} | {{ contrat.bienImmobilier.quartier.libelle
+                            }} | {{ contrat.bienImmobilier.adresse }} | {{ contrat.bienImmobilier.surface }} m²</th>
                     </div>
                 </ng-template>
             </p-messages>
@@ -4344,7 +4343,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div *ngFor="let listMotif of listMotifs; let i = index;">
-                                <h4 class="title title-detail fz17 mb20">{{ listMotif.libelle }} | {{ listMotif.creerLe | date: 'dd-MM-yyyy' }}</h4>
+                                <h4 class="title title-detail fz17 mb20">{{ listMotif.libelle }} | {{ listMotif.creerLe | date: 'dd/MM/yyyy' }}</h4>
                                 <p class="text justify-text">{{ listMotif.motif }}</p>
                             </div>
                             <p-divider *ngIf="listMotifs.length !== 0"></p-divider>
@@ -4913,11 +4912,11 @@
                             </thead>
                             <tbody class="t-body">
                                 <tr *ngFor="let planificationPaiement of planificationsPaiements.content | genericFilter: recherche; let i = index">
-                                    <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
+                                    <td class="vam">{{ (numeroDeLaPagePlanification * elementsParPagePlanification) + i + 1 }}</td>
                                     <td class="vam">{{ planificationPaiement.codePlanification }}</td>
                                     <td class="vam">{{ planificationPaiement.contrat.codeContrat }}</td>
                                     <td class="vam">{{ planificationPaiement.libelle }}</td>
-                                    <!-- <td class="vam">{{ planificationPaiement.datePlanifiee | date: "dd-MM-yyyy" }}</td> -->
+                                    <!-- <td class="vam">{{ planificationPaiement.datePlanifiee | date: "dd/MM/yyyy" }}</td> -->
                                     <td class="vam">
                                         <p-tag *ngIf="planificationPaiement.statutPlanification == 'En attente'" severity="warning" value="{{planificationPaiement.statutPlanification}}"></p-tag>
                                         <p-tag *ngIf="planificationPaiement.statutPlanification == 'Payé'" severity="success" value="{{planificationPaiement.statutPlanification}}"></p-tag>
@@ -5002,7 +5001,7 @@
                         </div>
                         <div class="col-sm-6">
                             <p class="fw600 mb10 ff-heading dark-color">Date planifiée</p>
-                            <p class="text">{{ planificationPaiement.datePlanifiee | date: "dd-MM-yyyy" }}</p>
+                            <p class="text">{{ planificationPaiement.datePlanifiee | date: "dd/MM/yyyy" }}</p>
                         </div>
                         <div class="col-sm-6">
                             <p class="fw600 mb10 ff-heading dark-color">Etat</p>
@@ -5171,7 +5170,9 @@
             <p-messages severity="info">
                 <ng-template pTemplate>
                     <div class="ml-2">
-                        <th scope="col">Libelle : {{ paiement.planificationPaiement.libelle }}</th>
+                        <th scope="col">Libelle : {{ paiement.planificationPaiement.libelle }} - Contrat : {{ paiement.planificationPaiement.contrat.codeContrat }} - Bien : {{ paiement.planificationPaiement.contrat.bienImmobilier.typeDeBien.designation }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.quartier.ville.region.libelle
+                            }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.quartier.ville.libelle }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.quartier.libelle }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.adresse
+                            }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.surface }} m²</th>
                     </div>
                 </ng-template>
             </p-messages>
@@ -5190,21 +5191,13 @@
                             <p class="fw600 mb10 ff-heading dark-color">Mode</p>
                             <p class="text">{{ paiement.modePaiement }}</p>
                         </div>
-                        <div class="col-sm-6" *ngIf="paiement.numeroComptePaiement">
-                            <p class="fw600 mb10 ff-heading dark-color">Numero compte de paiement</p>
-                            <p class="text">{{ paiement.numeroComptePaiement }}</p>
-                        </div>
-                        <div class="col-sm-6" *ngIf="paiement.numeroComptePaiement">
-                            <p class="fw600 mb10 ff-heading dark-color">Référence de la transaction</p>
-                            <p class="text">{{ paiement.referenceTransaction }}</p>
-                        </div>
                         <div class="col-sm-6">
                             <p class="fw600 mb10 ff-heading dark-color">Montant payé</p>
                             <p class="text">{{ paiement.montant | number }} FCFA</p>
                         </div>
                         <div class="col-sm-6">
                             <p class="fw600 mb10 ff-heading dark-color">Date</p>
-                            <p class="text">{{ paiement.datePaiement | date: 'dd-MM-yyyy' }}</p>
+                            <p class="text">{{ paiement.datePaiement | date: 'dd/MM/yyyy' }}</p>
                         </div>
                         <div class="col-sm-6">
                             <p class="fw600 mb10 ff-heading dark-color">Etat</p>
@@ -5248,7 +5241,7 @@
 
                         <div class="col-sm-6">
                             <p class="fw600 mb10 ff-heading dark-color">Date planifiée</p>
-                            <p class="text">{{ paiement.planificationPaiement.datePlanifiee | date: 'dd-MM-yyyy' }}</p>
+                            <p class="text">{{ paiement.planificationPaiement.datePlanifiee | date: 'dd/MM/yyyy' }}</p>
                         </div>
 
                         <div class="col-sm-6">
@@ -5423,8 +5416,87 @@
     </div>
     <!-- End Détail paiement 1 -->
 
-    <!-- Start Détail paiement -->
+    <!-- Liste des paiements -->
     <div *ngIf="affichage == 17">
+        <div class="row align-items-center">
+            <div class="col-xxl-3">
+                <div class="dashboard_title_area">
+                    <h4>Liste des paiements</h4>
+                </div>
+            </div>
+            <div class="col-xxl-9">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <div class="item1 mb15-sm">
+                        <div class="search_area">
+                            <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
+                            <label><span class="flaticon-search"></span></label>
+                        </div>
+                    </div>
+                    &nbsp;
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListeContrats(contrat.bienImmobilier.codeBien, contrat.bienImmobilier)">Retour</a>
+                </div>
+            </div>
+            <p-messages severity="info">
+                <ng-template pTemplate>
+                    <div class="ml-2">
+                        <th scope="col">Contrat : {{ codeContrat }} - Bien : {{ contrat.bienImmobilier.typeDeBien.designation }} | {{ contrat.bienImmobilier.quartier.ville.region.libelle }} | {{ contrat.bienImmobilier.quartier.ville.libelle }} | {{ contrat.bienImmobilier.quartier.libelle
+                            }} | {{ contrat.bienImmobilier.adresse }} | {{ contrat.bienImmobilier.surface }} m²</th>
+                    </div>
+                </ng-template>
+            </p-messages>
+        </div>
+        <div class="row">
+            <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <div class="packages_table table-responsive">
+                        <table class="table-style3 table at-savesearch">
+                            <thead class="t-head">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Code</th>
+                                    <th scope="col">Planification</th>
+                                    <th scope="col">Mode</th>
+                                    <th scope="col">Libelle</th>
+                                    <th scope="col">Statut</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="t-body">
+                                <tr *ngFor="let paiement of paiements.content | genericFilter: recherche; let i = index">
+                                    <td class="vam">{{ (numeroDeLaPagePaiement * elementsParPagePaiement) + i + 1 }}</td>
+                                    <td class="vam">{{ paiement.codePaiement }}</td>
+                                    <td class="vam">{{ paiement.planificationPaiement.codePlanification }}</td>
+                                    <td class="vam">{{ paiement.modePaiement }}</td>
+                                    <td class="vam">{{ paiement.planificationPaiement.libelle }}</td>
+                                    <td class="vam">
+                                        <p-tag *ngIf="paiement.statutPaiement == 'Effectué'" severity="info" value="Effectué"></p-tag>
+                                    </td>
+                                    <td class="vam">
+                                        <div class="d-flex">
+                                            <button pButton type="button" icon="pi pi-eye" (click)="voirPageDetailPaiementParContratId(paiement.planificationPaiement.contrat.id)" pTooltip="Détails" tooltipPosition="top" class="p-button-text p-button-info">
+                    </button>
+                                        </div>
+                                    </td>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div *ngIf="paiements.totalElements !== 0" class="mbp_pagination text-center mt30">
+                        <p-paginator (onPageChange)="paginationPaiement($event)" [rows]="paiements.size" [totalRecords]="paiements.totalElements" [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} paiements">
+                        </p-paginator>
+                    </div>
+                    <div *ngIf="paiements.totalElements == 0" class="mbp_pagination text-center mt30">
+                        <p class="mt10 pagination_page_count text-center">Aucun paiement effectué pour le moment</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Liste des paiements -->
+
+    <!-- Start Détail paiement 2 -->
+    <div *ngIf="affichage == 18">
         <div class="row align-items-center">
             <div class="col-xxl-8">
                 <div class="dashboard_title_area">
@@ -5434,13 +5506,15 @@
             <div class="col-xxl-4">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
                     <a class="ud-btn btn-valider" type="button" (click)="telechargerFichePaiement(paiement.id)">Imprimer</a> &nbsp;
-                    <a class="ud-btn btn-retour" type="button" (click)="voirListeContrats(contrat.bienImmobilier.codeBien, contrat.bienImmobilier)">Retour</a>
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListePaiements(contrat)">Retour</a>
                 </div>
             </div>
             <p-messages severity="info">
                 <ng-template pTemplate>
                     <div class="ml-2">
-                        <th scope="col">Libelle : {{ paiement.planificationPaiement.libelle }}</th>
+                        <th scope="col">Libelle : {{ paiement.planificationPaiement.libelle }} - Contrat : {{ paiement.planificationPaiement.contrat.codeContrat }} - Bien : {{ paiement.planificationPaiement.contrat.bienImmobilier.typeDeBien.designation }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.quartier.ville.region.libelle
+                            }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.quartier.ville.libelle }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.quartier.libelle }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.adresse
+                            }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.surface }} m²</th>
                     </div>
                 </ng-template>
             </p-messages>
@@ -5459,21 +5533,13 @@
                             <p class="fw600 mb10 ff-heading dark-color">Mode</p>
                             <p class="text">{{ paiement.modePaiement }}</p>
                         </div>
-                        <div class="col-sm-6" *ngIf="paiement.numeroComptePaiement">
-                            <p class="fw600 mb10 ff-heading dark-color">Numero compte de paiement</p>
-                            <p class="text">{{ paiement.numeroComptePaiement }}</p>
-                        </div>
-                        <div class="col-sm-6" *ngIf="paiement.numeroComptePaiement">
-                            <p class="fw600 mb10 ff-heading dark-color">Référence de la transaction</p>
-                            <p class="text">{{ paiement.referenceTransaction }}</p>
-                        </div>
                         <div class="col-sm-6">
                             <p class="fw600 mb10 ff-heading dark-color">Montant payé</p>
                             <p class="text">{{ paiement.montant | number }} FCFA</p>
                         </div>
                         <div class="col-sm-6">
                             <p class="fw600 mb10 ff-heading dark-color">Date</p>
-                            <p class="text">{{ paiement.datePaiement | date: 'dd-MM-yyyy' }}</p>
+                            <p class="text">{{ paiement.datePaiement | date: 'dd/MM/yyyy' }}</p>
                         </div>
                         <div class="col-sm-6">
                             <p class="fw600 mb10 ff-heading dark-color">Etat</p>
@@ -5517,7 +5583,7 @@
 
                         <div class="col-sm-6">
                             <p class="fw600 mb10 ff-heading dark-color">Date planifiée</p>
-                            <p class="text">{{ paiement.planificationPaiement.datePlanifiee | date: 'dd-MM-yyyy' }}</p>
+                            <p class="text">{{ paiement.planificationPaiement.datePlanifiee | date: 'dd/MM/yyyy' }}</p>
                         </div>
 
                         <div class="col-sm-6">
@@ -5686,9 +5752,9 @@
                 </div>
             </div>
             <div class="text-end">
-                <a class="ud-btn btn-retour" (click)="voirListeContrats(contrat.bienImmobilier.codeBien, contrat.bienImmobilier)" type="button">Retour</a>
+                <a class="ud-btn btn-retour" (click)="voirListePaiements(contrat)" type="button">Retour</a>
             </div>
         </div>
     </div>
-    <!-- End Détail paiement -->
+    <!-- End Détail paiement 2 -->
 </div>

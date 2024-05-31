@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
-import { MotifRejet } from 'src/app/models/MotifRejet';
-import { MotifRejetForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetForm';
+import { Motif } from 'src/app/models/Motif';
+import { MotifForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifForm';
 import { Caracteristiques } from 'src/app/models/gestionDesBiensImmobiliers/Caracteristiques';
 import { ImagesBienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/ImagesBienImmobilier';
 import { DemandeLocation } from 'src/app/models/gestionDesLocationsEtVentes/DemandeLocation';
@@ -15,7 +15,7 @@ import { ImagesBienImmobilierService } from 'src/app/services/gestionDesBiensImm
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { ContratLocationService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-location.service';
 import { DemandeLocationService } from 'src/app/services/gestionDesLocationsEtVentes/demande-location.service';
-import { MotifRejetService } from 'src/app/services/motif-rejet.service';
+import { MotifService } from 'src/app/services/motif.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -44,15 +44,15 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
   messageSuccess: string | null = null;
   caracteristique: Caracteristiques = new Caracteristiques();
   bienImm: any;
-  motifAnnulationForm = new MotifRejetForm();
-  motifRefusForm = new MotifRejetForm();
+  motifAnnulationForm = new MotifForm();
+  motifRefusForm = new MotifForm();
   images: ImagesBienImmobilier[] = [];
 
   contratLocation = this.contratLocationService.contratLocation;
 
   demandeLocationId: any;
   demandeLocationReussie: any;
-  listMotifs: MotifRejet[] = [];
+  listMotifs: Motif[] = [];
   typesDeContrat: string[] = [];
   typeDeContratSelectionne: any;
 
@@ -61,7 +61,7 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
 
   constructor(private demandeLocationService: DemandeLocationService, private activatedRoute: ActivatedRoute,
     private router: Router, private personneService: PersonneService,
-    private motifRejetService: MotifRejetService, private imagesBienImmobilierService: ImagesBienImmobilierService,
+    private motifService: MotifService, private imagesBienImmobilierService: ImagesBienImmobilierService,
     private bienImmobilierService: BienImmobilierService, private bienImmAssocieService: BienImmAssocieService,
     private messageService: MessageService, private confirmationService: ConfirmationService,
     private caracteristiquesServices: CaracteristiquesService, private contratLocationService: ContratLocationService
@@ -78,7 +78,7 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
     if (demandeRequest !== null) {
         localStorage.removeItem('demandeRequest');
     }
-    
+
     this.initResponsiveOptions();
     if (this.user.role.code == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
       this.menusOfAgence();
@@ -266,8 +266,8 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
   }
 
   listeMotifs(code: string, creerPar: number): void {
-    this.motifRejetService.getMotifsByCodeAndCreerPar(code, creerPar).subscribe(
-      (data: MotifRejet[]) => {
+    this.motifService.getMotifsByCodeAndCreerPar(code, creerPar).subscribe(
+      (data: Motif[]) => {
         this.listMotifs = data;
       }
     );
@@ -354,9 +354,16 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
     this.modalAnnulationVisible = true;
   }
 
+  //Afficher liste avec url
   voirListe(): void {
     this.affichage = 1;
     this.router.navigate([this.navigateURLBYUSER(this.user) + '/demandes-locations'])
+  }
+
+  //Afficher liste sans url
+  afficherListe(): void {
+    this.listeDemandesLocations(this.numeroDeLaPage, this.elementsParPage);
+    this.affichage = 1;
   }
 
   dialogueNotVisible(): void {
@@ -408,7 +415,7 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
   modifier(id: number): void {
     this.demandeLocationService.editDemandeLocation(id, this.demandeLocation).subscribe(
       (response) => {
-        this.voirListe();
+        this.afficherListe();
         this.messageSuccess = "La demande de location a été modifiée avec succès !";
         this.messageService.add({
           severity: 'success',
@@ -620,14 +627,11 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
       designation === "Bureau" || designation === "Magasin" || designation === "Boutique";
   }
 
-  afficherCategorie(): boolean {
-    return this.demandeLocation.publication.bienImmobilier.typeDeBien.designation == 'Maison' ||
-    this.demandeLocation.publication.bienImmobilier.typeDeBien.designation == 'Villa' ||
-    this.demandeLocation.publication.bienImmobilier.typeDeBien.designation == 'Immeuble' ||
-    this.demandeLocation.publication.bienImmobilier.typeDeBien.designation == 'Appartement' ||
-    this.demandeLocation.publication.bienImmobilier.typeDeBien.designation == 'Chambre salon' ||
-    this.demandeLocation.publication.bienImmobilier.typeDeBien.designation == 'Chambre' ||
-    this.demandeLocation.publication.bienImmobilier.typeDeBien.designation == 'Bureau';
+  afficherCategorie(designation: string): boolean {
+    return designation == 'Maison' || designation == 'Villa' ||
+    designation == 'Immeuble' || designation == 'Appartement' ||
+    designation == 'Chambre salon' || designation == 'Chambre' ||
+    designation == 'Bureau';
   }
 
   afficherBoutonSiBienDelegue(estDelegue: boolean): boolean {

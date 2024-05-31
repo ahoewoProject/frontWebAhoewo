@@ -19,6 +19,12 @@ export class PublicationService {
     this.url = APIEndpoint + 'api/';
   }
 
+  // Liste publications Par Utilisateurs ;
+  // url: http://localhost:4040/api/publications/user
+  getPublicationsByUser(): Observable<Array<Publication>>{
+    return this.httpClient.get<Array<Publication>>(this.url + 'publications/user');
+  }
+
   // Les publications actives par agence;
   // url: http://localhost:4040/api/publications/actives/agence/{nomAgence}
   getPublicationsActivesByAgence(nomAgence: string, numeroDeLaPage: number, elementsParPage: number): Observable<Page<Publication>>{

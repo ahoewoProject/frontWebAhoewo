@@ -1,65 +1,62 @@
 <div class="dashboard__content bgc-f7">
-  <div class="row pb40 d-block d-lg-none">
-    <!-- Menu responsive -->
-    <app-menu-responsive></app-menu-responsive>
-    <!-- End Menu responsive -->
-  </div>
-
-  <p-toast></p-toast>
-
-  <!-- Liste des services -->
-  <div *ngIf="affichage == 1">
-    <div class="row align-items-center pb40">
-      <div class="col-xxl-5">
-        <div class="dashboard_title_area">
-          <h4>Liste des services inexistants</h4>
-        </div>
-      </div>
-      <div class="col-xxl-7">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <div class="item1 mb15-sm">
-            <div class="search_area">
-              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
-              <label><span class="flaticon-search"></span></label>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
     </div>
-    <div class="row">
-      <!-- <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog> -->
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
-          <div class="packages_table table-responsive">
-            <table class="table-style3 table at-savesearch">
-              <thead class="t-head">
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Code</th>
-                  <th scope="col">Nom</th>
-                  <th scope="col">Etat</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="t-body">
-                <tr *ngFor="let _service of services.content | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
-                  <td class="vam">{{ _service.codeService }} </td>
-                  <td class="vam">{{ _service.nomService }} </td>
-                  <td class="vam">
-                    <p-tag *ngIf="_service.etat == 0" severity="warning" value="En cours de traitement"></p-tag>
-                    <p-tag *ngIf="_service.etat == 3" severity="danger" value="Rejeté"></p-tag>
-                  </td>
-                  <td class="vam">
-                    <div class="d-flex">
 
-                      <button pButton type="button" icon="pi pi-eye"
-                        (click)="afficherPageDetail(_service.id)"
-                        pTooltip="Détails" tooltipPosition="top"
-                        class="p-button-text p-button-info">
+    <p-toast></p-toast>
+
+    <!-- Liste des services -->
+    <div *ngIf="affichage == 1">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-5">
+                <div class="dashboard_title_area">
+                    <h4>Liste des services inexistants</h4>
+                </div>
+            </div>
+            <div class="col-xxl-7">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <div class="item1 mb15-sm">
+                        <div class="search_area">
+                            <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
+                            <label><span class="flaticon-search"></span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog> -->
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <div class="packages_table table-responsive">
+                        <table class="table-style3 table at-savesearch">
+                            <thead class="t-head">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Code</th>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col">Etat</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="t-body">
+                                <tr *ngFor="let _service of services.content | genericFilter: recherche;  let i = index">
+                                    <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
+                                    <td class="vam">{{ _service.codeService }} </td>
+                                    <td class="vam">{{ _service.nomService }} </td>
+                                    <td class="vam">
+                                        <p-tag *ngIf="_service.etat == 0" severity="warning" value="En cours de traitement"></p-tag>
+                                        <p-tag *ngIf="_service.etat == 3" severity="danger" value="Rejeté"></p-tag>
+                                    </td>
+                                    <td class="vam">
+                                        <div class="d-flex">
+
+                                            <button pButton type="button" icon="pi pi-eye" (click)="afficherPageDetail(_service.id)" pTooltip="Détails" tooltipPosition="top" class="p-button-text p-button-info">
                       </button>
 
-                      <!-- <button pButton type="button"
+                                            <!-- <button pButton type="button"
                         *ngIf="_service.etat == 0"
                         (click)="afficherDialogue(_service.id)" icon="pi pi-times-circle"
                         pTooltip="Rejeter ce service" tooltipPosition="right" class="p-button-text p-button-danger">
@@ -71,27 +68,24 @@
                         pTooltip="Valider ce service" tooltipPosition="right" class="p-button-text p-button-success">
                       </button> -->
 
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div *ngIf="services.totalElements !== 0" class="mbp_pagination text-center mt30">
-            <p-paginator
-              (onPageChange)="pagination($event)" [rows]="services.size"
-              [totalRecords]="services.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
-              [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} services"
-              [showPageLinks]="true" [showFirstLastIcon]="true">
-            </p-paginator>
-          </div>
-          <div *ngIf="services.totalElements == 0" class="mbp_pagination text-center mt30">
-            <p class="mt10 pagination_page_count text-center">Aucun service enregistré pour le moment</p>
-          </div>
-        </div>
-      </div>
-      <!-- Motif Rejet Start -->
-      <!-- <p-dialog header="Rejet d'un service" [(visible)]="dialogVisible" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+                    <div *ngIf="services.totalElements !== 0" class="mbp_pagination text-center mt30">
+                        <p-paginator (onPageChange)="pagination($event)" [rows]="services.size" [totalRecords]="services.totalElements" [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} services"
+                            [showPageLinks]="true" [showFirstLastIcon]="true">
+                        </p-paginator>
+                    </div>
+                    <div *ngIf="services.totalElements == 0" class="mbp_pagination text-center mt30">
+                        <p class="mt10 pagination_page_count text-center">Aucun service enregistré pour le moment</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Motif Rejet Start -->
+            <!-- <p-dialog header="Rejet d'un service" [(visible)]="dialogVisible" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
         <form class="form-style1">
           <div class="row">
             <div class="form-group">
@@ -110,113 +104,108 @@
           </div>
         </form>
       </p-dialog> -->
-      <!-- Motif Rejet End -->
-    </div>
-  </div>
-  <!-- End Liste des services -->
-
-  <!-- Details d'un service -->
-  <div *ngIf="affichage == 2">
-    <div  class="row align-items-center pb40">
-      <div class="col-xxl-8">
-        <div class="dashboard_title_area">
-          <h4>Détails d'un service inexistant</h4>
-          <p class="text"></p>
+            <!-- Motif Rejet End -->
         </div>
-      </div>
-      <div class="col-xxl-4">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <button class="ud-btn btn-valider" *ngIf="_service.etat == 0 || _service.etat == 3"
-          (click)="validerService(_service.id)">Valider</button>
-          &nbsp;
-          <a class="ud-btn btn-modifier" type="button" *ngIf="_service.etat == 0"
-          (click)="afficherDialogue(_service.id)">Rejeter</a>
-          &nbsp;
-          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
-        </div>
-      </div>
     </div>
-    <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+    <!-- End Liste des services -->
 
-          <div class="row">
-            <div class="col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Code</p>
-              <p class="text">{{ _service.codeService }}</p>
+    <!-- Details d'un service -->
+    <div *ngIf="affichage == 2">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-8">
+                <div class="dashboard_title_area">
+                    <h4>Détails d'un service inexistant</h4>
+                    <p class="text"></p>
+                </div>
             </div>
-            <div class="col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Nom</p>
-              <p class="text">{{ _service.nomService }}</p>
-            </div>
-
-            <p-divider></p-divider>
-            <div>
-              <p class="fw600 mb10 ff-heading dark-color">Description</p>
-              <p class="text justify-text">{{ _service.description }}</p>
-            </div>
-
-            <p-divider></p-divider>
-            <div class="col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Etat</p>
-              <p>
-                <p-tag *ngIf="_service.etat == 0" severity="warning" value="En cours de traitement"></p-tag>
-                <p-tag *ngIf="_service.etat == 1" severity="success" value="Validé"></p-tag>
-                <p-tag *ngIf="_service.etat == 3" severity="danger" value="Rejeté"></p-tag>
-              </p>
-            </div>
-            <div class="col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Nom de l'Emetteur</p>
-              <p class="text">{{ emetteur.nom }}</p>
-            </div>
-
-            <p-divider></p-divider>
-            <div class="col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Prénom(s) de l'Emetteur</p>
-              <p class="text">{{ emetteur.prenom }}</p>
-            </div>
-            <div class="col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Email de l'Emetteur</p>
-              <p class="text">{{ emetteur.prenom }}</p>
-            </div>
-
-            <p-divider></p-divider>
-            <div class="col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Téléphone de l'Emetteur</p>
-              <p class="text">{{ emetteur.prenom }}</p>
-            </div>
-            <div class="col-md-6">
-              <p class="fw600 mb10 ff-heading dark-color">Profil de l'Emetteur</p>
-              <p class="text">{{ emetteur.role.libelle }}</p>
+            <div class="col-xxl-4">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <button class="ud-btn btn-valider" *ngIf="_service.etat == 0 || _service.etat == 3" (click)="validerService(_service.id)">Valider</button> &nbsp;
+                    <a class="ud-btn btn-danger" type="button" *ngIf="_service.etat == 0" (click)="afficherDialogue(_service.id)">Rejeter</a> &nbsp;
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+                </div>
             </div>
         </div>
-      </div>
-    </div>
-    <p-dialog header="Rejet d'un service" [(visible)]="dialogVisible" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
-      <form class="form-style1">
+        <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
         <div class="row">
-          <div class="form-group">
-            <div class="mb30">
-              <label class="heading-color ff-heading fw600 mb10">Motif du rejet</label>
-              <textarea id="motifRejet" name="motifRejet" [(ngModel)]="motifRejetForm.motif" placeholder="Le motif de rejet du service" style="height: 160px;"></textarea>
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Code</p>
+                            <p class="text">{{ _service.codeService }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Nom</p>
+                            <p class="text">{{ _service.nomService }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div>
+                            <p class="fw600 mb10 ff-heading dark-color">Description</p>
+                            <p class="text justify-text">{{ _service.description }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+                            <p>
+                                <p-tag *ngIf="_service.etat == 0" severity="warning" value="En cours de traitement"></p-tag>
+                                <p-tag *ngIf="_service.etat == 1" severity="success" value="Validé"></p-tag>
+                                <p-tag *ngIf="_service.etat == 3" severity="danger" value="Rejeté"></p-tag>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Nom de l'Emetteur</p>
+                            <p class="text">{{ emetteur.nom }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Prénom(s) de l'Emetteur</p>
+                            <p class="text">{{ emetteur.prenom }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Email de l'Emetteur</p>
+                            <p class="text">{{ emetteur.prenom }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Téléphone de l'Emetteur</p>
+                            <p class="text">{{ emetteur.prenom }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Profil de l'Emetteur</p>
+                            <p class="text">{{ emetteur.role.libelle }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="col-md-12">
-            <div class="text-end">
-              <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
-              &nbsp;
-              <button class="ud-btn btn-valider" type="button" (click)="enregistrerMotif()">Enregistrer</button>
-            </div>
-          </div>
+            <p-dialog header="Rejet d'un service" [(visible)]="dialogVisible" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+                <form class="form-style1">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="mb30">
+                                <label class="heading-color ff-heading fw600 mb10">Motif du rejet</label>
+                                <textarea id="motifRejet" name="motifRejet" [(ngModel)]="motifRejetForm.motif" placeholder="Le motif de rejet du service" style="height: 160px;"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="text-end">
+                                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button> &nbsp;
+                                <button class="ud-btn btn-valider" type="button" (click)="enregistrerMotif()">Enregistrer</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </p-dialog>
         </div>
-      </form>
-    </p-dialog>
+        <div class="text-end">
+            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
+        </div>
     </div>
-    <div class="text-end">
-      <a class="ud-btn btn-retour" (click)="voirListe()"  type="button">Retour</a>
-    </div>
-  </div>
-  <!-- End Details d'un service -->
+    <!-- End Details d'un service -->
 
 </div>

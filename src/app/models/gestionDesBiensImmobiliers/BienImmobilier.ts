@@ -15,10 +15,10 @@ export class BienImmobilier extends EntiteDeBase {
   description!: Text;
   adresse: string;
   surface!: number;
-  typeDeBien: TypeDeBien;
+  typeDeBien!: TypeDeBien;
   categorie!: string;
-  quartier: Quartier;
-  personne: Personne;
+  quartier!: Quartier;
+  personne!: Personne;
   agenceImmobiliere!: AgenceImmobiliere;
   statutBien: string;
   etatBien: boolean;
@@ -30,9 +30,6 @@ export class BienImmobilier extends EntiteDeBase {
     this.id = 0;
     this.codeBien = '';
     this.adresse = '';
-    this.typeDeBien = new TypeDeBien();
-    this.quartier = new Quartier();
-    this.personne = new Personne();
     this.statutBien = '';
     this.etatBien = true;
   }

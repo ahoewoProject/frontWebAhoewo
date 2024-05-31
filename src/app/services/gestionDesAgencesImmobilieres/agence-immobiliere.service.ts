@@ -62,6 +62,12 @@ export class AgenceImmobiliereService {
     return this.httpClient.get<AgenceImmobiliere>(this.url + 'agence/' + nomAgence);
   }
 
+  // Liste Agences Immobilieres (Responsable/ Agent Immobilier);
+  // url: http://localhost:4040/api/agences-immobilieres-list
+  getAgencesImmobilieresListIfUserActif(): Observable<Array<AgenceImmobiliere>>{
+    return this.httpClient.get<Array<AgenceImmobiliere>>(this.url + 'agences-immobilieres-list/user-actif');
+  }
+
   // Affichage de toutes les occurrences d'agence immobilière;
   // url: http://localhost:4040/api/agences-immobilieres
   getAll(): Observable<Array<AffectationResponsableAgence>>{

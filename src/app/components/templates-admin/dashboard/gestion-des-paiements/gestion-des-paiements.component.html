@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Planifications <br>paiements</div>
+                <div class="title">{{ nbrePaiement }}</div>
+            </div>
+            <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-money-check-dollar-pen" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Paiements <br><br></div>
+                <div class="title">{{ nbrePaiement }}</div>
+            </div>
+            <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-money-check-dollar" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Paiements en <br> attente</div>
+                <div class="title">{{ nbrePaiementAttente }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--orange-500)' }" class="icon text-center"><i class="fa-light fa-money-check-dollar" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Paiements <br>effectués</div>
+                <div class="title">{{ nbrePaiementEffectue }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--blue-500)' }" class="icon text-center"><i class="fa-light fa-money-check-dollar" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-xxl-6">
+        <div class="card flex justify-content-center statistics_funfact">
+            <h5 class="graph-title">Planifications paiements</h5>
+            <p-chart type="doughnut" [data]="dataPlanificationPaiement" [options]="optionsPlanificationPaiement" height="230" />
+        </div>
+    </div>
+    <div class="col-sm-12 col-xxl-6">
+        <div class="card flex justify-content-center statistics_funfact">
+            <h5 class="graph-title">Paiements</h5>
+            <p-chart type="doughnut" [data]="dataPaiement" [options]="optionsPaiement" height="230" />
+        </div>
+    </div>
+</div>

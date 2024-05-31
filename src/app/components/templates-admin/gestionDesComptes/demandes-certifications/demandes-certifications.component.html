@@ -191,8 +191,8 @@
                                                 pTooltip="Certifier le compte du demandeur" tooltipPosition="left" icon="pi pi-verified"></button>
                                             <button pButton class="p-button-text p-button-info" *ngIf="demandeCertif.statutDemande == 0 && user.role.code == 'ROLE_NOTAIRE' && demandeCertif.agenceImmobiliere" type="button" (click)="certifierAgence(demandeCertif.agenceImmobiliere.id, demandeCertif.id)"
                                                 pTooltip="Certifier l'agence immobilière" tooltipPosition="left" icon="pi pi-verified"></button>
-                                            <a pButton class="p-button-text p-button-info" *ngIf="demandeCertif.agenceImmobiliere == null" href="{{this.APIEndpoint+'api/cni/demande-certification/'+demandeCertif.id}}" pTooltip="Télécharger la cni du demandeur" tooltipPosition="left" icon="pi pi-download"></a>
-                                            <a pButton class="p-button-text p-button-info" *ngIf="demandeCertif.agenceImmobiliere" href="{{this.APIEndpoint+'api/carte-cfe/demande-certification/'+demandeCertif.id}}" pTooltip="Télécharger la carte cfe du demandeur" tooltipPosition="left" icon="pi pi-download"></a>
+                                            <button pButton class="p-button-text p-button-primary" *ngIf="demandeCertif.agenceImmobiliere == null" (click)="telechargerCni(demandeCertif.id)" pTooltip="Télécharger la cni du demandeur" tooltipPosition="left" icon="pi pi-download"></button>
+                                            <button pButton class="p-button-text p-button-primary" *ngIf="demandeCertif.agenceImmobiliere" (click)="telechargerCrteCfe(demandeCertif.id)" pTooltip="Télécharger la carte cfe du demandeur" tooltipPosition="left" icon="pi pi-download"></button>
                                         </div>
                                     </td>
                                 </tr>

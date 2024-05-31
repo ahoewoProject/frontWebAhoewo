@@ -37,8 +37,9 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Code</th>
                                     <th scope="col">Planification</th>
-                                    <th scope="col">Mode</th>
                                     <th scope="col">Libelle</th>
+                                    <th scope="col">Mode</th>
+
                                     <th scope="col">Statut</th>
                                     <th scope="col">Actions</th>
                                 </tr>
@@ -48,9 +49,11 @@
                                     <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
                                     <td class="vam">{{ paiement.codePaiement }}</td>
                                     <td class="vam">{{ paiement.planificationPaiement.codePlanification }}</td>
-                                    <td class="vam">{{ paiement.modePaiement }}</td>
                                     <td class="vam">{{ paiement.planificationPaiement.libelle }}</td>
+                                    <td class="vam">{{ paiement.modePaiement }}</td>
+
                                     <td class="vam">
+                                        <p-tag *ngIf="paiement.statutPaiement == 'En attente'" severity="warning" value="En attente"></p-tag>
                                         <p-tag *ngIf="paiement.statutPaiement == 'Effectué'" severity="info" value="Effectué"></p-tag>
                                     </td>
                                     <td class="vam">
@@ -79,26 +82,32 @@
     <!-- Start Détail paiement -->
     <div *ngIf="affichage == 2">
         <div class="row align-items-center">
-            <div class="col-xxl-8">
+            <div class="col-xxl-5">
                 <div class="dashboard_title_area">
                     <h4>Détails d'un paiement</h4>
                 </div>
             </div>
-            <div class="col-xxl-4">
+            <div class="col-xxl-7">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <a href="{{this.APIEndpoint+'api/paiement/generer-pdf/'+paiement.id}}" class="ud-btn btn-valider">Imprimer</a> &nbsp;
+                    <a class="ud-btn btn-valider" type="button" (click)="telechargerFichePaiement(paiement.id)">Imprimer</a> &nbsp;
+                    <a class="ud-btn btn-annuler" type="button" (click)="telechargerPreuvePaiement(paiement.id)" *ngIf="paiement.preuve != null">Vérifier la preuve</a> &nbsp;
+                    <a class="ud-btn btn-valider" type="button" *ngIf="paiement.statutPaiement == 'En attente' && afficherBoutonSiBienDelegue(paiement.planificationPaiement.contrat.bienImmobilier.estDelegue)" (click)="validerPaiement(paiement.id)">Valider</a>
+                    <span *ngIf="paiement.statutPaiement == 'En attente' && afficherBoutonSiBienDelegue(paiement.planificationPaiement.contrat.bienImmobilier.estDelegue)">&nbsp;</span>
                     <a class="ud-btn btn-retour" type="button" (click)="retour()">Retour</a>
                 </div>
             </div>
             <p-messages severity="info">
                 <ng-template pTemplate>
                     <div class="ml-2">
-                        <th scope="col">Libelle : {{ paiement.planificationPaiement.libelle }}</th>
+                        <th scope="col">Libelle : {{ paiement.planificationPaiement.libelle }} - Contrat : {{ paiement.planificationPaiement.contrat.codeContrat }} - Bien : {{ paiement.planificationPaiement.contrat.bienImmobilier.typeDeBien.designation }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.quartier.ville.region.libelle
+                            }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.quartier.ville.libelle }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.quartier.libelle }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.adresse
+                            }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.surface }} m²</th>
                     </div>
                 </ng-template>
             </p-messages>
         </div>
 
+        <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
         <div class="row">
             <div class="col-xl-12">
                 <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
@@ -112,6 +121,7 @@
                             <p class="fw600 mb10 ff-heading dark-color">Mode</p>
                             <p class="text">{{ paiement.modePaiement }}</p>
                         </div>
+                        <!--
                         <div class="col-sm-6" *ngIf="paiement.numeroComptePaiement">
                             <p class="fw600 mb10 ff-heading dark-color">Numero compte de paiement</p>
                             <p class="text">{{ paiement.numeroComptePaiement }}</p>
@@ -120,18 +130,20 @@
                             <p class="fw600 mb10 ff-heading dark-color">Référence de la transaction</p>
                             <p class="text">{{ paiement.referenceTransaction }}</p>
                         </div>
+                        -->
                         <div class="col-sm-6">
                             <p class="fw600 mb10 ff-heading dark-color">Montant payé</p>
                             <p class="text">{{ paiement.montant | number }} FCFA</p>
                         </div>
                         <div class="col-sm-6">
-                            <p class="fw600 mb10 ff-heading dark-color">Date</p>
-                            <p class="text">{{ paiement.datePaiement | date: 'dd-MM-yyyy' }}</p>
+                            <p class="fw600 mb10 ff-heading dark-color">Date de paiement</p>
+                            <p class="text">{{ paiement.datePaiement | date: 'dd/MM/yyyy' }}</p>
                         </div>
                         <div class="col-sm-6">
                             <p class="fw600 mb10 ff-heading dark-color">Etat</p>
                             <p>
-                                <p-tag *ngIf="paiement.statutPaiement == 'Effectué'" severity="info" value="{{paiement.statutPaiement}}"></p-tag>
+                                <p-tag *ngIf="paiement.statutPaiement == 'En attente'" severity="warning" value="En attente"></p-tag>
+                                <p-tag *ngIf="paiement.statutPaiement == 'Effectué'" severity="info" value="Effectué"></p-tag>
                             </p>
                         </div>
                     </div>
@@ -170,7 +182,7 @@
 
                         <div class="col-sm-6">
                             <p class="fw600 mb10 ff-heading dark-color">Date planifiée</p>
-                            <p class="text">{{ paiement.planificationPaiement.datePlanifiee | date: 'dd-MM-yyyy' }}</p>
+                            <p class="text">{{ paiement.planificationPaiement.datePlanifiee | date: 'dd/MM/yyyy' }}</p>
                         </div>
 
                         <div class="col-sm-6">

@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ContratVente } from 'src/app/models/gestionDesLocationsEtVentes/ContratVente';
 import { environment } from 'src/environments/environment';
-import { MotifRejetForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetForm';
+import { MotifForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifForm';
 
 @Injectable({
   providedIn: 'root'
@@ -69,13 +69,13 @@ export class ContratVenteService {
 
   // Demande de modification d'un contrat de vente ;
   // url: http://localhost:4040/api/contrat-vente/demande-modification/{id}
-  demandeModificationContratVente(id: number, m: MotifRejetForm): Observable<any>{
+  demandeModificationContratVente(id: number, m: MotifForm): Observable<any>{
     return this.httpClient.post<any>(this.url + 'contrat-vente/demande-modification/' + id, m);
   }
 
   // Refuser un contrat de vente ;
   // url: http://localhost:4040/api/contrat-vente/refuser/{id}
-  refuserContratVente(id: number, m: MotifRejetForm): Observable<any>{
+  refuserContratVente(id: number, m: MotifForm): Observable<any>{
     return this.httpClient.post<any>(this.url + 'contrat-vente/refuser/' + id, m);
   }
 

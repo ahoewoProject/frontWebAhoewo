@@ -1,0 +1,118 @@
+<div class="row" *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Types de biens <br><br></div>
+                <div class="title">{{ nbreTypeDeBien }}</div>
+            </div>
+            <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-key" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Types de biens <br>actifs</div>
+                <div class="title">{{ nbreTypeDeBienActif }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--green-300)' }" class="icon text-center"><i class="fa-light fa-key" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Types de biens <br>inactifs</div>
+                <div class="title">{{ nbreTypeDeBienInactif }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--orange-300)' }" class="icon text-center"><i class="fa-light fa-key" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="user.role.code != 'ROLE_ADMINISTRATEUR'">
+    <div class="col-sm-6 col-xxl-3" *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'
+    || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Biens supports <br><br></div>
+                <div class="title">{{ nbreBiensSupports }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--green-500)' }" class="icon text-center"><i class="fa-light fa-house-building" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3" *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'
+    || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Biens associés <br><br></div>
+                <div class="title">{{ nbreBiensAssocies }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--green-300)' }" class="icon text-center"><i class="fa-light fa-house-building" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Biens délégués <br><br></div>
+                <div class="title">{{ nbreBiensDelegues }}</div>
+            </div>
+            <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-handshake" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Délégations en <br>attente</div>
+                <div class="title">{{ nbreDelegationsAttentes }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--orange-400)' }" class="icon text-center"><i class="fa-light fa-handshake" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Délégations <br>acceptées</div>
+                <div class="title">{{ nbreDelegationsAcceptees }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--green-400)' }" class="icon text-center"><i class="fa-light fa-handshake" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Délégations <br>refusées</div>
+                <div class="title">{{ nbreDelegationsRefusees }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--red-500)' }" class="icon text-center"><i class="fa-light fa-handshake" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Délégations <br>activées</div>
+                <div class="title">{{ nbreDelegationsActives }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--green-600)' }" class="icon text-center"><i class="fa-light fa-handshake" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Délégations <br>désactivées</div>
+                <div class="title">{{ nbreDelegationsDesactives }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--red-600)' }" class="icon text-center"><i class="fa-light fa-handshake" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-xxl-6">
+        <div class="card flex justify-content-center statistics_funfact">
+            <h5 class="graph-title">Disponibilités des biens</h5>
+            <p-chart type="doughnut" [data]="dataBien" [options]="optionsBien" height="500" />
+        </div>
+    </div>
+    <div class="col-sm-12 col-xxl-6">
+        <div class="card flex justify-content-center statistics_funfact">
+            <h5 class="graph-title">Délégations gestions</h5>
+            <p-chart type="doughnut" [data]="dataDelegation" [options]="optionsDelegation" height="500" />
+        </div>
+    </div>
+</div>

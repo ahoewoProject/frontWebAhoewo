@@ -71,4 +71,13 @@ export class DemandeCertificationService {
   countDemandeCertificationsEnAttente(): Observable<number>{
     return this.httpClient.get<number>(this.url + 'count/demandes-certifications/en-attente');
   };
+
+  // url: http://localhost:4040/api/carte-cfe/demande-certification/{id}
+  telechargerCarteCfe(id: number): Observable<any> {
+    return this.httpClient.get(this.url + 'carte-cfe/demande-certification/' + id, { responseType: 'blob' });
+  }
+
+  telechargerCni(id: number): Observable<any> {
+    return this.httpClient.get(this.url + 'cni/demande-certification/' + id, { responseType: 'blob' });
+  }
 }

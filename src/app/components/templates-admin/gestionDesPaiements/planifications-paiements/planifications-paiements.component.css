@@ -1,80 +1,93 @@
 .disabled-link {
-  pointer-events: none; /* Désactive les événements de pointage, rendant le lien non cliquable */
-  opacity: 0.5; /* Réduit l'opacité pour montrer qu'il est désactivé */
-  cursor: not-allowed; /* Affiche un curseur "non autorisé" */
+    pointer-events: none;
+    /* Désactive les événements de pointage, rendant le lien non cliquable */
+    opacity: 0.5;
+    /* Réduit l'opacité pour montrer qu'il est désactivé */
+    cursor: not-allowed;
+    /* Affiche un curseur "non autorisé" */
 }
 
 .ng-valid[required]:not(.pCalendar),
 .ng-valid.required:not(.pCalendar) {
-  border-left: 5px solid #42A948;
+    border-left: 5px solid #42A948;
 }
 
 .ng-invalid:not(form):not(.pCalendar, .select1) {
-  border-left: 5px solid #a94442;
+    border-left: 5px solid #a94442;
 }
 
 .error {
-  color: #a94442;
-  font-family: 'Inter var', sans-serif;
+    color: #a94442;
+    font-family: 'Inter var', sans-serif;
 }
 
 :host ::ng-deep .select1 .p-dropdown {
-  width: 100%;
-  height: 55px;
-  border-radius: 8px;
+    width: 100%;
+    height: 55px;
+    border-radius: 8px;
 }
 
 :host ::ng-deep .select1 .p-dropdown-item {
-  margin-left: -3%;
+    margin-left: -3%;
 }
 
 :host ::ng-deep .image {
-  border-radius: 10px;
+    border-radius: 10px;
 }
 
 :host ::ng-deep .imageLength0 {
-  border-radius: 10px;
+    border-radius: 10px;
 }
 
 :host ::ng-deep .pInputNumber {
-  width: 100%;
-  border-radius: 8px;
-  font-size: 17px;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 17px;
 }
 
 :host ::ng-deep .pInputText {
-  width: 100%;
-  border-radius: 8px;
-  font-size: 17px;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 17px;
 }
 
 :host ::ng-deep .p-galleria-thumbnail-wrapper {
-  border-radius: 10px;
+    border-radius: 10px;
 }
 
-:host ::ng-deep .pInputNumber.ng-dirty.ng-invalid > .p-inputnumber > .p-inputtext {
-  border-color: #DDDDDD;
+:host ::ng-deep .pInputNumber.ng-dirty.ng-invalid>.p-inputnumber>.p-inputtext {
+    border-color: #DDDDDD;
 }
 
 :host ::ng-deep .p-message {
-  font-family: 'DM Sans', sans-serif;
+    font-family: 'DM Sans', sans-serif;
 }
 
 .title-detail {
-  color: #3B82F6;
+    color: #3B82F6;
 }
 
 :host ::ng-deep .pCalendar {
-  width: 100%;
-  border-radius: 8px;
+    width: 100%;
+    border-radius: 8px;
 }
 
 :host ::ng-deep .pCalendar .p-inputtext {
-  border-radius: 8px;
-  border: 1px solid #DDDDDD;
-  font-size: 17px;
+    border-radius: 8px;
+    border: 1px solid #DDDDDD;
+    font-size: 17px;
 }
 
 .justify-text {
-  text-align: justify;
+    text-align: justify;
+}
+
+:host ::ng-deep .p-fileupload {
+    width: 100%;
+}
+
+:host ::ng-deep .p-fileupload-choose {
+    background-color: #4ebc87;
+    border-color: #4ebc87;
+    font-family: 'DM Sans', sans-serif;
 }

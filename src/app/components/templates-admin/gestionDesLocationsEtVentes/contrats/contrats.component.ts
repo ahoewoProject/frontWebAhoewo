@@ -1,18 +1,21 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
-import { MotifRejet } from 'src/app/models/MotifRejet';
-import { MotifRejetForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetForm';
+import { Motif } from 'src/app/models/Motif';
+import { MotifForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifForm';
 import { ContratLocation } from 'src/app/models/gestionDesLocationsEtVentes/ContratLocation';
 import { ContratVente } from 'src/app/models/gestionDesLocationsEtVentes/ContratVente';
+import { Paiement } from 'src/app/models/gestionDesPaiements/Paiement';
+import { PlanificationPaiement } from 'src/app/models/gestionDesPaiements/PlanificationPaiement';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { ContratLocationService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-location.service';
 import { ContratVenteService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-vente.service';
 import { SuiviEntretienService } from 'src/app/services/gestionDesLocationsEtVentes/suivi-entretien.service';
+import { PaiementService } from 'src/app/services/gestionDesPaiements/paiement.service';
 import { PlanificationPaiementService } from 'src/app/services/gestionDesPaiements/planification-paiement.service';
-import { MotifRejetService } from 'src/app/services/motif-rejet.service';
+import { MotifService } from 'src/app/services/motif.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -27,8 +30,8 @@ export class ContratsComponent implements OnInit, OnDestroy {
   modalRefusVisible: boolean = false;
   modalDemandeModificationContratLocVisible: boolean = false;
   modalDemandeModificationContratVenVisible: boolean = false;
-  motifRefusForm = new MotifRejetForm();
-  listMotifs: MotifRejet[] = [];
+  motifRefusForm = new MotifForm();
+  listMotifs: Motif[] = [];
   responsiveOptions: any[] | undefined;
   elementsParPageIndex1 = 5;
   numeroDeLaPageIndex1 = 0;
@@ -43,6 +46,12 @@ export class ContratsComponent implements OnInit, OnDestroy {
   elementsParPageIndex2 = 5;
   numeroDeLaPageIndex2 = 0;
 
+  elementsParPagePlanification = 5;
+  numeroDeLaPagePlanification = 0;
+
+  elementsParPagePaiement = 5;
+  numeroDeLaPagePaiement = 0;
+
   affichage = 1;
 
   contratLocation = this.contratLocationService.contratLocation;
@@ -54,6 +63,7 @@ export class ContratsComponent implements OnInit, OnDestroy {
 
   contratsLocations!: Page<ContratLocation>;
   contratsVentes!: Page<ContratVente>;
+  planificationsPaiements!: Page<PlanificationPaiement>
   user: any;
   APIEndpoint: string;
   ajoutContratLocationReussie: any;
@@ -81,12 +91,16 @@ export class ContratsComponent implements OnInit, OnDestroy {
   suiviEntretien = this.suiviEntretienService.suiviEntretien;
   suiviEntretienForm: any
 
+  paiement = this.paiementService.paiement;
+  paiements!: Page<Paiement>
+  contrat: any
+
   constructor(private contratLocationService: ContratLocationService,
     private contratVenteService: ContratVenteService, private messageService: MessageService,
     private personneService: PersonneService, private router: Router,
-    private motifRejetService: MotifRejetService, private activatedRoute: ActivatedRoute,
+    private motifService: MotifService, private activatedRoute: ActivatedRoute,
     private confirmationService: ConfirmationService, private planificationPaiementService: PlanificationPaiementService,
-    private suiviEntretienService: SuiviEntretienService
+    private suiviEntretienService: SuiviEntretienService, private paiementService: PaiementService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -424,8 +438,8 @@ export class ContratsComponent implements OnInit, OnDestroy {
   }
 
   listeMotifs(code: string, creerPar: number): void {
-    this.motifRejetService.getMotifsByCodeAndCreerPar(code, creerPar).subscribe(
-      (data: MotifRejet[]) => {
+    this.motifService.getMotifsByCodeAndCreerPar(code, creerPar).subscribe(
+      (data: Motif[]) => {
         this.listMotifs = data;
       }
     );
@@ -931,11 +945,7 @@ export class ContratsComponent implements OnInit, OnDestroy {
     this.contratLocationService.telecharger(id).subscribe(
       response => {
         const file = new Blob([response], { type: 'application/pdf' });
-
-        // Créer un objet URL pour le fichier PDF
         const fileURL = URL.createObjectURL(file);
-
-        // Ouvrir le PDF dans un nouvel onglet
         window.open(fileURL, '_blank');
       }
     )
@@ -1040,7 +1050,9 @@ export class ContratsComponent implements OnInit, OnDestroy {
   ajouterPlanificationPaiementLocation(): void {
     this.planificationPaiement.typePlanification = this.typePlanificationSelectionne;
     this.planificationPaiement.contrat = this.contratSelectionne;
-    console.log(this.planificationPaiement);
+    this.planificationPaiement.montantPaye = this.planificationPaiement.montantDu;
+    this.planificationPaiement.restePaye = this.planificationPaiement.montantDu - this.planificationPaiement.montantPaye;
+    // console.log(this.planificationPaiement);
     this.planificationPaiementService.ajouterPlanificationPaiementLocation(this.planificationPaiement).subscribe(
       (response) => {
         if (response.id > 0) {
@@ -1156,6 +1168,112 @@ export class ContratsComponent implements OnInit, OnDestroy {
             detail: this.messageErreur
           })
         }
+      }
+    )
+  }
+
+  listePlanificationsPaiementParCodeContrat(codeContrat: string, numeroDeLaPagePlanification: number, elementsParPagePlanification: number) {
+    this.planificationPaiementService.getPlanificationsPaiementsByCodeContrat(codeContrat, numeroDeLaPagePlanification, elementsParPagePlanification).subscribe(
+      (response) => {
+        this.planificationsPaiements = response;
+      }
+    )
+  }
+
+  voirListePlanificationsPaiements(contrat: any): void {
+    this.codeContrat = contrat.codeContrat;
+    this.contrat = contrat;
+    this.listePlanificationsPaiementParCodeContrat(this.codeContrat, this.numeroDeLaPagePlanification, this.elementsParPagePlanification);
+    this.affichage = 9;
+  }
+
+  detailPlanificationPaiement(id: number): void {
+    this.planificationPaiementService.findById(id).subscribe(
+      (response) => {
+        this.planificationPaiement = response;
+        if (this.planificationPaiement.typePlanification == 'Paiement de location') {
+          this.detailContratLocation(this.planificationPaiement.contrat.id);
+        } else {
+          this.detailContratVente(this.planificationPaiement.contrat.id);
+        }
+      }
+    )
+  }
+
+  afficherPageDetailPlanificationPaiement(id: number): void {
+    this.detailPlanificationPaiement(id);
+    this.affichage = 10;
+  }
+
+  paginationPlanificationPaiement(event: any) {
+    this.numeroDeLaPagePlanification = event.first / event.rows;
+    this.elementsParPagePlanification = event.rows;
+    this.listePlanificationsPaiementParCodeContrat(this.codeContrat, this.numeroDeLaPagePlanification, this.elementsParPagePlanification);
+  }
+
+  detailPaiementParCodePlanification(codePlanification: string): void {
+    this.paiementService.findByCodePlanification(codePlanification).subscribe(
+      (response) => {
+        this.paiement = response;
+        if (this.paiement.planificationPaiement.typePlanification == 'Paiement de location') {
+          this.detailContratLocation(this.paiement.planificationPaiement.contrat.id);
+        } else {
+          this.detailContratVente(this.paiement.planificationPaiement.contrat.id);
+        }
+      }
+    )
+  }
+
+  voirPageDetailPaiementParCodePlanification(codePlanification: string): void {
+    this.detailPaiementParCodePlanification(codePlanification);
+    this.affichage = 11;
+  }
+
+  listePaiementsByCodeContrat(codeContrat: string, numeroDeLaPagePaiement: number, elementsParPagePaiement: number): void {
+    this.paiementService.getPaiementsByCodeContrat(codeContrat, numeroDeLaPagePaiement, elementsParPagePaiement).subscribe(
+      (response) => {
+        this.paiements = response;
+      }
+    )
+  }
+
+  voirListePaiements(contrat: any): void {
+    this.contrat = contrat;
+    this.codeContrat = contrat.codeContrat;
+    this.listePaiementsByCodeContrat(this.codeContrat, this.numeroDeLaPagePaiement, this.elementsParPagePaiement);
+    this.affichage = 12;
+  }
+
+  paginationPaiement(event: any) {
+    this.numeroDeLaPagePaiement = event.first / event.rows;
+    this.elementsParPagePaiement = event.rows;
+    this.listePaiementsByCodeContrat(this.codeContrat, this.numeroDeLaPagePaiement, this.elementsParPagePaiement);
+  }
+
+  detailPaiementParContratId(contratId: number): void {
+    this.paiementService.findByContratId(contratId).subscribe(
+      (response) => {
+        this.paiement = response;
+        if (this.paiement.planificationPaiement.typePlanification == 'Paiement de location') {
+          this.detailContratLocation(this.paiement.planificationPaiement.contrat.id);
+        } else {
+          this.detailContratVente(this.paiement.planificationPaiement.contrat.id);
+        }
+      }
+    )
+  }
+
+  voirPageDetailPaiementParContratId(contratId: number): void {
+    this.detailPaiementParContratId(contratId);
+    this.affichage = 13;
+  }
+
+  telechargerFichePaiement(id: number): void {
+    this.paiementService.telechargerFichePaiement(id).subscribe(
+      (response) => {
+        const file = new Blob([response], { type: 'application/pdf' });
+        const fileUrl = URL.createObjectURL(file);
+        window.open(fileUrl, '_blank');
       }
     )
   }

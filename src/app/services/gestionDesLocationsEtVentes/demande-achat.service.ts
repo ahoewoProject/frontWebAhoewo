@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
-import { MotifRejetForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetForm';
+import { MotifForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifForm';
 import { DemandeAchat } from 'src/app/models/gestionDesLocationsEtVentes/DemandeAchat';
 import { environment } from 'src/environments/environment';
 
@@ -17,6 +17,12 @@ export class DemandeAchatService {
   constructor(private httpClient: HttpClient) {
     const APIEndpoint = environment.APIEndpoint;
     this.url = APIEndpoint + 'api/';
+  }
+
+  // Affichage - liste des demandes d'achats;
+  // url: http://localhost:4040/api/demandes-achats-list
+  getDemandesAchatsList(): Observable<Array<DemandeAchat>>{
+    return this.httpClient.get<Array<DemandeAchat>>(this.url + 'demandes-achats-list');
   }
 
   // Affichage des demandes d'achats paginées;
@@ -60,13 +66,13 @@ export class DemandeAchatService {
 
   // Refuser une demande d'achat ;
   // url: http://localhost:4040/api/demande-achat/refuser/{id}
-  refuser(id: number, m: MotifRejetForm): Observable<any>{
+  refuser(id: number, m: MotifForm): Observable<any>{
     return this.httpClient.post<any>(this.url + 'demande-achat/refuser/' + id, m);
   }
 
   // Annuler une demande d'achat ;
   // url: http://localhost:4040/api/demande-achat/annuler/{id}
-  annuler(id: number, m: MotifRejetForm): Observable<any>{
+  annuler(id: number, m: MotifForm): Observable<any>{
     return this.httpClient.post<any>(this.url + 'demande-achat/annuler/' + id, m);
   }
 }

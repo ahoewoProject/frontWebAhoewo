@@ -18,6 +18,27 @@ export class BienImmobilierService {
     this.url = APIEndpoint + 'api/';
   }
 
+  // Affichage de toutes les occurrences des biens immobiliers;
+  // url: http://localhost:4040/api/biens-immobiliers
+  getBiensImmobiliers(): Observable<Array<BienImmobilier>>{
+    return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers');
+  }
+
+  // Affichage de toutes les occurrences des biens supports;
+  // url: http://localhost:4040/api/biens-supports
+  getBiensSupports(): Observable<Array<BienImmobilier>>{
+    return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-supports');
+  }
+
+  // Affichage de toutes les occurrences de biens immobiliers paginés;
+  // url: http://localhost:4040/api/biens-supports-pagines
+  getBiensSupportsPagines(numeroDeLaPage: number, elementsParPage: number): Observable<Page<BienImmobilier>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<BienImmobilier>>(this.url + 'biens-supports-pagines', {params: params});
+  }
+
   // Ajout d'une occurrence d'un bien immobilier;
   // url: http://localhost:4040/api/bien-immobilier/ajouter
   addBienImmobilier(b: FormData): Observable<BienImmobilier>{
@@ -40,45 +61,6 @@ export class BienImmobilierService {
   // url: http://localhost:4040/api/biens-immobiliers/proprietaire
   getBiensByProprietaire(): Observable<Array<BienImmobilier>>{
     return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers/proprietaire');
-  }
-
-  // Affichage de toutes les occurrences de biens immobiliers par agence;
-  // url: http://localhost:4040/api/biens-immobiliers/agences/responsable
-  getBiensOfAgencesByResponsable(): Observable<Array<BienImmobilier>>{
-    return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers/agences/responsable');
-  }
-
-  // Affichage de toutes les occurrences de biens immobiliers par agence;
-  // url: http://localhost:4040/api/biens-immobiliers/agences/agent
-  getBiensOfAgencesByAgent(): Observable<Array<BienImmobilier>>{
-    return this.httpClient.get<Array<BienImmobilier>>(this.url + 'biens-immobiliers/agences/agent');
-  }
-
-  // Affichage de toutes les occurrences de biens immobiliers paginés par propriétaire;
-  // url: http://localhost:4040/api/biens-immobiliers/proprietaire/pagines
-  getBiensPaginesByProprietaire(numeroDeLaPage: number, elementsParPage: number): Observable<Page<BienImmobilier>>{
-    let params = new HttpParams()
-      .set('numeroDeLaPage', numeroDeLaPage.toString())
-      .set('elementsParPage', elementsParPage.toString());
-    return this.httpClient.get<Page<BienImmobilier>>(this.url + 'biens-immobiliers/proprietaire/pagines', {params: params});
-  }
-
-  // Affichage de toutes les occurrences de biens immobiliers paginés par agence;
-  // url: http://localhost:4040/api/biens-immobiliers/agences/responsable/pagines
-  getBiensPaginesOfAgencesByResponsable(numeroDeLaPage: number, elementsParPage: number): Observable<Page<BienImmobilier>>{
-    let params = new HttpParams()
-      .set('numeroDeLaPage', numeroDeLaPage.toString())
-      .set('elementsParPage', elementsParPage.toString());
-    return this.httpClient.get<Page<BienImmobilier>>(this.url + 'biens-immobiliers/agences/responsable/pagines', {params: params});
-  }
-
-  // Affichage de toutes les occurrences de biens immobiliers paginés par agence;
-  // url: http://localhost:4040/api/biens-immobiliers/agences/agent/pagines
-  getBiensPaginesOfAgencesByAgent(numeroDeLaPage: number, elementsParPage: number): Observable<Page<BienImmobilier>>{
-    let params = new HttpParams()
-      .set('numeroDeLaPage', numeroDeLaPage.toString())
-      .set('elementsParPage', elementsParPage.toString());
-    return this.httpClient.get<Page<BienImmobilier>>(this.url + 'biens-immobiliers/agences/agent/pagines', {params: params});
   }
 
   // Affichage des occurences des biens propres et délégués;

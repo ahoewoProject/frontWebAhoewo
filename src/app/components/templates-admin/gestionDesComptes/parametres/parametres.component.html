@@ -1,1 +1,301 @@
-<p>parametres works!</p>
+<div class="dashboard__content bgc-f7">
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
+    </div>
+
+    <p-toast></p-toast>
+
+
+    <!-- Liste des comptes de paiements -->
+    <div *ngIf="affichage == 1">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-5">
+                <div class="dashboard_title_area">
+                    <h4>Comptes de paiements</h4>
+                </div>
+            </div>
+            <div class="col-xxl-7">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <div class="item1 mb15-sm">
+                        <div class="search_area">
+                            <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
+                            <label><span class="flaticon-search"></span></label>
+                        </div>
+                    </div>
+                    &nbsp;
+                    <a type="button" (click)="voirPageAjouter()" class="ud-btn btn-thm">Enregistrer un compte paiement</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <div class="packages_table table-responsive">
+                        <table class="table-style3 table at-savesearch">
+                            <thead class="t-head">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Code</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Contact</th>
+                                    <th scope="col">Etat</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="t-body">
+                                <tr *ngFor="let comptePaiement of comptesPaiements.content | genericFilter: recherche;  let i = index">
+                                    <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
+                                    <td class="vam">{{ comptePaiement.codeComptePaiement }}</td>
+                                    <td class="vam">{{ comptePaiement.type }}</td>
+                                    <td class="vam">{{ comptePaiement.contact }}</td>
+                                    <td class="vam">
+                                        <p-tag *ngIf="comptePaiement.etatComptePaiement == true" severity="success" value="Activé"></p-tag>
+                                        <p-tag *ngIf="comptePaiement.etatComptePaiement == false" severity="danger" value="Désactivé"></p-tag>
+                                    </td>
+                                    <td class="vam">
+                                        <div class="d-flex">
+                                            <button pButton type="button" (click)="voirPageDetail(comptePaiement.id)" icon="pi pi-eye" pTooltip="Détails" tooltipPosition="right" class="p-button-text p-button-info">
+                    </button>
+
+                                            <button pButton type="button" *ngIf="comptePaiement.etatComptePaiement == true" (click)="comptePaiement.personne ? desactiverComptePaiementByPersonne(comptePaiement.id) : desactiverComptePaiementByAgence(comptePaiement.id, comptePaiement.agenceImmobiliere.id)"
+                                                icon="pi pi-lock" pTooltip="Désactiver ce compte de paiement" tooltipPosition="top" class="p-button-text p-button-danger">
+                    </button>
+
+                                            <button pButton type="button" *ngIf="comptePaiement.etatComptePaiement == false" (click)="comptePaiement.personne ? activerComptePaiementByPersonne(comptePaiement.id) : activerComptePaiementByAgence(comptePaiement.id, comptePaiement.agenceImmobiliere.id)"
+                                                icon="pi pi-lock-open" pTooltip="Activer ce compte de paiement" tooltipPosition="left" class="p-button-text p-button-success">
+                    </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div *ngIf="comptesPaiements.totalElements !== 0" class="mbp_pagination text-center mt30">
+                        <p-paginator (onPageChange)="pagination($event)" [rows]="comptesPaiements.size" [totalRecords]="comptesPaiements.totalElements" [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true" [showPageLinks]="true" [showFirstLastIcon]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} comptes paiements">
+                        </p-paginator>
+                    </div>
+                    <div *ngIf="comptesPaiements.totalElements == 0" class="mbp_pagination text-center mt30">
+                        <p class="mt10 pagination_page_count text-center">Aucun compte paiement enregistré pour le moment</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Liste des comptes de paiemnts -->
+
+    <!-- Details d'un compte de paiement -->
+    <div *ngIf="affichage == 2">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-8">
+                <div class="dashboard_title_area">
+                    <h4>Détails d'un compte de paiement</h4>
+                    <p class="text"></p>
+                </div>
+            </div>
+            <div class="col-xxl-4">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <button class="ud-btn btn-modifier" (click)="voirPageModifier(comptePaiement.id)">Modifier</button> &nbsp;
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Code</p>
+                            <p class="text">{{ comptePaiement.codeComptePaiement }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Type</p>
+                            <p class="text">{{ comptePaiement.type }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Contact</p>
+                            <p class="text justify-text">{{ comptePaiement.contact }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+                            <p>
+                                <p-tag *ngIf="comptePaiement.etatComptePaiement == true" severity="success" value="Activé"></p-tag>
+                                <p-tag *ngIf="comptePaiement.etatComptePaiement == false" severity="danger" value="Désactivé"></p-tag>
+                            </p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Titulaire</p>
+                            <p class="text">{{ comptePaiement.personne ? comptePaiement.personne.nom + ' ' + comptePaiement.personne.prenom : comptePaiement.agenceImmobiliere.nomAgence }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Email du titulaire</p>
+                            <p class="text">{{ comptePaiement.personne ? comptePaiement.personne.email : comptePaiement.agenceImmobiliere.adresseEmail }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Téléphone du titulaire</p>
+                            <p class="text">{{ comptePaiement.personne ? comptePaiement.personne.telephone : comptePaiement.agenceImmobiliere.telephone }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-end">
+            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
+        </div>
+    </div>
+    <!-- End Details d'un compte de paiement -->
+
+    <!-- Formulaire d'ajout d'un compte de paiement -->
+    <div *ngIf="affichage == 3">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-5">
+                <div class="dashboard_title_area">
+                    <h4>Ajout d'un compte de paiement</h4>
+                </div>
+            </div>
+            <div class="col-xxl-7">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <form [formGroup]="comptePaiementForm" (ngSubmit)="ajouterComptePaiement()" class="form-style1">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Type du compte de paiement</label>
+                                    <p-dropdown class="select" emptyMessage="Aucun résultat trouvé" [options]="typesComptesPaiements" formControlName="type" [filter]="true" filterPlaceholder="Rechercher" [(ngModel)]="typeComptePaiementSelectionne" [showClear]="true" (onChange)="typeComptePaiementChoisi($event)"
+                                        placeholder="Le type du compte de paiement">
+                                    </p-dropdown>
+                                    <div class="error" [hidden]="
+                !type?.hasError('required') ||
+                !type.touched
+              ">
+                                        La selection du type de compte de paiement est obligatoire
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="user.role.code === 'ROLE_RESPONSABLE'">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Agence immobilière</label>
+                                    <p-dropdown class="select" emptyFilterMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé" [options]="agencesImmobilieres" placeholder="Choisir une agence" formControlName="agenceImmobiliere" [filter]="true" filterBy="codeAgence,nomAgence"
+                                        filterPlaceholder="Rechercher" [showClear]="true" (onChange)="agenceChoisie($event)" optionLabel="nomAgence" [(ngModel)]="agenceSelectionnee">
+                                        <ng-template let-agenceImmobiliere pTemplate="item">
+                                            {{ agenceImmobiliere.codeAgence }}/ {{ agenceImmobiliere.nomAgence }}
+                                        </ng-template>
+                                    </p-dropdown>
+                                    <div class="error" [hidden]="!agenceImmobiliere?.hasError('required') || !agenceImmobiliere.touched">La selection de l'agence est obligatoire</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Contact <span>(*{{typeComptePaiementSelectionne == 'PayPal' ? 'Email' : 'Numéro de téléphone'}})</span></label>
+                                    <input [type]="typeComptePaiementSelectionne === 'PayPal' ? 'email' : 'text'" class="form-control" id="contact" name="contact" [placeholder]="typeComptePaiementSelectionne === 'PayPal' ? 'L\'email du compte PayPal' : 'Le numéro de téléphone de votre compte ' + typeComptePaiementSelectionne"
+                                        formControlName="contact" [(ngModel)]="comptePaiement.contact" required>
+                                    <div class="error" [hidden]="!contact?.hasError('required') || !contact.touched">
+                                        Le contact est obligatoire
+                                    </div>
+                                    <div class="error" [hidden]="!contact?.hasError('email') || !contact.touched">
+                                        Le contact saisi n'est pas valide.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="text-end">
+                                <button class="ud-btn btn-annuler" type="button" (click)="comptePaiementForm.reset()">Annuler</button> &nbsp;
+                                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': comptePaiementForm.invalid }" type="submit">Enregistrer</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Formulaire d'ajout d'un compte de paiement -->
+
+    <!-- Formulaire de modification d'un compte de paiement -->
+    <div *ngIf="affichage == 4">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-5">
+                <div class="dashboard_title_area">
+                    <h4>Modification d'un compte de paiement</h4>
+                </div>
+            </div>
+            <div class="col-xxl-7">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirPageDetail(comptePaiement.id)">Retour</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <form [formGroup]="comptePaiementForm" (ngSubmit)="modifierComptePaiement(comptePaiement.id)" class="form-style1">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Type du compte de paiement</label>
+                                    <p-dropdown class="select" emptyMessage="Aucun résultat trouvé" [options]="typesComptesPaiements" placeholder="Choisir le type du compte de paiement" formControlName="type" [filter]="true" filterPlaceholder="Rechercher" [(ngModel)]="comptePaiement.type"
+                                        [showClear]="true" (onChange)="typeComptePaiementChoisi($event)" placeholder="Le type du compte de paiement">
+                                    </p-dropdown>
+                                    <div class="error" [hidden]="
+              !type?.hasError('required') ||
+              !type.touched
+            ">
+                                        La selection du type de compte paiement est obligatoire
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="user.role.code === 'ROLE_RESPONSABLE'">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Agence immobilière</label>
+                                    <p-dropdown class="select" emptyFilterMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé" [options]="agencesImmobilieres" placeholder="Choisir une agence" formControlName="agenceImmobiliere" [filter]="true" filterBy="codeAgence,nomAgence"
+                                        filterPlaceholder="Rechercher" [showClear]="true" (onChange)="agenceChoisie($event)" optionLabel="nomAgence" [(ngModel)]="comptePaiement.agenceImmobiliere">
+                                        <ng-template let-agenceImmobiliere pTemplate="item">
+                                            {{ agenceImmobiliere.codeAgence }}/ {{ agenceImmobiliere.nomAgence }}
+                                        </ng-template>
+                                    </p-dropdown>
+                                    <div class="error" [hidden]="!agenceImmobiliere?.hasError('required') || !agenceImmobiliere.touched">La selection de l'agence est obligatoire</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Contact <span>(*{{comptePaiement.type == 'PayPal' ? 'Email' : 'Numéro de téléphone'}})</span></label>
+                                    <input [type]="comptePaiement.type === 'PayPal' ? 'email' : 'text'" class="form-control" id="contact" name="contact" [placeholder]="comptePaiement.type === 'PayPal' ? 'L\'email du compte PayPal' : 'Le numéro de téléphone de votre compte ' + comptePaiement.type"
+                                        formControlName="contact" [(ngModel)]="comptePaiement.contact" required>
+                                    <div class="error" [hidden]="!contact?.hasError('required') || !contact.touched">
+                                        Le contact est obligatoire
+                                    </div>
+                                    <div class="error" [hidden]="!contact?.hasError('email') || !contact.touched">
+                                        Le contact saisi n'est pas valide.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="text-end">
+                                <button class="ud-btn btn-annuler" type="button" (click)="comptePaiementForm.reset()">Annuler</button> &nbsp;
+                                <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': comptePaiementForm.invalid }" type="submit">Modifier</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Formulaire de modification d'un compte de paiement -->
+</div>

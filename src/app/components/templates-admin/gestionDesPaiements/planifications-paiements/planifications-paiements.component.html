@@ -51,7 +51,7 @@
                                     <td class="vam">{{ planificationPaiement.codePlanification }}</td>
                                     <td class="vam">{{ planificationPaiement.contrat.codeContrat }}</td>
                                     <td class="vam">{{ planificationPaiement.libelle }}</td>
-                                    <!-- <td class="vam">{{ planificationPaiement.datePlanifiee | date: "dd-MM-yyyy" }}</td> -->
+                                    <!-- <td class="vam">{{ planificationPaiement.datePlanifiee | date: "dd/MM/yyyy" }}</td> -->
                                     <td class="vam">
                                         <p-tag *ngIf="planificationPaiement.statutPlanification == 'En attente'" severity="warning" value="{{planificationPaiement.statutPlanification}}"></p-tag>
                                         <p-tag *ngIf="planificationPaiement.statutPlanification == 'Payé'" severity="success" value="{{planificationPaiement.statutPlanification}}"></p-tag>
@@ -90,17 +90,17 @@
             </div>
             <div class="col-xxl-6">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <!--
-                    <a *ngIf="planificationPaiement.statutPlanification == 'En attente' && user.role.code != 'ROLE_CLIENT'" class="ud-btn btn-valider" type="button" (click)="afficherPagePaiement(planificationPaiement.id)">Effectuer un paiement</a> &nbsp;
-                    <a *ngIf="planificationPaiement.statutPlanification == 'En attente' && planificationPaiement.typePlanification == 'Paiement de location' && user.role.code == 'ROLE_CLIENT'" class="ud-btn btn-valider" type="button" (click)="effectuerPaiement(planificationPaiement)">Effectuer un paiement</a>                    &nbsp;
-                    -->
+                    <a *ngIf="planificationPaiement.statutPlanification == 'En attente' && user.role.code != 'ROLE_PROPRIETAIRE'" class="ud-btn btn-valider" type="button" (click)="afficherPagePaiement(planificationPaiement.id)">Effectuer un paiement</a>                    &nbsp;
+                    <!--  <a *ngIf="planificationPaiement.statutPlanification == 'En attente' && planificationPaiement.typePlanification == 'Paiement de location' && user.role.code == 'ROLE_CLIENT'" class="ud-btn btn-valider" type="button" (click)="effectuerPaiement(planificationPaiement)">Effectuer un paiement</a>                    &nbsp; -->
                     <a class="ud-btn btn-retour" type="button" (click)="retour()">Retour</a>
                 </div>
             </div>
             <p-messages severity="info">
                 <ng-template pTemplate>
                     <div class="ml-2">
-                        <th scope="col">Libelle : {{ planificationPaiement.libelle }}</th>
+                        <th scope="col">Libelle : {{ planificationPaiement.libelle }} - Contrat : {{ planificationPaiement.contrat.codeContrat }} - Bien : {{ planificationPaiement.contrat.bienImmobilier.typeDeBien.designation }} | {{ planificationPaiement.contrat.bienImmobilier.quartier.ville.region.libelle
+                            }} | {{ planificationPaiement.contrat.bienImmobilier.quartier.ville.libelle }} | {{ planificationPaiement.contrat.bienImmobilier.quartier.libelle }} | {{ planificationPaiement.contrat.bienImmobilier.adresse }} | {{ planificationPaiement.contrat.bienImmobilier.surface
+                            }} m²</th>
                     </div>
                 </ng-template>
             </p-messages>
@@ -137,7 +137,7 @@
                         </div>
                         <div class="col-sm-6">
                             <p class="fw600 mb10 ff-heading dark-color">Date planifiée</p>
-                            <p class="text">{{ planificationPaiement.datePlanifiee | date: "dd-MM-yyyy" }}</p>
+                            <p class="text">{{ planificationPaiement.datePlanifiee | date: "dd/MM/yyyy" }}</p>
                         </div>
                         <div class="col-sm-6">
                             <p class="fw600 mb10 ff-heading dark-color">Etat</p>
@@ -178,7 +178,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <p class="fw600 mb10 ff-heading dark-color">Date planifiée</p>
-                                <p class="text">{{ planificationPaiementInList.datePlanifiee | date: "dd-MM-yyyy" }}</p>
+                                <p class="text">{{ planificationPaiementInList.datePlanifiee | date: "dd/MM/yyyy" }}</p>
                             </div>
                             <div class="col-sm-6">
                                 <p class="fw600 mb10 ff-heading dark-color">Etat</p>
@@ -337,7 +337,7 @@
         <div class="row align-items-center pb40">
             <div class="col-xxl-5">
                 <div class="dashboard_title_area">
-                    <h4>Planification d'un paiement</h4>
+                    <h4>Planification d'un paiement {{ typePlanificationSelectionne == 'Paiement de location' ? 'de location' : 'd\'achat' }}</h4>
                 </div>
             </div>
             <div class="col-xxl-7">
@@ -430,10 +430,10 @@
 
     <!-- Start Effectuer un paiement -->
     <div *ngIf="affichage == 5">
-        <div class="row align-items-center pb40">
+        <div class="row align-items-center">
             <div class="col-xxl-5">
                 <div class="dashboard_title_area">
-                    <h4>Effectuer un paiement</h4>
+                    <h4>Effectuer un paiement {{ planificationPaiement.typePlanification == 'Paiement de location' ? 'de location' : 'd\'nachat' }}</h4>
                 </div>
             </div>
             <div class="col-xxl-7">
@@ -441,6 +441,14 @@
                     <a class="ud-btn btn-retour" type="button" (click)="retourPageDetail(planificationPaiement.id)">Retour</a>
                 </div>
             </div>
+            <p-messages severity="info">
+                <ng-template pTemplate>
+                    <div class="ml-2">
+                        <th scope="col">Libelle : {{ planificationPaiement.libelle }} - Contrat : {{ planificationPaiement.contrat.codeContrat }} - Montant à payer : {{ planificationPaiement.montantPaye | number }} FCFA - Reste à payer : {{ planificationPaiement.restePaye
+                            | number }} FCFA</th>
+                    </div>
+                </ng-template>
+            </p-messages>
         </div>
         <div class="row">
             <div class="col-xl-12">
@@ -450,13 +458,14 @@
                             <div class="col-sm-6">
                                 <div class="mb20">
                                     <label class="heading-color ff-heading fw600 mb10">Mode de paiement</label>
-                                    <p-dropdown class="select1" emptyMessage="Aucun résultat trouvé" [options]="modesPaiements" placeholder="Choisir le mode de paiement" formControlName="modePaiement" (onChange)="modePaiementChoisi($event)" [(ngModel)]="modePaiementSelectionne" [showClear]="true">
+                                    <p-dropdown class="select1" emptyMessage="Aucun résultat trouvé" [options]="modesPaiements" placeholder="Choisir le mode de paiement" formControlName="modePaiement" [filter]="true" filterPlaceholder="Rechercher" [(ngModel)]="modePaiementSelectionne" [showClear]="true"
+                                        (onChange)="modePaiementChoisi($event)">
                                     </p-dropdown>
                                     <div class="error" [hidden]="!modePaiement?.hasError('required') || !modePaiement.touched">La selection du mode de paiement est requise</div>
                                 </div>
                             </div>
 
-                            <div class="col-sm-6" *ngIf="modePaiementSelectionne == 'Manuel'">
+                            <!-- <div class="col-sm-6" *ngIf="modePaiementSelectionne == 'Manuel'">
                                 <div class="mb20">
                                     <label class="heading-color ff-heading fw600 mb10">Numero compte de paiement</label>
                                     <input pInputText class="pInputText p-fluid" id="numeroComptePaiement" name="numeroComptePaiement" placeholder="Le numero compte de paiement" formControlName="numeroComptePaiement" [(ngModel)]="paiement.numeroComptePaiement" required>
@@ -474,6 +483,7 @@
                                         La référence de la transaction est requise</div>
                                 </div>
                             </div>
+ -->
 
                             <div class="col-sm-6">
                                 <div class="mb20">
@@ -483,6 +493,18 @@
                                 </div>
                             </div>
 
+                            <div class="col-sm-12" *ngIf="modePaiementSelectionne == 'Hors plateforme'">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Preuve</label>
+                                    <p-fileUpload chooseLabel="Sélectionner la preuve du paiement" [auto]="true" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="telecharger($event)">
+                                        <ng-template pTemplate="content">
+                                            <ul *ngIf="preuve">
+                                                <li>{{ preuve.name }}</li>
+                                            </ul>
+                                        </ng-template>
+                                    </p-fileUpload>
+                                </div>
+                            </div>
                         </div>
                         <br>
                         <div class="col-md-12">

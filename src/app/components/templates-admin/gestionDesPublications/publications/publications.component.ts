@@ -331,29 +331,32 @@ export class PublicationsComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        if (error.error =  "Un contrat de location est toujours en cours pour ce bien immobilier.") {
+        this.messageErreur = error.error;
+        let messageDetail = '';
+
+        switch (this.messageErreur) {
+          case "Un contrat de location est toujours en cours pour ce bien immobilier.":
+            messageDetail = this.messageErreur;
+            break;
+          case "Une publication avec ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.":
+            messageDetail = this.messageErreur;
+            break;
+          case "Une publication avec un des biens associés à ce bien support est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.":
+            messageDetail = this.messageErreur;
+            break;
+          case "Une publication avec le bien support auquel est associé ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.":
+            messageDetail = this.messageErreur;
+            break;
+          default:
+            messageDetail = "Erreur inconnue";
+            break;
+        }
+
+        if (messageDetail !== "Erreur inconnue") {
           this.messageService.add({
             severity: 'warn',
             summary: 'Publication non réussie',
-            detail: error.error
-          })
-        } else if (error.error == "Une publication avec ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
-          this.messageService.add({
-            severity: 'warn',
-            summary: 'Publication non réussie',
-            detail: error.error
-          });
-        } else if (error.error == "Une publication avec un des biens associés à ce bien support est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
-          this.messageService.add({
-            severity: 'warn',
-            summary: 'Publication non réussie',
-            detail: error.error
-          });
-        } else if (error.error == "Une publication avec le bien support auquel est associé ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
-          this.messageService.add({
-            severity: 'warn',
-            summary: 'Publication non réussie',
-            detail: error.error
+            detail: messageDetail
           });
         }
       }

@@ -18,6 +18,12 @@ export class SuiviEntretienService {
     this.url = APIEndpoint + 'api/';
   }
 
+  // Affichage - liste des suivis d'entretiens;
+  // url: http://localhost:4040/api/suivis-entretiens-list
+  getSuivisEntretiensList(): Observable<Array<SuiviEntretien>>{
+    return this.httpClient.get<Array<SuiviEntretien>>(this.url + 'suivis-entretiens-list');
+  }
+
   // Affichage des suivis d'entretiens paginées;
   // url: http://localhost:4040/api/suivis-entretiens
   getSuiviEntretiens(numeroDeLaPage: number, elementsParPage: number): Observable<Page<SuiviEntretien>>{

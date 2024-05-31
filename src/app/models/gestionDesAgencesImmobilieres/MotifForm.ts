@@ -1,4 +1,4 @@
-export class MotifRejetForm {
+export class MotifForm {
 
   id: number;
   motif!: string;

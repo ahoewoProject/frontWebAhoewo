@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
-import { MotifRejetForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetForm';
+import { MotifForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifForm';
 import { Services } from 'src/app/models/gestionDesAgencesImmobilieres/Services';
 import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/services.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
@@ -18,7 +18,7 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
   affichage = 1;
   user : any;
   dialogVisible: boolean = false;
-  motifRejetForm = new MotifRejetForm();
+  motifRejetForm = new MotifForm();
 
   elementsParPage = 5;
   numeroDeLaPage = 0;
@@ -108,7 +108,7 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
       header: "Validation d'un service",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this._servicesService.validerServices(id).subscribe(
+        this._servicesService.validerService(id).subscribe(
         (response) => {
           this.voirListe();
           this.messageSuccess = "Le service a été validé avec succès !";
@@ -143,7 +143,7 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
 
   enregistrerMotif(): void {
     this.motifRejetForm.id = this.serviceId;
-    this._servicesService.rejeterServices(this.motifRejetForm).subscribe(
+    this._servicesService.rejeterService(this.motifRejetForm).subscribe(
       (response) => {
         this.dialogVisible = false;
         this.voirListe();

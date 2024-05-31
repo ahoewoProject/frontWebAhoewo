@@ -1,6 +1,6 @@
 import { EntiteDeBase } from "./EntiteDeBase";
 
-export class MotifRejet extends EntiteDeBase {
+export class Motif extends EntiteDeBase {
 
   id: number;
   code!: string;

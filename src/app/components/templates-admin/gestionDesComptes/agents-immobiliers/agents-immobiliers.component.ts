@@ -80,8 +80,8 @@ export class AgentsImmobiliersComponent implements OnInit, OnDestroy {
       this.listerAffectationsAgentsImmobiliers();
     } else {
       this.listerAffectationsAgentsParAgence();
-      this.listeAgenceImmobilieresResponsable();
-      this.listerAgentsImmobiliers();
+      this.getAgencesImmobilieresListIfUserActif();
+      this.agentsImmobiliersList();
     }
     this.initAffectationAgentAgenceForm();
   }
@@ -100,8 +100,9 @@ export class AgentsImmobiliersComponent implements OnInit, OnDestroy {
 
   filtrerParAgence(event: any) {
     this.agenceSelectionnee = event.value;
-    this.affectationsAgentAgence = this.affectationsAgentAgence.filter((affectationAgenceAgence) => affectationAgenceAgence.agenceImmobiliere.id == this.agenceSelectionnee.id);
-    console.log(this.affectationsAgentAgence);
+    this.affectationsAgentAgence = this.affectationsAgentAgence.filter(
+      (affectationAgenceAgence) => affectationAgenceAgence.agenceImmobiliere.id == this.agenceSelectionnee.id
+    );
   }
 
   initAffectationAgentAgenceForm(): void {
@@ -170,9 +171,9 @@ export class AgentsImmobiliersComponent implements OnInit, OnDestroy {
     this.agenceSelectionnee = event.value;
   }
 
-  //Fonction pour recupérer les agences immobilières par responsable d'agence immobilière
-  listeAgenceImmobilieresResponsable(){
-    this.agenceImmobiliereService.findAgencesByResponsable().subscribe(
+  //Fonction pour recupérer les agences immobilières (Responsable)
+  getAgencesImmobilieresListIfUserActif(){
+    this.agenceImmobiliereService.getAgencesImmobilieresListIfUserActif().subscribe(
       (response) => {
         this.agencesImmobilieres = response;
       }
@@ -180,7 +181,7 @@ export class AgentsImmobiliersComponent implements OnInit, OnDestroy {
   }
 
   //Liste des agents immobiliers
-  listerAgentsImmobiliers(): void {
+  agentsImmobiliersList(): void {
     this.agentImmobilierService.getAll().subscribe(
       (response) => {
         this.agentsImmobiliers = response;

@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
-import { MotifRejet } from 'src/app/models/MotifRejet';
-import { MotifRejetForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetForm';
+import { Motif } from 'src/app/models/Motif';
+import { MotifForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifForm';
 import { Caracteristiques } from 'src/app/models/gestionDesBiensImmobiliers/Caracteristiques';
 import { ImagesBienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/ImagesBienImmobilier';
 import { DemandeVisite } from 'src/app/models/gestionDesLocationsEtVentes/DemandeVisite';
@@ -13,7 +13,7 @@ import { CaracteristiquesService } from 'src/app/services/gestionDesBiensImmobil
 import { ImagesBienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/images-bien-immobilier.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { DemandeVisiteService } from 'src/app/services/gestionDesLocationsEtVentes/demande-visite.service';
-import { MotifRejetService } from 'src/app/services/motif-rejet.service';
+import { MotifService } from 'src/app/services/motif.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -39,20 +39,20 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
   user: any;
   bienImm: any;
 
-  messageErreur: string = "";
+  messageErreur: string | null = null;
   messageSuccess: string | null = null;
   caracteristique: Caracteristiques = new Caracteristiques();
-  motifAnnulationForm = new MotifRejetForm();
-  motifRefusForm = new MotifRejetForm();
+  motifAnnulationForm = new MotifForm();
+  motifRefusForm = new MotifForm();
   images: ImagesBienImmobilier[] = [];
 
   demandeVisiteId: any;
   demandeVisiteReussie: any;
-  listMotifs: MotifRejet[] = [];
+  listMotifs: Motif[] = [];
 
   constructor(private demandeVisiteService: DemandeVisiteService, private activatedRoute: ActivatedRoute,
     private router: Router, private personneService: PersonneService,
-    private motifRejetService: MotifRejetService, private imagesBienImmobilierService: ImagesBienImmobilierService,
+    private motifService: MotifService, private imagesBienImmobilierService: ImagesBienImmobilierService,
     private bienImmobilierService: BienImmobilierService, private bienImmAssocieService: BienImmAssocieService,
     private messageService: MessageService, private confirmationService: ConfirmationService,
     private caracteristiquesServices: CaracteristiquesService,
@@ -120,8 +120,8 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
   }
 
   listeMotifs(code: string, creerPar: number): void {
-    this.motifRejetService.getMotifsByCodeAndCreerPar(code, creerPar).subscribe(
-      (data: MotifRejet[]) => {
+    this.motifService.getMotifsByCodeAndCreerPar(code, creerPar).subscribe(
+      (data: Motif[]) => {
         this.listMotifs = data;
       }
     );
@@ -271,7 +271,7 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
     this.demandeVisite.dateHeureVisite = this.dateHeureVisiteSelectionne;
     this.demandeVisiteService.editDemandeVisite(id, this.demandeVisite).subscribe(
       (response) => {
-        this.voirListe();
+        this.afficherListe();
         this.messageSuccess = "La demande de visite a été modifiée avec succès !";
         this.messageService.add({
           severity: 'success',
@@ -406,14 +406,11 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
       designation === "Bureau" || designation === "Magasin" || designation === "Boutique";
   }
 
-  afficherCategorie(): boolean {
-    return this.bienImm.typeDeBien.designation == 'Maison' ||
-    this.bienImm.typeDeBien.designation == 'Villa' ||
-    this.bienImm.typeDeBien.designation == 'Immeuble' ||
-    this.bienImm.typeDeBien.designation == 'Appartement' ||
-    this.bienImm.typeDeBien.designation == 'Chambre salon' ||
-    this.bienImm.typeDeBien.designation == 'Chambre' ||
-    this.bienImm.typeDeBien.designation == 'Bureau';
+  afficherCategorie(designation: string): boolean {
+    return designation == 'Maison' || designation == 'Villa' ||
+    designation == 'Immeuble' || designation == 'Appartement' ||
+    designation == 'Chambre salon' || designation == 'Chambre' ||
+    designation == 'Bureau';
   }
 
   afficherBoutonSiBienDelegue(estDelegue: boolean): boolean {

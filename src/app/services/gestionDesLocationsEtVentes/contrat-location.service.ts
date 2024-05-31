@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
-import { MotifRejetForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetForm';
+import { MotifForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifForm';
 import { ContratLocation } from 'src/app/models/gestionDesLocationsEtVentes/ContratLocation';
 import { environment } from 'src/environments/environment';
 
@@ -69,13 +69,13 @@ export class ContratLocationService {
 
   // Demande de modification d'un contrat de location ;
   // url: http://localhost:4040/api/contrat-location/demande-modification/{id}
-  demandeModificationContratLocation(id: number, m: MotifRejetForm): Observable<any>{
+  demandeModificationContratLocation(id: number, m: MotifForm): Observable<any>{
     return this.httpClient.post<any>(this.url + 'contrat-location/demande-modification/' + id, m);
   }
 
   // Refuser un contrat de location ;
   // url: http://localhost:4040/api/contrat-location/refuser/{id}
-  refuserContratLocation(id: number, m: MotifRejetForm): Observable<any>{
+  refuserContratLocation(id: number, m: MotifForm): Observable<any>{
     return this.httpClient.post<any>(this.url + 'contrat-location/refuser/' + id, m);
   }
 

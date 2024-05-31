@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, ConfirmEventType, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
-import { ContratLocation } from 'src/app/models/gestionDesLocationsEtVentes/ContratLocation';
 import { Paiement } from 'src/app/models/gestionDesPaiements/Paiement';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { ContratLocationService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-location.service';
@@ -26,6 +25,7 @@ export class PaiementsComponent implements OnInit, OnDestroy {
   contratVente = this.contratVenteService.contratVente;
   paiements!: Page<Paiement>
   paiement = this.paiementService.paiement;
+  messageSuccess: string | null = null;
   user: any;
   paiementReussi: any;
   APIEndpoint: any;
@@ -33,7 +33,7 @@ export class PaiementsComponent implements OnInit, OnDestroy {
   constructor(private paiementService: PaiementService, private router: Router,
     private activatedRoute: ActivatedRoute, private personneService: PersonneService,
     private messageService: MessageService, private contratVenteService: ContratVenteService,
-    private contratLocationService: ContratLocationService
+    private contratLocationService: ContratLocationService, private confirmationService: ConfirmationService
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -115,6 +115,45 @@ export class PaiementsComponent implements OnInit, OnDestroy {
     this.router.navigate([this.navigateURLBYUSER(this.user) + '/paiements/' + id]);
   }
 
+  validerPaiement(id: number): void {
+    this.confirmationService.confirm({
+      message: 'Vous êtes sûr de vouloir valider ce paiement ?',
+      header: "Validation d'un paiement",
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.paiementService.validerPaiement(id).subscribe(
+          (response) => {
+            this.detailPaiement(id);
+            this.router.navigateByUrl(this.navigateURLBYUSER + '/paiements/' + id);
+            this.messageSuccess = "Le paiement a été validé avec succès !";
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Validation d\'un paiement confirmée',
+              detail: this.messageSuccess
+            })
+        });
+
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Validation d\'un paiement rejetée',
+              detail: "Vous avez rejeté la validation de ce paiement !"
+            });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Validation d\'un paiement annulée',
+              detail: "Vous avez annulé la validation de ce paiement !"
+            });
+            break;
+        }
+      }
+    });
+  }
   afficherCategorie(categorie: string): boolean {
     return categorie == 'Maison' ||
     categorie == 'Villa' ||
@@ -126,7 +165,7 @@ export class PaiementsComponent implements OnInit, OnDestroy {
   }
 
   telechargerFichePaiement(id: number): void {
-    this.paiementService.telecharger(id).subscribe(
+    this.paiementService.telechargerFichePaiement(id).subscribe(
       (response) => {
         const file = new Blob([response], { type: 'application/pdf' });
         const fileUrl = URL.createObjectURL(file);
@@ -134,6 +173,74 @@ export class PaiementsComponent implements OnInit, OnDestroy {
       }
     )
   }
+
+  telechargerPreuvePaiement(id: number): void {
+    this.paiementService.telechargerPreuvePaiement(id).subscribe(
+      (response) => {
+        const blob = new Blob([response]);
+
+        // Créer un FileReader
+        const reader = new FileReader();
+
+        // Écouter l'événement onloadend pour récupérer les premiers octets du fichier
+        reader.onloadend = () => {
+          // Récupérer les premiers octets du fichier
+          const arr = new Uint8Array(reader.result as ArrayBuffer).subarray(0, 4);
+          let fileType = '';
+          for (let i = 0; i < arr.length; i++) {
+            fileType += arr[i].toString(16);
+          }
+
+          // Déterminer le type de fichier en fonction des premiers octets
+          let mimeType = '';
+          switch (fileType) {
+            case '89504e47':
+              mimeType = 'image/png';
+              break;
+            case 'ffd8ffe0':
+            case 'ffd8ffe1':
+            case 'ffd8ffe2':
+              mimeType = 'image/jpeg';
+              break;
+            case '25504446':
+              mimeType = 'application/pdf';
+              break;
+            default:
+              // Si le type de fichier n'est pas reconnu, définir le type par défaut
+              mimeType = 'application/octet-stream';
+              break;
+          }
+
+          // Créer un Blob avec le bon type MIME
+          const file = new Blob([response], { type: mimeType });
+
+          // Créer un URL pour le Blob
+          const fileUrl = URL.createObjectURL(file);
+
+          // Ouvrir le fichier dans un nouvel onglet
+          window.open(fileUrl, '_blank');
+        };
+
+        // Lire les premiers octets du Blob
+        reader.readAsArrayBuffer(blob);
+      }
+    );
+  }
+
+  afficherBoutonSiBienDelegue(estDelegue: boolean): boolean {
+    if (this.user.role.code === 'ROLE_PROPRIETAIRE') {
+      return !estDelegue;
+    } else if (
+      this.user.role.code === 'ROLE_DEMARCHEUR' ||
+      this.user.role.code === 'ROLE_RESPONSABLE' ||
+      this.user.role.code === 'ROLE_GERANT' ||
+      this.user.role.code === 'ROLE_AGENTIMMOBILIER'
+    ) {
+      return true;
+    }
+    return false; // Si aucun des rôles n'est trouvé, retourner false par défaut
+  }
+
 
   navigateURLBYUSER(user: any): string {
     let roleBasedURL = '';

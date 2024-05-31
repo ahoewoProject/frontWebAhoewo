@@ -101,7 +101,13 @@ import { SuivisEntretiensComponent } from './components/templates-admin/gestionD
 import { PlanificationsPaiementsComponent } from './components/templates-admin/gestionDesPaiements/planifications-paiements/planifications-paiements.component';
 import { PaiementsComponent } from './components/templates-admin/gestionDesPaiements/paiements/paiements.component';
 import { ParametresComponent } from './components/templates-admin/gestionDesComptes/parametres/parametres.component';
-import { FedaPayCheckoutModule } from 'fedapay-angular';
+import { ChartModule } from 'primeng/chart';
+import { GestionDesComptesComponent } from './components/templates-admin/dashboard/gestion-des-comptes/gestion-des-comptes.component';
+import { GestionDesAgencesImmobieresComponent } from './components/templates-admin/dashboard/gestion-des-agences-immobieres/gestion-des-agences-immobieres.component';
+import { GestionDesBiensImmobiliersComponent } from './components/templates-admin/dashboard/gestion-des-biens-immobiliers/gestion-des-biens-immobiliers.component';
+import { GestionDesPublicationsComponent } from './components/templates-admin/dashboard/gestion-des-publications/gestion-des-publications.component';
+import { GestionDesLocationsEtVentesComponent } from './components/templates-admin/dashboard/gestion-des-locations-et-ventes/gestion-des-locations-et-ventes.component';
+import { GestionDesPaiementsComponent } from './components/templates-admin/dashboard/gestion-des-paiements/gestion-des-paiements.component';
 
 @NgModule({
   declarations: [
@@ -157,6 +163,12 @@ import { FedaPayCheckoutModule } from 'fedapay-angular';
     PlanificationsPaiementsComponent,
     PaiementsComponent,
     ParametresComponent,
+    GestionDesComptesComponent,
+    GestionDesAgencesImmobieresComponent,
+    GestionDesBiensImmobiliersComponent,
+    GestionDesPublicationsComponent,
+    GestionDesLocationsEtVentesComponent,
+    GestionDesPaiementsComponent,
   ],
   imports: [
     BrowserModule,
@@ -210,6 +222,7 @@ import { FedaPayCheckoutModule } from 'fedapay-angular';
     MenuModule,
     CalendarModule,
     CommonModule,
+    ChartModule
   ],
   providers: [
     MessageService,

@@ -1,0 +1,70 @@
+<div class="row">
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Biens publiés<br><br></div>
+                <div class="title">{{ nbrePublications }}</div>
+            </div>
+            <div style="background-color:#0d7915;" class="icon text-center"><i class="fa-light fa-share-all" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Publications <br>activées</div>
+                <div class="title">{{ nbrePublications }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--green-400)' }" class="icon text-center"><i class="fa-light fa-share-all" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Publications <br>désactivées</div>
+                <div class="title">{{ nbrePublications }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--red-600)' }" class="icon text-center"><i class="fa-light fa-share-all" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Publications de <br>locations</div>
+                <div class="title">{{ nbrePublications }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--orange-400)' }" class="icon text-center"><i class="fa-light fa-share-all" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Publications de <br>ventes</div>
+                <div class="title">{{ nbrePublications }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--green-400)' }" class="icon text-center"><i class="fa-light fa-share-all" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Biens délégués <br>publiés</div>
+                <div class="title">{{ nbrePublications }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--blue-500)' }" class="icon text-center"><i class="fa-light fa-share-all" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-xxl-6">
+        <div class="card flex justify-content-center statistics_funfact">
+            <h5 class="graph-title">Publications par états</h5>
+            <p-chart type="doughnut" [data]="dataPublicationActiveeDesactivee" [options]="optionsPublicationActiveeDesactivee" height="230" />
+        </div>
+    </div>
+    <div class="col-sm-12 col-xxl-6">
+        <div class="card flex justify-content-center statistics_funfact">
+            <h5 class="graph-title">Publications par types de transactions</h5>
+            <p-chart type="doughnut" [data]="dataPublicationLocationVente" [options]="optionsPublicationLocationVente" height="230" />
+        </div>
+    </div>
+</div>

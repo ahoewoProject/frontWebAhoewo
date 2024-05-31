@@ -51,10 +51,10 @@
                                     <td class="vam" *ngIf="user.role.code == 'ROLE_CLIENT' && demandeLocation.publication.agenceImmobiliere !== null">{{ demandeLocation.publication.agenceImmobiliere.nomAgence }}</td>
                                     <td class="vam" *ngIf="user.role.code == 'ROLE_CLIENT' && demandeLocation.publication.agenceImmobiliere == null">{{ demandeLocation.publication.personne.nom }} {{ demandeLocation.publication.personne.prenom }}</td>
                                     <td class="vam">{{ demandeLocation.publication.bienImmobilier.codeBien + ' / ' + demandeLocation.publication.bienImmobilier.typeDeBien.designation }}</td>
-                                    <!-- <td class="vam">{{ publication.datePublication | date: 'dd-MM-yyyy' }}</td> -->
+                                    <!-- <td class="vam">{{ publication.datePublication | date: 'dd/MM/yyyy' }}</td> -->
                                     <td class="vam">
                                         <p-tag *ngIf="demandeLocation.etatDemande == 0" severity="warning" value="En attente"></p-tag>
-                                        <p-tag *ngIf="demandeLocation.etatDemande == 1" severity="success" value="Validée"></p-tag>
+                                        <p-tag *ngIf="demandeLocation.etatDemande == 1" severity="success" value="Validé"></p-tag>
                                         <p-tag *ngIf="demandeLocation.etatDemande == 2" severity="danger" value="Annulé"></p-tag>
                                         <p-tag *ngIf="demandeLocation.etatDemande == 3" severity="danger" value="Refusé"></p-tag>
                                         <p-tag *ngIf="demandeLocation.etatDemande == 4" severity="info" value="Modifié"></p-tag>
@@ -226,7 +226,7 @@
                             </div>
                             <div class="col-sm-6 col-xl-4">
                                 <p class="fw600 mb5 ff-heading dark-color">Date de publication</p>
-                                <p class="text">{{ demandeLocation.publication.datePublication | date: "dd-MM-yyyy" }}</p>
+                                <p class="text">{{ demandeLocation.publication.datePublication | date: "dd/MM/yyyy" }}</p>
                             </div>
                             <div class="col-sm-6 col-xl-4" *ngIf="demandeLocation.publication.avance">
                                 <p class="fw600 mb5 ff-heading dark-color">Avance</p>
@@ -279,7 +279,7 @@
                                     <div class="pd-list">
                                         <p class="fw600 mb10 ff-heading dark-color">Code</p>
                                         <p class="fw600 mb10 ff-heading dark-color">Type de bien</p>
-                                        <p class="fw600 mb10 ff-heading dark-color" *ngIf="afficherCategorie()">Catégorie</p>
+                                        <p class="fw600 mb10 ff-heading dark-color" *ngIf="afficherCategorie(bienImm.typeDeBien.designation)">Catégorie</p>
                                         <p class="fw600 mb10 ff-heading dark-color">Pays</p>
                                         <p class="fw600 mb10 ff-heading dark-color">Région</p>
                                         <p class="fw600 mb-0 ff-heading dark-color">Ville</p>
@@ -287,7 +287,7 @@
                                     <div class="pd-list">
                                         <p class="text mb10">{{ bienImm.codeBien }}</p>
                                         <p class="text mb10">{{ bienImm.typeDeBien.designation }}</p>
-                                        <p class="text mb10" *ngIf="afficherCategorie()">{{ bienImm.categorie }}</p>
+                                        <p class="text mb10" *ngIf="afficherCategorie(bienImm.typeDeBien.designation)">{{ bienImm.categorie }}</p>
                                         <p class="text mb10">{{ bienImm.quartier.ville.region.pays.libelle }}</p>
                                         <p class="text mb10">{{ bienImm.quartier.ville.region.libelle }}</p>
                                         <p class="text mb-0">{{ bienImm.quartier.ville.libelle }}</p>
@@ -784,17 +784,17 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Date début contrat</p>
-                                            <p class="text">{{ contratLocation.dateDebut | date: 'dd-MM-yyyy' }}</p>
+                                            <p class="text">{{ contratLocation.dateDebut | date: 'dd/MM/yyyy' }}</p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Date fin contrat</p>
-                                            <p class="text">{{ contratLocation.dateFin ? (contratLocation.dateFin | date: 'dd-MM-yyyy') : 'non connu' }}</p>
+                                            <p class="text">{{ contratLocation.dateFin ? (contratLocation.dateFin | date: 'dd/MM/yyyy') : 'non connu' }}</p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Prochain paiement</p>
-                                            <p class="text">{{ calculerProchainPaiement(contratLocation.dateDebut, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd-MM-yyyy' }}</p>
+                                            <p class="text">{{ calculerProchainPaiement(contratLocation.dateDebut, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd/MM/yyyy' }}</p>
                                         </div>
                                     </div>
 
@@ -833,7 +833,7 @@
                                             <p class="text">{{ demandeLocation.publication.bienImmobilier.codeBien }}</p>
                                         </div>
 
-                                        <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorie()">
+                                        <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorie(demandeLocation.publication.bienImmobilier.typeDeBien.designation)">
                                             <p class="fw600 mb5 ff-heading dark-color">Catégorie</p>
                                             <p class="text">{{ demandeLocation.publication.bienImmobilier.categorie }}</p>
                                         </div>
@@ -980,17 +980,17 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Date début contrat</p>
-                                            <p class="text">{{ contratLocation.dateDebut | date: 'dd-MM-yyyy' }}</p>
+                                            <p class="text">{{ contratLocation.dateDebut | date: 'dd/MM/yyyy' }}</p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Date fin contrat</p>
-                                            <p class="text">{{ contratLocation.dateFin ? (contratLocation.dateFin | date: 'dd-MM-yyyy') : 'non connu' }}</p>
+                                            <p class="text">{{ contratLocation.dateFin ? (contratLocation.dateFin | date: 'dd/MM/yyyy') : 'non connu' }}</p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Prochain paiement</p>
-                                            <p class="text">{{ calculerProchainPaiement(contratLocation.dateDebut, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd-MM-yyyy' }}</p>
+                                            <p class="text">{{ calculerProchainPaiement(contratLocation.dateDebut, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd/MM/yyyy' }}</p>
                                         </div>
                                     </div>
 
@@ -1034,7 +1034,7 @@
                                             <p class="text">{{ demandeLocation.publication.bienImmobilier.typeDeBien.designation }}</p>
                                         </div>
 
-                                        <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorie()">
+                                        <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorie(demandeLocation.publication.bienImmobilier.typeDeBien.designation)">
                                             <p class="fw600 mb5 ff-heading dark-color">Catégorie</p>
                                             <p class="text">{{ demandeLocation.publication.bienImmobilier.categorie }}</p>
                                         </div>
@@ -1130,17 +1130,17 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Date début contrat</p>
-                                            <p class="text">{{ contratLocation.dateDebut | date: 'dd-MM-yyyy' }}</p>
+                                            <p class="text">{{ contratLocation.dateDebut | date: 'dd/MM/yyyy' }}</p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Date fin contrat</p>
-                                            <p class="text">{{ contratLocation.dateFin ? (contratLocation.dateFin | date: 'dd-MM-yyyy') : 'non connu' }}</p>
+                                            <p class="text">{{ contratLocation.dateFin ? (contratLocation.dateFin | date: 'dd/MM/yyyy') : 'non connu' }}</p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Prochain paiement</p>
-                                            <p class="text">{{ calculerProchainPaiement(contratLocation.dateDebut, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd-MM-yyyy' }}</p>
+                                            <p class="text">{{ calculerProchainPaiement(contratLocation.dateDebut, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd/MM/yyyy' }}</p>
                                         </div>
                                     </div>
 
@@ -1184,7 +1184,7 @@
                                             <p class="text">{{ demandeLocation.publication.bienImmobilier.typeDeBien.designation }}</p>
                                         </div>
 
-                                        <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorie()">
+                                        <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorie(demandeLocation.publication.bienImmobilier.typeDeBien.designation)">
                                             <p class="fw600 mb5 ff-heading dark-color">Catégorie</p>
                                             <p class="text">{{ demandeLocation.publication.bienImmobilier.categorie }}</p>
                                         </div>
@@ -1331,17 +1331,17 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Date début contrat</p>
-                                            <p class="text">{{ contratLocation.dateDebut | date: 'dd-MM-yyyy' }}</p>
+                                            <p class="text">{{ contratLocation.dateDebut | date: 'dd/MM/yyyy' }}</p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Date fin contrat</p>
-                                            <p class="text">{{ contratLocation.dateFin ? (contratLocation.dateFin | date: 'dd-MM-yyyy') : 'non connu' }}</p>
+                                            <p class="text">{{ contratLocation.dateFin ? (contratLocation.dateFin | date: 'dd/MM/yyyy') : 'non connu' }}</p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Prochain paiement</p>
-                                            <p class="text">{{ calculerProchainPaiement(contratLocation.dateDebut, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd-MM-yyyy' }}</p>
+                                            <p class="text">{{ calculerProchainPaiement(contratLocation.dateDebut, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd/MM/yyyy' }}</p>
                                         </div>
                                     </div>
 
@@ -1362,7 +1362,7 @@
                                             <p class="text">{{ demandeLocation.publication.bienImmobilier.typeDeBien.designation }}</p>
                                         </div>
 
-                                        <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorie()">
+                                        <div class="col-sm-6 col-xl-4" *ngIf="afficherCategorie(demandeLocation.publication.bienImmobilier.typeDeBien.designation)">
                                             <p class="fw600 mb5 ff-heading dark-color">Catégorie</p>
                                             <p class="text">{{ demandeLocation.publication.bienImmobilier.categorie }}</p>
                                         </div>

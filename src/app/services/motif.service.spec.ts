@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MotifRejetService } from './motif-rejet.service';
+import { MotifService } from './motif.service';
 
-describe('MotifRejetService', () => {
-  let service: MotifRejetService;
+describe('MotifService', () => {
+  let service: MotifService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(MotifRejetService);
+    service = TestBed.inject(MotifService);
   });
 
   it('should be created', () => {

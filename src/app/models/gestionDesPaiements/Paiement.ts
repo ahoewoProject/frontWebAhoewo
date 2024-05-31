@@ -7,8 +7,9 @@ export class Paiement extends EntiteDeBase {
   codePaiement!: string;
   modePaiement!: string;
   planificationPaiement!: PlanificationPaiement;
-  numeroComptePaiement!: string;
-  referenceTransaction!: string;
+  // numeroComptePaiement!: string;
+  // referenceTransaction!: string;
+  preuve!: string;
   montant!: number;
   datePaiement!: number;
   statutPaiement!: string;

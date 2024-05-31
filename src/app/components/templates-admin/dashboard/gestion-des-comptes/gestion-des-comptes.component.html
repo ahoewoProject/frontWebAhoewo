@@ -1,0 +1,110 @@
+<div class="row" *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Rôles <br> <br></div>
+                <div class="title">{{ nbreRole }}</div>
+            </div>
+            <div style="background-color:#0d7915" class="icon text-center"><i class="fa-light fa-gears" style="color: white;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Utilisateurs <br> <br></div>
+                <div class="title">{{ nbreUtilisateur }}</div>
+            </div>
+            <div style="background-color: #0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Utilisateurs actifs</div>
+                <div class="title">{{ nbreUtilisateurActif }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--green-300)' }" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Utilisateurs <br>inactifs</div>
+                <div class="title">{{ nbreUtilisateurInactif }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--orange-300)' }" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="user.role.code == 'ROLE_PROPRIETAIRE'">
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Gérants <br> <br></div>
+                <div class="title">{{ nbreGerant }}</div>
+            </div>
+            <div style="background-color:#0d7915" class="icon text-center"><i class="fa-light fa-gears" style="color: white;"></i></div>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="user.role.code == 'ROLE_NOTAIRE'">
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Demandes de<br>certifications</div>
+                <div class="title">{{ dmndeCertif }}</div>
+            </div>
+            <div style="background-color:#0d7915" class="icon text-center"><i class="fa-sharp fa-light fa-certificate" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Certifications<br>validées</div>
+                <div class="title">{{ dmndeCertifValidee }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--green-300)' }" class="icon text-center"><i class="fa-sharp fa-light fa-certificate" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Certifications<br>en attente</div>
+                <div class="title">{{ dmndeCertifAttente }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--orange-300)' }" class="icon text-center"><i class="fa-sharp fa-light fa-certificate" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngIf="user.role.code == 'ROLE_RESPONSABLE'">
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Agents <br>immobiliers</div>
+                <div class="title">{{ nbreAgentImmobilier }}</div>
+            </div>
+            <div style="background-color: #0d7915;" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Agents <br>actifs</div>
+                <div class="title">{{ nbreAgentImmobilierActif }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--green-300)' }" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xxl-3">
+        <div class="d-flex justify-content-between statistics_funfact">
+            <div class="details">
+                <div class="text fz25">Agents <br>inactifs</div>
+                <div class="title">{{ nbreAgentImmobilierInactif }}</div>
+            </div>
+            <div [style]="{ 'background-color': 'var(--orange-300)' }" class="icon text-center"><i class="fa-light fa-user-group" style="color: #ffffff;"></i></div>
+        </div>
+    </div>
+</div>

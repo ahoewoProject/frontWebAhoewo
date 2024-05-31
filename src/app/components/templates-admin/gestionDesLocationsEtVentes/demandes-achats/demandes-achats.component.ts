@@ -3,11 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
-import { MotifRejet } from 'src/app/models/MotifRejet';
-import { MotifRejetForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifRejetForm';
+import { Motif } from 'src/app/models/Motif';
+import { MotifForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifForm';
 import { Caracteristiques } from 'src/app/models/gestionDesBiensImmobiliers/Caracteristiques';
 import { ImagesBienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/ImagesBienImmobilier';
-import { ContratVente } from 'src/app/models/gestionDesLocationsEtVentes/ContratVente';
 import { DemandeAchat } from 'src/app/models/gestionDesLocationsEtVentes/DemandeAchat';
 import { BienImmAssocieService } from 'src/app/services/gestionDesBiensImmobiliers/bien-imm-associe.service';
 import { BienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/bien-immobilier.service';
@@ -16,7 +15,7 @@ import { ImagesBienImmobilierService } from 'src/app/services/gestionDesBiensImm
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { ContratVenteService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-vente.service';
 import { DemandeAchatService } from 'src/app/services/gestionDesLocationsEtVentes/demande-achat.service';
-import { MotifRejetService } from 'src/app/services/motif-rejet.service';
+import { MotifService } from 'src/app/services/motif.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -45,14 +44,14 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
   messageErreur: string = "";
   messageSuccess: string | null = null;
   caracteristique: Caracteristiques = new Caracteristiques();
-  motifAnnulationForm = new MotifRejetForm();
-  motifRefusForm = new MotifRejetForm();
+  motifAnnulationForm = new MotifForm();
+  motifRefusForm = new MotifForm();
   images: ImagesBienImmobilier[] = [];
   demandeAchatForm: any;
 
   demandeAchatId: any;
   demandeAchatReussie: any;
-  listMotifs: MotifRejet[] = [];
+  listMotifs: Motif[] = [];
   contratVenteFormStep1: any;
   contratVenteFormStep2: any;
   contratVenteFormStep3: any;
@@ -61,7 +60,7 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
 
   constructor(private demandeAchatService: DemandeAchatService, private activatedRoute: ActivatedRoute,
     private router: Router, private personneService: PersonneService,
-    private motifRejetService: MotifRejetService, private imagesBienImmobilierService: ImagesBienImmobilierService,
+    private motifService: MotifService, private imagesBienImmobilierService: ImagesBienImmobilierService,
     private bienImmobilierService: BienImmobilierService, private bienImmAssocieService: BienImmAssocieService,
     private messageService: MessageService, private confirmationService: ConfirmationService,
     private caracteristiquesServices: CaracteristiquesService, private contratVenteService: ContratVenteService
@@ -78,7 +77,7 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
     if (demandeRequest !== null) {
         localStorage.removeItem('demandeRequest');
     }
-    
+
     this.initResponsiveOptions();
     this.initContratVenteStep1Form();
     this.initContratVenteStep2Form();
@@ -188,8 +187,8 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
   }
 
   listeMotifs(code: string, creerPar: number): void {
-    this.motifRejetService.getMotifsByCodeAndCreerPar(code, creerPar).subscribe(
-      (data: MotifRejet[]) => {
+    this.motifService.getMotifsByCodeAndCreerPar(code, creerPar).subscribe(
+      (data: Motif[]) => {
         this.listMotifs = data;
       }
     );
@@ -276,9 +275,16 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
     this.modalAnnulationVisible = true;
   }
 
+  //Afficher liste avec Url
   voirListe(): void {
     this.affichage = 1;
     this.router.navigate([this.navigateURLBYUSER(this.user) + '/demandes-achats']);
+  }
+
+  //Afficher liste sans url
+  afficherListe(): void {
+    this.listeDemandesAchats(this.numeroDeLaPage, this.elementsParPage);
+    this.affichage = 1;
   }
 
   enregistrerMotifRefuser(): void {
@@ -331,7 +337,7 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
   modifier(id: number): void {
     this.demandeAchatService.updateDemandeAchat(id, this.demandeAchat).subscribe(
       (response) => {
-        this.voirListe();
+        this.afficherListe();
         this.messageSuccess = "La demande d'achat a été modifiée avec succès !";
         this.messageService.add({
           severity: 'success',
@@ -660,24 +666,11 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
       designation === "Bureau" || designation === "Magasin" || designation === "Boutique";
   }
 
-  afficherCategorie(): boolean {
-    return this.bienImm.typeDeBien.designation == 'Maison' ||
-    this.bienImm.typeDeBien.designation == 'Villa' ||
-    this.bienImm.typeDeBien.designation == 'Immeuble' ||
-    this.bienImm.typeDeBien.designation == 'Appartement' ||
-    this.bienImm.typeDeBien.designation == 'Chambre salon' ||
-    this.bienImm.typeDeBien.designation == 'Chambre' ||
-    this.bienImm.typeDeBien.designation == 'Bureau';
-  }
-
-  afficherCategorieInForm(): boolean {
-    return this.demandeAchat.publication.bienImmobilier.typeDeBien.designation == 'Maison' ||
-    this.demandeAchat.publication.bienImmobilier.typeDeBien.designation == 'Villa' ||
-    this.demandeAchat.publication.bienImmobilier.typeDeBien.designation == 'Immeuble' ||
-    this.demandeAchat.publication.bienImmobilier.typeDeBien.designation == 'Appartement' ||
-    this.demandeAchat.publication.bienImmobilier.typeDeBien.designation == 'Chambre salon' ||
-    this.demandeAchat.publication.bienImmobilier.typeDeBien.designation == 'Chambre' ||
-    this.demandeAchat.publication.bienImmobilier.typeDeBien.designation == 'Bureau';
+  afficherCategorie(designation: string): boolean {
+    return designation == 'Maison' || designation == 'Villa' ||
+    designation == 'Immeuble' || designation == 'Appartement' ||
+    designation == 'Chambre salon' || designation == 'Chambre' ||
+    designation == 'Bureau';
   }
 
   newDemandeAchat(): void {

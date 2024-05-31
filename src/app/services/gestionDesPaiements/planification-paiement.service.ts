@@ -18,6 +18,12 @@ export class PlanificationPaiementService {
     this.url = APIEndpoint + 'api/';
   }
 
+  // Affichage - liste des planifications de paiements;
+  // url: http://localhost:4040/api/planifications-paiements-list
+  getPlanificationsPaiementsList(): Observable<Array<PlanificationPaiement>>{
+    return this.httpClient.get<Array<PlanificationPaiement>>(this.url + 'planifications-paiements-list');
+  }
+
   // Affichage des planifications de paiements paginées;
   // url: http://localhost:4040/api/planifications-paiements
   getPlanificationsPaiements(numeroDeLaPage: number, elementsParPage: number): Observable<Page<PlanificationPaiement>>{

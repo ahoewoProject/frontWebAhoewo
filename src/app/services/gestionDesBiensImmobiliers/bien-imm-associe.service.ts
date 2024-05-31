@@ -18,6 +18,12 @@ export class BienImmAssocieService {
     this.url = APIEndpoint + 'api/';
   }
 
+  // Affichage de toutes les occurrences des biens associes;
+  // url: http://localhost:4040/api/biens-associes
+  getBiensAssocies(): Observable<Array<BienImmobilierAssocie>>{
+    return this.httpClient.get<Array<BienImmobilierAssocie>>(this.url + 'biens-associes');
+  }
+
   // Ajout d'une occurrence d'un bien imm associé;
   // url: http://localhost:4040/api/bien-imm-associe/ajouter
   addBienImmAssocie(b: FormData): Observable<BienImmobilierAssocie>{

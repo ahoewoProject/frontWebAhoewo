@@ -49,6 +49,10 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   user: any;
 
   planificationPaiementReussie: any;
+  preuve: any;
+  preuveUrl: any;
+  paiementData: FormData = new  FormData();
+  paiementAnnule: any
 
   constructor(private planificationPaiementService: PlanificationPaiementService,
     private contratVenteService: ContratVenteService, private contratLocationService: ContratLocationService,
@@ -62,6 +66,8 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.paiementAnnule = this.activatedRoute.snapshot.queryParamMap.get('token');
+
     this.planificationPaiementReussie = this.activatedRoute.snapshot.queryParams['planificationPaiementReussie'];
     this.initActivatedRoute();
     this.listTypesPlanifications();
@@ -78,7 +84,6 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   initActivatedRoute(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       const id = params.get('id');
-
       if (id) {
         this.affichage = 2;
         this.detailPlanificationPaiement(parseInt(id));
@@ -120,6 +125,9 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
           this.detailContratLocation(this.planificationPaiement.contrat.id);
         } else {
           this.detailContratVente(this.planificationPaiement.contrat.id);
+        }
+        if (this.paiementAnnule) {
+          this.messageService.add({ severity: 'error', summary: 'Paiement annulé', detail: 'Votre paiement a été annulé.' });
         }
       }
     )
@@ -271,8 +279,9 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   ajouterPlanificationPaiementLocation(): void {
     this.planificationPaiement.typePlanification = this.typePlanificationSelectionne;
     this.planificationPaiement.contrat = this.contratSelectionne;
-    this.planificationPaiement.restePaye = this.planificationPaiement.montantDu;
     this.planificationPaiement.montantPaye = this.planificationPaiement.montantDu;
+    this.planificationPaiement.restePaye = this.planificationPaiement.montantDu - this.planificationPaiement.montantPaye;
+    // console.log(this.planificationPaiement);
     this.planificationPaiementService.ajouterPlanificationPaiementLocation(this.planificationPaiement).subscribe(
       (response) => {
         if (response.id > 0) {
@@ -356,8 +365,8 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
     this.paiementForm = new FormGroup({
       modePaiement: new FormControl('', [Validators.required]),
       montant: new FormControl({value: '', disabled: true}, [Validators.required]),
-      numeroComptePaiement: new FormControl('', [Validators.required]),
-      referenceTransaction: new FormControl('', [Validators.required])
+      // numeroComptePaiement: new FormControl('', [Validators.required]),
+      // referenceTransaction: new FormControl('', [Validators.required])
     })
   }
 
@@ -369,33 +378,54 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
     return this.paiementForm.get('montant')
   }
 
-  get numeroComptePaiement() {
-    return this.paiementForm.get('numeroComptePaiement')
-  }
+  // get numeroComptePaiement() {
+  //   return this.paiementForm.get('numeroComptePaiement')
+  // }
 
-  get referenceTransaction() {
-    return this.paiementForm.get('referenceTransaction')
+  // get referenceTransaction() {
+  //   return this.paiementForm.get('referenceTransaction')
+  // }
+
+  telecharger(event: any) {
+    const uploadedFile: File = event.files[0];
+    this.preuve = uploadedFile;
+
+    var reader = new FileReader();
+    reader.readAsDataURL(uploadedFile);
+    reader.onload = (_event)=>{
+    this.preuveUrl = reader.result;
+    }
+    this.messageSuccess = "La preuve liée ce paiement a été téléchargé avec succès.";
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Opération de téléchargement réussie',
+      detail: this.messageSuccess
+    });
   }
 
   listeModesPaiements() {
-    if (this.user.role.code == 'ROLE_CLIENT') {
-      this.modesPaiements = ['Mobile Money', 'Virement bancaire'];
+    if (this.user.role.code != 'ROLE_CLIENT') {
+      this.modesPaiements = ['Hors plateforme'];
+      this.modePaiementSelectionne = this.modesPaiements[0];
     } else {
-      this.modesPaiements = ['Manuel', 'Espèce'];
+      this.modesPaiements = ['Hors plateforme' , 'Mobile Money', 'Virement bancaire'];
+      this.modePaiementSelectionne = this.modesPaiements[0];
     }
   }
 
   modePaiementChoisi(event: any): void {
     this.modePaiementSelectionne = event.value
-    this.validerPaiementForm(this.modePaiementSelectionne)
+    // this.validerPaiementForm(this.modePaiementSelectionne)
     if (this.planificationPaiement) {
       this.paiement.montant = this.planificationPaiement.montantPaye;
     }
   }
 
   afficherPagePaiement(id: number) {
+    this.listeModesPaiements();
     this.planificationPaiementService.findById(id).subscribe(
       (data) => {
+        console.log(data);
         this.planificationPaiement = data;
         this.paiement.montant = data.montantPaye;
       }
@@ -404,18 +434,20 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   }
 
   validerPaiementForm(modePaiement: string) {
-    if (modePaiement == 'Manuel') {
-      this.numeroComptePaiement.setValidators([Validators.required])
-      this.referenceTransaction.setValidators([Validators.required])
-    } else if (modePaiement == 'Espèce') {
-      this.numeroComptePaiement.clearValidators();
-      this.referenceTransaction.clearValidators();
-    }
-    this.numeroComptePaiement.updateValueAndValidity();
-    this.referenceTransaction.updateValueAndValidity()
+    // if (modePaiement == 'Manuel') {
+    //   this.numeroComptePaiement.setValidators([Validators.required])
+    //   this.referenceTransaction.setValidators([Validators.required])
+    // } else if (modePaiement == 'Espèce') {
+    //   this.numeroComptePaiement.clearValidators();
+    //   this.referenceTransaction.clearValidators();
+    // }
+    // this.numeroComptePaiement.updateValueAndValidity();
+    // this.referenceTransaction.updateValueAndValidity()
   }
 
   resetPaiementForm() {
+    this.preuve = '';
+    this.preuveUrl = '';
     this.paiementForm.reset();
   }
 
@@ -426,12 +458,25 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   }
 
   ajouterPaiement(): void {
+    if (this.modePaiementSelectionne == 'Hors plateforme') {
+      this.paiementHorsSysteme();
+    } else if (this.modePaiementSelectionne == 'Mobile Money') {
+      this.paiementParMobileMoney();
+    } else {
+      this.paiementParVirementBancaire();
+    }
+  }
+
+  paiementHorsSysteme(): void {
     this.paiement.modePaiement = this.modePaiementSelectionne;
     this.paiement.planificationPaiement = this.planificationPaiement;
-    this.paiementService.ajouterPaiement(this.paiement).subscribe(
+
+    this.paiementData.append('preuve', this.preuve);
+    this.paiementData.append('paiementJson', JSON.stringify(this.paiement));
+
+    this.paiementService.ajouterPaiement(this.paiementData).subscribe(
       (response) => {
         if (response.id > 0) {
-          this.genererPdfPaiement(response.id);
           this.router.navigate([this.navigateURLBYUSER(this.user) + '/paiements'], { queryParams: { paiementReussi: true } });
         }
       },
@@ -447,13 +492,36 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
     )
   }
 
-  genererPdfPaiement(id: number) {
-    this.paiementService.genererPaiementPdf(id).subscribe(
-      (response: Blob) => {
-        const blob = new Blob([response], { type: 'application/pdf' });
-        window.URL.createObjectURL(blob);
+  paiementParMobileMoney() {
+    this.paiement.modePaiement = this.modePaiementSelectionne;
+    this.paiement.planificationPaiement = this.planificationPaiement;
+
+    this.paiementData.append('paiementJson', JSON.stringify(this.paiement));
+    this.paiementService.initializePaymentByPaydunya(this.paiementData).subscribe(
+      (redirectUrl) => {
+        console.log(redirectUrl);
+        window.open(redirectUrl, '_self');
+      },
+      (error) => {
+        console.log(error);
       }
-    )
+    );
+  }
+
+  paiementParVirementBancaire() {
+    this.paiement.modePaiement = this.modePaiementSelectionne;
+    this.paiement.planificationPaiement = this.planificationPaiement;
+
+    console.log(this.paiement)
+    this.paiementService.initializePaymentByPayPal(this.paiement).subscribe(
+      (redirectUrl) => {
+        console.log(redirectUrl);
+        window.open(redirectUrl, '_self');
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   afficherCategorie(designation: string): boolean {

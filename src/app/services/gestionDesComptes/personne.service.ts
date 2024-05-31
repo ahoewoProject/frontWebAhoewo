@@ -20,6 +20,11 @@ export class PersonneService {
     this.url = APIEndpoint + 'api/';
   }
 
+  // url: http://localhost:4040/api/personnes
+  getAll(): Observable<Array<Personne>>{
+    return this.httpClient.get<Array<Personne>>(this.url + 'personnes');
+  }
+
   // Création de compte
   // url: http://localhost:4040/api/register
   inscription(r: RegisterForm): Observable<any>{
@@ -133,5 +138,45 @@ export class PersonneService {
   deconnexion(): void {
     this.effacerLocalStorageItem();
     this.router.navigate(['/connexion']);
+  }
+
+  // Est Admin
+  estAdmin(roleCode: string): boolean {
+    return roleCode == 'ROLE_ADMINISTRATEUR'
+  }
+
+  // Est Notaire
+  estNotaire(roleCode: string): boolean {
+    return roleCode == 'ROLE_NOTAIRE'
+  }
+
+  // Est Responsable
+  estResponsable(roleCode: string): boolean {
+    return roleCode == 'ROLE_RESPONSABLE'
+  }
+
+  // Est Demarcheur
+  estDemarcheur(roleCode: string): boolean {
+    return roleCode == 'ROLE_DEMARCHEUR'
+  }
+
+  // Est Client
+  estClient(roleCode: string): boolean {
+    return roleCode == 'ROLE_CLIENT'
+  }
+
+  // Est Proprietaire
+  estProprietaire(roleCode: string): boolean {
+    return roleCode == 'ROLE_PROPRIETAIRE'
+  }
+
+  // Est Gerant
+  estGerant(roleCode: string): boolean {
+    return roleCode == 'ROLE_GERANT'
+  }
+
+  // Est Agent Immobilier
+  estAgentImmobilier(roleCode: string): boolean {
+    return roleCode == 'ROLE_AGENTIMMOBILIER'
   }
 }

@@ -50,7 +50,9 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initActivatedRoute();
     this.initDemandeCertificationForm();
-    this.listeAgencesImmobilieres();
+    if (this.personneService.estResponsable(this.user.role.code)) {
+      this.getAgencesImmobilieresListIfUserActif();
+    }
   }
 
   initActivatedRoute(): void {
@@ -89,9 +91,9 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
     );
   }
 
-  // Fonction pour recupérer les agences immobilières d'un responsable
-  listeAgencesImmobilieres() {
-    this.agenceImmobiliereService.findAgencesByResponsable().subscribe(
+  // Fonction pour recupérer les agences immobilières (Responsable)
+  getAgencesImmobilieresListIfUserActif() {
+    this.agenceImmobiliereService.getAgencesImmobilieresListIfUserActif().subscribe(
       (response) => {
         this.agencesImmobilieres = response;
         this.agenceSelectionnee = this.agencesImmobilieres[0];
@@ -319,6 +321,26 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  telechargerCrteCfe(id: number): void {
+    this.demandeCertifService.telechargerCarteCfe(id).subscribe(
+      response => {
+        const file = new Blob([response], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL, '_blank');
+      }
+    )
+  }
+
+  telechargerCni(id: number): void {
+    this.demandeCertifService.telechargerCni(id).subscribe(
+      response => {
+        const file = new Blob([response], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL, '_blank');
+      }
+    )
   }
 
   navigateURLBYUSER(user: any): string {

@@ -16,8 +16,9 @@ import { TypeDeBien } from 'src/app/models/gestionDesBiensImmobiliers/TypeDeBien
 import { Ville } from 'src/app/models/gestionDesBiensImmobiliers/Ville';
 import { ContratLocation } from 'src/app/models/gestionDesLocationsEtVentes/ContratLocation';
 import { ContratVente } from 'src/app/models/gestionDesLocationsEtVentes/ContratVente';
+import { Paiement } from 'src/app/models/gestionDesPaiements/Paiement';
 import { PlanificationPaiement } from 'src/app/models/gestionDesPaiements/PlanificationPaiement';
-import { MotifRejet } from 'src/app/models/MotifRejet';
+import { Motif } from 'src/app/models/Motif';
 import { BehaviorService } from 'src/app/services/behavior.service';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { BienImmAssocieService } from 'src/app/services/gestionDesBiensImmobiliers/bien-imm-associe.service';
@@ -36,7 +37,7 @@ import { ContratVenteService } from 'src/app/services/gestionDesLocationsEtVente
 import { PaiementService } from 'src/app/services/gestionDesPaiements/paiement.service';
 import { PlanificationPaiementService } from 'src/app/services/gestionDesPaiements/planification-paiement.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
-import { MotifRejetService } from 'src/app/services/motif-rejet.service';
+import { MotifService } from 'src/app/services/motif.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -80,6 +81,9 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   elementsParPagePlanification = 5;
   numeroDeLaPagePlanification = 0;
 
+  elementsParPagePaiement =  5;
+  numeroDeLaPagePaiement = 0;
+
   bienImmobilier = this.bienImmobilierService.bienImmobilier;
   bienImmAssocie = this.bienImmAssocieService.bienImmobilierAssocie;
   caracteristiqueBien: Caracteristiques = new Caracteristiques();
@@ -87,6 +91,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   agencesImmobilieres: AgenceImmobiliere[] = [];
   biensImmobiliers!: Page<BienImmobilier>;
   biensImmAssocies!: Page<BienImmobilier>;
+  paiements!: Page<Paiement>
   images: ImagesBienImmobilier[] = [];
   typesDeBienToStart: TypeDeBien[] = [];
   typesDeBienPourMaison: TypeDeBien[] = [];
@@ -115,7 +120,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   contratsLocations!: Page<ContratLocation>;
   contratsVentes!: Page<ContratVente>;
   contratBien!: any;
-  listMotifs: MotifRejet[] = [];
+  listMotifs: Motif[] = [];
   planificationsPaiements!: Page<PlanificationPaiement>;
   planificationPaiement: any;
   codeContrat: any;
@@ -130,7 +135,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     private bienImmobilierService: BienImmobilierService, private bienImmAssocieService: BienImmAssocieService,
     private behaviorService: BehaviorService, private delegationGestionService: DelegationGestionService,
     private publicationService: PublicationService, private contratVenteService: ContratVenteService,
-    private motifRejetService: MotifRejetService, private contratLocationService: ContratLocationService,
+    private motifService: MotifService, private contratLocationService: ContratLocationService,
     private planificationPaiementService: PlanificationPaiementService, private paiementService: PaiementService
   )
   {
@@ -163,15 +168,8 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     this.listeTypeDeBienPourImmeuble();
     this.listeTypeDeBienPourVilla();
 
-    if (this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
-      this.listeBiensParProprietaire(this.numeroDeLaPage, this.elementsParPage);
-    } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.listeAgencesImmobilieresParResponsable();
-      this.listeBiensParAgencesResponsable(this.numeroDeLaPage, this.elementsParPage);
-    } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.listeAgencesImmobilieresParAgent();
-      this.listeBiensParAgencesAgent(this.numeroDeLaPage, this.elementsParPage);
-    }
+    this.getAgencesImmobilieresListIfUserActif();
+    this.listeBiensSupportPagines(this.numeroDeLaPage, this.elementsParPage);
   }
 
   initResponsiveOptions(): void {
@@ -331,45 +329,18 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     );
   }
 
-  //Fonction pour recupérer la liste des agences immobilieres par agent immobilier
-  listeAgencesImmobilieresParAgent(): void {
-    this.agenceImmobiliereService.findAgencesByAgent().subscribe(
+  //Fonction pour recupérer la liste des agences immobilieres(Responsable/Agent immobilier)
+  getAgencesImmobilieresListIfUserActif(): void {
+    this.agenceImmobiliereService.getAgencesImmobilieresListIfUserActif().subscribe(
       (response) => {
         this.agencesImmobilieres = response;
+        this.agenceSelectionnee =  this.agencesImmobilieres[0];
       }
     );
   }
 
-  //Fonction pour recupérer la liste des agences immobilieres par responsable
-  listeAgencesImmobilieresParResponsable(): void {
-    this.agenceImmobiliereService.findAgencesByResponsable().subscribe(
-      (response) => {
-        this.agencesImmobilieres = response;
-      }
-    );
-  }
-
-  //Fonction pour recupérer la liste des biens immobiliers par propriétaire
-  listeBiensParProprietaire(numeroDeLaPage: number, elementsParPage: number) {
-    this.bienImmobilierService.getBiensPaginesByProprietaire(numeroDeLaPage, elementsParPage).subscribe(
-      (response) => {
-        this.biensImmobiliers = response;
-      }
-    );
-  }
-
-  //Fonction pour recupérer la liste des biens immobiliers des agences d'un responsable
-  listeBiensParAgencesResponsable(numeroDeLaPage: number, elementsParPage: number) {
-    this.bienImmobilierService.getBiensPaginesOfAgencesByResponsable(numeroDeLaPage, elementsParPage).subscribe(
-      (response) => {
-        this.biensImmobiliers = response;
-      }
-    );
-  }
-
-  //Fonction pour recupérer la liste des biens immobiliers des agences d'un agent immobilier
-  listeBiensParAgencesAgent(numeroDeLaPage: number, elementsParPage: number) {
-    this.bienImmobilierService.getBiensPaginesOfAgencesByAgent(numeroDeLaPage, elementsParPage).subscribe(
+  listeBiensSupportPagines(numeroDeLaPage: number, elementsParPage: number) {
+    this.bienImmobilierService.getBiensSupportsPagines(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.biensImmobiliers = response;
       }
@@ -388,29 +359,14 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     this.delegationGestionForm.reset();
     this.resetPublicationForm();
     this.caracteristiqueBien = new Caracteristiques();
-    if(this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
-      this.listeBiensParProprietaire(this.numeroDeLaPage, this.elementsParPage);
-      this.affichage = 1;
-    } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.listeBiensParAgencesResponsable(this.numeroDeLaPage, this.elementsParPage);
-      this.affichage = 1;
-    } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.listeBiensParAgencesAgent(this.numeroDeLaPage, this.elementsParPage);
-      this.affichage = 1;
-    }
-
+    this.listeBiensSupportPagines(this.numeroDeLaPage, this.elementsParPage);
+    this.affichage = 1;
   }
 
   paginationListeBiens(event: any) {
     this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    if (this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
-      this.listeBiensParProprietaire(this.numeroDeLaPage, this.elementsParPage);
-    } else if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.listeBiensParAgencesResponsable(this.numeroDeLaPage, this.elementsParPage);
-    } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.listeBiensParAgencesAgent(this.numeroDeLaPage, this.elementsParPage);
-    }
+    this.listeBiensSupportPagines(this.numeroDeLaPage, this.elementsParPage);
   }
 
 
@@ -685,6 +641,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      console.log(error);
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.messageErreur = "Une erreur s'est produite lors de l'ajout !";
@@ -701,6 +658,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
     this.bienImmobilier.agenceImmobiliere = this.agenceSelectionnee;
     this.bienImmobilier.quartier = this.quartierSelectionne;
+    this.bienImmobilier.estDelegue = false;
 
     for (const image of this.imagesBienImmobilier) {
       this.bienImmobilierData.append('images', image);
@@ -736,6 +694,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      console.log(error)
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.messageErreur = "Une erreur s'est produite lors de l'ajout !";
@@ -800,6 +759,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      console.log(error)
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.bienImmobilierData.delete('caracteristiquesJson');
@@ -818,6 +778,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     this.bienImmobilier.categorie = this.categorieSelectionnee;
     this.bienImmobilier.agenceImmobiliere = this.agenceSelectionnee;
     this.bienImmobilier.quartier = this.quartierSelectionne;
+    this.bienImmobilier.estDelegue = false;
 
     for (const image of this.imagesBienImmobilier) {
       this.bienImmobilierData.append('images', image);
@@ -856,6 +817,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      console.log(error)
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.bienImmobilierData.delete('caracteristiquesJson');
@@ -933,6 +895,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      console.log(error)
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.messageErreur = "Une erreur s'est produite lors de modification !";
@@ -948,6 +911,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   modifierTypeDeBienTerrainIfUserIsNotProprietaireOrDemarcheur(id: number): void {
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
     this.bienImmobilier.agenceImmobiliere = this.agenceSelectionnee;
+    this.bienImmobilier.estDelegue = false;
 
     for (const image of this.imagesBienImmobilier) {
       this.bienImmobilierData.append('images', image);
@@ -983,6 +947,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      console.log(error)
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.messageErreur = "Une erreur s'est produite lors de modification !";
@@ -1044,6 +1009,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      console.log(error)
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.bienImmobilierData.delete('caracteristiquesJson');
@@ -1060,6 +1026,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   modifierOtherTypeDeBienIfUserIsNotProprietaireOrDemarcheur(id: number): void {
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
     this.bienImmobilier.agenceImmobiliere = this.agenceSelectionnee;
+    this.bienImmobilier.estDelegue = false;
 
     for (const image of this.imagesBienImmobilier) {
       this.bienImmobilierData.append('images', image);
@@ -1098,6 +1065,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      console.log(error)
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.bienImmobilierData.delete('caracteristiquesJson');
@@ -1701,7 +1669,6 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
 
   delegationGestionToGerantOrDemarcheur(): void {
     this.delegationGestionForm1.bienImmobilier = this.bienImmobilier;
-    // console.log(this.delegationGestionForm1);
     this.delegationGestionService.addDelegationGestionMatricule(this.delegationGestionForm1).subscribe(
       (response) => {
         if (response.id > 0) {
@@ -1801,6 +1768,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   }
 
   afficherFormulairePublicationBien(bien: BienImmobilier): void {
+    this.resetPublicationForm();
     this.bienChoisi(bien);
     this.bienAPublie = bien;
     this.affichage = 10;
@@ -1875,6 +1843,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     this.publicationService.ajouterPublication(this.publication).subscribe(
       (response) => {
         if (response.id > 0) {
+          this.resetPublicationForm();
           this.redirectToPublicationPage();
         } else {
           this.messageErreur = "Une erreur s'est produite lors de l'ajout !";
@@ -1887,31 +1856,35 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
         }
       },
       (error) => {
-        if (error.error =  "Un contrat de location est toujours en cours pour ce bien immobilier.") {
+        this.messageErreur = error.error;
+        let messageDetail = '';
+
+        switch (this.messageErreur) {
+          case "Un contrat de location est toujours en cours pour ce bien immobilier.":
+            messageDetail = this.messageErreur;
+            break;
+          case "Une publication avec ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.":
+            messageDetail = this.messageErreur;
+            break;
+          case "Une publication avec un des biens associés à ce bien support est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.":
+            messageDetail = this.messageErreur;
+            break;
+          case "Une publication avec le bien support auquel est associé ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.":
+            messageDetail = this.messageErreur;
+            break;
+          default:
+            messageDetail = "Erreur inconnue";
+            break;
+        }
+
+        if (messageDetail !== "Erreur inconnue") {
           this.messageService.add({
             severity: 'warn',
             summary: 'Publication non réussie',
-            detail: error.error
-          })
-        } else if (error.error == "Une publication avec ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
-          this.messageService.add({
-            severity: 'warn',
-            summary: 'Publication non réussie',
-            detail: error.error
-          });
-        } else if (error.error == "Une publication avec un des biens associés à ce bien support est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
-          this.messageService.add({
-            severity: 'warn',
-            summary: 'Publication non réussie',
-            detail: error.error
-          });
-        } else if (error.error == "Une publication avec le bien support auquel est associé ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
-          this.messageService.add({
-            severity: 'warn',
-            summary: 'Publication non réussie',
-            detail: error.error
+            detail: messageDetail
           });
         }
+
       }
     )
   }
@@ -1986,7 +1959,8 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     contratBien.typeDeBien.designation == 'Chambre salon' ||
     contratBien.typeDeBien.designation == 'Appartement' ||
     contratBien.typeDeBien.designation == 'Magasin' ||
-    contratBien.typeDeBien.designation == 'Bureau'
+    contratBien.typeDeBien.designation == 'Bureau' ||
+    contratBien.typeDeBien.designation == 'Boutique';
   }
 
   voirListeContrats(codeBien: string, contratBien: BienImmobilier): void {
@@ -2073,8 +2047,8 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   }
 
   listeMotifs(code: string, creerPar: number): void {
-    this.motifRejetService.getMotifsByCodeAndCreerPar(code, creerPar).subscribe(
-      (data: MotifRejet[]) => {
+    this.motifService.getMotifsByCodeAndCreerPar(code, creerPar).subscribe(
+      (data: Motif[]) => {
         this.listMotifs = data;
       }
     );
@@ -2193,17 +2167,38 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
 
   voirPageDetailPaiementParContratId(contratId: number): void {
     this.detailPaiementParContratId(contratId);
-    this.affichage = 17;
+    this.affichage = 18;
   }
 
   telechargerFichePaiement(id: number): void {
-    this.paiementService.telecharger(id).subscribe(
+    this.paiementService.telechargerFichePaiement(id).subscribe(
       (response) => {
         const file = new Blob([response], { type: 'application/pdf' });
         const fileUrl = URL.createObjectURL(file);
         window.open(fileUrl, '_blank');
       }
     )
+  }
+
+  voirListePaiements(contrat: any): void {
+    this.contrat = contrat;
+    this.codeContrat = contrat.codeContrat;
+    this.listePaiementsByCodeContrat(this.codeContrat, this.numeroDeLaPagePaiement, this.elementsParPagePaiement);
+    this.affichage = 17;
+  }
+
+  listePaiementsByCodeContrat(codeContrat: string, numeroDeLaPagePaiement: number, elementsParPagePaiement: number): void {
+    this.paiementService.getPaiementsByCodeContrat(codeContrat, numeroDeLaPagePaiement, elementsParPagePaiement).subscribe(
+      (response) => {
+        this.paiements = response;
+      }
+    )
+  }
+
+  paginationPaiement(event: any) {
+    this.numeroDeLaPagePaiement = event.first / event.rows;
+    this.elementsParPagePaiement = event.rows;
+    this.listePaiementsByCodeContrat(this.codeContrat, this.numeroDeLaPagePaiement, this.elementsParPagePaiement);
   }
 
   ngOnDestroy(): void {

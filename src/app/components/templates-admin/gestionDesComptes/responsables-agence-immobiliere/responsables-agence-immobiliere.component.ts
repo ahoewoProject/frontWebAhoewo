@@ -72,11 +72,10 @@ export class ResponsablesAgenceImmobiliereComponent implements OnInit, OnDestroy
   }
 
   ngOnInit(): void {
-    console.log(this.user.role)
     if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
       this.listeResponsablesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
     } else {
-      this.listeAgenceImmobilieresResponsable();
+      this.getAgencesImmobilieresListIfUserActif();
       this.listerResponsablesParAgence(this.numeroDeLaPage, this.elementsParPage);
     }
     this.initAffectationResponsableAgenceForm();
@@ -124,9 +123,9 @@ export class ResponsablesAgenceImmobiliereComponent implements OnInit, OnDestroy
     return this.affectationResponsableAgenceForm.get('matricule');
   }
 
-  //Fonction pour recupérer une agence immobilière par responsable d'agence immobilière
-  listeAgenceImmobilieresResponsable(){
-    this.agenceImmobiliereService.findAgencesByResponsable().subscribe(
+  //Fonction pour recupérer une agence immobilière (Responsable)
+  getAgencesImmobilieresListIfUserActif(){
+    this.agenceImmobiliereService.getAgencesImmobilieresListIfUserActif().subscribe(
       (response) => {
         this.agencesImmobilieres = response;
       }
