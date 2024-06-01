@@ -1,0 +1,113 @@
+<!-- Start Menu Tableau de bord -->
+<div>
+    <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/admin/dashboard']" routerLinkActive="-is-active">
+        <i class="flaticon-home mr15"></i>Tableau de bord
+    </a>
+</div>
+<!-- Start Menu Tableau de bord -->
+
+<!-- Start Menu Gestion des comptes -->
+<div>
+    <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/admin/roles']" routerLinkActive="-is-active">
+        <i class="fa-light fa-gears mr15"></i>Rôles
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/admin/administrateurs']" routerLinkActive="-is-active">
+        <i class="fa-light fa-user-gear mr15"></i>Administrateurs
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/admin/notaires']" routerLinkActive="-is-active">
+        <i class="fa-light fa-user-shield mr15"></i>Notaires
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/admin/proprietaires']" routerLinkActive="-is-active">
+        <i class="fa-light fa-user-group mr15"></i>Propriétaires
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a routerLink="/admin/responsables" routerLinkActive="-is-active">
+        <i class="fa-light fa-user-group mr15"></i>Responsables
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a routerLink="/admin/agents-immobiliers" routerLinkActive="-is-active">
+        <i class="fa-light fa-user-group mr15"></i>Agents immobiliers
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/admin/demarcheurs']" routerLinkActive="-is-active">
+        <i class="fa-light fa-user-group mr15"></i>Démarcheurs
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/admin/gerants']" routerLinkActive="-is-active">
+        <i class="fa-light fa-user-group mr15"></i>Gérants
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/admin/clients']" routerLinkActive="-is-active">
+        <i class="fa-light fa-user-group mr15"></i>Clients
+    </a>
+</div>
+<!-- End Menu Gestion des comptes -->
+
+<!-- Start Menu Gestion des agences immobilières -->
+<div>
+    <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/admin/agences-immobilieres']" routerLinkActive="-is-active">
+        <i class="fa-light fa-key mr15"></i>&nbsp;Agences immobilières
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/admin/services']" routerLinkActive="-is-active">
+        <i class="fa-light fa-briefcase mr15"></i>&nbsp;Services
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/admin/autres-services'] || ['/admin/autres-services', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-briefcase mr15"></i>&nbsp;Autres services
+    </a>
+</div>
+<!-- End Menu Gestion des agences immobilières -->
+
+<!-- Start Menu Gestion des biens immobiliers -->
+<div>
+    <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/admin/pays']" routerLinkActive="-is-active">
+        <i class="fa-light fa-globe mr15"></i>&nbsp;Pays
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/admin/regions']" routerLinkActive="-is-active">
+        <i class="fa-light fa-globe mr15"></i>&nbsp;Régions
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/admin/villes']" routerLinkActive="-is-active">
+        <i class="fa-light fa-globe mr15"></i>&nbsp;Villes
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/admin/quartiers']" routerLinkActive="-is-active">
+        <i class="fa-light fa-globe mr15"></i>&nbsp;Quartiers
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/admin/types-de-bien']" routerLinkActive="-is-active">
+        <i class="fa-light fa-house-building mr15"></i>Types de bien
+    </a>
+</div>
+<!-- End Menu Gestion des biens immobiliers -->

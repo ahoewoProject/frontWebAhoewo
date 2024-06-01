@@ -1,0 +1,141 @@
+<!-- Start Menu Tableau de bord -->
+<div>
+    <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/responsable/dashboard']" routerLinkActive="-is-active">
+        <i class="flaticon-home mr15"></i>Tableau de bord
+    </a>
+</div>
+<!-- Start Menu Tableau de bord -->
+
+<!-- Start Menu Gestion des agences immobilières -->
+<div>
+    <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/responsable/agences-immobilieres']" routerLinkActive="-is-active" [routerLinkActiveOptions]="{ exact: true }">
+        <i class="fa-light fa-key mr15"></i>&nbsp;Agences immobilières
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/responsable/demandes-certifications'] ||
+    ['/responsable/demandes-certifications', 'id']" routerLinkActive="-is-active">
+        <i class="pi pi-verified mr15"></i>&nbsp;Certifications
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/responsable/agences-immobilieres/services'] ||
+    ['/responsable/agences-immobilieres/services', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-briefcase mr15"></i>&nbsp;Services
+    </a>
+</div>
+<!-- End Menu Gestion des agences immobilières -->
+
+<!-- Start Menu Gestion des comptes -->
+<div>
+    <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/responsable/co-responsables']" routerLinkActive="-is-active">
+        <i class="fa-light fa-user-group mr15"></i>Co - Responsables
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/responsable/agents-immobiliers']" routerLinkActive="-is-active">
+        <i class="fa-light fa-user-group mr15"></i>Agents immobiliers
+    </a>
+</div>
+<!-- End Menu Gestion des comptes -->
+
+<!-- Start Menu Gestion des biens immobiliers -->
+<div>
+    <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/responsable/agences-immobilieres/biens-supports'] ||
+    ['/responsable/agences-immobilieres/biens-supports', 'id'] ||
+    ['/responsable/agences-immobilieres/biens-supports', 'id', 'biens-associes'] ||
+    ['/responsable/agences-immobilieres/biens-supports', 'id', 'biens-associes', 'idBienAssocie']" routerLinkActive="-is-active">
+        <i class="fa-light fa-house-building mr15"></i>Biens immobiliers
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/responsable/agences-immobilieres/delegations-gestions'] ||
+  ['/responsable/agences-immobilieres/delegations-gestions', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-handshake mr15"></i>Biens délégués
+    </a>
+</div>
+<!-- End Menu Gestion des biens immobiliers -->
+
+<!-- Start Menu Gestion de la publication des biens -->
+<div>
+    <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/responsable/agences-immobilieres/publications'] ||
+    ['/responsable/agences-immobilieres/publications', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-share-all mr15"></i>Publication des biens
+    </a>
+</div>
+<!-- End Menu Gestion de la publication des biens -->
+
+<!-- Start Menu Gestion des locations et ventes -->
+<div>
+    <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/responsable/agences-immobilieres/demandes-visites'] ||
+    ['/responsable/agences-immobilieres/demandes-visites', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/responsable/agences-immobilieres/demandes-locations'] ||
+    ['/responsable/agences-immobilieres/demandes-locations', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/responsable/agences-immobilieres/demandes-achats'] ||
+    ['/responsable/agences-immobilieres/demandes-achats', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/responsable/agences-immobilieres/contrats'] ||
+['/responsable/agences-immobilieres/contrats/locations', 'id'] ||
+['/responsable/agences-immobilieres/contrats/ventes', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-folders mr15"></i>Contrats
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/responsable/agences-immobilieres/suivis-entretiens'] ||
+['/responsable/agences-immobilieres/suivis-entretiens', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
+    </a>
+</div>
+<!-- End Menu Gestion des locations et ventes -->
+
+<!-- Start Menu Gestion des paiements -->
+<div>
+    <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/responsable/agences-immobilieres/planifications-paiements'] ||
+['/responsable/agences-immobilieres/planifications-paiements', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/responsable/agences-immobilieres/paiements'] ||
+['/responsable/agences-immobilieres/paiements', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements
+    </a>
+</div>
+<!-- End Menu Gestion des paiements -->
+<div class="sidebar_list_item">
+    <a [routerLink]="['/responsable/agences-immobilieres/parametres']" routerLinkActive="-is-active">
+        <i class="fa-light fa-gear mr15"></i>&nbsp;&nbsp;Paramètres
+    </a>
+</div>

@@ -1,0 +1,26 @@
+<!-- Start Menu Tableau de bord -->
+<div>
+    <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/notaire/dashboard']" routerLinkActive="-is-active">
+        <i class="flaticon-home mr15"></i>Tableau de bord
+    </a>
+</div>
+<!-- Start Menu Tableau de bord -->
+
+<!-- Start Menu Gestion des comptes -->
+<div>
+    <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/notaire/demandes-certifications'] || ['/notaire/demandes-certifications', 'id']" routerLinkActive="-is-active">
+        <i class="pi pi-verified mr15"></i>&nbsp;Certifications
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/notaire/notifications']" routerLinkActive="-is-active">
+        <i class="flaticon-bell mr15"></i>&nbsp;Notifications
+    </a>
+</div>
+<!-- End Menu Gestion des comptes -->

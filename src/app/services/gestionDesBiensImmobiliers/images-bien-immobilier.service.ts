@@ -22,4 +22,9 @@ export class ImagesBienImmobilierService {
     return this.httpClient.get<Array<ImagesBienImmobilier>>(this.url + 'images/bien-immobilier/' + idBienImmobilier);
   }
 
+  //Recupérer une image;
+  // url: http://localhost:4040/api/image/bien-immobilier/{id}
+  getImage(id: number): Observable<Blob> {
+    return this.httpClient.get(this.url + 'image/bien-immobilier/' + id, { responseType: 'blob' });
+  }
 }

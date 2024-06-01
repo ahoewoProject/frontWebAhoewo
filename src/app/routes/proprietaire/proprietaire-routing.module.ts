@@ -18,6 +18,7 @@ import { SuivisEntretiensComponent } from 'src/app/components/templates-admin/ge
 import { PaiementsComponent } from 'src/app/components/templates-admin/gestionDesPaiements/paiements/paiements.component';
 import { PlanificationsPaiementsComponent } from 'src/app/components/templates-admin/gestionDesPaiements/planifications-paiements/planifications-paiements.component';
 import { ParametresComponent } from 'src/app/components/templates-admin/gestionDesComptes/parametres/parametres.component';
+import { BiensAssociesComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-associes/biens-associes.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -27,7 +28,10 @@ const routes: Routes = [
       { path: 'profil', component: ProfilComponent, canActivate: [AuthGuard] },
       { path: 'demandes-certifications', component: DemandesCertificationsComponent, canActivate: [AuthGuard] },
       { path: 'demandes-certifications/:id', component: DemandesCertificationsComponent, canActivate: [AuthGuard] },
-      { path: 'biens-immobiliers', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
+      { path: 'biens-supports', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
+      { path: 'biens-supports/:id', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
+      { path: 'biens-supports/:id/biens-associes', component: BiensAssociesComponent, canActivate: [AuthGuard] },
+      { path: 'biens-supports/:id/biens-associes/:idBienAssocie', component: BiensAssociesComponent, canActivate: [AuthGuard] },
       { path: 'delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
       { path: 'delegations-gestions/:id', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
       { path: 'delegations-gestions/contrats', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },

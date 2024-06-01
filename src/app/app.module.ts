@@ -108,6 +108,16 @@ import { GestionDesBiensImmobiliersComponent } from './components/templates-admi
 import { GestionDesPublicationsComponent } from './components/templates-admin/dashboard/gestion-des-publications/gestion-des-publications.component';
 import { GestionDesLocationsEtVentesComponent } from './components/templates-admin/dashboard/gestion-des-locations-et-ventes/gestion-des-locations-et-ventes.component';
 import { GestionDesPaiementsComponent } from './components/templates-admin/dashboard/gestion-des-paiements/gestion-des-paiements.component';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { BiensAssociesComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-associes/biens-associes.component';
+import { MenuClientComponent } from './components/templates-admin/menu/menu-client/menu-client.component';
+import { MenuAdminComponent } from './components/templates-admin/menu/menu-admin/menu-admin.component';
+import { MenuAgentImmobilierComponent } from './components/templates-admin/menu/menu-agent-immobilier/menu-agent-immobilier.component';
+import { MenuResponsableComponent } from './components/templates-admin/menu/menu-responsable/menu-responsable.component';
+import { MenuGerantComponent } from './components/templates-admin/menu/menu-gerant/menu-gerant.component';
+import { MenuDemarcheurComponent } from './components/templates-admin/menu/menu-demarcheur/menu-demarcheur.component';
+import { MenuNotaireComponent } from './components/templates-admin/menu/menu-notaire/menu-notaire.component';
+import { MenuProprietaireComponent } from './components/templates-admin/menu/menu-proprietaire/menu-proprietaire.component';
 
 @NgModule({
   declarations: [
@@ -169,6 +179,15 @@ import { GestionDesPaiementsComponent } from './components/templates-admin/dashb
     GestionDesPublicationsComponent,
     GestionDesLocationsEtVentesComponent,
     GestionDesPaiementsComponent,
+    BiensAssociesComponent,
+    MenuClientComponent,
+    MenuAdminComponent,
+    MenuAgentImmobilierComponent,
+    MenuResponsableComponent,
+    MenuGerantComponent,
+    MenuDemarcheurComponent,
+    MenuNotaireComponent,
+    MenuProprietaireComponent,
   ],
   imports: [
     BrowserModule,
@@ -222,7 +241,8 @@ import { GestionDesPaiementsComponent } from './components/templates-admin/dashb
     MenuModule,
     CalendarModule,
     CommonModule,
-    ChartModule
+    ChartModule,
+    ScrollPanelModule
   ],
   providers: [
     MessageService,

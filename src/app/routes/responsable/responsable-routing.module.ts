@@ -21,6 +21,7 @@ import { SuivisEntretiensComponent } from 'src/app/components/templates-admin/ge
 import { PaiementsComponent } from 'src/app/components/templates-admin/gestionDesPaiements/paiements/paiements.component';
 import { PlanificationsPaiementsComponent } from 'src/app/components/templates-admin/gestionDesPaiements/planifications-paiements/planifications-paiements.component';
 import { ParametresComponent } from 'src/app/components/templates-admin/gestionDesComptes/parametres/parametres.component';
+import { BiensAssociesComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-associes/biens-associes.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -34,7 +35,10 @@ const routes: Routes = [
       { path: 'agences-immobilieres', component: AgencesImmobilieresComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/services', component: ServicesAgenceImmobiliereComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/services/:id', component: ServicesAgenceImmobiliereComponent, canActivate: [AuthGuard] },
-      { path: 'agences-immobilieres/biens-immobiliers', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/biens-supports', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/biens-supports/:id', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/biens-supports/:id/biens-associes', component: BiensAssociesComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/biens-supports/:id/biens-associes/:idBienAssocie', component: BiensAssociesComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/delegations-gestions/:id', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/delegations-gestions/contrats', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },

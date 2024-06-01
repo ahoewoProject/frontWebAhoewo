@@ -1,0 +1,65 @@
+<!-- Start Menu Tableau de bord -->
+<div>
+    <p class="fz15 fw400 ff-heading" style="margin-top: -8%;">TABLEAU DE BORD</p>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/client/dashboard']" routerLinkActive="-is-active">
+        <i class="flaticon-home mr15"></i>Tableau de bord
+    </a>
+</div>
+<!-- Start Menu Tableau de bord -->
+
+<!-- Start Menu Gestion des locations et ventes -->
+<div>
+    <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/client/demandes-visites'] ||
+    ['/client/demandes-visites', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/client/demandes-locations'] ||
+    ['/client/demandes-locations', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/client/demandes-achats'] ||
+    ['/client/demandes-achats', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/client/contrats'] ||
+['/client/contrats/locations', 'id'] ||
+['/client/contrats/ventes', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-folders mr15"></i>Contrats
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/client/suivis-entretiens'] ||
+['/client/suivis-entretiens', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
+    </a>
+</div>
+<!-- End Menu Gestion des locations et ventes -->
+
+<!-- Start Menu Gestion des paiements -->
+<div>
+    <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/client/planifications-paiements'] ||
+['/client/planifications-paiements', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements
+    </a>
+</div>
+<div class="sidebar_list_item">
+    <a [routerLink]="['/client/paiements'] ||
+['/client/paiements', 'id']" routerLinkActive="-is-active">
+        <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements
+    </a>
+</div>
+<!-- End Menu Gestion des paiements -->
