@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 
 @Component({
@@ -16,9 +17,8 @@ export class ResetPasswordComponent implements OnInit{
   recupererMotDePasseForm: any;
 
   constructor(
-    private personneService: PersonneService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    private personneService: PersonneService, private router: Router,
+    private activatedRoute: ActivatedRoute, private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -73,6 +73,7 @@ export class ResetPasswordComponent implements OnInit{
         if (error) {
           this.erreur = true;
           this.message = "Le lien utilisé pour réinitialiser le mot de passe est invalide ou expiré. Veuillez vérifier le mail que vous avez reçu et utiliser le lien correct.";
+          this.messageService.add({ severity: 'error', summary: 'Réinitialisation non réussie', detail: this.message });
         }
       }
     );

@@ -1,9 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { EventEmitter, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { Publication } from 'src/app/models/gestionDesPublications/Publication';
 import { RechercheAvanceePublicationForm } from 'src/app/models/gestionDesPublications/RechercheAvanceePublicationForm';
+import { RechercheSimplePublicationForm } from 'src/app/models/gestionDesPublications/RechercheSimplePublicationForm';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -180,5 +181,31 @@ export class PublicationService {
   // url: http://localhost:4040/api/desactiver/publication/{id}
   desactiverPublication(id: number): Observable<any>{
     return this.httpClient.get<any>(this.url + 'desactiver/publication/' + id);
+  }
+
+  setRechercheSimplePublicationForm(form: RechercheSimplePublicationForm): void {
+    sessionStorage.setItem('rechercheSimplePublicationForm', JSON.stringify(form));
+
+  }
+
+  getRechercheSimplePublicationForm(): RechercheAvanceePublicationForm {
+    return JSON.parse(sessionStorage.getItem('rechercheSimplePublicationForm')!);
+  }
+
+  clearRechercheSimplePublicationForm(): void {
+    sessionStorage.getItem('rechercheSimplePublicationForm')! && sessionStorage.removeItem('rechercheSimplePublicationForm')
+  }
+
+  setRechercheAvanceePublicationForm(form: RechercheAvanceePublicationForm): void {
+    sessionStorage.setItem('rechercheAvanceePublicationForm', JSON.stringify(form));
+
+  }
+
+  getRechercheAvanceePublicationForm(): RechercheAvanceePublicationForm {
+    return JSON.parse(sessionStorage.getItem('rechercheAvanceePublicationForm')!);
+  }
+
+  clearRechercheAvanceePublicationForm(): void {
+    sessionStorage.getItem('rechercheAvanceePublicationForm')! && sessionStorage.removeItem('rechercheAvanceePublicationForm')
   }
 }

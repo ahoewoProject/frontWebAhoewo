@@ -19,19 +19,25 @@ export class AffectationResponsableAgenceService {
     this.url = APIEndpoint + 'api/';
   }
 
-  //Affichage de toutes les occurrences des responsables par agence immobilière;
-  // url: http://localhost:4040/api/affectations-responsables-agences/responsable
-  getResponsablesOfAgences(): Observable<Array<AffectationResponsableAgence>>{
-    return this.httpClient.get<Array<AffectationResponsableAgence>>(this.url + 'affectations-responsables-agences/responsable');
+  //Affichage List Affectation Responsable Agence;
+  // url: http://localhost:4040/api/affectations-responsable-agence/list
+  getAffectationsResponsableAgenceList(): Observable<Array<AffectationResponsableAgence>>{
+    return this.httpClient.get<Array<AffectationResponsableAgence>>(this.url + 'affectations-responsable-agence/list');
   }
 
-  //Affichage de toutes les occurrences des responsables paginés par responsable;
-  // url: http://localhost:4040/api/affectations-responsables-agences/responsable/paginees
-  getResponsablesOfAgencesPagines(numeroDeLaPage: number, elementsParPage: number): Observable<Page<AffectationResponsableAgence>>{
+  //Affichage Affectation Responsable Agence Page;
+  // url: http://localhost:4040/api/affectations-responsable-agence/page
+  getAffectationsReponsableAgencePage(numeroDeLaPage: number, elementsParPage: number): Observable<Page<AffectationResponsableAgence>>{
     let params = new HttpParams()
     .set('numeroDeLaPage', numeroDeLaPage.toString())
     .set('elementsParPage', elementsParPage.toString());
     return this.httpClient.get<Page<AffectationResponsableAgence>>(this.url + 'affectations-responsables-agences/responsable/pagines', {params: params});
+  }
+
+  // Recherche d'une occurrence d'affectation responsable agence par la clé primaire ;
+  // url: http://localhost:4040/api/affectation-responsable-agence/{id}
+  detailAffectation(id: number): Observable<AffectationResponsableAgence>{
+    return this.httpClient.get<AffectationResponsableAgence>(this.url + 'affectation-responsable-agence/' + id);
   }
 
   // url: http://localhost:4040/api/affectation-responsable-agence/ajouter

@@ -1,0 +1,81 @@
+<div class="dashboard__content bgc-f7">
+  <div class="row pb40 d-block d-lg-none">
+      <!-- Menu responsive -->
+      <app-menu-responsive></app-menu-responsive>
+      <!-- End Menu responsive -->
+  </div>
+
+  <p-toast></p-toast>
+
+      <!-- Details d'un service d'une agence immobilière -->
+      <div>
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-8">
+                <div class="dashboard_title_area">
+                    <h4>Détails d'un service</h4>
+                    <p class="text"></p>
+                </div>
+            </div>
+            <div class="col-xxl-4">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Vos services</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Nom</p>
+                            <p class="text">{{ serviceAgenceImmobiliere.services && serviceAgenceImmobiliere.services.nomService }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Agence immobilière</p>
+                            <p class="text">{{ serviceAgenceImmobiliere.services && serviceAgenceImmobiliere.agenceImmobiliere.nomAgence }} <i *ngIf="serviceAgenceImmobiliere.agenceImmobiliere && serviceAgenceImmobiliere.agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg"
+                                    style="color: #0f77e6;"></i></p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div>
+                            <p class="fw600 mb10 ff-heading dark-color">Description</p>
+                            <p class="text justify-text">{{ serviceAgenceImmobiliere.services && serviceAgenceImmobiliere.services.description }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Téléphone de l'agence</p>
+                            <p class="text">{{ serviceAgenceImmobiliere.services && serviceAgenceImmobiliere.agenceImmobiliere.telephone }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">E-mail de l'agence</p>
+                            <p class="text">{{ serviceAgenceImmobiliere.services && serviceAgenceImmobiliere.agenceImmobiliere.adresseEmail }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+                            <p>
+                                <p-tag *ngIf="serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.etat == 0" severity="warning" value="En cours de traitement"></p-tag>
+                                <p-tag *ngIf="serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.etat == 1" severity="success" value="Activé"></p-tag>
+                                <p-tag *ngIf="serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.etat == 2" severity="danger" value="Désactivé"></p-tag>
+                                <p-tag *ngIf="serviceAgenceImmobiliere.services  && serviceAgenceImmobiliere.etat == 3" severity="danger" value="Rejeté"></p-tag>
+                            </p>
+                        </div>
+
+                        <p-divider *ngIf="motif"></p-divider>
+                        <div *ngIf="motif">
+                            <p class="fw600 mb10 ff-heading dark-color">Motif de rejet du service</p>
+                            <p>{{ motif.motif }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-end">
+            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Vos services</a>
+        </div>
+    </div>
+    <!-- End Details d'un service d'une agence immobilière -->
+  </div>

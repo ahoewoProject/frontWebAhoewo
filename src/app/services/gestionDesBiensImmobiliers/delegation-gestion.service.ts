@@ -40,6 +40,11 @@ export class DelegationGestionService {
     return this.httpClient.get<DelegationGestion>(this.url + 'delegation-gestion/' + id);
   }
 
+  // url: http://localhost:4040/api/delegation-gestion/bien-immobilier/{idBienImmobilier}
+  findByBienImmobilier(idBienImmobilier: number): Observable<DelegationGestion> {
+    return this.httpClient.get<DelegationGestion>(this.url + 'delegation-gestion/bien-immobilier/' + idBienImmobilier);
+  }
+
   // Ajout d'une delegation de gestion par matricule
   // url: http://localhost:4040/api/delegation-gestion/ajouter/matricule
   addDelegationGestionMatricule(d: DelegationGestionForm1): Observable<DelegationGestion> {

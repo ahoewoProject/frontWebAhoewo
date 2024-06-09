@@ -57,6 +57,11 @@ export class BienImmobilierService {
     return this.httpClient.get<BienImmobilier>(this.url + 'bien-immobilier/' + id);
   }
 
+  // url: http://localhost:4040/api/bien-immobilier/code-bien/{codeBien}
+  findByCodeBien(codeBien: string): Observable<BienImmobilier>{
+    return this.httpClient.get<BienImmobilier>(this.url + 'bien-immobilier/code-bien/' + codeBien);
+  }
+
   // Affichage de toutes les occurrences de biens immobiliers par propriétaire;
   // url: http://localhost:4040/api/biens-immobiliers/proprietaire
   getBiensByProprietaire(): Observable<Array<BienImmobilier>>{

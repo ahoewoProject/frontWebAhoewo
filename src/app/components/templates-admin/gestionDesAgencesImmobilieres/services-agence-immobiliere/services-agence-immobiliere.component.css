@@ -47,3 +47,7 @@
     font-family: 'DM Sans', sans-serif;
     ;
 }
+
+:host ::ng-deep .p-message {
+    font-family: 'DM Sans', sans-serif;
+}

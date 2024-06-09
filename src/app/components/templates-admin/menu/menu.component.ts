@@ -15,10 +15,7 @@ export class MenuComponent implements OnInit {
   activeLink: any;
 
   constructor(
-    private personneService: PersonneService,
-    private behaviorService: BehaviorService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    private personneService: PersonneService, private router: Router
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();

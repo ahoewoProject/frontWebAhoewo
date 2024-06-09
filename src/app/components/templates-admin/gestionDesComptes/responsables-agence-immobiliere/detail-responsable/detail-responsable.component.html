@@ -1,0 +1,173 @@
+<div class="dashboard__content bgc-f7">
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
+    </div>
+    <!-- Details d'un responsable d'agence immobilière - Vue Administrateur -->
+    <div *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-3">
+                <div class="dashboard_title_area">
+                    <h4>Détails d'un responsable</h4>
+                </div>
+            </div>
+            <div class="col-xxl-9">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Responsables</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+
+                    <div class="row">
+
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Nom</p>
+                            <p class="text">{{ responsableAgenceImmobiliere.nom }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Prénom(s)</p>
+                            <p class="text">{{ responsableAgenceImmobiliere.prenom }} <i *ngIf="responsableAgenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur</p>
+                            <p class="text">{{ responsableAgenceImmobiliere.username }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Matricule</p>
+                            <p class="text">{{ responsableAgenceImmobiliere.matricule }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+                            <p class="text">{{ responsableAgenceImmobiliere.email }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
+                            <p class="text">{{ responsableAgenceImmobiliere.telephone }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Profil</p>
+                            <p class="text">{{ responsableAgenceImmobiliere.role.libelle }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
+                            <p>
+                                <p-tag *ngIf="responsableAgenceImmobiliere.etatCompte == true" severity="success" value="Activé"></p-tag>
+                                <p-tag *ngIf="responsableAgenceImmobiliere.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+                            </p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Est certifié</p>
+                            <p>
+                                <p-tag *ngIf="responsableAgenceImmobiliere.estCertifie == true" severity="success" value="Oui"></p-tag>
+                                <p-tag *ngIf="responsableAgenceImmobiliere.estCertifie == false" severity="danger" value="Non"></p-tag>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-end">
+            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Responsables</a>
+        </div>
+    </div>
+    <!-- End Details d'un responsable d'agence immobilière - Vue Administrateur -->
+
+    <!-- Details d'un responsable d'agence immobilière - Vue Responsable -->
+    <div *ngIf="user.role.code == 'ROLE_RESPONSABLE'">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-8">
+                <div class="dashboard_title_area">
+                    <h4>Détails d'un responsable</h4>
+                    <p class="text"></p>
+                </div>
+            </div>
+            <div class="col-xxl-4">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Co - Responsables</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+                    <div class="row">
+
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Code agence</p>
+                            <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.codeAgence }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Nom</p>
+                            <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.nomAgence }} <i *ngIf="affectationResponsableAgence.agenceImmobiliere && affectationResponsableAgence.agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg"
+                                    style="color: #0f77e6;"></i></p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
+                            <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.adresse }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+                            <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.adresseEmail }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Responsable</p>
+                            <p class="text">{{ affectationResponsableAgence.responsableAgenceImmobiliere.nom }} {{ affectationResponsableAgence.responsableAgenceImmobiliere.prenom }} <i *ngIf="affectationResponsableAgence.responsableAgenceImmobiliere && affectationResponsableAgence.responsableAgenceImmobiliere.estCertifie"
+                                    class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Matricule du responsable</p>
+                            <p class="text">{{ affectationResponsableAgence.responsableAgenceImmobiliere.matricule }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail du responsable</p>
+                            <p class="text">{{ affectationResponsableAgence.responsableAgenceImmobiliere.email }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
+                            <p class="text">{{ affectationResponsableAgence.agenceImmobiliere.telephone }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
+                            <p>
+                                <p-tag *ngIf="affectationResponsableAgence.actif == true" severity="success" value="Activé"></p-tag>
+                                <p-tag *ngIf="affectationResponsableAgence.actif == false" severity="danger" value="Désactivé"></p-tag>
+                            </p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Est certifiée</p>
+                            <p>
+                                <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.estCertifie == true" severity="success" value="Oui"></p-tag>
+                                <p-tag *ngIf="affectationResponsableAgence.agenceImmobiliere.estCertifie == false" severity="danger" value="Non"></p-tag>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-end">
+            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Co - Responsables</a>
+        </div>
+    </div>
+    <!-- End Details d'un responsable d'agence - Vue Responsable -->
+</div>

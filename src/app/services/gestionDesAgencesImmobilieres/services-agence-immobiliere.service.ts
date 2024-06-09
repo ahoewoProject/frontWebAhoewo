@@ -20,35 +20,35 @@ export class ServicesAgenceImmobiliereService {
   }
 
   // Affichage de toutes les occurrences des services de chaque agence immobilieres;
-  // url: http://localhost:4040/api/services/agences-immobilieres
-  getServicesOfAgences(): Observable<Array<ServicesAgenceImmobiliere>>{
-    return this.httpClient.get<Array<ServicesAgenceImmobiliere>>(this.url + 'services');
+  // url: http://localhost:4040/api/services/agences-immobilieres/list
+  getServicesAgencesList(): Observable<Array<ServicesAgenceImmobiliere>>{
+    return this.httpClient.get<Array<ServicesAgenceImmobiliere>>(this.url + 'services/agences-immobilieres/list');
   }
 
   //Affichage des services à partir du nom d'une agence
-  // url: http://localhost:4040/api/services/agence/{nomAgence}
+  // url: http://localhost:4040/api/services/agence-immobiliere/{nomAgence}
   getServicesByNomAgence(nomAgence: String, numeroDeLaPage: number, elementsParPage: number): Observable<Page<ServicesAgenceImmobiliere>>{
     let params = new HttpParams()
       .set('numeroDeLaPage', numeroDeLaPage.toString())
       .set('elementsParPage', elementsParPage.toString());
-    return this.httpClient.get<Page<ServicesAgenceImmobiliere>>(this.url + 'services/agence/' + nomAgence, {params: params});
+    return this.httpClient.get<Page<ServicesAgenceImmobiliere>>(this.url + 'services/agence-immobiliere/' + nomAgence, {params: params});
   }
 
   // Affichage de toutes les occurrences de services d'agence immobilière;
-  // url: http://localhost:4040/api/services/agence-immobiliere/pagines
-  getServicesOfAgencePagines(numeroDeLaPage: number, elementsParPage: number): Observable<Page<ServicesAgenceImmobiliere>>{
+  // url: http://localhost:4040/api/services/agences-immobilieres/page
+  getServicesAgencesPage(numeroDeLaPage: number, elementsParPage: number): Observable<Page<ServicesAgenceImmobiliere>>{
     let params = new HttpParams()
     .set('numeroDeLaPage', numeroDeLaPage.toString())
     .set('elementsParPage', elementsParPage.toString());
-    return this.httpClient.get<Page<ServicesAgenceImmobiliere>>(this.url + 'services/agence-immobiliere/pagines', {params: params});
+    return this.httpClient.get<Page<ServicesAgenceImmobiliere>>(this.url + 'services/agences-immobilieres/page', {params: params});
   }
 
-  // url: http://localhost:4040/api/services/agence-immobiliere/pagines/{id}
-  findServicesOfAgencePagines(id: number, numeroDeLaPage: number, elementsParPage: number): Observable<Page<ServicesAgenceImmobiliere>>{
+  // url: http://localhost:4040/api/services/agence-immobiliere/page/{id}
+  getServicesByIdAgencePage(id: number, numeroDeLaPage: number, elementsParPage: number): Observable<Page<ServicesAgenceImmobiliere>>{
     let params = new HttpParams()
     .set('numeroDeLaPage', numeroDeLaPage.toString())
     .set('elementsParPage', elementsParPage.toString());
-    return this.httpClient.get<Page<ServicesAgenceImmobiliere>>(this.url + 'services/agence-immobiliere/pagines/' + id, {params: params});
+    return this.httpClient.get<Page<ServicesAgenceImmobiliere>>(this.url + 'services/agence-immobiliere/page/' + id, {params: params});
   }
 
   // url: http://localhost:4040/api/service/agence-immobiliere/{id}

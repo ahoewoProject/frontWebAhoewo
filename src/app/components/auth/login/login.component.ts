@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { LoginForm } from 'src/app/models/auth/LoginForm';
 import { BehaviorService } from 'src/app/services/behavior.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
@@ -23,10 +24,8 @@ export class LoginComponent implements OnInit{
   from: any;
 
   constructor(
-    private personneService: PersonneService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private behaviorService: BehaviorService
+    private personneService: PersonneService, private router: Router,
+    private activatedRoute: ActivatedRoute, private messageService: MessageService
   ) {}
 
   LoginForm: any;
@@ -39,6 +38,7 @@ export class LoginComponent implements OnInit{
 
     if (this.reinitialisationMotDePasseReussie) {
       this.message = 'Mot de passe réinitialisé avec succès !';
+      this.messageService.add({ severity: 'success', summary: 'Réinitialisation de mot réussie', detail: this.message });
       setTimeout(() => {
         this.message = '';
         this.reinitialisationMotDePasseReussie = null
@@ -125,6 +125,7 @@ export class LoginComponent implements OnInit{
     if (this.user.autorisation === false) {
       this.connexionNonReussie = true;
       this.message = "Vous vous connectez pour la première fois. Veuillez modifier votre mot de passe et vous reconnecter !";
+      this.messageService.add({ severity: 'error', summary: 'Authentification non réussie', detail: this.message });
       this.loginData.delete('username');
       this.loginData.delete('password');
       this.router.navigate(['/connexion']);
@@ -219,18 +220,21 @@ export class LoginComponent implements OnInit{
 
     if (error.status === 401) {
       this.message = "Nom d'utilisateur ou mot de passe incorrect. Veuillez réessayer.";
+      this.messageService.add({ severity: 'error', summary: 'Authentification non réussie', detail: this.message });
       setTimeout(() => {
         this.connexionNonReussie = false;
         this.message = '';
       }, 3000);
     } else if (error.status === 404) {
       this.message = "Utilisateur introuvable. Veuillez vérifier vos informations de connexion.";
+      this.messageService.add({ severity: 'error', summary: 'Authentification non réussie', detail: this.message });
       setTimeout(() => {
         this.connexionNonReussie = false;
         this.message = '';
       }, 3000);
     } else {
       this.message = "Erreur lors de la connexion. Veuillez réessayer.";
+      this.messageService.add({ severity: 'error', summary: 'Authentification non réussie', detail: this.message });
       setTimeout(() => {
         this.connexionNonReussie = false;
         this.message = '';

@@ -14,10 +14,11 @@
     <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/notaire/demandes-certifications'] || ['/notaire/demandes-certifications', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/notaire/demandes-certifications']" [ngClass]="{'-is-active': isActive(['/notaire/demandes-certifications'])}">
         <i class="pi pi-verified mr15"></i>&nbsp;Certifications
     </a>
 </div>
+
 <div class="sidebar_list_item">
     <a [routerLink]="['/notaire/notifications']" routerLinkActive="-is-active">
         <i class="flaticon-bell mr15"></i>&nbsp;Notifications

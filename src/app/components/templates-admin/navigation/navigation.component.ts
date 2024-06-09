@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { interval, switchMap } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
@@ -19,9 +19,12 @@ export class NavigationComponent implements OnInit, OnDestroy {
   elementsParPage = 1; // Nombre d'éléments par page
   numeroDeLaPage = 0; // Page actuelle
   notifications!: Page<Notification>;
+  notificationsList: Notification[] = [];
   notificationsNonLues: Notification[] = [];
   activeLink: any;
   notificationsDejaAffichees: number[] = [];
+  sidebarVisible: boolean = false;
+  zIndexForSidebar: number = 2;
 
   constructor(private personneService: PersonneService, private router: Router,
     private behaviorService: BehaviorService, private notificationService: NotificationsService,
@@ -34,19 +37,14 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.serviceWorker.requestPermission();
-
-    // this.behaviorService.activeLink$.subscribe((donnee) => {
-    //   this.activeLink = donnee;
-    // });
-
     if (this.user) {
       this.initNotification();
-      this.notificationService.initListeNotificationsNonLues();
-      this.notificationService.notificationsNonLuesEvent.subscribe(
-        (data: Notification[]) => {
-          this.notificationsNonLues = data;
-      });
-      this.initListeNotifications();
+      // this.notificationService.initListeNotificationsNonLues();
+      // this.notificationService.notificationsNonLuesEvent.subscribe(
+      //   (data: Notification[]) => {
+      //     this.notificationsNonLues = data;
+      // });
+      // this.initListeNotifications();
     }
   }
 
@@ -72,9 +70,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   redirectToPageConcernee(url: string): void {
-    console.log(url)
-    let roleBasedURL = '';
 
+    let roleBasedURL = '';
+    this.sidebarVisible = false;
     switch (this.user.role.code) {
       case 'ROLE_ADMINISTRATEUR':
         this.notificationService.notificationsNonLuesByAdmin();
@@ -116,6 +114,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   lireNotification() {
+    // this.sidebarVisible = true;
     this.notificationsNonLues.forEach((notification) => {
       this.notificationService.lireNotification(notification.id).subscribe(
         (response) => {
@@ -135,23 +134,23 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   initNotification(): void {
-    // interval(1000)
-    // .pipe(
-    //   switchMap(() => {
-    //     this.notificationService.initListeNotificationsNonLues();
-    //     return this.notificationService.notificationsNonLuesEvent;
-    //   })
-    // )
-    // .subscribe((data: Notification[]) => {
-    //   this.notificationsNonLues = data;
-    //   this.notificationsNonLues.forEach((notification) => {
-    //     if (!this.notificationsDejaAffichees.includes(notification.id)) {
-    //       this.afficherNotification(notification.titre, notification.message);
-    //       this.notificationsDejaAffichees.push(notification.id);
-    //     }
-    //   });
-    //   this.initListeNotifications();
-    // });
+    interval(1000)
+    .pipe(
+      switchMap(() => {
+        this.notificationService.initListeNotificationsNonLues();
+        return this.notificationService.notificationsNonLuesEvent;
+      })
+    )
+    .subscribe((data: Notification[]) => {
+      this.notificationsNonLues = data;
+      this.notificationsNonLues.forEach((notification) => {
+        if (!this.notificationsDejaAffichees.includes(notification.id)) {
+          this.afficherNotification(notification.titre, notification.message);
+          this.notificationsDejaAffichees.push(notification.id);
+        }
+      });
+      this.initListeNotifications();
+    });
   }
 
   redirectToNotificationPage(): string {
@@ -201,25 +200,40 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   listeNotificationsByAdmin(): void {
-    this.notificationService.getNotificationsByAdmin(0, 3).subscribe(
+    // this.notificationService.getNotificationsByAdmin(0, 3).subscribe(
+    //   (response) => {
+    //     this.notifications = response;
+    //   }
+    // );
+    this.notificationService.getNotificationsListByAdmin().subscribe(
       (response) => {
-        this.notifications = response;
+        this.notificationsList = response;
       }
     );
   }
 
   listeNotificationsByNotaire(): void {
-    this.notificationService.getNotificationsByNotaire(0, 3).subscribe(
+    // this.notificationService.getNotificationsByNotaire(0, 3).subscribe(
+    //   (response) => {
+    //     this.notifications = response;
+    //   }
+    // );
+    this.notificationService.getNotificationsListByNotaire().subscribe(
       (response) => {
-        this.notifications = response;
+        this.notificationsList = response;
       }
     );
   }
 
   listeNotificationsByOwner(): void {
-    this.notificationService.getNotificationsByOwner(0, 3).subscribe(
+    // this.notificationService.getNotificationsByOwner(0, 10).subscribe(
+    //   (response) => {
+    //     this.notifications = response;
+    //   }
+    // );
+    this.notificationService.getNotificationsListByOwner().subscribe(
       (response) => {
-        this.notifications = response;
+        this.notificationsList = response;
       }
     );
   }
@@ -237,6 +251,42 @@ export class NavigationComponent implements OnInit, OnDestroy {
   afficherNotification(titre: string, message: string) {
     const iconUrl = 'assets/images/ahoewo-notif.png';
     this.serviceWorker.showNotification(titre, message, iconUrl);
+  }
+
+  closeSidebar() {
+    this.sidebarVisible = false;
+  }
+
+  // @HostListener('document:click', ['$event'])
+  // onDocumentClick(event: MouseEvent) {
+  //   const target = event.target as HTMLElement;
+  //   if (!target.closest('.notification')) {
+  //     this.closeSidebar();
+  //   } else {
+  //     // Appliquer un z-index à la partie où vous cliquez
+  //     this.lireNotification();
+  //     this.zIndexForSidebar = 100; // Par exemple, vous pouvez définir un autre z-index ici
+  //   }
+  // }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const sidebar = document.querySelector('p-sidebar');
+    const notification = document.querySelector('.notification');
+
+    if (
+      sidebar &&
+      !sidebar.contains(target) &&
+      notification &&
+      !notification.contains(target)
+    ) {
+      this.closeSidebar();
+    } else {
+      this.lireNotification();
+      // Optionally apply a different z-index if clicking inside the notification area
+      this.zIndexForSidebar = 100; // Change this value as needed
+    }
   }
 
   ngOnDestroy(): void {

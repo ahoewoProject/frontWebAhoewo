@@ -1,0 +1,99 @@
+.disabled-link {
+    pointer-events: none;
+    /* Désactive les événements de pointage, rendant le lien non cliquable */
+    opacity: 0.5;
+    /* Réduit l'opacité pour montrer qu'il est désactivé */
+    cursor: not-allowed;
+    /* Affiche un curseur "non autorisé" */
+}
+
+.ng-valid[required],
+.ng-valid.required {
+    border-left: 5px solid #42A948;
+}
+
+.ng-invalid:not(form):not(.select) {
+    border-left: 5px solid #a94442;
+}
+
+:host ::ng-deep .select .p-dropdown {
+    width: 100%;
+    /* Utilisation d'un pourcentage pour la largeur */
+    height: 55px;
+    border-radius: 8px;
+}
+
+:host ::ng-deep .select .p-dropdown-item {
+    margin-left: 0;
+    /* Suppression de la marge négative */
+}
+
+
+/*
+:host ::ng-deep .choose-label {
+  background-color: #4ebc87;;
+  border-color: #4ebc87;;
+}
+
+:host ::ng-deep .upload-label {
+  background-color: #ee944e;
+  border-color: #ee944e;
+}
+
+:host ::ng-deep .cancel-label {
+  background-color: #f43838;
+  border-color: #f43838;
+}
+
+:host ::ng-deep .remove-label {
+  background-color: #f43838;
+  border-color: #f43838;
+} */
+
+:host ::ng-deep .p-fileupload {
+    width: 100%;
+}
+
+:host ::ng-deep .p-fileupload-choose {
+    background-color: #4ebc87;
+    border-color: #4ebc87;
+    font-family: 'DM Sans', sans-serif;
+}
+
+
+/* :host ::ng-deep .p-fileupload .p-fileupload-buttonbar {
+  display: flex;
+} */
+
+
+/* :host ::ng-deep .p-button {
+  border-radius: 7px;
+  margin-right: 9px;
+  margin-left: 9px;
+} */
+
+
+/* :host ::ng-deep .imageDetail {
+  width: 50%;
+} */
+
+.error {
+    color: #a94442;
+    font-family: 'Inter var', sans-serif;
+}
+
+:host ::ng-deep .p-steps-title {
+    font-family: 'DM Sans', sans-serif;
+}
+
+.justify-text {
+    text-align: justify;
+}
+
+:host ::ng-deep .p-dialog-title {
+    font-family: 'DM Sans', sans-serif;
+}
+
+:host ::ng-deep .p-dialog-header-close {
+    border-radius: 100%;
+}

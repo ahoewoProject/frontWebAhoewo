@@ -1,265 +1,92 @@
 <div class="dashboard__content bgc-f7">
-  <div class="row pb40 d-block d-lg-none">
-    <!-- Menu responsive -->
-    <app-menu-responsive></app-menu-responsive>
-    <!-- End Menu responsive -->
-  </div>
-
-  <p-toast></p-toast>
-
-  <!-- Formulaire d'ajout d'un service -->
-  <div *ngIf="visibleAddForm == 1">
-    <div class="row align-items-center pb40">
-      <div class="col-xxl-5">
-        <div class="dashboard_title_area">
-          <h4>Ajout d'un service</h4>
-          <p class="text"></p>
-        </div>
-      </div>
-      <div class="col-xxl-7">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
-        </div>
-      </div>
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
     </div>
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30">
-          <form [formGroup]="serviceForm" (ngSubmit)="ajouterService()" class="form-style1">
-            <div class="row">
-              <div class="form-group">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Nom du service</label>
-                  <input type="text" class="form-control" id="nomService" name="nomService" placeholder="Le nom du service" formControlName="nomService" [(ngModel)]="_service.nomService" required>
-                  <div class="error" [hidden]="nomService.valid || nomService.pristine && !nomService.touched ">Le nom du service est obligatoire</div>
+
+    <p-toast></p-toast>
+
+    <!-- Liste des services -->
+    <div *ngIf="affichage == 1">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-5">
+                <div class="dashboard_title_area">
+                    <h4>Liste des services</h4>
                 </div>
-              </div>
-
-              <div class="form-group">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Description du service</label>
-                  <textarea id="description" name="description" placeholder="La description du service" formControlName="description" [(ngModel)]="_service.description" style="height: 160px;" required></textarea>
-                  <div class="error" [hidden]="description.valid || description.pristine && !description.touched ">La description du service est obligatoire</div>
-                </div>
-              </div>
-
             </div>
-            <br>
-            <div class="col-md-12">
-              <div class="text-end">
-                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
-                &nbsp;
-                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': serviceForm.invalid }" type="submit">Ajouter</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- End Formulaire d'ajout d'un service -->
-
-  <!-- Formulaire de modification d'un service -->
-  <div *ngIf="visibleUpdateForm == 1">
-    <div class="row align-items-center pb40">
-      <div class="col-xxl-5">
-        <div class="dashboard_title_area">
-          <h4>Modification d'un service</h4>
-          <p class="text"></p>
-        </div>
-      </div>
-      <div class="col-xxl-7">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30">
-          <form [formGroup]="serviceForm" (ngSubmit)="modifierService(_service.id)" class="form-style1">
-            <div class="row">
-              <div class="form-group">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Nom du service</label>
-                  <input type="text" class="form-control" id="nomService" name="nomService" placeholder="Le nom du service" formControlName="nomService" [(ngModel)]="_service.nomService" required>
-                  <div class="error" [hidden]="nomService.valid || nomService.pristine && !nomService.touched ">Le nom du service est obligatoire</div>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <div class="mb20">
-                  <label class="heading-color ff-heading fw600 mb10">Description du service</label>
-                  <textarea id="description" name="description" placeholder="La description du service" formControlName="description" [(ngModel)]="_service.description" style="height: 160px;" required></textarea>
-                  <div class="error" [hidden]="description.valid || description.pristine && !description.touched ">La description du service est obligatoire</div>
-                </div>
-              </div>
-
-            </div>
-            <br>
-            <div class="col-md-12">
-              <div class="text-end">
-                <button class="ud-btn btn-annuler" type="button" (click)="annuler()">Annuler</button>
-                &nbsp;
-                <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': serviceForm.invalid }" type="submit">Modifier</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- End Formulaire de modification d'un service -->
-
-  <!-- Liste des services -->
-  <div *ngIf="affichage == 1">
-    <div class="row align-items-center pb40">
-      <div class="col-xxl-5">
-        <div class="dashboard_title_area">
-          <h4>Liste des services</h4>
-        </div>
-      </div>
-      <div class="col-xxl-7">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <div class="item1 mb15-sm">
-            <div class="search_area">
-              <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
-              <label><span class="flaticon-search"></span></label>
-            </div>
-          </div>
-          &nbsp;
-          <a type="button" (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
+            <div class="col-xxl-7">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <div class="item1 mb15-sm">
+                        <div class="search_area">
+                            <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
+                            <label><span class="flaticon-search"></span></label>
+                        </div>
+                    </div>
+                    &nbsp;
+                    <a type="button" (click)="voirPageAjout()" class="ud-btn btn-thm">
             Ajouter un service
           </a>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="row">
-      <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
-          <div class="packages_table table-responsive">
-            <table class="table-style3 table at-savesearch">
-              <thead class="t-head">
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Code</th>
-                  <th scope="col">Nom</th>
-                  <th scope="col">Etat</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="t-body">
-                <tr *ngFor="let _service of services.content | genericFilter: recherche;  let i = index">
-                  <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
-                  <td class="vam">{{ _service.codeService }} </td>
-                  <td class="vam">{{ _service.nomService }} </td>
-                  <td class="vam">
-                    <p-tag *ngIf="_service.etat == 1" severity="success" value="Activé"></p-tag>
-                    <p-tag *ngIf="_service.etat == 2" severity="danger" value="Désactivé"></p-tag>
-                  </td>
-                  <td class="vam">
-                    <div class="d-flex">
+        <div class="row">
+            <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <div class="packages_table table-responsive">
+                        <table class="table-style3 table at-savesearch">
+                            <thead class="t-head">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Code</th>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col">Etat</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="t-body">
+                                <tr *ngFor="let _service of services.content | genericFilter: recherche;  let i = index">
+                                    <td class="vam">{{ (numeroDeLaPage * elementsParPage) + i + 1 }}</td>
+                                    <td class="vam">{{ _service.codeService }} </td>
+                                    <td class="vam">{{ _service.nomService }} </td>
+                                    <td class="vam">
+                                        <p-tag *ngIf="_service.etat == 1" severity="success" value="Activé"></p-tag>
+                                        <p-tag *ngIf="_service.etat == 2" severity="danger" value="Désactivé"></p-tag>
+                                    </td>
+                                    <td class="vam">
+                                        <div class="d-flex">
 
-                      <button pButton type="button" icon="pi pi-eye"
-                        (click)="afficherPageDetail(_service.id)"
-                        pTooltip="Détails" tooltipPosition="top"
-                        class="p-button-text p-button-info">
+                                            <button pButton type="button" icon="pi pi-eye" (click)="voirPageDetail(_service.id)" pTooltip="Détails" tooltipPosition="top" class="p-button-text p-button-info">
                       </button>
 
-                      <button pButton type="button" icon="pi pi-pencil"
-                        (click)="afficherFormulaireModifier(_service.id)"
-                        pTooltip="Modifier" tooltipPosition="top"
-                        class="p-button-text p-button-warning">
+                                            <button pButton type="button" icon="pi pi-pencil" (click)="voirPageModifier(_service.id)" pTooltip="Modifier" tooltipPosition="top" class="p-button-text p-button-warning">
                       </button>
 
-                      <button pButton type="button"
-                        *ngIf="_service.etat == 1"
-                        (click)="desactiverService(_service.id)" icon="pi pi-lock"
-                        pTooltip="Désactiver ce service" tooltipPosition="right" class="p-button-text p-button-danger">
+                                            <button pButton type="button" *ngIf="_service.etat == 1" (click)="desactiverService(_service.id)" icon="pi pi-lock" pTooltip="Désactiver ce service" tooltipPosition="right" class="p-button-text p-button-danger">
                       </button>
 
-                      <button pButton type="button"
-                        *ngIf="_service.etat == 2"
-                        (click)="activerService(_service.id)" icon="pi pi-lock-open"
-                        pTooltip="Activer ce service" tooltipPosition="right" class="p-button-text p-button-success">
+                                            <button pButton type="button" *ngIf="_service.etat == 2" (click)="activerService(_service.id)" icon="pi pi-lock-open" pTooltip="Activer ce service" tooltipPosition="right" class="p-button-text p-button-success">
                       </button>
 
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
 
-          <div *ngIf="services.totalElements !== 0" class="mbp_pagination text-center mt30">
-            <p-paginator
-              (onPageChange)="pagination($event)" [rows]="services.size"
-              [totalRecords]="services.totalElements" [rowsPerPageOptions]="[5, 10, 15]"
-              [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} services"
-              [showPageLinks]="true" [showFirstLastIcon]="true">
-            </p-paginator>
-          </div>
-          <div *ngIf="services.totalElements == 0" class="mbp_pagination text-center mt30">
-            <p class="mt10 pagination_page_count text-center">Aucun service enregistré pour le moment</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- End Liste des services -->
-
-  <!-- Details d'un service -->
-  <div *ngIf="affichage == 2">
-    <div  class="row align-items-center pb40">
-      <div class="col-xxl-8">
-        <div class="dashboard_title_area">
-          <h4>Détails d'un service</h4>
-          <p class="text"></p>
-        </div>
-      </div>
-      <div class="col-xxl-4">
-        <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-          <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-
-          <div class="row">
-            <div class="col-sm-6 col-xl-4">
-              <p class="fw600 mb10 ff-heading dark-color">Code</p>
-              <p class="text">{{ _service.codeService }}</p>
-            </div>
-            <div class="col-sm-6 col-xl-4">
-              <p class="fw600 mb10 ff-heading dark-color">Nom</p>
-              <p class="text">{{ _service.nomService }}</p>
-            </div>
-
-            <p-divider></p-divider>
-            <div>
-              <p class="fw600 mb10 ff-heading dark-color">Description</p>
-              <p class="text justify-text">{{ _service.description }}</p>
-            </div>
-
-            <p-divider></p-divider>
-            <div class="col-sm-6 col-xl-4">
-              <p class="fw600 mb10 ff-heading dark-color">Etat</p>
-              <p>
-                <p-tag *ngIf="_service.etat == 1" severity="success" value="Activé"></p-tag>
-                <p-tag *ngIf="_service.etat == 2" severity="danger" value="Désactivé"></p-tag>
-              </p>
+                    <div *ngIf="services.totalElements !== 0" class="mbp_pagination text-center mt30">
+                        <p-paginator (onPageChange)="pagination($event)" [rows]="services.size" [totalRecords]="services.totalElements" [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} services"
+                            [showPageLinks]="true" [showFirstLastIcon]="true">
+                        </p-paginator>
+                    </div>
+                    <div *ngIf="services.totalElements == 0" class="mbp_pagination text-center mt30">
+                        <p class="mt10 pagination_page_count text-center">Aucun service enregistré pour le moment</p>
+                    </div>
+                </div>
             </div>
         </div>
-      </div>
-      <div class="text-end">
-        <a class="ud-btn btn-retour" (click)="voirListe()"  type="button">Retour</a>
-      </div>
     </div>
-    </div>
-  </div>
-  <!-- End Details d'un service -->
-
+    <!-- End Liste des services -->
 </div>

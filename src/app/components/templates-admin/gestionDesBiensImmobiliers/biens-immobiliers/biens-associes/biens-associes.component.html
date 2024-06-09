@@ -128,7 +128,7 @@
             <div class="col-xxl-7">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
                     <a class="ud-btn btn-valider" type="button" *ngIf="afficherBoutonSiBienDelegue(bienImmAssocie.estDelegue)" (click)="afficherPagePublication(bienImmAssocie)">Publier</a> &nbsp;
-                    <a class="ud-btn btn-annuler" type="button">Contrats</a> &nbsp;
+                    <a class="ud-btn btn-annuler" type="button" (click)="voirListeContratsBien(bienImmAssocie.codeBien)">Contrats</a> &nbsp;
                     <a class="ud-btn btn-modifier" type="button" (click)="afficherPageModifier(bienImmAssocie.id, bienImmAssocie.typeDeBien.designation)">Modifier</a> &nbsp;
                     <a class="ud-btn btn-retour" type="button" (click)="voirListeBiensAssocies(bienImmAssocie.bienImmobilier.id)">Retour</a>
                 </div>
@@ -423,7 +423,7 @@
             </div>
             <div class="col-xxl-7">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <a class="ud-btn btn-retour" type="button" (click)="voirListeBiensAssocies(bienImmobilier.id)">Retour</a>
+                    <a class="ud-btn btn-retour" type="button" (click)="afficherListeBiensAssocies(bienImmobilier.id)">Retour</a>
                 </div>
             </div>
         </div>
@@ -1009,7 +1009,7 @@
             </div>
             <div class="col-xxl-7">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <a class="ud-btn btn-retour" type="button" (click)="voirPageDetailBienAssocie(bienImmAssocie.id)">Retour</a>
+                    <a class="ud-btn btn-retour" type="button" (click)="afficherPageDetailBienAssocie(bienImmAssocie.id)">Retour</a>
                 </div>
             </div>
         </div>
@@ -1669,7 +1669,7 @@
             </div>
             <div class="col-xxl-9">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <a class="ud-btn btn-retour" type="button" (click)="voirPageDetailBienAssocie(bienAPublie.id)">Retour</a>
+                    <a class="ud-btn btn-retour" type="button" (click)="afficherPageDetailBienAssocie(bienAPublie.id)">Retour</a>
                 </div>
             </div>
             <p-messages severity="info">

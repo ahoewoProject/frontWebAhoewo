@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
 import { Services } from 'src/app/models/gestionDesAgencesImmobilieres/Services';
@@ -27,9 +28,12 @@ export class ServicesComponent implements OnInit, OnDestroy {
   messageErreur: string = "";
   messageSuccess: string | null = null;
   serviceForm: any;
+  ajoutReussi: any;
+  modificationReussie: any;
 
   constructor(private _servicesService: ServicesService, private messageService: MessageService,
-    private confirmationService: ConfirmationService, private personneService: PersonneService
+    private confirmationService: ConfirmationService, private personneService: PersonneService,
+    private router: Router, private activatedRoute: ActivatedRoute
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -37,8 +41,9 @@ export class ServicesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.ajoutReussi = this.activatedRoute.snapshot.queryParamMap.get('ajoutReussi') || '';
+    this.modificationReussie = this.activatedRoute.snapshot.queryParamMap.get('modificationReussie') || '';
     this.listeServices(this.numeroDeLaPage, this.elementsParPage);
-    this.initServiceForm()
   }
 
   // Fonction pour recupérer les services
@@ -46,147 +51,41 @@ export class ServicesComponent implements OnInit, OnDestroy {
     this._servicesService.getServicesPagines(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.services = response;
+        if (this.ajoutReussi) {
+          this.messageService.add({ severity: 'success', summary: 'Ajout reussi', detail: 'Le service a été ajouté avec succès.' });
+        }
+
+        if (this.modificationReussie) {
+          this.messageService.add({ severity: 'success', summary: 'Modification reussie', detail: 'Le service a été modifié avec succès.' });
+        }
       }
     );
   }
 
   pagination(event: any) {
+    this.ajoutReussi = false;
+    this.modificationReussie = false;
     this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
     this.listeServices(this.numeroDeLaPage, this.elementsParPage);
   }
 
   voirListe(): void {
+    this.ajoutReussi = false;
+    this.modificationReussie = false;
     this.listeServices(this.numeroDeLaPage, this.elementsParPage);
-    this.serviceForm.reset();
-    this.affichage = 1;
-    this.visibleAddForm = 0;
-    this.visibleUpdateForm = 0;
   }
 
-  annuler(): void {
-    this.serviceForm.reset();
-    if (this.visibleAddForm == 1) {
-      this.affichage = 0;
-      this.visibleAddForm = 1;
-      this.visibleUpdateForm = 0;
-    } else {
-      this.affichage = 0;
-      this.visibleUpdateForm = 1;
-      this.visibleAddForm = 0;
-    }
+  voirPageAjout(): void {
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/add/service']);
   }
 
-  afficherFormulaireAjouter(): void {
-    this.affichage = 0;
-    this.visibleAddForm = 1;
-    this.visibleUpdateForm = 0;
-    this._service = new Services();
+  voirPageModifier(id: number): void {
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/service/update/' + id]);
   }
 
-  afficherFormulaireModifier(id: number): void {
-    this.detailService(id);
-    this.affichage = 0;
-    this.visibleAddForm = 0;
-    this.visibleUpdateForm = 1;
-  }
-
-  detailService(id: number): void {
-    //console.log(error)(id)
-    this._servicesService.findById(id).subscribe(
-      (response) => {
-        this._service = response;
-      }
-    );
-  }
-
-  afficherPageDetail(id: number): void {
-    this.detailService(id);
-    this.affichage = 2;
-  }
-
-  initServiceForm(): void {
-    this.serviceForm = new FormGroup({
-      nomService: new FormControl(this._service.nomService, [Validators.required]),
-      description: new FormControl('', [Validators.required])
-    });
-  }
-
-  get nomService() {
-    return this.serviceForm.get('nomService');
-  }
-
-  get description() {
-    return this.serviceForm.get('description');
-  }
-
-  ajouterService(): void {
-    this._servicesService.addServices(this._service).subscribe(
-      (response) => {
-        if (response.id > 0) {
-          this.voirListe();
-          this.messageSuccess = "Le service a été ajouté avec succès.";
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Ajout réussi',
-            detail: this.messageSuccess
-          });
-        } else {
-          this.messageErreur = "Erreur lors de l'ajout du service !"
-          this.afficherFormulaireAjouter();
-          this._service.nomService = response.nomService;
-          this._service.description = response.description;
-          this.messageService.add({
-            severity: 'error',
-            summary: "Erreur d'ajout",
-            detail: this.messageErreur
-          });
-        }
-    },
-    (error) => {
-      if (error.status == 409) {
-        this.messageErreur = "Un service avec ce nom existe déjà !";
-        this.messageService.add({
-          severity: 'warn',
-          summary: "Erreur d'ajout",
-          detail: this.messageErreur
-        });
-      }
-    })
-  }
-
-  modifierService(id: number): void {
-    this._servicesService.updateServices(id, this._service).subscribe(
-      (response) =>{
-        if(response.id > 0) {
-          this.voirListe();
-          this.messageSuccess = "Le service a été modifié avec succès.";
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Modification réussie',
-            detail: this.messageSuccess
-          });
-        } else {
-          this.messageErreur = "Erreur lors de la modification du service !";
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Erreur modification',
-            detail: this.messageErreur
-          });
-          this.afficherFormulaireModifier(id);
-        }
-    },
-    (error) =>{
-      // if (error.status == 409) {
-      //   this.messageErreur = "Le service avec ce nom existe déjà !";
-      //   this.messageService.add({
-      //     severity: 'warn',
-      //     summary: 'Modification non réussie',
-      //     detail: this.messageErreur
-      //   });
-      //   this.afficherFormulaireModifier(id);
-      // }
-    })
+  voirPageDetail(id: number): void {
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/service/' + id]);
   }
 
   //Activer un service
@@ -267,6 +166,38 @@ export class ServicesComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  navigateURLBYUSER(user: any): string {
+    let roleBasedURL = '';
+
+    switch (user.role.code) {
+      case 'ROLE_ADMINISTRATEUR':
+        roleBasedURL = '/admin';
+        break;
+      case 'ROLE_PROPRIETAIRE':
+        roleBasedURL = '/proprietaire';
+        break;
+      case 'ROLE_RESPONSABLE':
+        roleBasedURL = '/responsable';
+        break;
+      case 'ROLE_DEMARCHEUR':
+        roleBasedURL = '/demarcheur';
+        break;
+      case 'ROLE_GERANT':
+        roleBasedURL = '/gerant';
+        break;
+      case 'ROLE_AGENTIMMOBILIER':
+        roleBasedURL = '/agent-immobilier';
+        break;
+      case 'ROLE_CLIENT':
+        roleBasedURL = '/client';
+        break;
+      default:
+        break;
+    }
+
+    return roleBasedURL;
   }
 
   ngOnDestroy(): void {

@@ -24,7 +24,7 @@
                         </div>
                     </div>
                     &nbsp;
-                    <a *ngIf="user.role.code != 'ROLE_CLIENT'" type="button" (click)="afficherPageAjout()" class="ud-btn btn-thm">Planifier un paiement</a>
+                    <!-- <a *ngIf="user.role.code != 'ROLE_CLIENT'" type="button" (click)="afficherPageAjout()" class="ud-btn btn-thm">Planifier un paiement</a>-->
                 </div>
             </div>
         </div>
@@ -207,7 +207,10 @@
                         </div>
                         <div class="col-sm-6" *ngIf="user.role.code == 'ROLE_CLIENT'">
                             <p class="fw600 mb10 ff-heading dark-color">Propriétaire</p>
-                            <p class="text">{{ contratLocation.bienImmobilier.agenceImmobiliere ? contratLocation.bienImmobilier.agenceImmobiliere.nomAgence : contratLocation.bienImmobilier.personne.nom + ' ' + contratLocation.bienImmobilier.personne.prenom }}</p>
+                            <p class="text">
+                                {{ contratLocation && contratLocation.bienImmobilier.agenceImmobiliere ? contratLocation.bienImmobilier.agenceImmobiliere.nomAgence : contratLocation && contratLocation.bienImmobilier.personne ? contratLocation.bienImmobilier.personne.nom + ' ' + contratLocation.bienImmobilier.personne.prenom
+                                : '' }}
+                            </p>
                         </div>
                     </div>
 
@@ -274,8 +277,11 @@
                             <p class="text">{{ contratVente.client.nom + ' ' + contratVente.client.prenom }}</p>
                         </div>
                         <div class="col-sm-6" *ngIf="user.role.code == 'ROLE_CLIENT'">
-                            <p class="fw600 mb10 ff-heading dark-color">Vendeur</p>
-                            <p class="text">{{ contratVente.bienImmobilier.agenceImmobiliere ? contratLocation.bienImmobilier.agenceImmobiliere.nomAgence : contratVente.bienImmobilier.personne.nom + ' ' + contratVente.bienImmobilier.personne.prenom }}</p>
+                            <p class="fw600 mb10 ff-heading dark-color">Propriétaire</p>
+                            <p class="text">
+                                {{ contratVente && contratVente.bienImmobilier.agenceImmobiliere ? contratVente.bienImmobilier.agenceImmobiliere.nomAgence : contratVente && contratVente.bienImmobilier.personne ? contratVente.bienImmobilier.personne.nom + ' ' + contratVente.bienImmobilier.personne.prenom
+                                : '' }}
+                            </p>
                         </div>
                     </div>
 

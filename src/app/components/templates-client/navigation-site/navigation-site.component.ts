@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorService } from 'src/app/services/behavior.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-navigation-site',
@@ -12,8 +13,11 @@ export class NavigationSiteComponent implements OnInit {
   user: any;
   activeLink: any;
 
-  constructor(private personneService: PersonneService,
-    private behaviorService: BehaviorService) {
+  constructor(
+    private personneService: PersonneService, private router: Router,
+    private route: ActivatedRoute
+  ) 
+  {
 
   }
 
@@ -24,9 +28,8 @@ export class NavigationSiteComponent implements OnInit {
     }
   }
 
-  setActiveLink(link: string) {
-    this.activeLink = link;
-    this.behaviorService.setActiveLink(this.activeLink);
+  isActive(route: string[]): boolean {
+    return route.some(r => this.router.url.includes(r));
   }
 
   redirectToDashboard(): string {

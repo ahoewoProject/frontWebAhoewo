@@ -49,6 +49,11 @@ export class ContratVenteService {
     return this.httpClient.get<ContratVente>(this.url + 'contrat-vente/' + id);
   }
 
+  // url: http://localhost:4040/api/contrat-vente/code-contrat/{codeContrat}
+  findByCodeContrat(codeContrat: string): Observable<ContratVente>{
+    return this.httpClient.get<ContratVente>(this.url + 'contrat-vente/code-contrat/' + codeContrat);
+  }
+
   // Ajouter un contrat de vente ;
   // url: http://localhost:4040/api/contrat-vente/ajouter
   ajouterContratVente(c: ContratVente): Observable<ContratVente>{

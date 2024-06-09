@@ -11,6 +11,7 @@ import { ServicesAgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmob
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { ServicesAgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/services-agence-immobiliere.service';
 import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/services.service';
+import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { MotifService } from 'src/app/services/motif.service';
 import { NotificationsService } from 'src/app/services/notifications.service';
 import { environment } from 'src/environments/environment';
@@ -53,81 +54,81 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
   serviceAgenceImmobiliere = this.servicesAgenceImmobiliereService.serviceAgenceImmobiliere;
   services: Services[] = [];
   agencesImmobilieres: AgenceImmobiliere[] = [];
+  agenceImmobiliere = this.agenceImmobiliereService.agenceImmobiliere;
   servicesAgenceImmobiliere!: Page<ServicesAgenceImmobiliere>;
   messageErreur: string = "";
   messageSuccess: string | null = null;
   serviceForm: any;
   APIEndpoint: string;
   serviceAgenceImmobiliereForm: any;
+  ajoutReussi: any;
+  modificationReussie: any;
+  demandeReussie: any;
 
-  constructor(private _servicesService: ServicesService, private agenceImmobiliereService: AgenceImmobiliereService,
+  constructor(private personneService: PersonneService, private agenceImmobiliereService: AgenceImmobiliereService,
     private servicesAgenceImmobiliereService: ServicesAgenceImmobiliereService, private messageService: MessageService,
-    private confirmationService: ConfirmationService, private notificationService: NotificationsService,
-    private activatedRoute: ActivatedRoute, private router: Router, private motifService: MotifService
+    private confirmationService: ConfirmationService, private activatedRoute: ActivatedRoute,
+    private router: Router
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
+    const utilisateurConnecte = this.personneService.utilisateurConnecte();
+    this.user = JSON.parse(utilisateurConnecte);
   }
 
   ngOnInit(): void {
+    this.ajoutReussi = this.activatedRoute.snapshot.queryParamMap.get('ajoutReussi') || '';
+    this.modificationReussie = this.activatedRoute.snapshot.queryParamMap.get('modificationReussie') || '';
+    this.demandeReussie = this.activatedRoute.snapshot.queryParamMap.get('demandeReussie') || '';
     this.initActivatedRoute();
+    this.getAgencesImmobilieresListIfUserActif();
   }
 
   initActivatedRoute(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       const id = params.get('id');
-      if (id) {
-        this.affichage = 2;
-        this.detailServiceAgenceImmobiliere(parseInt(id));
+      if (id !== null) {
+        const parsedId = parseInt(id, 10);
+        this.detailAgenceImmobiliere(parsedId);
+        this.listeServices(parsedId, this.numeroDeLaPage, this.elementsParPage);
       } else {
-        this.listerServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
-        this.initServiceAgenceImmobiliereForm();
-        this.listerServicesActifs();
-        this.getAgencesImmobilieresListIfUserActif();
+        this.getServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
       }
-    })
-  }
-
-  initServiceAgenceImmobiliereForm(): void {
-    this.serviceAgenceImmobiliereForm = new FormGroup({
-      agenceImmobiliere: new FormControl('', [Validators.required]),
-      service: new FormControl('', [Validators.required]),
-      nomDuService: new FormControl('', [Validators.required]),
-      descriptionDuService: new FormControl('', [Validators.required])
     });
   }
 
-  get service() {
-    return this.serviceAgenceImmobiliereForm.get('service');
+  detailAgenceImmobiliere(id: number): void {
+    this.agenceImmobiliereService.findById(id).subscribe(
+      (data) => {
+        this.agenceImmobiliere = data;
+      }
+    )
   }
 
-  get agenceImmobiliere() {
-    return this.serviceAgenceImmobiliereForm.get('agenceImmobiliere');
-  }
-
-  get nomDuService() {
-    return this.serviceAgenceImmobiliereForm.get('nomDuService');
-  }
-
-  get descriptionDuService() {
-    return this.serviceAgenceImmobiliereForm.get('descriptionDuService');
-  }
-
-  // Fonction pour recupérer les services des agences immobilières
-  listerServicesAgenceImmobiliere(numeroDeLaPage: number, elementsParPage: number) {
-    this.servicesAgenceImmobiliereService.getServicesOfAgencePagines(numeroDeLaPage, elementsParPage).subscribe(
+  listeServices(id: number, numeroDeLaPage: number, elementsParPage: number): void {
+    this.servicesAgenceImmobiliereService.getServicesByIdAgencePage(id, numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.servicesAgenceImmobiliere = response;
       }
     );
   }
 
-  // Fonction pour recupérer les services
-  listerServicesActifs() {
-    this._servicesService.getServicesActifs().subscribe(
+  // Fonction pour recupérer les services des agences immobilières
+  getServicesAgenceImmobiliere(numeroDeLaPage: number, elementsParPage: number) {
+    this.servicesAgenceImmobiliereService.getServicesAgencesPage(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
-        this.services = response;
-        this.services.push(this.autreService);
+        this.servicesAgenceImmobiliere = response;
+        if (this.ajoutReussi) {
+          this.messageService.add({ severity: 'success', summary: 'Ajout reussi', detail: 'Le service a été ajouté avec succès.' });
+        }
+
+        if (this.modificationReussie) {
+          this.messageService.add({ severity: 'success', summary: 'Modification reussie', detail: 'Le service a été modifié avec succès.' });
+        }
+
+        if (this.demandeReussie) {
+          this.messageService.add({ severity: 'success', summary: 'Demande envoyée', detail: 'Votre demande a été envoyée avec succès.\nNotre équipe s\'engage à vous fournir un retour dans les plus brefs délais.' });
+        }
       }
     );
   }
@@ -141,230 +142,45 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
     );
   }
 
-  serviceChoisi(event: any) {
-    this.serviceSelectionne = event.value;
-    if (this.serviceSelectionne.nomService !== 'Autres') {
-      this.agenceImmobiliere.setValidators([Validators.required]);
-      this.service.setValidators([Validators.required]);
-      this.nomDuService.clearValidators();
-      this.descriptionDuService.clearValidators();
-    } else {
-      this.agenceImmobiliere.setValidators([Validators.required]);
-      this.service.setValidators([Validators.required]);
-      this.nomDuService.setValidators([Validators.required]);
-      this.descriptionDuService.setValidators([Validators.required]);
-    }
-    this.agenceImmobiliere.updateValueAndValidity();
-    this.service.updateValueAndValidity();
-    this.nomDuService.updateValueAndValidity();
-    this.descriptionDuService.updateValueAndValidity();
-  }
-
-  agenceChoisie(event: any) {
-    this.agenceSelectionnee = event.value;
-  }
-
   filtrerParAgence(event: any) {
     this.agenceSelectionnee = event.value;
-    this.servicesAgenceImmobiliere.content = this.servicesAgenceImmobiliere.content.filter((service) => service.agenceImmobiliere.id == this.agenceSelectionnee.id);
+    this.servicesAgenceImmobiliereService.getServicesAgencesPage(this.numeroDeLaPage, this.elementsParPage).subscribe(
+      (response) => {
+        this.servicesAgenceImmobiliere.content = response.content.filter((service) => service.agenceImmobiliere.id == this.agenceSelectionnee.id);
+      }
+    );
   }
 
   pagination(event: any) {
+    this.ajoutReussi = false;
+    this.modificationReussie = false;
+    this.demandeReussie = false;
     this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    this.listerServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
+    this.getServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
+  }
+
+  voirListeAgencesImmobilieres(): void {
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/agences-immobilieres']);
   }
 
   voirListe(): void {
-    if (this.affichage == 3 || this.affichage == 4 || this.affichage == 1) {
-      this.affichage = 1;
-      this.listerServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
-      this.serviceAgenceImmobiliereForm.reset();
-    } else {
-      this.router.navigate(['responsable/agences-immobilieres/services']);
-    }
-
+    this.ajoutReussi = false;
+    this.modificationReussie = false;
+    this.demandeReussie = false;
+    this.getServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
   }
 
-  annuler(): void {
-    this.serviceAgenceImmobiliereForm.reset()
+  voirPageAjout(): void {
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/agence-immobiliere/add/service']);
   }
 
-  afficherFormulaireAjouter(): void {
-    this.serviceSelectionne = new Services();
-    this.agenceSelectionnee = this.agencesImmobilieres[0];
-    this.affichage = 3;
-    this.serviceAgenceImmobiliere = new ServicesAgenceImmobiliere();
-    this.agenceImmobiliere.setValidators([Validators.required]);
-    this.service.setValidators([Validators.required]);
-    this.nomDuService.clearValidators();
-    this.descriptionDuService.clearValidators();
+  voirPageModifier(id: number): void {
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/agence-immobiliere/update/service/' + id]);
   }
 
-  afficherFormulaireModifier(id: number): void {
-    this.detailServiceAgenceImmobiliere(id);
-    this.affichage = 4;
-    this.serviceSelectionne = this.serviceAgenceImmobiliere.services;
-    this.agenceImmobiliere.setValidators([Validators.required]);
-    this.service.setValidators([Validators.required]);
-    this.nomDuService.clearValidators();
-    this.descriptionDuService.clearValidators();
-  }
-
-  detailMotif(code: string): void {
-    this.motifService.findByCode(code).subscribe(
-      (response) => {
-        console.log(response)
-        this.motif = response;
-      }
-    );
-  }
-
-  detailServiceAgenceImmobiliere(id: number): void {
-    this.servicesAgenceImmobiliereService.findById(id).subscribe(
-      (response) => {
-        this.serviceAgenceImmobiliere = response;
-        this.detailMotif(this.serviceAgenceImmobiliere.services.codeService);
-      }
-    );
-  }
-
-  afficherPageDetail(id: number): void {
-    this.router.navigate(['responsable/agences-immobilieres/services', id]);
-  }
-
-  ajouterServiceAgenceImmobiliere(): void {
-    if (this.serviceSelectionne.nomService !== 'Autres') {
-      this.serviceAgenceImmobiliere.agenceImmobiliere = this.agenceSelectionnee;
-      this.serviceAgenceImmobiliere.services = this.serviceSelectionne;
-
-      this.servicesAgenceImmobiliereService.addServicesAgence(this.serviceAgenceImmobiliere).subscribe(
-
-        (response) => {
-          if (response.id > 0) {
-            this.voirListe();
-            this.messageSuccess = "Le service a été ajouté avec succès.";
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Ajout réussi',
-              detail: this.messageSuccess
-            });
-          } else {
-            this.messageErreur = "Erreur lors de l'ajout du service !"
-            this.afficherFormulaireAjouter();
-            this.serviceAgenceImmobiliere.agenceImmobiliere = response.agenceImmobiliere;
-            this.serviceAgenceImmobiliere.services = response.services;
-            this.messageService.add({
-              severity: 'error',
-              summary: "Erreur d'ajout",
-              detail: this.messageErreur
-            });
-          }
-      },
-      (error) =>{
-        if (error.status == 409) {
-          this.messageErreur = "Un service avec ce nom existe déjà dans cette agence !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: "Erreur d'ajout",
-            detail: this.messageErreur
-          });
-        }
-      })
-    } else {
-      this.serviceNonTrouveForm.nomAgence = this.agenceSelectionnee.nomAgence;
-      this.serviceNonTrouveForm.nomDuService = this.nomDuService.value;
-      this.serviceNonTrouveForm.descriptionDuService = this.descriptionDuService.value;
-      this.servicesAgenceImmobiliereService.demandeAjoutNouveauService(this.serviceNonTrouveForm).subscribe(
-
-      (response) => {
-        this.voirListe();
-        this.messageSuccess = "Votre demande a été envoyée avec succès.\nNotre équipe s'engage à vous fournir un retour dans les plus brefs délais.";
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Demande envoyée',
-          detail: this.messageSuccess
-        });
-
-      },
-      (error) =>{
-        this.messageErreur = "Erreur lors de l'envoi de la demande !";
-        this.messageService.add({
-          severity: 'warn',
-          summary: "Demande non envoyée",
-          detail: this.messageErreur
-        });
-      })
-    }
-  }
-
-  modifierServiceAgenceImmobiliere(id: number): void {
-    if (this.serviceSelectionne.nomService !== 'Autres') {
-      this.serviceAgenceImmobiliere.agenceImmobiliere = this.agenceSelectionnee;
-      this.serviceAgenceImmobiliere.services = this.serviceSelectionne;
-
-      this.servicesAgenceImmobiliereService.updateServicesAgence(id, this.serviceAgenceImmobiliere).subscribe(
-
-        (response) => {
-          //console.log(error)(response)
-          if (response.id > 0) {
-            this.voirListe();
-            this.messageSuccess = "Le service a été modifié avec succès.";
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Modification réussie',
-              detail: this.messageSuccess
-            });
-          } else {
-            this.messageErreur = "Erreur lors de la modification du service !"
-            this.afficherFormulaireModifier(id);
-            this.serviceAgenceImmobiliere.agenceImmobiliere = response.agenceImmobiliere;
-            this.serviceAgenceImmobiliere.services = response.services;
-            this.messageService.add({
-              severity: 'error',
-              summary: "Erreur de modification",
-              detail: this.messageErreur
-            });
-          }
-      },
-      (error) =>{
-        //console.log(error)(error)
-        if (error.status == 409) {
-          this.messageErreur = "Un service avec ce nom existe déjà dans cette agence !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: "Erreur de modification",
-            detail: this.messageErreur
-          });
-        }
-      })
-    } else {
-      this.serviceNonTrouveForm.nomAgence = this.agenceSelectionnee.nomAgence;
-      this.serviceNonTrouveForm.nomDuService = this.nomDuService.value;
-      this.serviceNonTrouveForm.descriptionDuService = this.descriptionDuService.value;
-      this.servicesAgenceImmobiliereService.demandeAjoutNouveauService(this.serviceNonTrouveForm).subscribe(
-
-      (response) => {
-        //console.log(response)
-        this.voirListe();
-        this.messageSuccess = "Votre demande a été envoyée avec succès.\nNotre équipe s'engage à vous fournir un retour dans les plus brefs délais.";
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Demande envoyée',
-          detail: this.messageSuccess
-        });
-      },
-      (error) =>{
-        //console.log(error)
-        this.messageErreur = "Erreur lors de l'envoi de la demande !";
-        this.messageService.add({
-          severity: 'warn',
-          summary: "Demande non envoyée",
-          detail: this.messageErreur
-        });
-      })
-    }
-
+  voirPageDetail(id: number): void {
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/agence-immobiliere/service/' + id]);
   }
 
   activerServiceAgenceImmobiliere(id: number): void {
@@ -443,6 +259,38 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  navigateURLBYUSER(user: any): string {
+    let roleBasedURL = '';
+
+    switch (user.role.code) {
+      case 'ROLE_ADMINISTRATEUR':
+        roleBasedURL = '/admin';
+        break;
+      case 'ROLE_PROPRIETAIRE':
+        roleBasedURL = '/proprietaire';
+        break;
+      case 'ROLE_RESPONSABLE':
+        roleBasedURL = '/responsable';
+        break;
+      case 'ROLE_DEMARCHEUR':
+        roleBasedURL = '/demarcheur';
+        break;
+      case 'ROLE_GERANT':
+        roleBasedURL = '/gerant';
+        break;
+      case 'ROLE_AGENTIMMOBILIER':
+        roleBasedURL = '/agent-immobilier';
+        break;
+      case 'ROLE_CLIENT':
+        roleBasedURL = '/client';
+        break;
+      default:
+        break;
+    }
+
+    return roleBasedURL;
   }
 
   ngOnDestroy(): void {

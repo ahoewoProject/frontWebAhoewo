@@ -20,10 +20,19 @@ export class AffectationAgentAgenceService {
     this.url = APIEndpoint + 'api/';
   }
 
-  // Affichage de toutes les occurrences des agents immobiliers;
-  // url: http://localhost:4040/api/affectations-agents-agences
-  getAll(): Observable<Array<AffectationAgentAgence>>{
-    return this.httpClient.get<Array<AffectationAgentAgence>>(this.url + 'affectations-agents-agences');
+  //Affichage Page Affectations Agent Agence;
+  // url: http://localhost:4040/api/affectations-agent-agence/page
+  getAffectationsAgentAgencePage(numeroDeLaPage: number, elementsParPage: number): Observable<Page<AffectationAgentAgence>>{
+    let params = new HttpParams()
+    .set('numeroDeLaPage', numeroDeLaPage.toString())
+    .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<AffectationAgentAgence>>(this.url + 'affectations-agent-agence/page', {params: params});
+  }
+
+  //List Affectations Agent Agence;
+  // url: http://localhost:4040/api/affectations-agent-agence/list
+  getAffectationsAgentAgenceList(): Observable<Array<AffectationAgentAgence>>{
+    return this.httpClient.get<Array<AffectationAgentAgence>>(this.url + 'affectations-agent-agence/list');
   }
 
   //Affichage de toutes les occurrences des agents immobiliers par responsable d'agence immobilière;

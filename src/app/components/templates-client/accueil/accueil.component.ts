@@ -458,32 +458,27 @@ export class AccueilComponent implements OnInit {
   }
 
   rechercheSimpleDePublication(): void {
-    sessionStorage.getItem('rechercheAvanceePublicationForm') && sessionStorage.removeItem('rechercheAvanceePublicationForm');
-
-    sessionStorage.setItem('region', JSON.stringify(this.regionSelectionnee));
-    sessionStorage.setItem('ville', JSON.stringify(this.villeSelectionnee));
+    this.publicationService.clearRechercheAvanceePublicationForm();
 
     this.rechercheSimplePublicationForm.typeDeTransaction = this.typeDeTransactionSelectionne;
     this.rechercheSimplePublicationForm.typeDeBien = this.typeDeBienSelectionne;
     this.rechercheSimplePublicationForm.quartier = this.quartierSelectionne;
 
-    sessionStorage.setItem('rechercheSimplePublicationForm', JSON.stringify(this.rechercheSimplePublicationForm));
+    this.publicationService.setRechercheSimplePublicationForm(this.rechercheSimplePublicationForm);
 
     this.router.navigate(['/annonces-immobilieres'], { queryParams: { recherche: 'simple' } });
+
   }
 
   rechercheAvanceeDePublication(): void {
-    sessionStorage.getItem('rechercheSimplePublicationForm') && sessionStorage.removeItem('rechercheSimplePublicationForm');
-
-    sessionStorage.setItem('region', JSON.stringify(this.regionSelectionnee));
-    sessionStorage.setItem('ville', JSON.stringify(this.villeSelectionnee));
+    this.publicationService.clearRechercheSimplePublicationForm();
 
     this.rechercheAvanceePublicationForm.typeDeTransaction = this.typeDeTransactionSelectionne;
     this.rechercheAvanceePublicationForm.typeDeBien = this.typeDeBienSelectionne;
     this.rechercheAvanceePublicationForm.quartier = this.quartierSelectionne;
     this.rechercheAvanceePublicationForm.categorie = this.categorieSelectionnee;
 
-    sessionStorage.setItem('rechercheAvanceePublicationForm', JSON.stringify(this.rechercheAvanceePublicationForm));
+    this.publicationService.setRechercheAvanceePublicationForm(this.rechercheAvanceePublicationForm);
 
     this.router.navigate(['/annonces-immobilieres'], { queryParams: { recherche: 'avancee' } });
   }

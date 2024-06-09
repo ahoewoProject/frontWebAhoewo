@@ -14,11 +14,11 @@
     <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/demandes-certifications'] ||
-    ['/demarcheur/demandes-certifications', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/demarcheur/demandes-certifications']" [ngClass]="{'-is-active': isActive(['/demarcheur/demandes-certifications'])}">
         <i class="pi pi-verified mr15"></i>&nbsp;Certifications
     </a>
 </div>
+
 <!-- End Menu Gestion des comptes -->
 
 <!-- Start Menu Gestion des biens immobiliers -->
@@ -26,19 +26,36 @@
     <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/biens-supports'] ||
-    ['/demarcheur/biens-supports', 'id'] ||
-    ['/demarcheur/biens-supports', 'id', 'biens-associes'] ||
-    ['/demarcheur/biens-supports', 'id', 'biens-associes', 'idBienAssocie']" routerLinkActive="-is-active">
+    <a [routerLink]="['/demarcheur/biens-supports']" [ngClass]="{'-is-active': isActive(
+      ['/demarcheur/biens-supports',
+      '/demarcheur/biens/contrats',
+      '/demarcheur/biens/contrat-location',
+      '/demarcheur/biens/contrat-vente',
+      '/demarcheur/biens/contrats/planifications-paiements',
+      '/demarcheur/biens/contrats/planification-paiement',
+      '/demarcheur/biens/contrats/paiements',
+      '/demarcheur/biens/contrats/paiement'
+      ])}">
         <i class="fa-light fa-house-building mr15"></i>Biens immobiliers
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/delegations-gestions'] ||
-    ['/demarcheur/delegations-gestions', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/demarcheur/delegations-gestions']" [ngClass]="{'-is-active': isActive(
+      ['/demarcheur/delegations-gestions',
+      '/demarcheur/biens-delegues/contrats',
+      '/demarcheur/biens-delegues/contrat-location',
+      '/demarcheur/biens-delegues/contrat-vente',
+      '/demarcheur/biens-delegues/contrats/planifications-paiements',
+      '/demarcheur/biens-delegues/contrats/planification-paiement',
+      '/demarcheur/biens-delegues/contrats/paiements',
+      '/demarcheur/biens-delegues/contrats/paiement',
+      '/demarcheur/delegation-gestion/add',
+      '/demarcheur/bien-delegue/update'
+      ])}">
         <i class="fa-light fa-handshake mr15"></i>Biens délégués
     </a>
 </div>
+
 <!-- End Menu Gestion des biens immobiliers -->
 
 <!-- Start Menu Gestion de la publication des biens -->
@@ -46,11 +63,11 @@
     <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/publications'] ||
-    ['/demarcheur/publications', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/demarcheur/publications']" [ngClass]="{'-is-active': isActive(['/demarcheur/publications'])}">
         <i class="fa-light fa-share-all mr15"></i>Publication des biens
     </a>
 </div>
+
 <!-- End Menu Gestion de la publication des biens -->
 
 <!-- Start Menu Gestion des locations et ventes -->
@@ -58,36 +75,31 @@
     <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/demandes-visites'] ||
-    ['/demarcheur/demandes-visites', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/demarcheur/demandes-visites']" [ngClass]="{'-is-active': isActive(['/demarcheur/demandes-visites'])}">
         <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/demandes-locations'] ||
-    ['/demarcheur/demandes-locations', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/demarcheur/demandes-locations']" [ngClass]="{'-is-active': isActive(['/demarcheur/demandes-locations'])}">
         <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/demandes-achats'] ||
-    ['/demarcheur/demandes-achats', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/demarcheur/demandes-achats']" [ngClass]="{'-is-active': isActive(['/demarcheur/demandes-achats'])}">
         <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/contrats'] ||
-    ['/demarcheur/contrats/locations', 'id'] ||
-    ['/demarcheur/contrats/ventes', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/demarcheur/contrats']" [ngClass]="{'-is-active': isActive(['/demarcheur/contrats', '/demarcheur/contrats/locations', '/demarcheur/contrats/ventes'])}">
         <i class="fa-light fa-folders mr15"></i>Contrats
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/suivis-entretiens'] ||
-    ['/demarcheur/suivis-entretiens', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/demarcheur/suivis-entretiens']" [ngClass]="{'-is-active': isActive(['/demarcheur/suivis-entretiens'])}">
         <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
     </a>
 </div>
+
 <!-- End Menu Gestion des locations et ventes -->
 
 <!-- Start Menu Gestion des paiements -->
@@ -95,17 +107,16 @@
     <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/planifications-paiements'] ||
-    ['/demarcheur/planifications-paiements', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/demarcheur/planifications-paiements']" [ngClass]="{'-is-active': isActive(['/demarcheur/planifications-paiements'])}">
         <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/paiements'] ||
-    ['/demarcheur/paiements', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/demarcheur/paiements']" [ngClass]="{'-is-active': isActive(['/demarcheur/paiements'])}">
         <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements
     </a>
 </div>
+
 <!-- End Menu Gestion des paiements -->
 <div class="sidebar_list_item">
     <a [routerLink]="['/demarcheur/parametres']" routerLinkActive="-is-active">

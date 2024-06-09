@@ -1155,6 +1155,10 @@ export class BiensAssociesComponent implements OnInit, OnDestroy {
     }
   }
 
+  voirListeContratsBien(codeBien: string): void {
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/biens/contrats/', codeBien]);
+  }
+
   navigateURLBYUSER(user: any): string {
     let roleBasedURL = '';
 

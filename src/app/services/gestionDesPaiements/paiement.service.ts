@@ -55,12 +55,6 @@ export class PaiementService {
     return this.httpClient.get<Paiement>(this.url + 'paiement/code-planification/' + codePlanification);
   }
 
-  // Recherche d'une occurence de paiement par contrat ID;
-  // url: http://localhost:4040/api/paiement/contrat-id/{contratId}
-  findByContratId(contratId: number): Observable<Paiement> {
-    return this.httpClient.get<Paiement>(this.url + 'paiement/contrat-id/' + contratId);
-  }
-
   // Ajout d'un paiement
   // url: http://localhost:4040/api/paiement/ajouter
   ajouterPaiement(p: FormData): Observable<Paiement> {

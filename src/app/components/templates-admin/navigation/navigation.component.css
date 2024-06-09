@@ -1,42 +1,54 @@
 .notification-plus-button {
-  border-radius: 10px;
-  display: inline-block;
-  color: white;
-  font-weight: 600;
-  font-size: 15px;
-  font-style: normal;
-  letter-spacing: 0em;
-  position: relative;
-  overflow: hidden;
-  text-align: center;
-  height: 46px;
-  z-index: 0;
-  -webkit-transition: all 0.4s ease;
-  -moz-transition: all 0.4s ease;
-  -ms-transition: all 0.4s ease;
-  -o-transition: all 0.4s ease;
-  transition: all 0.4s ease;
+    border-radius: 10px;
+    display: inline-block;
+    color: white;
+    font-weight: 600;
+    font-size: 15px;
+    font-style: normal;
+    letter-spacing: 0em;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    height: 46px;
+    z-index: 0;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -ms-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
 }
 
 .-is-active {
-  background-color: #0d7915;
-  color: white !important;
+    background-color: #0d7915;
+    color: white !important;
 }
 
 :host ::ng-deep .p-badge {
-  background-color: red;
-  color: white;
+    background-color: red;
+    color: white;
 }
 
 :host ::ng-deep a:hover .p-badge {
-  background-color: red !important;
-  color: white !important;
+    background-color: red !important;
+    color: white !important;
 }
 
 .title {
-  font-family: 'DM sans', sans-serif;
+    font-family: 'DM sans', sans-serif;
 }
 
 .message {
-  font-family: 'Inter var', sans-serif;
+    font-family: 'Inter var', sans-serif;
+}
+
+:host ::ng-deep .p-sidebar-header {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: black;
+}
+
+:host ::ng-deep .p-sidebar-close {
+    border-radius: 100%;
+    margin-left: 310px;
 }

@@ -26,7 +26,7 @@ export class ListePublicationsComponent implements OnInit {
   numeroDeLaPage = 0;
   elementsParPage = 9;
   visible: boolean = false;
-
+  recherche: string = '';
   affichage = 0;
 
   regions: Region[] = [];
@@ -50,30 +50,17 @@ export class ListePublicationsComponent implements OnInit {
   constructor(private publicationService: PublicationService, private route: ActivatedRoute,
     private regionService: RegionService, private villeService: VilleService,
     private quartierService: QuartierService, private typeDeBienService: TypeDeBienService,
-    private router: Router) {
+    private router: Router
+  )
+  {
     this.APIEndpoint = environment.APIEndpoint;
   }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      if (!params['recherche']) {
-        sessionStorage.getItem('rechercheSimplePublicationForm') && sessionStorage.removeItem('rechercheSimplePublicationForm');
-        sessionStorage.getItem('rechercheAvanceePublicationForm') && sessionStorage.removeItem('rechercheAvanceePublicationForm');
-        this.regionSelectionnee = new Region();
-        this.villeSelectionnee = new Ville();
-        this.quartierSelectionne = new Quartier();
-        this.typeDeBienSelectionne = new TypeDeBien();
-        this.categorieSelectionnee = '';
-      }
+      this.recherche = params['recherche'];
+      this.handleRechercheType();
     });
-
-    if (JSON.parse(sessionStorage.getItem('rechercheSimplePublicationForm')!)) {
-      this.initRechercheSimple(this.numeroDeLaPage, this.elementsParPage);
-    } else if (JSON.parse(sessionStorage.getItem('rechercheAvanceePublicationForm')!)) {
-      this.initRechercheAvancee(this.numeroDeLaPage, this.elementsParPage);
-    } else {
-      this.initActivatedRoute(this.numeroDeLaPage, this.elementsParPage);
-    }
 
     this.listeRegionsActives();
     this.listeVillesActives();
@@ -82,43 +69,73 @@ export class ListePublicationsComponent implements OnInit {
     this.listeTypesDeBienPourVente();
   }
 
+  handleRechercheType(): void {
+    switch (this.recherche) {
+      case 'simple':
+        this.initRechercheSimple(this.numeroDeLaPage, this.elementsParPage);
+        break;
+      case 'avancee':
+        this.initRechercheAvancee(this.numeroDeLaPage, this.elementsParPage);
+        break;
+      default:
+        this.initRechercheForm();
+        this.initActivatedRoute(this.numeroDeLaPage, this.elementsParPage);
+        break;
+    }
+  }
+
+  initRechercheForm(): void {
+    this.publicationService.clearRechercheSimplePublicationForm();
+    this.publicationService.clearRechercheAvanceePublicationForm();
+    this.regionSelectionnee = new Region();
+    this.villeSelectionnee = new Ville();
+    this.quartierSelectionne = new Quartier();
+    this.typeDeBienSelectionne = new TypeDeBien();
+    this.categorieSelectionnee = '';
+  }
+
   initActivatedRoute(numeroDeLaPage: number, elementsParPage: number): void {
     this.route.queryParams.subscribe(params => {
 
       this.typeDeTransactionChoisi('Location');
 
-      const libelle = params['libelle'];
-      const designation = params['designation'];
+      const { libelle, designation, regions, nomAgence, email } = params;
 
-      const regions = params['regions'];
-
-      const nomAgence = params['nomAgence'];
-      const email = params['email'];
-
-      if (libelle) {
-        this.listePublicationsActivesParRegion(libelle, numeroDeLaPage, elementsParPage);
-      } else if (designation) {
-        this.listePublicationsActivesParTypeDeBien(designation, numeroDeLaPage, elementsParPage);
-      } else if (regions) {
-        this.listePublicationsActivesParListeRegions(numeroDeLaPage, elementsParPage);
-      } else if (nomAgence) {
-        this.listePublicationsActivesParAgence(nomAgence, numeroDeLaPage, elementsParPage);
-      } else if (email) {
-        this.listePublicationsActivesParPersonne(email, numeroDeLaPage, elementsParPage);
-      } else {
-        this.listePublicationsActives(numeroDeLaPage, elementsParPage);
+      switch (true) {
+        case !!libelle:
+          this.listePublicationsActivesParRegion(libelle, numeroDeLaPage, elementsParPage);
+          break;
+        case !!designation:
+          this.listePublicationsActivesParTypeDeBien(designation, numeroDeLaPage, elementsParPage);
+          break;
+        case !!regions:
+          this.listePublicationsActivesParListeRegions(numeroDeLaPage, elementsParPage);
+          break;
+        case !!nomAgence:
+          this.listePublicationsActivesParAgence(nomAgence, numeroDeLaPage, elementsParPage);
+          break;
+        case !!email:
+          this.listePublicationsActivesParPersonne(email, numeroDeLaPage, elementsParPage);
+          break;
+        default:
+          this.listePublicationsActives(numeroDeLaPage, elementsParPage);
       }
     });
   }
 
   initRechercheSimple(numeroDeLaPage: number, elementsParPage: number): void {
 
-    this.rechercheSimplePublicationForm = JSON.parse(sessionStorage.getItem('rechercheSimplePublicationForm')!);
+    this.rechercheSimplePublicationForm = this.publicationService.getRechercheSimplePublicationForm();
     this.typeDeTransactionChoisi(this.rechercheSimplePublicationForm.typeDeTransaction);
-    this.typeDeBienSelectionne = this.rechercheSimplePublicationForm.typeDeBien;
-    this.regionSelectionnee = this.rechercheSimplePublicationForm.quartier.ville.region;
-    this.villeSelectionnee = this.rechercheSimplePublicationForm.quartier.ville;
-    this.quartierSelectionne = this.rechercheSimplePublicationForm.quartier;
+    if (this.rechercheSimplePublicationForm.typeDeBien?.id) {
+      this.typeDeBienSelectionne = this.rechercheSimplePublicationForm.typeDeBien;
+    }
+
+    if (this.rechercheSimplePublicationForm.quartier?.ville) {
+      this.regionSelectionnee = this.rechercheSimplePublicationForm.quartier.ville.region;
+      this.villeSelectionnee = this.rechercheSimplePublicationForm.quartier.ville;
+      this.quartierSelectionne = this.rechercheSimplePublicationForm.quartier;
+    }
 
     this.rechercheSimpleDePublicationsActives(this.typeDeTransactionSelectionne, this.typeDeBienSelectionne.id,
       this.quartierSelectionne.id, numeroDeLaPage, elementsParPage);
@@ -126,12 +143,18 @@ export class ListePublicationsComponent implements OnInit {
 
   initRechercheAvancee(numeroDeLaPage: number, elementsParPage: number): void {
 
-    this.rechercheAvanceePublicationForm = JSON.parse(sessionStorage.getItem('rechercheAvanceePublicationForm')!);
+    this.rechercheAvanceePublicationForm = this.publicationService.getRechercheAvanceePublicationForm();
     this.typeDeTransactionChoisi(this.rechercheAvanceePublicationForm.typeDeTransaction);
-    this.typeDeBienSelectionne = this.rechercheAvanceePublicationForm.typeDeBien;
-    this.regionSelectionnee = this.rechercheAvanceePublicationForm.quartier.ville.region;
-    this.villeSelectionnee = this.rechercheAvanceePublicationForm.quartier.ville;
-    this.quartierSelectionne = this.rechercheAvanceePublicationForm.quartier;
+
+    if (this.rechercheAvanceePublicationForm.typeDeBien?.id) {
+      this.typeDeBienSelectionne = this.rechercheAvanceePublicationForm.typeDeBien;
+    }
+
+    if (this.rechercheAvanceePublicationForm.quartier?.ville) {
+      this.regionSelectionnee = this.rechercheAvanceePublicationForm.quartier.ville.region;
+      this.villeSelectionnee = this.rechercheAvanceePublicationForm.quartier.ville;
+      this.quartierSelectionne = this.rechercheAvanceePublicationForm.quartier;
+    }
 
     this.rechercheAvanceeDePublicationsActives(this.rechercheAvanceePublicationForm, numeroDeLaPage, elementsParPage);
   }
@@ -143,28 +166,41 @@ export class ListePublicationsComponent implements OnInit {
   // Liste Publications - Recherche Simple
   rechercheSimpleDePublicationsActives(typeDeTransaction: string, typeDeBienId: number, quartierId: number, numeroDeLaPage: number, elementsParPage: number): void {
     // this.loading = true;
-    setTimeout(() => {
-      this.publicationService.rechercheSimpleDePublicationsActives(typeDeTransaction, typeDeBienId, quartierId,
-      numeroDeLaPage, elementsParPage).subscribe(
+    // setTimeout(() => {
+    //   this.publicationService.rechercheSimpleDePublicationsActives(typeDeTransaction, typeDeBienId, quartierId,
+    //   numeroDeLaPage, elementsParPage).subscribe(
+    //     (response) => {
+    //       console.log(response)
+    //       this.publications = response;
+    //       this.loading = false;
+    //     }
+    //   );
+    // }, 5000);
+    this.publicationService.rechercheSimpleDePublicationsActives(typeDeTransaction, typeDeBienId,
+      quartierId, numeroDeLaPage, elementsParPage).subscribe(
         (response) => {
           this.publications = response;
-          // this.loading = false;
         }
       );
-    }, 5000);
   }
 
   // Liste Publications - Recherche Avancée
   rechercheAvanceeDePublicationsActives(r: RechercheAvanceePublicationForm, numeroDeLaPage: number, elementsParPage: number): void {
     // this.loading = true;
-    setTimeout(() => {
-      this.publicationService.rechercheAvanceeDePublicationsActives(r, numeroDeLaPage, elementsParPage).subscribe(
-        (response) => {
-          this.publications = response;
-          // this.loading = false;
-        }
-      );
-    }, 5000);
+    // setTimeout(() => {
+    //   this.publicationService.rechercheAvanceeDePublicationsActives(r, numeroDeLaPage, elementsParPage).subscribe(
+    //     (response) => {
+    //       this.publications = response;
+    //       this.loading = false;
+    //     }
+    //   );
+    // }, 5000);
+    this.publicationService.rechercheAvanceeDePublicationsActives(r, numeroDeLaPage,
+      elementsParPage).subscribe(
+      (response) => {
+        this.publications = response;
+      }
+    );
   }
 
   // Liste Publications Actives
@@ -231,13 +267,13 @@ export class ListePublicationsComponent implements OnInit {
   }
 
   rechercheSimpleDePublication(): void {
-    sessionStorage.getItem('rechercheAvanceePublicationForm') && sessionStorage.removeItem('rechercheAvanceePublicationForm');
+    this.publicationService.clearRechercheAvanceePublicationForm();
 
     this.rechercheSimplePublicationForm.typeDeTransaction = this.typeDeTransactionSelectionne;
     this.rechercheSimplePublicationForm.typeDeBien = this.typeDeBienSelectionne;
     this.rechercheSimplePublicationForm.quartier = this.quartierSelectionne;
 
-    sessionStorage.setItem('rechercheSimplePublicationForm', JSON.stringify(this.rechercheSimplePublicationForm));
+    this.publicationService.setRechercheSimplePublicationForm(this.rechercheSimplePublicationForm);
 
     this.rechercheSimpleDePublicationsActives(this.rechercheSimplePublicationForm.typeDeTransaction,
       this.rechercheSimplePublicationForm.typeDeBien.id, this.rechercheSimplePublicationForm.quartier.id,
@@ -249,14 +285,14 @@ export class ListePublicationsComponent implements OnInit {
 
   rechercheAvanceeDePublication(): void {
     this.visible = false;
-    sessionStorage.getItem('rechercheSimplePublicationForm') && sessionStorage.removeItem('rechercheSimplePublicationForm');
+    this.publicationService.clearRechercheSimplePublicationForm();
 
     this.rechercheAvanceePublicationForm.typeDeTransaction = this.typeDeTransactionSelectionne;
     this.rechercheAvanceePublicationForm.typeDeBien = this.typeDeBienSelectionne;
     this.rechercheAvanceePublicationForm.quartier = this.quartierSelectionne;
     this.rechercheAvanceePublicationForm.categorie = this.categorieSelectionnee;
 
-    sessionStorage.setItem('rechercheAvanceePublicationForm', JSON.stringify(this.rechercheAvanceePublicationForm));
+    this.publicationService.setRechercheAvanceePublicationForm(this.rechercheAvanceePublicationForm);
 
     this.rechercheAvanceeDePublicationsActives(this.rechercheAvanceePublicationForm, this.numeroDeLaPage, this.elementsParPage);
 
@@ -266,18 +302,22 @@ export class ListePublicationsComponent implements OnInit {
   pagination(event: any): void {
     this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    if (JSON.parse(sessionStorage.getItem('rechercheSimplePublicationForm')!)) {
-      this.initRechercheSimple(this.numeroDeLaPage, this.elementsParPage);
-    } else if (JSON.parse(sessionStorage.getItem('rechercheAvanceePublicationForm')!)) {
-      this.initRechercheAvancee(this.numeroDeLaPage, this.elementsParPage);
-    } else {
-      this.initActivatedRoute(this.numeroDeLaPage, this.elementsParPage);
+    switch (this.recherche) {
+      case 'simple':
+        this.initRechercheSimple(this.numeroDeLaPage, this.elementsParPage);
+        break;
+      case 'avancee':
+        this.initRechercheAvancee(this.numeroDeLaPage, this.elementsParPage);
+        break;
+      default:
+        this.initActivatedRoute(this.numeroDeLaPage, this.elementsParPage);
+        break;
     }
   }
 
   rafraichirListePublications(): void {
-    sessionStorage.getItem('rechercheSimplePublicationForm') && sessionStorage.removeItem('rechercheSimplePublicationForm');
-    sessionStorage.getItem('rechercheAvanceePublicationForm') && sessionStorage.removeItem('rechercheAvanceePublicationForm');
+    this.publicationService.clearRechercheSimplePublicationForm();
+    this.publicationService.clearRechercheAvanceePublicationForm();
 
     this.regionSelectionnee = new Region();
     this.villeSelectionnee = new Ville();

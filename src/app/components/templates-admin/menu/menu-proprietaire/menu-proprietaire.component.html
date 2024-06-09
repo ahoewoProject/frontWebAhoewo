@@ -19,28 +19,40 @@
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/proprietaire/demandes-certifications'] ||
-    ['/proprietaire/demandes-certifications', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/proprietaire/demandes-certifications']" [ngClass]="{'-is-active': isActive(['/proprietaire/demandes-certifications'])}">
         <i class="pi pi-verified mr15"></i>&nbsp;Certifications
     </a>
 </div>
-<!-- End Menu Gestion des comptes -->
 
 <!-- Start Menu Gestion des biens immobiliers -->
 <div>
     <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/proprietaire/biens-supports'] ||
-    ['/proprietaire/biens-supports', 'id'] ||
-    ['/proprietaire/biens-supports', 'id', 'biens-associes'] ||
-    ['/proprietaire/biens-supports', 'id', 'biens-associes', 'idBienAssocie']" routerLinkActive="-is-active">
+    <a [routerLink]="['/proprietaire/biens-supports']" [ngClass]="{'-is-active': isActive(
+      ['/proprietaire/biens-supports',
+      '/proprietaire/biens/contrats',
+      '/proprietaire/biens/contrat-location',
+      '/proprietaire/biens/contrat-vente',
+      '/proprietaire/biens/planifications-paiements',
+      '/proprietaire/biens/planification-paiement',
+      '/proprietaire/biens/contrats/paiements',
+      '/proprietaire/biens/contrats/paiement'
+      ])}">
         <i class="fa-light fa-house-building mr15"></i>Biens immobiliers
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/proprietaire/delegations-gestions'] ||
-    ['/proprietaire/delegations-gestions', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/proprietaire/delegations-gestions']" [ngClass]="{'-is-active': isActive(
+      ['/proprietaire/delegations-gestions',
+      '/proprietaire/biens-delegues/contrats',
+      '/proprietaire/biens-delegues/contrat-location',
+      '/proprietaire/biens-delegues/contrat-vente',
+      '/proprietaire/biens-delegues/contrats/planifications-paiements',
+      '/proprietaire/biens-delegues/contrats/planification-paiement',
+      '/proprietaire/biens-delegues/contrats/paiements',
+      '/proprietaire/biens-delegues/contrats/paiement'
+      ])}">
         <i class="fa-light fa-handshake mr15"></i>Biens délégués
     </a>
 </div>
@@ -51,8 +63,7 @@
     <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/proprietaire/publications'] ||
-    ['/proprietaire/publications', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/proprietaire/publications']" [ngClass]="{'-is-active': isActive(['/proprietaire/publications'])}">
         <i class="fa-light fa-share-all mr15"></i>Publication des biens
     </a>
 </div>
@@ -63,33 +74,27 @@
     <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/proprietaire/demandes-visites'] ||
-    ['/proprietaire/demandes-visites', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/proprietaire/demandes-visites']" [ngClass]="{'-is-active': isActive(['/proprietaire/demandes-visites'])}">
         <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/proprietaire/demandes-locations'] ||
-    ['/proprietaire/demandes-locations', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/proprietaire/demandes-locations']" [ngClass]="{'-is-active': isActive(['/proprietaire/demandes-locations'])}">
         <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/proprietaire/demandes-achats'] ||
-    ['/proprietaire/demandes-achats', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/proprietaire/demandes-achats']" [ngClass]="{'-is-active': isActive(['/proprietaire/demandes-achats'])}">
         <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/proprietaire/contrats'] ||
-    ['/proprietaire/contrats/locations', 'id'] ||
-    ['/proprietaire/contrats/ventes', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/proprietaire/contrats']" [ngClass]="{'-is-active': isActive(['/proprietaire/contrats'])}">
         <i class="fa-light fa-folders mr15"></i>Contrats
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/proprietaire/suivis-entretiens'] ||
-    ['/proprietaire/suivis-entretiens', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/proprietaire/suivis-entretiens']" [ngClass]="{'-is-active': isActive(['/proprietaire/suivis-entretiens'])}">
         <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
     </a>
 </div>
@@ -100,18 +105,17 @@
     <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/proprietaire/planifications-paiements'] ||
-    ['/proprietaire/planifications-paiements', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/proprietaire/planifications-paiements']" [ngClass]="{'-is-active': isActive(['/proprietaire/planifications-paiements'])}">
         <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/proprietaire/paiements'] ||
-    ['/proprietaire/paiements', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/proprietaire/paiements']" [ngClass]="{'-is-active': isActive(['/proprietaire/paiements'])}">
         <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements
     </a>
 </div>
 <!-- End Menu Gestion des paiements -->
+
 <div class="sidebar_list_item">
     <a [routerLink]="['/proprietaire/parametres']" routerLinkActive="-is-active">
         <i class="fa-light fa-gear mr15"></i>&nbsp;&nbsp;Paramètres

@@ -19,24 +19,13 @@ import { ContratVente } from 'src/app/models/gestionDesLocationsEtVentes/Contrat
 import { Paiement } from 'src/app/models/gestionDesPaiements/Paiement';
 import { PlanificationPaiement } from 'src/app/models/gestionDesPaiements/PlanificationPaiement';
 import { Motif } from 'src/app/models/Motif';
-import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { BienImmAssocieService } from 'src/app/services/gestionDesBiensImmobiliers/bien-imm-associe.service';
 import { BienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/bien-immobilier.service';
 import { CaracteristiquesService } from 'src/app/services/gestionDesBiensImmobiliers/caracteristiques.service';
 import { DelegationGestionService } from 'src/app/services/gestionDesBiensImmobiliers/delegation-gestion.service';
 import { ImagesBienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/images-bien-immobilier.service';
-import { PaysService } from 'src/app/services/gestionDesBiensImmobiliers/pays.service';
-import { QuartierService } from 'src/app/services/gestionDesBiensImmobiliers/quartier.service';
-import { RegionService } from 'src/app/services/gestionDesBiensImmobiliers/region.service';
-import { TypeDeBienService } from 'src/app/services/gestionDesBiensImmobiliers/type-de-bien.service';
-import { VilleService } from 'src/app/services/gestionDesBiensImmobiliers/ville.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
-import { ContratLocationService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-location.service';
-import { ContratVenteService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-vente.service';
-import { PaiementService } from 'src/app/services/gestionDesPaiements/paiement.service';
-import { PlanificationPaiementService } from 'src/app/services/gestionDesPaiements/planification-paiement.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
-import { MotifService } from 'src/app/services/motif.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -60,48 +49,18 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
   affichage = 1;
   visibleAddForm = 0;
   activeIndex: number = 0;
-  activeIndexContrat: number = 0;
 
   elementsParPage = 5; // Nombre d'éléments par page
   numeroDeLaPage = 0; // Page actuelle
-
-  elementsParPageContratVente = 5;
-  elementsParPageContratLocation = 5
-  numeroDeLaPageContratVente = 0;
-  numeroDeLaPageContratLocation = 0;
-
-  elementsParPagePlanification = 5;
-  numeroDeLaPagePlanification = 0;
-
-  elementsParPagePaiement =  5;
-  numeroDeLaPagePaiement = 0;
 
   delegationGestion = this.delegationGestionService.delegationGestion;
   delegationGestionForm2: DelegationGestionForm2 = new DelegationGestionForm2();
   bienImmobilier!: any;
   bienImmAssocie!: any;
-  codeBien!: any;
-  contrat!: any;
-  contratsLocations!: Page<ContratLocation>;
-  contratsVentes!: Page<ContratVente>;
-  paiements!: Page<Paiement>;
-  contratBien!: any;
   delegationGestions!: Page<DelegationGestion>;
   images: ImagesBienImmobilier[] = [];
-  agencesImmobilieres: AgenceImmobiliere[] = [];
-  typesDeBien: TypeDeBien[] = [];
-  listeDesPays: Pays[] = [];
-  regions: Region[] = [];
-  villes: Ville[] = [];
-  quartiers: Quartier[] = [];
   caracteristique: Caracteristiques = new Caracteristiques();
-  agenceSelectionnee = new AgenceImmobiliere();
-  typeDeBienSelectionne = new TypeDeBien();
   categorieSelectionnee = '';
-  paysSelectionne = new Pays();
-  regionSelectionnee = new Region();
-  villeSelectionnee = new Ville();
-  quartierSelectionne = new Quartier();
   messageErreur: string = "";
   messageSuccess: string | null = null;
   step1Form: any;
@@ -110,6 +69,7 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
   APIEndpoint: string;
 
   delegationReussie: any;
+  modificationReussie: any;
   delegationGestionData: FormData = new FormData();
   bienImmobilierData: FormData = new FormData();
 
@@ -124,15 +84,10 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
 
   constructor(private delegationGestionService: DelegationGestionService, private personneService: PersonneService,
     private messageService: MessageService, private bienImmobilierService: BienImmobilierService,
-    private activatedRoute: ActivatedRoute, private paysService: PaysService,
-    private regionService: RegionService, private villeService: VilleService,
-    private quartierService: QuartierService, private caracteristiqueService: CaracteristiquesService,
+    private activatedRoute: ActivatedRoute, private caracteristiqueService: CaracteristiquesService,
     private confirmationService: ConfirmationService, private imagesBienImmobilierService: ImagesBienImmobilierService,
-    private agenceImmobiliereService: AgenceImmobiliereService, private typeDeBienService: TypeDeBienService,
     private bienImmAssocieService: BienImmAssocieService, private publicationService: PublicationService,
-    private router: Router, private contratLocationService: ContratLocationService,
-    private contratVenteService: ContratVenteService, private motifService: MotifService,
-    private planificationPaiementService: PlanificationPaiementService, private paiementService: PaiementService
+    private router: Router
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -142,25 +97,16 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.delegationReussie = this.activatedRoute.snapshot.queryParamMap.get('delegationReussie') || '';
+    this.modificationReussie = this.activatedRoute.snapshot.queryParamMap.get('modificationReussie') || '';
+
     this.initActivatedRoute();
     this.initialiserPublicationForm();
     this.publicationForm.get('prixDuBien').valueChanges.subscribe((value: number) => {
       this.updateCommissionInputState(value);
     });
     this.initResponsiveOptions();
-    this.menusOfTerrain();
 
-    this.initStep1Form();
-    this.initStep2Form();
-
-
-    this.listeTypesDeBienActifs();
-    this.listePaysActifs();
-    this.listeRegionsActives();
-    this.listeVillesActives();
-    this.listeQuartiersActifs();
     this.listeDelegationsGestions(this.numeroDeLaPage, this.elementsParPage);
-    this.getAgencesImmobilieresListIfUserActif();
   }
 
   initResponsiveOptions(): void {
@@ -184,61 +130,6 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     this.activeIndex = event;
   }
 
-  menusOfTerrain(): void {
-    this.menus = [
-      {
-          label: 'Description',
-          command: (event: any) => this.messageService.add({severity:'info', summary:'1ère étape', detail: event.item.label})
-      },
-      {
-          label: 'Localisation',
-          command: (event: any) => this.messageService.add({severity:'info', summary:'2ème étape', detail: event.item.label})
-      },
-      {
-          label: 'Confirmation',
-          command: (event: any) => this.messageService.add({severity:'info', summary:'3ème étape', detail: event.item.label})
-      },
-    ];
-  }
-
-  menusOfMaisonImmeubleAndVilla(): void {
-    this.menus = [
-      {
-          label: 'Description',
-          command: (event: any) => this.messageService.add({severity:'info', summary:'1ère étape', detail: event.item.label})
-      },
-      {
-          label: 'Localisation',
-          command: (event: any) => this.messageService.add({severity:'info', summary:'2ème étape', detail: event.item.label})
-      },
-      {
-          label: 'Caractéristiques',
-          command: (event: any) => this.messageService.add({severity:'info', summary:'3ème étape', detail: event.item.label})
-      },
-      {
-          label: 'Confirmation',
-          command: (event: any) => this.messageService.add({severity:'info', summary:'4ème étape', detail: event.item.label})
-      },
-    ];
-  }
-
-  menusOfOtherTypeDeBien(): void {
-    this.menus = [
-      {
-          label: 'Description',
-          command: (event: any) => this.messageService.add({severity:'info', summary:'1ère étape', detail: event.item.label})
-      },
-      {
-          label: 'Caractéristiques',
-          command: (event: any) => this.messageService.add({severity:'info', summary:'2ème étape', detail: event.item.label})
-      },
-      {
-          label: 'Confirmation',
-          command: (event: any) => this.messageService.add({severity:'info', summary:'4ème étape', detail: event.item.label})
-      },
-    ];
-  }
-
   initActivatedRoute(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       const id = params.get('id');
@@ -254,82 +145,15 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     });
   }
 
-  initStep1Form(): void {
-    this.step1Form = new FormGroup({
-      typeDeBien: new FormControl('', [Validators.required]),
-      categorie: new FormControl('', [Validators.required]),
-      agenceImmobiliere: new FormControl(''),
-      matriculeProprietaire: new FormControl(''),
-      matriculeBienImmo: new FormControl(''),
-      surface: new FormControl(''),
-      description: new FormControl(''),
-    })
-  }
-
-  initStep2Form(): void {
-    this.step2Form = new FormGroup({
-      pays: new FormControl('', [Validators.required]),
-      region: new FormControl('', [Validators.required]),
-      ville: new FormControl('', [Validators.required]),
-      quartier: new FormControl('', [Validators.required]),
-      adresse: new FormControl('')
-    })
-  }
-
-  get typeDeBien() {
-    return this.step1Form.get('typeDeBien');
-  }
-
-  get categorie() {
-    return this.step1Form.get('categorie');
-  }
-
-  get agenceImmobiliere() {
-    return this.step1Form.get('agenceImmobiliere');
-  }
-
-  get matriculeProprietaire() {
-    return this.step1Form.get('matriculeProprietaire');
-  }
-
-  get matriculeBienImmo() {
-    return this.step1Form.get('matriculeBienImmo');
-  }
-
-  get pays() {
-    return this.step2Form.get('pays');
-  }
-
-  get region() {
-    return this.step2Form.get('region');
-  }
-
-  get ville() {
-    return this.step2Form.get('ville');
-  }
-
-  get quartier() {
-    return this.step2Form.get('quartier');
-  }
-
-  get adresse() {
-    return this.step2Form.get('adresse');
-  }
-
-  get surface() {
-    return this.step1Form.get('surface');
-  }
-
-  get description() {
-    return this.step1Form.get('description');
-  }
-
   listeDelegationsGestions(numeroDeLaPage: number, elementsParPage: number): void {
     this.delegationGestionService.getDelegationsGestionsPaginees(numeroDeLaPage, elementsParPage).subscribe(
       (data) => {
         this.delegationGestions = data;
         if (this.delegationReussie) {
           this.messageService.add({ severity: 'success', summary: 'Délégation de gestion réussie', detail: 'Le bien correspondant a été délégué avec succès.' });
+        }
+        if (this.modificationReussie) {
+          this.messageService.add({ severity: 'success', summary: 'Modification réussie', detail: 'Le bien délégué a été modifié avec succès.' });
         }
       }
     )
@@ -343,76 +167,10 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     );
   }
 
-  //Fonction pour recupérer la liste des agences immobilieres(Responsable/Agent immobilier)
-  getAgencesImmobilieresListIfUserActif(): void {
-    this.agenceImmobiliereService.getAgencesImmobilieresListIfUserActif().subscribe(
-      (response) => {
-        this.agencesImmobilieres = response;
-      }
-    );
-  }
-
-  //Fonction pour recupérer la liste des types de bien actifs
-  listeTypesDeBienActifs(): void {
-    this.typeDeBienService.getTypeDeBienActifs().subscribe(
-      (response) => {
-        this.typesDeBien = response;
-      }
-    );
-  }
-
-  //Fonction pour recupérer la liste des pays actifs
-  listePaysActifs(): void {
-    this.paysService.getPaysActifs().subscribe(
-      (response) => {
-        this.listeDesPays = response;
-      }
-    );
-  }
-
-  //Fonction pour recupérer la liste des régions actives
-  listeRegionsActives(): void {
-    this.regionService.getRegionsActives().subscribe(
-      (response) => {
-        this.regions = response;
-      }
-    );
-  }
-
-  //Fonction pour recupérer la liste des villes actives
-  listeVillesActives(): void {
-    this.villeService.getVillesActives().subscribe(
-      (response) => {
-        this.villes = response;
-      }
-    );
-  }
-
-  //Fonction pour recupérer la liste des quartiers actifs
-  listeQuartiersActifs(): void {
-    this.quartierService.getQuartiersActifs().subscribe(
-      (response) => {
-        this.quartiers = response;
-      }
-    );
-  }
-
   voirListeDelegationsGestions(): void {
-    this.step1Form.reset();
-    this.step2Form.reset();
     this.resetPublicationForm();
     this.imgURLs = [];
     this.imagesBienImmobilier = [];
-    this.delegationGestionForm2 = new DelegationGestionForm2();
-    this.typeDeBienSelectionne = new TypeDeBien();
-    this.categorieSelectionnee = '';
-    this.paysSelectionne = new Pays();
-    this.regionSelectionnee = new Region();
-    this.villeSelectionnee = new Ville();
-    this.quartierSelectionne = new Quartier();
-    this.delegationGestionData.delete('images');
-    this.delegationGestionData.delete('delegationGestionJson');
-    this.delegationGestionData.delete('caracteristiquesJson');
     this.affichage = 1;
     this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegations-gestions']);
   }
@@ -437,11 +195,9 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     this.bienImmobilierService.findById(id).subscribe(
       (response) => {
         this.bienImmobilier = response;
-        this.typeDeBienSelectionne = response.typeDeBien;
-        if (this.typeDeBienSelectionne.designation !== 'Terrain') {
+        if (response.typeDeBien.designation !== 'Terrain') {
           this.detailCaracteristiques(id);
         }
-        this.validateUpdateBienForm();
       }
     );
   }
@@ -451,9 +207,7 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     this.bienImmAssocieService.findById(id).subscribe(
       (response) => {
         this.bienImmAssocie = response;
-        this.typeDeBienSelectionne = response.typeDeBien;
         this.detailCaracteristiques(id);
-        this.validateUpdateBienForm();
       }
     );
   }
@@ -469,6 +223,10 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+
+  isTypeDeBienTerrain(designation: string): boolean {
+    return designation == 'Terrain'
   }
 
   isBienAssocie(designation: string): boolean {
@@ -493,200 +251,10 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegations-gestions', idDelegationGestion], { queryParams: { idBien: idBien } });
   }
 
-  //Fonction pour sélectionner une agence immobiliere
-  agenceChoisie(event: any) {
-    this.agenceSelectionnee = event.value;
-  }
-
-  //Fonction pour sélectionner un type de bien
-  typeDeBienChoisi(event: any) {
-    this.typeDeBienSelectionne = event.value;
-    if  (this.typeDeBienSelectionne.designation == 'Terrain') {
-      this.menusOfTerrain();
-    } else if (this.typeDeBienSelectionne.designation == 'Maison' || this.typeDeBienSelectionne.designation == 'Immeuble' || this.typeDeBienSelectionne.designation == 'Villa') {
-      this.menusOfMaisonImmeubleAndVilla();
-    } else {
-      this.menusOfOtherTypeDeBien();
-    }
-
-    if (this.typeDeBienSelectionne.designation == 'Immeuble' || this.typeDeBienSelectionne.designation == 'Appartement' || this.typeDeBienSelectionne.designation == 'Bureau') {
-      this.listeDesCategories = ['Non meublé','Meublé'];
-      this.categorieSelectionnee = this.listeDesCategories[0];
-    } else if (this.typeDeBienSelectionne.designation == 'Chambre' || this.typeDeBienSelectionne.designation == 'Chambre salon' || this.typeDeBienSelectionne.designation == 'Villa' || this.typeDeBienSelectionne.designation == 'Maison') {
-      this.listeDesCategories = ['Non meublée', 'Meublée'];
-      this.categorieSelectionnee = this.listeDesCategories[0];
-    }
-    this.validateDelegationGestionForm();
-  }
-
-  //Fonction pour sélectionner une catégorie pour un type de bien
-  categorieChoisie(event: any) {
-    this.categorieSelectionnee = event.value;
-  }
-
-  //Fonction pour sélectionner un pays
-  paysChoisi(event: any) {
-    this.paysSelectionne = event.value;
-    this.regionService.getRegionsByPaysId(this.paysSelectionne.id).subscribe(
-      (response) => {
-        this.regions = response;
-      }
-    );
-    this.regionSelectionnee = new Region();
-    this.villeSelectionnee = new Ville();
-    this.quartierSelectionne = new Quartier();
-  }
-
-  //Fonction pour sélectionner une région
-  regionChoisie(event: any) {
-    this.regionSelectionnee = event.value;
-    this.villeService.getVillesByRegionId(this.regionSelectionnee.id).subscribe(
-      (response) => {
-        this.villes = response;
-      }
-    );
-    this.villeSelectionnee = new Ville();
-    this.quartierSelectionne = new Quartier();
-  }
-
-  //Fonction pour sélectionner une ville
-  villeChoisie(event: any) {
-    this.villeSelectionnee = event.value;
-    this.quartierService.getQuartiersByVilleId(this.villeSelectionnee.id).subscribe(
-      (response) => {
-        this.quartiers = response;
-      }
-    );
-    this.quartierSelectionne = new Quartier();
-  }
-
-  //Fonction pour sélectionner un quartier
-  quartierChoisi(event: any) {
-    this.quartierSelectionne = event.value;
-  }
-
   afficherChampCategorie(designation: string): boolean {
     return designation == 'Chambre' || designation == 'Chambre salon' || designation == 'Bureau' ||
     designation == 'Appartement' || designation == 'Villa' || designation == 'Maison' ||
     designation == 'Immeuble';
-  }
-
-  //Fonction pour téléchager les images associés à un bien immobilier
-  async telechargerImagesBienImmobilier(event: any) {
-    for (let file of event.files) {
-      this.imagesBienImmobilier.push(file);
-      await this.readFileAsDataURL(file);
-    }
-    this.messageSuccess = "Les images ont été téléchargées avec succès.";
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Opération de téléchargement réussie',
-      detail: this.messageSuccess
-    });
-  }
-
-  readFileAsDataURL(file: File): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (_event) => {
-        this.imgURLs.push(reader.result as string);
-        console.log(this.imgURLs);
-        resolve();
-      };
-      reader.onerror = (_event) => {
-        reject(reader.error);
-      };
-    });
-  }
-
-  validateDelegationGestionForm(): void {
-    this.setTypeDeBienValidators();
-    this.setOtherValidatorsBasedOnRole();
-
-    this.typeDeBien.updateValueAndValidity();
-    this.categorie.updateValueAndValidity();
-    this.matriculeProprietaire.updateValueAndValidity();
-    this.matriculeBienImmo.updateValueAndValidity();
-    this.agenceImmobiliere.updateValueAndValidity();
-    this.pays.updateValueAndValidity();
-    this.region.updateValueAndValidity();
-    this.ville.updateValueAndValidity();
-    this.quartier.updateValueAndValidity();
-    this.adresse.updateValueAndValidity();
-    this.surface.updateValueAndValidity();
-    this.description.updateValueAndValidity();
-  }
-
-  private setTypeDeBienValidators(): void {
-    this.typeDeBien.setValidators([Validators.required]);
-    this.surface.clearValidators();
-    this.description.clearValidators();
-    this.adresse.clearValidators();
-
-    if (this.isTypeDeBienMaisonImmeubleOrVilla()) {
-      this.categorie.setValidators([Validators.required]);
-      this.matriculeProprietaire.setValidators([Validators.required]);
-      this.matriculeBienImmo.clearValidators();
-      this.pays.setValidators([Validators.required]);
-      this.region.setValidators([Validators.required]);
-      this.ville.setValidators([Validators.required]);
-      this.quartier.setValidators([Validators.required]);
-    } else if (this.isTypeDeBienTerrain()) {
-      this.categorie.clearValidators();
-      this.matriculeProprietaire.setValidators([Validators.required]);
-      this.matriculeBienImmo.clearValidators();
-      this.pays.setValidators([Validators.required]);
-      this.region.setValidators([Validators.required]);
-      this.ville.setValidators([Validators.required]);
-      this.quartier.setValidators([Validators.required]);
-    } else if (this.isTypeDeBienBoutiqueOrMagasin()) {
-      this.categorie.clearValidators();
-      this.matriculeProprietaire.clearValidators();
-      this.matriculeBienImmo.setValidators([Validators.required]);
-      this.pays.clearValidators();
-      this.region.clearValidators();
-      this.ville.clearValidators();
-      this.quartier.clearValidators();
-    } else {
-      this.categorie.setValidators([Validators.required]);
-      this.matriculeProprietaire.clearValidators();
-      this.matriculeBienImmo.setValidators([Validators.required]);
-      this.pays.clearValidators();
-      this.region.clearValidators();
-      this.ville.clearValidators();
-      this.quartier.clearValidators();
-    }
-  }
-
-  private isTypeDeBienTerrain(): boolean {
-    return this.typeDeBienSelectionne.designation == 'Terrain';
-  }
-
-  private isTypeDeBienMaisonImmeubleOrVilla(): boolean {
-    return this.typeDeBienSelectionne.designation == 'Maison' ||
-    this.typeDeBienSelectionne.designation == 'Immeuble' ||
-    this.typeDeBienSelectionne.designation == 'Villa';
-  }
-
-  private isTypeDeBienBoutiqueOrMagasin(): boolean {
-    return this.typeDeBienSelectionne.designation == 'Boutique' || this.typeDeBienSelectionne.designation == 'Magasin';
-  }
-
-  private setOtherValidatorsBasedOnRole(): void {
-    if (this.isUserDemarcheurOrGerant()) {
-      this.agenceImmobiliere.clearValidators();
-    } else {
-      if (this.isTypeDeBienMaisonImmeubleOrVilla() || this.isTypeDeBienTerrain()) {
-        this.agenceImmobiliere.setValidators([Validators.required]);
-      } else {
-        this.agenceImmobiliere.clearValidators();
-      }
-    }
-  }
-
-  private isUserDemarcheurOrGerant(): boolean {
-    return this.user.role.code == 'ROLE_DEMARCHEUR' || this.user.role.code == 'ROLE_GERANT';
   }
 
   accepterDelegationGestion(id: number): void {
@@ -697,7 +265,7 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
       accept: () => {
         this.delegationGestionService.accepterDelegationGestion(id).subscribe(
           (response) => {
-            this.voirListeDelegationsGestions()
+            this.listeDelegationsGestions(this.numeroDeLaPage, this.elementsParPage);
             this.messageSuccess = "La délégation de la gestion de ce bien a été accepté avec succès !";
             this.messageService.add({
               severity: 'success',
@@ -752,7 +320,7 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.delegationGestionService.refuserDelegationGestion(id).subscribe(response=>{
-          this.voirListeDelegationsGestions()
+          this.listeDelegationsGestions(this.numeroDeLaPage, this.elementsParPage);
           this.messageSuccess = "La délégation de la gestion de ce bien a été refusé avec succès !";
           this.messageService.add({
             severity: 'success',
@@ -789,7 +357,7 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.delegationGestionService.activerDelegationGestion(id).subscribe(response=>{
-          this.voirListeDelegationsGestions()
+          this.listeDelegationsGestions(this.numeroDeLaPage, this.elementsParPage);
           this.messageSuccess = "La délégation de la gestion de ce bien a été activé avec succès !";
           this.messageService.add({
             severity: 'success',
@@ -826,7 +394,7 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.delegationGestionService.desactiverDelegationGestion(id).subscribe(response=>{
-          this.voirListeDelegationsGestions()
+          this.listeDelegationsGestions(this.numeroDeLaPage, this.elementsParPage);
           this.messageSuccess = "La délégation de la gestion de ce bien a été désactivé avec succès !";
           this.messageService.add({
             severity: 'success',
@@ -856,535 +424,13 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     });
   }
 
-  //Fonction pour afficher la deuxième étape d'un formulaire step by step
-  afficherFormStep3(designation: string): boolean {
-    return designation !== 'Terrain';
-  }
-
-  //Fonction pour la non affichage de la deuxième étape d'un formulaire step by step
-  nePasAfficherFormStep3(designation: string): boolean {
-    return designation == 'Terrain';
-  }
-
-  resetFormStep1(): void {
-    this.step1Form.reset();
-    this.imagesBienImmobilier = [];
-    this.imgURLs = [];
-  }
-
-  etape1(): void {
-    this.activeIndex = 0;
-    this.onActiveIndexChange(this.activeIndex);
-  }
-
-  etape2(): void {
-    this.activeIndex = 1;
-    this.onActiveIndexChange(this.activeIndex);
-  }
-
-  etape3(): void {
-    this.activeIndex = 2;
-    this.onActiveIndexChange(this.activeIndex);
-  }
-
-  etape4(): void {
-    this.activeIndex = 3;
-    this.onActiveIndexChange(this.activeIndex);
-  }
-
-  check(): void {}
-
   //Fonction pour afficher le formulaire déléguer un bien
   afficherFormulaireEnregistrerDelegation(): void {
-    this.listeDesChoix = [ 'Totale', 'Partielle'];
-    this.checked = this.listeDesChoix[0];
-    this.activeIndex = 0;
-    this.caracteristique = new Caracteristiques();
-    this.typeDeBienSelectionne = this.typesDeBien[0]
-    this.agenceSelectionnee = this.agencesImmobilieres[0];
-    this.validateDelegationGestionForm();
-    this.affichage = 3;
-  }
-
-  enregistrerDelegationGestion(): void {
-    if (this.typeDeBienSelectionne.designation == 'Terrain' || this.typeDeBienSelectionne.designation == 'Maison' ||
-      this.typeDeBienSelectionne.designation == 'Immeuble' || this.typeDeBienSelectionne.designation == 'Villa') {
-      this.deleguerNotBienAssocie();
-    } else {
-      this.deleguerBienAssocie();
-    }
-  }
-
-  deleguerNotBienAssocie(): void {
-    if (this.isUserDemarcheurOrGerant()) {
-      this.deleguerNotBienAssocieIfUserDemarcheurOrGerant();
-    } else {
-      this.deleguerNotBienAssocieIfUserNotDemarcheurOrGerant();
-    }
-  }
-
-  deleguerNotBienAssocieIfUserDemarcheurOrGerant(): void {
-    this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
-    this.delegationGestionForm2.categorie = this.categorieSelectionnee;
-    this.delegationGestionForm2.quartier = this.quartierSelectionne;
-
-    for (const image of this.imagesBienImmobilier) {
-      this.delegationGestionData.append('images', image);
-    }
-
-    this.delegationGestionData.append('delegationGestionJson', JSON.stringify(this.delegationGestionForm2));
-    this.delegationGestionData.append('caracteristiquesJson', JSON.stringify(this.caracteristique));
-
-    this.delegationGestionService.enregistrerDelegationGestion(this.delegationGestionData).subscribe(
-      (response) => {
-        console.log(response)
-        if (response.id > 0) {
-          this.voirListeDelegationsGestions();
-          this.messageSuccess = "Le délégation de gestion a été enregistrer avec succès.";
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Enregistrement réussi',
-            detail: this.messageSuccess
-          });
-        } else {
-          this.delegationGestionData.delete('images');
-          this.delegationGestionData.delete('delegationGestionJson');
-          this.delegationGestionData.delete('caracteristiquesJson');
-          this.messageErreur = "Erreur lors de l'enregistrement !"
-          this.afficherFormulaireEnregistrerDelegation();
-          this.messageService.add({
-            severity: 'error',
-            summary: "Erreur d'ajout",
-            detail: this.messageErreur
-          });
-        }
-    },
-    (error) => {
-      this.delegationGestionData.delete('images');
-      this.delegationGestionData.delete('delegationGestionJson');
-      this.delegationGestionData.delete('caracteristiquesJson');
-      if (error.error === "La matricule du propriétaire est introuvable !") {
-        this.messageErreur = "La matricule du propriétaire est introuvable !";
-        this.messageService.add({
-          severity: 'warn',
-          summary: "Erreur d'enregistrement",
-          detail: this.messageErreur
-        });
-      } else if (error.error === "Le code de l'immeuble ou de la maison est introuvable !") {
-        this.messageErreur = "Le code de l'immeuble ou de la maison est introuvable !";
-        this.messageService.add({
-          severity: 'warn',
-          summary: "Erreur d'enregistrement",
-          detail: this.messageErreur
-        });
-      }
-    })
-  }
-
-  deleguerNotBienAssocieIfUserNotDemarcheurOrGerant(): void {
-    this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
-    this.delegationGestionForm2.categorie = this.categorieSelectionnee;
-    this.delegationGestionForm2.agenceImmobiliere = this.agenceSelectionnee;
-    this.delegationGestionForm2.quartier = this.quartierSelectionne;
-
-    for (const image of this.imagesBienImmobilier) {
-      this.delegationGestionData.append('images', image);
-    }
-
-    this.delegationGestionData.append('delegationGestionJson', JSON.stringify(this.delegationGestionForm2));
-    this.delegationGestionData.append('caracteristiquesJson', JSON.stringify(this.caracteristique));
-
-    this.delegationGestionService.enregistrerDelegationGestion(this.delegationGestionData).subscribe(
-      (response) => {
-        if (response.id > 0) {
-          this.voirListeDelegationsGestions();
-          this.messageSuccess = "Le délégation de gestion a été enregistrer avec succès.";
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Enregistrement réussi',
-            detail: this.messageSuccess
-          });
-        } else {
-          this.delegationGestionData.delete('images');
-          this.delegationGestionData.delete('delegationGestionJson');
-          this.delegationGestionData.delete('caracteristiquesJson');
-          this.messageErreur = "Erreur lors de l'enregistrement !"
-          this.afficherFormulaireEnregistrerDelegation();
-          this.messageService.add({
-            severity: 'error',
-            summary: "Erreur d'enregistrement",
-            detail: this.messageErreur
-          });
-        }
-    },
-    (error) => {
-      this.delegationGestionData.delete('images');
-      this.delegationGestionData.delete('delegationGestionJson');
-      this.delegationGestionData.delete('caracteristiquesJson');
-      if (error.error === "La matricule du propriétaire est introuvable !") {
-        this.messageErreur = "La matricule du propriétaire est introuvable !";
-        this.messageService.add({
-          severity: 'warn',
-          summary: "Erreur d'enregistrement",
-          detail: this.messageErreur
-        });
-      } else if (error.error === "Le code de l'immeuble ou de la maison est introuvable !") {
-        this.messageErreur = "Le code de l'immeuble ou de la maison est introuvable !";
-        this.messageService.add({
-          severity: 'warn',
-          summary: "Erreur d'enregistrement",
-          detail: this.messageErreur
-        });
-      }
-    })
-  }
-
-  deleguerBienAssocie(): void {
-    if (this.isUserDemarcheurOrGerant()) {
-      this.deleguerBienAssocieIfUserDemarcheurOrGerant();
-    } else {
-      this.deleguerBienAssocieIfUserNotDemarcheurOrGerant();
-    }
-  }
-
-  deleguerBienAssocieIfUserDemarcheurOrGerant(): void {
-    this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
-    this.delegationGestionForm2.categorie = this.categorieSelectionnee;
-
-    for (const image of this.imagesBienImmobilier) {
-      this.delegationGestionData.append('images', image);
-    }
-
-    this.delegationGestionData.append('delegationGestionJson', JSON.stringify(this.delegationGestionForm2));
-    this.delegationGestionData.append('caracteristiquesJson', JSON.stringify(this.caracteristique));
-
-    this.delegationGestionService.enregistrerDelegationGestion(this.delegationGestionData).subscribe(
-      (response) => {
-        console.log(response)
-        if (response.id > 0) {
-          this.voirListeDelegationsGestions();
-          this.messageSuccess = "Le délégation de gestion a été enregistrer avec succès.";
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Enregistrement réussi',
-            detail: this.messageSuccess
-          });
-        } else {
-          this.delegationGestionData.delete('images');
-          this.delegationGestionData.delete('delegationGestionJson');
-          this.delegationGestionData.delete('caracteristiquesJson');
-          this.messageErreur = "Erreur lors de l'enregistrement !"
-          this.afficherFormulaireEnregistrerDelegation();
-          this.messageService.add({
-            severity: 'error',
-            summary: "Erreur d'ajout",
-            detail: this.messageErreur
-          });
-        }
-    },
-    (error) => {
-      this.delegationGestionData.delete('images');
-      this.delegationGestionData.delete('delegationGestionJson');
-      this.delegationGestionData.delete('caracteristiquesJson');
-      if (error.error === "La matricule du propriétaire est introuvable !") {
-        this.messageErreur = "La matricule du propriétaire est introuvable !";
-        this.messageService.add({
-          severity: 'warn',
-          summary: "Erreur d'enregistrement",
-          detail: this.messageErreur
-        });
-      } else if (error.error === "Le code de l'immeuble ou de la maison est introuvable !") {
-        this.messageErreur = "Le code de l'immeuble ou de la maison est introuvable !";
-        this.messageService.add({
-          severity: 'warn',
-          summary: "Erreur d'enregistrement",
-          detail: this.messageErreur
-        });
-      }
-    })
-  }
-
-  deleguerBienAssocieIfUserNotDemarcheurOrGerant(): void {
-    this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
-    this.delegationGestionForm2.categorie = this.categorieSelectionnee;
-    this.delegationGestionForm2.agenceImmobiliere = this.agenceSelectionnee;
-
-    for (const image of this.imagesBienImmobilier) {
-      this.delegationGestionData.append('images', image);
-    }
-
-    this.delegationGestionData.append('delegationGestionJson', JSON.stringify(this.delegationGestionForm2));
-    this.delegationGestionData.append('caracteristiquesJson', JSON.stringify(this.caracteristique));
-
-    this.delegationGestionService.enregistrerDelegationGestion(this.delegationGestionData).subscribe(
-      (response) => {
-        if (response.id > 0) {
-          this.voirListeDelegationsGestions();
-          this.messageSuccess = "Le délégation de gestion a été enregistrer avec succès.";
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Enregistrement réussi',
-            detail: this.messageSuccess
-          });
-        } else {
-          this.delegationGestionData.delete('images');
-          this.delegationGestionData.delete('delegationGestionJson');
-          this.delegationGestionData.delete('caracteristiquesJson');
-          this.messageErreur = "Erreur lors de l'enregistrement !"
-          this.afficherFormulaireEnregistrerDelegation();
-          this.messageService.add({
-            severity: 'error',
-            summary: "Erreur d'enregistrement",
-            detail: this.messageErreur
-          });
-        }
-    },
-    (error) => {
-      this.delegationGestionData.delete('images');
-      this.delegationGestionData.delete('delegationGestionJson');
-      this.delegationGestionData.delete('caracteristiquesJson');
-      if (error.error === "La matricule du propriétaire est introuvable !") {
-        this.messageErreur = "La matricule du propriétaire est introuvable !";
-        this.messageService.add({
-          severity: 'warn',
-          summary: "Erreur d'enregistrement",
-          detail: this.messageErreur
-        });
-      } else if (error.error === "Le code de l'immeuble ou de la maison est introuvable !") {
-        this.messageErreur = "Le code de l'immeuble ou de la maison est introuvable !";
-        this.messageService.add({
-          severity: 'warn',
-          summary: "Erreur d'enregistrement",
-          detail: this.messageErreur
-        });
-      }
-    })
-  }
-
-  validateUpdateBienForm(): void {
-    this.setTypeDeBienValidatorsWithUpdateBienForm();
-
-    this.typeDeBien.updateValueAndValidity();
-    this.categorie.updateValueAndValidity();
-    this.agenceImmobiliere.updateValueAndValidity();
-    this.pays.updateValueAndValidity();
-    this.region.updateValueAndValidity();
-    this.ville.updateValueAndValidity();
-    this.quartier.updateValueAndValidity();
-    this.adresse.updateValueAndValidity();
-    this.surface.updateValueAndValidity();
-    this.description.updateValueAndValidity();
-  }
-
-  private setTypeDeBienValidatorsWithUpdateBienForm(): void {
-    this.typeDeBien.setValidators([Validators.required]);
-    this.surface.clearValidators();
-    this.description.clearValidators();
-    this.adresse.clearValidators();
-    this.agenceImmobiliere.clearValidators();
-
-    if (this.isTypeDeBienTerrain()) {
-      this.categorie.clearValidators();
-      this.pays.setValidators([Validators.required]);
-      this.region.setValidators([Validators.required]);
-      this.ville.setValidators([Validators.required]);
-      this.quartier.setValidators([Validators.required]);
-    } else if (this.isTypeDeBienBoutiqueOrMagasin()) {
-      this.categorie.clearValidators();
-      this.pays.clearValidators();
-      this.region.clearValidators();
-      this.ville.clearValidators();
-      this.quartier.clearValidators();
-    } else {
-      this.categorie.setValidators([Validators.required]);
-      this.pays.clearValidators();
-      this.region.clearValidators();
-      this.ville.clearValidators();
-      this.quartier.clearValidators();
-    }
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegation-gestion/add']);
   }
 
   afficherFormulaireModificationBien(id: number, designation: string): void {
-    if (designation == 'Terrain' || designation == 'Maison' || designation == 'Immeuble') {
-      this.detailBienImmobilier(id);
-    } else {
-      this.detailBienAssocie(id);
-    }
-    if (designation == 'Immeuble' || designation == 'Appartement' || designation == 'Bureau') {
-      this.listeDesCategories = ['Non meublé','Meublé'];
-    } else if (designation == 'Chambre' || designation == 'Chambre salon' || designation == 'Villa' || designation == 'Maison') {
-      this.listeDesCategories = ['Non meublée', 'Meublée'];
-    }
-    if (designation == 'Terrain') {
-      this.menusOfTerrain();
-    } else if (designation == 'Maison' || designation == 'Immeuble' || designation == 'Villa') {
-      this.menusOfMaisonImmeubleAndVilla();
-    } else {
-      this.menusOfOtherTypeDeBien();
-    }
-    this.activeIndex = 0;
-    this.validateUpdateBienForm();
-    this.affichage = 4;
-  }
-
-  afficherFormulaireModificationBienWithTypeDeBien(designation: string): boolean {
-    return designation == 'Terrain' || designation == 'Maison' || designation == 'Immeuble' || designation == 'Villa';
-  }
-
-  modifierBien(id: number): void {
-    if (this.typeDeBienSelectionne.designation == 'Terrain') {
-      this.modifierTypeDeBienTerrain(id);
-    } else if (this.typeDeBienSelectionne.designation == 'Maison' || this.typeDeBienSelectionne.designation == 'Immeuble' || this.typeDeBienSelectionne.designation == 'Villa') {
-      this.modifierOtherTypeDeBien(id);
-    } else {
-      this.modifierBienImmAssocie(id);
-    }
-  }
-
-  modifierTypeDeBienTerrain(id: number): void {
-    this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
-
-    for (const image of this.imagesBienImmobilier) {
-      this.bienImmobilierData.append('images', image);
-    }
-
-    this.bienImmobilierData.append('bienImmobilierJson', JSON.stringify(this.bienImmobilier));
-
-    this.bienImmobilierService.updateBienImmobilier(id, this.bienImmobilierData).subscribe(
-      (response) => {
-        console.log(response)
-        if (response.id > 0) {
-          this.voirListeDelegationsGestions();
-          this.messageSuccess = "Le bien a été modifié avec succès.";
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Modification réussie',
-            detail: this.messageSuccess
-          });
-        } else {
-          this.bienImmobilierData.delete('images');
-          this.bienImmobilierData.delete('bienImmobilierJson');
-          this.messageErreur = "Erreur lors de la modification du bien !"
-          this.afficherFormulaireModificationBien(id, response.typeDeBien.designation);
-          this.bienImmobilier.adresse = response.adresse;
-          this.bienImmobilier.surface = response.surface;
-          this.bienImmobilier.description = response.description;
-          this.messageService.add({
-            severity: 'error',
-            summary: "Erreur de modification",
-            detail: this.messageErreur
-          });
-        }
-    },
-    (error) => {
-      this.bienImmobilierData.delete('images');
-      this.bienImmobilierData.delete('bienImmobilierJson');
-      this.messageErreur = "Une erreur s'est produite lors de modification !";
-      this.messageService.add({
-        severity: 'warn',
-        summary: "Erreur de modification",
-        detail: this.messageErreur
-      });
-    })
-  }
-
-  modifierOtherTypeDeBien(id: number): void {
-    this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
-
-    for (const image of this.imagesBienImmobilier) {
-      this.bienImmobilierData.append('images', image);
-    }
-
-    this.bienImmobilierData.append('bienImmobilierJson', JSON.stringify(this.bienImmobilier));
-    this.bienImmobilierData.append('caracteristiquesJson', JSON.stringify(this.caracteristique));
-
-    this.bienImmobilierService.updateBienImmobilier(id, this.bienImmobilierData).subscribe(
-      (response) => {
-        if (response.id > 0) {
-          this.voirListeDelegationsGestions();
-          this.messageSuccess = "Le bien a été modifié avec succès.";
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Modification réussie',
-            detail: this.messageSuccess
-          });
-        } else {
-          this.bienImmobilierData.delete('images');
-          this.bienImmobilierData.delete('bienImmobilierJson');
-          this.bienImmobilierData.delete('caracteristiquesJson');
-          this.messageErreur = "Erreur lors de la modification du bien !"
-          this.afficherFormulaireModificationBien(id, response.typeDeBien.designation);
-          this.bienImmobilier.adresse = response.adresse;
-          this.bienImmobilier.surface = response.surface;
-          this.bienImmobilier.description = response.description;
-          this.messageService.add({
-            severity: 'error',
-            summary: "Erreur de modification",
-            detail: this.messageErreur
-          });
-        }
-    },
-    (error) => {
-      this.bienImmobilierData.delete('images');
-      this.bienImmobilierData.delete('bienImmobilierJson');
-      this.bienImmobilierData.delete('caracteristiquesJson');
-      this.messageErreur = "Une erreur s'est produite lors de modification !";
-      this.messageService.add({
-        severity: 'warn',
-        summary: "Erreur de modification",
-        detail: this.messageErreur
-      });
-    })
-  }
-
-  modifierBienImmAssocie(id: number): void {
-
-    this.bienImmAssocie.typeDeBien = this.typeDeBienSelectionne;
-    this.bienImmAssocie.bienImmobilier = this.bienImmAssocie.bienImmobilier;
-
-    for (const image of this.imagesBienImmobilier) {
-      this.bienImmobilierData.append('images', image);
-    }
-
-    this.bienImmobilierData.append('bienImmAssocieJson', JSON.stringify(this.bienImmAssocie));
-    this.bienImmobilierData.append('caracteristiquesJson', JSON.stringify(this.caracteristique));
-
-    this.bienImmAssocieService.updateBienImmAssocie(id, this.bienImmobilierData).subscribe(
-      (response) => {
-        if (response.id > 0) {
-          this.voirListeDelegationsGestions();
-          this.messageSuccess = "Le bien a été modifié avec succès.";
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Modification réussie',
-            detail: this.messageSuccess
-          });
-        } else {
-          this.bienImmobilierData.delete('images');
-          this.bienImmobilierData.delete('bienImmAssocieJson');
-          this.bienImmobilierData.delete('caracteristiquesJson');
-          this.messageErreur = "Erreur lors de la modification du bien !"
-          this.afficherFormulaireModificationBien(id, response.typeDeBien.designation);
-          this.bienImmAssocie.surface = response.surface;
-          this.bienImmAssocie.description = response.description;
-          this.messageService.add({
-            severity: 'error',
-            summary: "Erreur de modification",
-            detail: this.messageErreur
-          });
-        }
-    },
-    (error) => {
-      this.bienImmobilierData.delete('images');
-      this.bienImmobilierData.delete('bienImmAssocieJson');
-      this.bienImmobilierData.delete('caracteristiquesJson');
-      this.messageErreur = "Une erreur s'est produite lors de modification !";
-      this.messageService.add({
-        severity: 'warn',
-        summary: "Erreur de modification",
-        detail: this.messageErreur
-      });
-    })
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/bien-delegue/update/' + id + '/' + designation]);
   }
 
   afficherFormulairePublicationBien(delegationGestion: DelegationGestion, bien: BienImmobilier): void {
@@ -1566,145 +612,8 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     this.afficherPageDetail(delegationGestionInStore.id, delegationGestionInStore.bienImmobilier.id);
   }
 
-  afficherContratVente(contratBien: BienImmobilier) {
-    return contratBien.typeDeBien.designation == 'Terrain' ||
-    contratBien.typeDeBien.designation == 'Villa' ||
-    contratBien.typeDeBien.designation == 'Maison' ||
-    contratBien.typeDeBien.designation == 'Immeuble';
-  }
-
-  afficherContratLocation(contratBien: BienImmobilier) {
-    return contratBien.typeDeBien.designation == 'Maison' ||
-    contratBien.typeDeBien.designation == 'Immeuble' ||
-    contratBien.typeDeBien.designation == 'Villa' ||
-    contratBien.typeDeBien.designation == 'Chambre' ||
-    contratBien.typeDeBien.designation == 'Chambre salon' ||
-    contratBien.typeDeBien.designation == 'Appartement' ||
-    contratBien.typeDeBien.designation == 'Magasin' ||
-    contratBien.typeDeBien.designation == 'Bureau' ||
-    contratBien.typeDeBien.designation ==  'Boutique';
-  }
-
-  voirListeContrats(codeBien: string, contratBien: BienImmobilier): void {
-    this.contratBien = contratBien;
-    this.listeContratsLocationsByCodeBien(codeBien, this.numeroDeLaPageContratLocation, this.elementsParPageContratLocation);
-    this.listeContratsVentesByCodeBien(codeBien, this.numeroDeLaPageContratVente, this.elementsParPageContratVente);
-    this.affichage = 6;
-  }
-
-  listeContratsLocationsByCodeBien(codeBien: string, numeroDeLaPageContratLocation: number, elementsParPageContatLocation: number): void {
-    this.contratLocationService.getContratsLocationsByCodeBien(codeBien, numeroDeLaPageContratLocation, elementsParPageContatLocation).subscribe(
-      (response) => {
-        this.contratsLocations = response;
-      }
-    )
-  }
-
-  listeContratsVentesByCodeBien(codeBien: string, numeroDeLaPageContratVente: number, elementsParPageContratVente: number): void {
-    this.contratVenteService.getContratsVentesByCodeBien(codeBien, numeroDeLaPageContratVente, elementsParPageContratVente).subscribe(
-      (response) => {
-        this.contratsVentes = response;
-      }
-    )
-  }
-
-  paginationContratVente(event: any) {
-    this.numeroDeLaPageContratVente = event.first / event.rows;
-    this.elementsParPageContratVente = event.rows;
-    this.listeContratsVentesByCodeBien(this.codeBien, this.numeroDeLaPageContratVente, this.elementsParPageContratVente);
-  }
-
-  paginationContratLocation(event: any) {
-    this.numeroDeLaPageContratLocation = event.first / event.rows;
-    this.elementsParPageContratLocation = event.rows;
-    this.listeContratsLocationsByCodeBien(this.codeBien, this.numeroDeLaPageContratLocation, this.elementsParPageContratLocation);
-  }
-
-  afficherDetailDelegationGestion() {
-    this.affichage = 2;
-  }
-
-  detailContratLocation(id: number): void {
-    this.contratLocationService.findById(id).subscribe(
-      (response) => {
-        this.contrat = response;
-        if (this.user.role.code == 'ROLE_CLIENT') {
-          this.listeMotifs(this.contrat.codeContrat, this.contrat.refuserPar);
-        } else {
-          this.listeMotifs(this.contrat.codeContrat, this.contrat.annulerPar);
-        }
-      }
-    )
-  }
-
-  detailContratVente(id: number): void {
-    this.contratVenteService.findById(id).subscribe(
-      (response) => {
-        this.contrat = response;
-        if (this.user.role.code == 'ROLE_CLIENT') {
-          this.listeMotifs(this.contrat.codeContrat, this.contrat.refuserPar);
-        } else {
-          this.listeMotifs(this.contrat.codeContrat, this.contrat.annulerPar);
-        }
-      }
-    )
-  }
-
-  afficherPageDetailContratVente(id: number): void {
-    this.detailContratVente(id);
-    this.affichage = 8;
-  }
-
-  afficherPageDetailContratLocation(id: number): void {
-    this.detailContratLocation(id);
-    this.affichage = 7;
-  }
-
-  retourListeContrats() {
-    this.affichage = 6;
-  }
-
-  listeMotifs(code: string, creerPar: number): void {
-    this.motifService.getMotifsByCodeAndCreerPar(code, creerPar).subscribe(
-      (data: Motif[]) => {
-        this.listMotifs = data;
-      }
-    );
-  }
-
-  telechargerContratLocation(id: number): void {
-    this.contratLocationService.telecharger(id).subscribe(
-      response => {
-        const file = new Blob([response], { type: 'application/pdf' });
-
-        // Créer un objet URL pour le fichier PDF
-        const fileURL = URL.createObjectURL(file);
-
-        // Ouvrir le PDF dans un nouvel onglet
-        window.open(fileURL, '_blank');
-      }
-    )
-  }
-
-  telechargerContratVente(id: number): void {
-    this.contratVenteService.telecharger(id).subscribe(
-      response => {
-        const file = new Blob([response], { type: 'application/pdf' });
-
-        // Créer un objet URL pour le fichier PDF
-        const fileURL = URL.createObjectURL(file);
-
-        // Ouvrir le PDF dans un nouvel onglet
-        window.open(fileURL, '_blank');
-      }
-    )
-  }
-
-  calculerProchainPaiement(dateDebut: Date, jourSupplementPaiement: number, debutPaiement: number): Date {
-    const prochainPaiementDate = new Date(dateDebut);
-    prochainPaiementDate.setDate(prochainPaiementDate.getDate() + jourSupplementPaiement);
-    prochainPaiementDate.setMonth(prochainPaiementDate.getMonth() + debutPaiement);
-    return prochainPaiementDate;
+  voirListeContratsBien(codeBien: string): void {
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/biens-delegues/contrats/', codeBien]);
   }
 
   afficherCategorie(designation: string): boolean {
@@ -1715,112 +624,6 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     designation == 'Chambre salon' ||
     designation == 'Chambre' ||
     designation == 'Bureau';
-  }
-
-  voirListePlanificationsPaiements(contrat: any): void {
-    this.codeContrat = contrat.codeContrat;
-    this.contrat = contrat;
-    this.listePlanificationsPaiementParCodeContrat(this.codeContrat, this.numeroDeLaPagePlanification, this.elementsParPagePlanification);
-    this.affichage = 9;
-  }
-
-  listePlanificationsPaiementParCodeContrat(codeContrat: string, numeroDeLaPagePlanification: number, elementsParPagePlanification: number) {
-    this.planificationPaiementService.getPlanificationsPaiementsByCodeContrat(codeContrat, numeroDeLaPagePlanification, elementsParPagePlanification).subscribe(
-      (response) => {
-        this.planificationsPaiements = response;
-      }
-    )
-  }
-
-  detailPlanificationPaiement(id: number): void {
-    this.planificationPaiementService.findById(id).subscribe(
-      (response) => {
-        this.planificationPaiement = response;
-        if (this.planificationPaiement.typePlanification == 'Paiement de location') {
-          this.detailContratLocation(this.planificationPaiement.contrat.id);
-        } else {
-          this.detailContratVente(this.planificationPaiement.contrat.id);
-        }
-      }
-    )
-  }
-
-  afficherPageDetailPlanificationPaiement(id: number): void {
-    this.detailPlanificationPaiement(id);
-    this.affichage = 10;
-  }
-
-  paginationPlanificationPaiement(event: any) {
-    this.numeroDeLaPagePlanification = event.first / event.rows;
-    this.elementsParPagePlanification = event.rows;
-    this.listePlanificationsPaiementParCodeContrat(this.codeContrat, this.numeroDeLaPagePlanification, this.elementsParPagePlanification);
-  }
-
-  detailPaiementParCodePlanification(codePlanification: string): void {
-    this.paiementService.findByCodePlanification(codePlanification).subscribe(
-      (response) => {
-        this.paiement = response;
-        if (this.paiement.planificationPaiement.typePlanification == 'Paiement de location') {
-          this.detailContratLocation(this.paiement.planificationPaiement.contrat.id);
-        } else {
-          this.detailContratVente(this.paiement.planificationPaiement.contrat.id);
-        }
-      }
-    )
-  }
-
-  detailPaiementParContratId(contratId: number): void {
-    this.paiementService.findByContratId(contratId).subscribe(
-      (response) => {
-        this.paiement = response;
-        if (this.paiement.planificationPaiement.typePlanification == 'Paiement de location') {
-          this.detailContratLocation(this.paiement.planificationPaiement.contrat.id);
-        } else {
-          this.detailContratVente(this.paiement.planificationPaiement.contrat.id);
-        }
-      }
-    )
-  }
-
-  voirPageDetailPaiementParContratId(contratId: number): void {
-    this.detailPaiementParContratId(contratId);
-    this.affichage = 13;
-  }
-
-  voirPageDetailPaiementParCodePlanification(codePlanification: string): void {
-    this.detailPaiementParCodePlanification(codePlanification);
-    this.affichage = 11;
-  }
-
-  voirListePaiements(contrat: any): void {
-    this.contrat = contrat;
-    this.codeContrat = contrat.codeContrat;
-    this.listePaiementsByCodeContrat(this.codeContrat, this.numeroDeLaPagePaiement, this.elementsParPagePaiement);
-    this.affichage = 12;
-  }
-
-  listePaiementsByCodeContrat(codeContrat: string, numeroDeLaPagePaiement: number, elementsParPagePaiement: number): void {
-    this.paiementService.getPaiementsByCodeContrat(codeContrat, numeroDeLaPagePaiement, elementsParPagePaiement).subscribe(
-      (response) => {
-        this.paiements = response;
-      }
-    )
-  }
-
-  paginationPaiement(event: any) {
-    this.numeroDeLaPagePaiement = event.first / event.rows;
-    this.elementsParPagePaiement = event.rows;
-    this.listePaiementsByCodeContrat(this.codeContrat, this.numeroDeLaPagePaiement, this.elementsParPagePaiement);
-  }
-
-  telechargerFichePaiement(id: number): void {
-    this.paiementService.telechargerFichePaiement(id).subscribe(
-      (response) => {
-        const file = new Blob([response], { type: 'application/pdf' });
-        const fileUrl = URL.createObjectURL(file);
-        window.open(fileUrl, '_blank');
-      }
-    )
   }
 
   navigateURLBYUSER(user: any): string {

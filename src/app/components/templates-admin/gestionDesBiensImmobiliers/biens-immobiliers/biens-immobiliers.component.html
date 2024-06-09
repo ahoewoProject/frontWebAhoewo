@@ -126,7 +126,7 @@
             <div class="col-xxl-8">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
                     <a class="ud-btn btn-valider" *ngIf="afficherBoutonSiBienDelegue(bienImmobilier.estDelegue)" type="button" (click)="afficherPagePublication(bienImmobilier)">Publier</a> &nbsp;
-                    <a class="ud-btn btn-annuler" type="button">Contrats</a> &nbsp;
+                    <a class="ud-btn btn-annuler" type="button" (click)="voirListeContratsBien(bienImmobilier.codeBien)">Contrats</a> &nbsp;
                     <a class="ud-btn btn-modifier" type="button" (click)="afficherPageModifier(bienImmobilier.id, bienImmobilier.typeDeBien.designation)">Modifier</a> &nbsp;
                     <a class="ud-btn btn-retour" type="button" (click)="voirListeBiens()">Retour</a>
                 </div>
@@ -235,7 +235,7 @@
             <div class="col-xxl-8">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
                     <a class="ud-btn btn-valider" *ngIf="afficherBoutonSiBienDelegue(bienImmobilier.estDelegue)" type="button" (click)="afficherPagePublication(bienImmobilier)">Publier</a>&nbsp;
-                    <a class="ud-btn btn-annuler" type="button">Contrats</a> &nbsp;
+                    <a class="ud-btn btn-annuler" type="button" (click)="voirListeContratsBien(bienImmobilier.codeBien)">Contrats</a> &nbsp;
                     <a class="ud-btn btn-annuler" type="button" (click)="afficherListeBiensAssocies(bienImmobilier.id)">Biens
           associés</a> &nbsp;
                     <a class="ud-btn btn-modifier" type="button" (click)="afficherPageModifier(bienImmobilier.id, bienImmobilier.typeDeBien.designation)">Modifier</a> &nbsp;
@@ -532,7 +532,7 @@
             </div>
             <div class="col-xxl-7">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <a class="ud-btn btn-retour" type="button" (click)="voirListeBiens()">Retour</a>
+                    <a class="ud-btn btn-retour" type="button" (click)="afficherListeBiens()">Retour</a>
                 </div>
             </div>
         </div>
@@ -1220,7 +1220,7 @@
             </div>
             <div class="col-xxl-7">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <a class="ud-btn btn-retour" type="button" (click)="afficherPageDetailBienSupport(bienImmobilier.id)">Retour</a>
+                    <a class="ud-btn btn-retour" type="button" (click)="voirPageDetailBienSupport(bienImmobilier.id)">Retour</a>
                 </div>
             </div>
         </div>
@@ -1980,7 +1980,7 @@
             </div>
             <div class="col-xxl-9">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <a class="ud-btn btn-retour" type="button" (click)="afficherPageDetailBienSupport(bienAPublie.id)">Retour</a>
+                    <a class="ud-btn btn-retour" type="button" (click)="voirPageDetailBienSupport(bienAPublie.id)">Retour</a>
                 </div>
             </div>
             <p-messages severity="info">

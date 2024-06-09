@@ -1,0 +1,95 @@
+<div class="dashboard__content bgc-f7">
+  <div class="row pb40 d-block d-lg-none">
+      <!-- Menu responsive -->
+      <app-menu-responsive></app-menu-responsive>
+      <!-- End Menu responsive -->
+  </div>
+
+  <p-toast></p-toast>
+
+      <!-- Formulaire de modification d'un service d'une agence immobilière -->
+      <div>
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-5">
+                <div class="dashboard_title_area">
+                    <h4>Modification d'un service</h4>
+                    <p class="text"></p>
+                </div>
+            </div>
+            <div class="col-xxl-7">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Vos services</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30">
+                    <form [formGroup]="serviceAgenceImmobiliereForm" (ngSubmit)="modifierServiceAgenceImmobiliere(serviceAgenceImmobiliere.id)" class="form-style1">
+                        <div class="row">
+                            <p *ngIf="serviceSelectionne && serviceSelectionne.nomService == 'Autres'" class="error">Veuillez noter que tout nouveau service ajouté ne sera pas instantanément intégré à votre agence. Un processus de traitement est en place pour examiner les demandes de nouveaux services. Vous recevrez un retour par e-mail concernant
+                                l'état de votre demande. Merci pour votre compréhension et votre patience.</p>
+                            <div class="col-md-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Agence immobilière</label>
+                                    <br>
+                                    <p-dropdown class="select" emptyFilterMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé" [(ngModel)]="serviceAgenceImmobiliere.agenceImmobiliere" [options]="agencesImmobilieres" placeholder="Choisir une agence" formControlName="agenceImmobiliere"
+                                        [filter]="true" filterBy="codeAgence,nomAgence" filterPlaceholder="Rechercher" [showClear]="true" (onChange)="agenceChoisie($event)" optionLabel="nomAgence">
+                                        <ng-template let-agenceImmobiliere pTemplate="item">
+                                            {{ agenceImmobiliere.codeAgence }}/ {{ agenceImmobiliere.nomAgence }}
+                                        </ng-template>
+                                    </p-dropdown>
+                                    <div class="error" [hidden]="!agenceImmobiliere?.hasError('required') || !agenceImmobiliere.touched">La selection de l'agence est obligatoire</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Service</label>
+                                    <br>
+                                    <p-dropdown class="select" emptyFilterMessage="Aucun résultat trouvé" [(ngModel)]="serviceAgenceImmobiliere.services" [options]="services" placeholder="Choisir un service" formControlName="service" [filter]="true" filterBy="codeService,nomService" filterPlaceholder="Rechercher"
+                                        [showClear]="true" (onChange)="serviceChoisi($event)" optionLabel="nomService">
+                                        <!-- <ng-template let-service pTemplate="item">
+                                            {{ service.codeService }} / {{ service.nomService }}
+                                        </ng-template> -->
+                                    </p-dropdown>
+                                    <div class="error" [hidden]="!service?.hasError('required') || !service.touched">La selection d'un service est obligatoire</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div *ngIf="serviceSelectionne && serviceSelectionne.nomService == 'Autres'" class="form-group">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Nom du service non trouvé</label>
+                                        <input type="text" class="form-control" id="nomDuService" name="nomDuService" formControlName="nomDuService" placeholder="Entrer le nom du service non trouvé" required>
+                                        <div class="error" [hidden]="!nomDuService?.hasError('required') || !nomDuService.touched">La saisie du service non trouvé est obligatoire</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div *ngIf="serviceSelectionne && serviceSelectionne.nomService == 'Autres'" class="form-group">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Description du service non trouvé</label>
+                                        <textarea id="descriptionDuService" name="descriptionDuService" placeholder="La description du service" formControlName="descriptionDuService" style="height: 160px;" required></textarea>
+                                        <div class="error" [hidden]="descriptionDuService.valid || descriptionDuService.pristine && !descriptionDuService.touched ">La description du service non trouvé est obligatoire</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <br>
+                        <div class="col-md-12">
+                            <div class="text-end">
+                                <button class="ud-btn btn-annuler" type="button" (click)="serviceAgenceImmobiliereForm.reset()">Annuler</button> &nbsp;
+                                <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': serviceAgenceImmobiliereForm.invalid }" type="submit">Modifier</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Formulaire de modification d'un service d'une agence immobilière -->
+
+  </div>

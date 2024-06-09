@@ -1,0 +1,173 @@
+<div class="dashboard__content bgc-f7">
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
+    </div>
+
+    <!-- Details d'un agent immobilier / Administrateur -->
+    <div *ngIf="user.role.code == 'ROLE_ADMINISTRATEUR'">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-5">
+                <div class="dashboard_title_area">
+                    <h4>Détails d'un agent immobilier</h4>
+                </div>
+            </div>
+            <div class="col-xxl-7">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Agents immobiliers</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+
+                    <div class="row">
+
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Nom</p>
+                            <p class="text">{{ agentImmobilier.nom }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Prénom(s)</p>
+                            <p class="text">{{ agentImmobilier.prenom }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur</p>
+                            <p class="text">{{ agentImmobilier.username }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Matricule</p>
+                            <p class="text">{{ agentImmobilier.matricule }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+                            <p class="text">{{ agentImmobilier.email }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
+                            <p class="text">{{ agentImmobilier.telephone }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Profil</p>
+                            <p class="text">{{ agentImmobilier.role.libelle }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
+                            <p>
+                                <p-tag *ngIf="agentImmobilier.etatCompte == true" severity="success" value="Activé"></p-tag>
+                                <p-tag *ngIf="agentImmobilier.etatCompte == false" severity="danger" value="Désactivé"></p-tag>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-end">
+            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Agents immobiliers</a>
+        </div>
+    </div>
+    <!-- End Details d'un agent immobilier / Administrateur -->
+
+    <!-- Détails d'un agent immobilier / Responsable -->
+    <div *ngIf="user.role.code == 'ROLE_RESPONSABLE'">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-9">
+                <div class="dashboard_title_area">
+                    <h4>Détails d'un agent immobilier</h4>
+                    <p class="text"></p>
+                </div>
+            </div>
+            <div class="col-xxl-3">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+
+                    <div class="row">
+
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Nom</p>
+                            <p class="text">{{ affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.nom }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Prénom(s)</p>
+                            <p class="text">{{ affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.prenom }} <i *ngIf="affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg"
+                                    style="color: #0f77e6;"></i></p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Nom d'utilisateur</p>
+                            <p class="text">{{ affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.username }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Matricule</p>
+                            <p class="text">{{ affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.matricule }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+                            <p class="text">{{ affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.email }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
+                            <p class="text">{{ affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.telephone }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Profil</p>
+                            <p class="text">{{ affecationAgentAgence.agentImmobilier && affecationAgentAgence.agentImmobilier.role.libelle }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Agence immobilière</p>
+                            <p class="text">{{ affecationAgentAgence.agenceImmobiliere && affecationAgentAgence.agenceImmobiliere.nomAgence }} <i *ngIf="affecationAgentAgence.agenceImmobiliere && affecationAgentAgence.agenceImmobiliere.estCertifie" class="fa-sharp fa-solid fa-badge-check fa-lg"
+                                    style="color: #0f77e6;"></i></p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Email de l'agence</p>
+                            <p class="text">{{ affecationAgentAgence.agenceImmobiliere && affecationAgentAgence.agenceImmobiliere.adresseEmail }}</p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Téléphone de l'agence</p>
+                            <p class="text">{{ affecationAgentAgence.agenceImmobiliere && affecationAgentAgence.agenceImmobiliere.telephone }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Etat du compte</p>
+                            <p>
+                                <p-tag *ngIf="affecationAgentAgence && affecationAgentAgence.actif == true" severity="success" value="Activé"></p-tag>
+                                <p-tag *ngIf="affecationAgentAgence && affecationAgentAgence.actif == false" severity="danger" value="Désactivé"></p-tag>
+                            </p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Date affection</p>
+                            <p>{{ affecationAgentAgence && affecationAgentAgence.dateAffectation | date: "dd-MM-yyyy" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-end">
+            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Agents immobiliers</a>
+        </div>
+    </div>
+    <!-- En Détails d'un agent immobilier / Responsable -->
+
+</div>

@@ -76,6 +76,24 @@ export class NotificationsService {
   }
 
   // Notifications de l'Admin;
+  // url: http://localhost:4040/api/notifications-list/admin
+  getNotificationsListByAdmin(): Observable<Array<Notification>>{
+    return this.httpClient.get<Array<Notification>>(this.url + 'notifications-list/admin');
+  }
+
+  // Notifications du Notaire;
+  // url: http://localhost:4040/api/notifications-list/notaire
+  getNotificationsListByNotaire(): Observable<Array<Notification>>{
+    return this.httpClient.get<Array<Notification>>(this.url + 'notifications-list/notaire');
+  }
+
+  // Notifications non lues des utilisateurs à par Admin;
+  // url: http://localhost:4040/api/notifications-list/owner
+  getNotificationsListByOwner(): Observable<Array<Notification>>{
+    return this.httpClient.get<Array<Notification>>(this.url + 'notifications-list/owner');
+  }
+
+  // Notifications de l'Admin;
   // url: http://localhost:4040/api/notifications/admin
   getNotificationsByAdmin(numeroDeLaPage: number, elementsParPage: number): Observable<Page<Notification>>{
     let params = new HttpParams()

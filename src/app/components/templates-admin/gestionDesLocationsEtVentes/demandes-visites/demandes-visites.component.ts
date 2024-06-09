@@ -216,6 +216,7 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
 
   //Retour sans url
   afficherListe(): void {
+    this.demandeVisiteReussie = false;
     this.listeDemandesVisites(this.numeroDeLaPage, this.elementsParPage);
     this.affichage = 1;
   }

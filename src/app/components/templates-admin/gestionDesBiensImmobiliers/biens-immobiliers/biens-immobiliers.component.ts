@@ -15,12 +15,6 @@ import { Quartier } from 'src/app/models/gestionDesBiensImmobiliers/Quartier';
 import { Region } from 'src/app/models/gestionDesBiensImmobiliers/Region';
 import { TypeDeBien } from 'src/app/models/gestionDesBiensImmobiliers/TypeDeBien';
 import { Ville } from 'src/app/models/gestionDesBiensImmobiliers/Ville';
-import { ContratLocation } from 'src/app/models/gestionDesLocationsEtVentes/ContratLocation';
-import { ContratVente } from 'src/app/models/gestionDesLocationsEtVentes/ContratVente';
-import { Paiement } from 'src/app/models/gestionDesPaiements/Paiement';
-import { PlanificationPaiement } from 'src/app/models/gestionDesPaiements/PlanificationPaiement';
-import { Motif } from 'src/app/models/Motif';
-import { BehaviorService } from 'src/app/services/behavior.service';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { BienImmAssocieService } from 'src/app/services/gestionDesBiensImmobiliers/bien-imm-associe.service';
 import { BienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/bien-immobilier.service';
@@ -33,12 +27,7 @@ import { RegionService } from 'src/app/services/gestionDesBiensImmobiliers/regio
 import { TypeDeBienService } from 'src/app/services/gestionDesBiensImmobiliers/type-de-bien.service';
 import { VilleService } from 'src/app/services/gestionDesBiensImmobiliers/ville.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
-import { ContratLocationService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-location.service';
-import { ContratVenteService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-vente.service';
-import { PaiementService } from 'src/app/services/gestionDesPaiements/paiement.service';
-import { PlanificationPaiementService } from 'src/app/services/gestionDesPaiements/planification-paiement.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
-import { MotifService } from 'src/app/services/motif.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -71,7 +60,6 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   quartierSelectionne = new Quartier();
   bienImmobilier = this.bienImmobilierService.bienImmobilier;
   caracteristiqueBien: Caracteristiques = new Caracteristiques();
-
 
   delegationGestionForm:  any;
 
@@ -1564,6 +1552,10 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     } else {
       return true
     }
+  }
+
+  voirListeContratsBien(codeBien: string): void {
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/biens/contrats/', codeBien]);
   }
 
   navigateURLBYUSER(user: any): string {

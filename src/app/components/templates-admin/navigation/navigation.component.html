@@ -22,35 +22,12 @@
                 <div class="col-6 col-lg-auto">
                     <div class="text-center text-lg-end header_right_widgets">
                         <ul class="mb0 d-flex justify-content-center justify-content-sm-end p-0">
-                            <li class="user_setting">
-                                <a class="text-center mr5 text-thm2 notif" type="button" data-bs-toggle="dropdown" pTooltip="Notifications" tooltipPosition="bottom" (click)="lireNotification()" *ngIf="notificationsNonLues.length !== 0 || ((user.role.code == 'ROLE_ADMINISTRATEUR' || user.role.code !== 'ROLE_ADMINISTRATEUR') && notificationsNonLues.length === 0)">
+                            <li class="user_setting notification">
+                                <a class="text-center mr5 text-thm2 notif" type="button" data-bs-toggle="dropdown" pTooltip="Notifications" tooltipPosition="bottom" (click)="sidebarVisible = true" *ngIf="notificationsNonLues.length !== 0 || ((user.role.code == 'ROLE_ADMINISTRATEUR' || user.role.code !== 'ROLE_ADMINISTRATEUR') && notificationsNonLues.length === 0)">
                   <span *ngIf="notificationsNonLues.length !== 0" class="flaticon-bell" pBadge [value]="notificationsNonLues.length > 10 ? '10+' : notificationsNonLues.length.toString()"></span>
                   <span *ngIf="notificationsNonLues.length === 0" class="flaticon-bell"></span>
                 </a>
-
-                                <div *ngIf="notifications.totalElements > 0" class="dropdown-menu" style="width: 400px;">
-                                    <div class="user_setting_content" *ngFor="let notification of notifications.content">
-                                        <div type="button" (click)="redirectToPageConcernee(notification.url)" class="notif_list d-flex align-items-center bdrb1 pb15 mb10">
-                                            <p-avatar icon="flaticon-bell" styleClass="mr-2" size="large" [style]="{'background-color':'#EF4444', 'color': '#ffffff'}" shape="circle"></p-avatar>
-                                            <div class="details ml15">
-                                                <p class="title mb-0" style="font-weight: 4px;"><b>{{notification.titre}}</b></p>
-                                                <p class="message mb-2">{{notification.message}}</p>
-                                                <p class="mb-0 text-thm message">{{getElapsedTime(notification.dateNotification)}}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a [routerLink]="redirectToNotificationPage()" (click)="setActiveLink(redirectToNotificationPage())" *ngIf="notifications.totalElements > 3" class="notification-plus-button btn-valider w-100">Tout voir <i class="pi pi-arrow-right"></i></a>
-                                </div>
-                                <div *ngIf="notifications.totalElements == 0" class="dropdown-menu" style="width: 300px;">
-                                    <div class="user_setting_content">
-                                        <div class="notif_list d-flex align-items-center bdrb1 pb15 mb10">
-                                            <p class="title text mb-0" style="font-weight: 4px;"><b>Pas de notifications disponibles</b></p>
-                                        </div>
-                                    </div>
-                                    <!-- <a [routerLink]="redirectToNotificationPage()" (click)="setActiveLink(redirectToNotificationPage())" class="notification-plus-button btn-valider w-100">Voir les anciennes notifications</a> -->
-                                </div>
                             </li>
-
                             <li class=" user_setting">
                                 <div class="dropdown">
                                     <a class="btn" href="#" data-bs-toggle="dropdown">
@@ -65,10 +42,10 @@
                                             <!-- Informations Gestion Par Profil End -->
 
                                             <!-- Notifications Gestion Par Profil Start -->
-                                            <a class="dropdown-item" [routerLink]="redirectToNotificationPage()" routerLinkActive="-is-active">
+                                            <!-- <a class="dropdown-item" [routerLink]="redirectToNotificationPage()" routerLinkActive="-is-active">
                                                 <i class="pi pi-bell mr10"></i>Notifications
                                                 <p-badge *ngIf="notificationsNonLues.length !== 0" [value]="notificationsNonLues.length > 10 ? '10+' : notificationsNonLues.length.toString()"></p-badge>
-                                            </a>
+                                            </a>-->
                                             <!-- Notifications Gestion Par Profil End -->
 
                                             <a class="dropdown-item" type="button" (click)="seDeconnecter()"><i class="flaticon-logout mr10"></i>Se déconnecter</a>
@@ -82,5 +59,34 @@
             </div>
         </div>
     </nav>
+
     <!-- End Ace Responsive Menu -->
 </header>
+<p-sidebar [(visible)]="sidebarVisible" [baseZIndex]="zIndexForSidebar" position="right" [style]="{ 'width': '550px' }" (onHide)="closeSidebar()">
+    <ng-template pTemplate="header">
+        <span>Notifications</span>
+    </ng-template>
+    <div *ngIf="notificationsList.length > 0">
+        <div *ngFor="let notification of notificationsList">
+            <a type="button" (click)="redirectToPageConcernee(notification.url)" class="notif_list d-flex align-items-center bdrb1 pb15 mb10">
+                <p-avatar icon="flaticon-bell" styleClass="mr-2" size="large" [style]="{'background-color':'#EF4444', 'color': '#ffffff'}" shape="circle"></p-avatar>
+                <div class="details ml15">
+                    <p class="title mb-0" style="font-weight: 4px;"><b>{{notification.titre}}</b></p>
+                    <p class="message mb-2">{{notification.message}}</p>
+                    <p class="mb-0 text-thm message">{{getElapsedTime(notification.dateNotification)}}</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div *ngIf="notificationsList.length == 0">
+        <div class="user_setting_content">
+            <div class="notif_list d-flex align-items-center bdrb1 pb15 mb10">
+                <div class="details ml15">
+                    <p class="message mb-2">Oups, Aucune notification disponible !!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</p-sidebar>

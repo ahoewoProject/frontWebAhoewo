@@ -49,6 +49,11 @@ export class ContratLocationService {
     return this.httpClient.get<ContratLocation>(this.url + 'contrat-location/' + id);
   }
 
+  // url: http://localhost:4040/api/contrat-location/code-contrat/{codeContrat}
+  findByCodeContrat(codeContrat: string): Observable<ContratLocation>{
+    return this.httpClient.get<ContratLocation>(this.url + 'contrat-location/code-contrat/' + codeContrat);
+  }
+
   // Ajouter un contrat de location ;
   // url: http://localhost:4040/api/contrat-location/ajouter
   ajouterContratLocation(c: ContratLocation): Observable<ContratLocation>{

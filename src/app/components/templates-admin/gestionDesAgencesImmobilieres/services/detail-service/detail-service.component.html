@@ -1,0 +1,61 @@
+<div class="dashboard__content bgc-f7">
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
+    </div>
+
+    <p-toast></p-toast>
+    <!-- Details d'un service -->
+    <div>
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-8">
+                <div class="dashboard_title_area">
+                    <h4>Détails d'un service</h4>
+                    <p class="text"></p>
+                </div>
+            </div>
+            <div class="col-xxl-4">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Services</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+
+                    <div class="row">
+                        <div class="col-sm-6 col-xl-4">
+                            <p class="fw600 mb10 ff-heading dark-color">Code</p>
+                            <p class="text">{{ _service.codeService }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4">
+                            <p class="fw600 mb10 ff-heading dark-color">Nom</p>
+                            <p class="text">{{ _service.nomService }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div>
+                            <p class="fw600 mb10 ff-heading dark-color">Description</p>
+                            <p class="text justify-text">{{ _service.description }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="col-sm-6 col-xl-4">
+                            <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+                            <p>
+                                <p-tag *ngIf="_service.etat == 1" severity="success" value="Activé"></p-tag>
+                                <p-tag *ngIf="_service.etat == 2" severity="danger" value="Désactivé"></p-tag>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-end">
+                    <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Services</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Details d'un service -->
+</div>

@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
 import { AffectationResponsableAgence } from 'src/app/models/gestionDesAgencesImmobilieres/AffectationResponsableAgence';
@@ -19,51 +20,26 @@ import { environment } from 'src/environments/environment';
 })
 export class ResponsablesAgenceImmobiliereComponent implements OnInit, OnDestroy {
 
-
   agenceSelectionnee!: AgenceImmobiliere;
-  listeDesChoix: any[] | undefined;
-  checked: string | undefined;
-  visibleAddForm = 0;
   recherche: string = '';
-  affichage = 1;
 
   elementsParPage = 5; // Nombre d'éléments par page
   numeroDeLaPage = 0; // Page actuelle
 
-  affectationResponsableAgence = new AffectationResponsableAgence();
-  responsableAgenceImmobiliere = new ResponsableAgenceImmobiliere();
   responsablesAgenceImmobiliere!: Page<ResponsableAgenceImmobiliere>;
   affectationsResponsableAgences!: Page<AffectationResponsableAgence>;
   agencesImmobilieres: AgenceImmobiliere[] = [];
-  affectationResponsableAgenceRequest = this.affectationResponsableAgenceService.affectationResponsableAgenceRequest;
-  messageErreur: string = "";
+  messageErreur: string | null = null;
   messageSuccess: string | null = null;
-  affectationResponsableAgenceForm: any;
   user: any;
   APIEndpoint!: string;
-
-  roleRespnsable: Role = {
-    id: 8,
-    code: 'ROLE_RESPONSABLE',
-    libelle: 'Responsable d\'agence immobilière',
-    creerPar: 0,
-    creerLe: new Date(),
-    modifierPar: 0,
-    modifierLe: new Date(),
-    annulerPar: 0,
-    annulerLe: new Date(),
-    refuserPar: 0,
-    refuserLe: new Date(),
-    statut: false
-  }
+  ajoutReussi: any;
 
   constructor(
-    private affectationResponsableAgenceService: AffectationResponsableAgenceService,
-    private responsableAgenceImmobiliereService: ResponsableAgenceImmobiliereService,
-    private agenceImmobiliereService: AgenceImmobiliereService,
-    private personneService: PersonneService,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private affectationResponsableAgenceService: AffectationResponsableAgenceService, private responsableAgenceImmobiliereService: ResponsableAgenceImmobiliereService,
+    private agenceImmobiliereService: AgenceImmobiliereService, private personneService: PersonneService,
+    private messageService: MessageService, private confirmationService: ConfirmationService,
+    private router: Router, private activatedRoute: ActivatedRoute
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -72,55 +48,22 @@ export class ResponsablesAgenceImmobiliereComponent implements OnInit, OnDestroy
   }
 
   ngOnInit(): void {
-    if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
-      this.listeResponsablesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
+    this.ajoutReussi = this.activatedRoute.snapshot.queryParamMap.get('ajoutReussi') || '';
+    if (this.personneService.estAdmin(this.user.role.code)) {
+      this.getResponsablesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
     } else {
       this.getAgencesImmobilieresListIfUserActif();
-      this.listerResponsablesParAgence(this.numeroDeLaPage, this.elementsParPage);
+      this.getAffectationsReponsableAgencePage(this.numeroDeLaPage, this.elementsParPage);
     }
-    this.initAffectationResponsableAgenceForm();
   }
 
-  filtrerParAgence(event: any) {
+  filtrerResponsableParAgence(event: any) {
     this.agenceSelectionnee = event.value;
-    this.affectationsResponsableAgences.content = this.affectationsResponsableAgences.content.filter((affectationResponsableAgence) => affectationResponsableAgence.agenceImmobiliere.id == this.agenceSelectionnee.id);
-    console.log(this.affectationsResponsableAgences.content);
-  }
-
-  initAffectationResponsableAgenceForm(): void {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    this.affectationResponsableAgenceForm = new FormGroup({
-      matricule: new FormControl('', [Validators.required]),
-      nom: new FormControl(this.responsableAgenceImmobiliere.nom, [Validators.required]),
-      prenom: new FormControl(this.responsableAgenceImmobiliere.prenom, [Validators.required]),
-      email: new FormControl(this.responsableAgenceImmobiliere.email, [Validators.required, Validators.email, Validators.pattern(emailRegex)]),
-      telephone: new FormControl(this.responsableAgenceImmobiliere.telephone, [Validators.required]),
-      agenceImmobiliere: new FormControl('', [Validators.required])
-    })
-  }
-
-  get nom() {
-    return this.affectationResponsableAgenceForm.get('nom');
-  }
-
-  get prenom() {
-    return this.affectationResponsableAgenceForm.get('prenom');
-  }
-
-  get email() {
-    return this.affectationResponsableAgenceForm.get('email');
-  }
-
-  get telephone() {
-    return this.affectationResponsableAgenceForm.get('telephone');
-  }
-
-  get agenceImmobiliere() {
-    return this.affectationResponsableAgenceForm.get('agenceImmobiliere');
-  }
-
-  get matricule() {
-    return this.affectationResponsableAgenceForm.get('matricule');
+    this.affectationResponsableAgenceService.getAffectationsReponsableAgencePage(this.numeroDeLaPage, this.elementsParPage).subscribe(
+      (response) => {
+        this.affectationsResponsableAgences.content = response.content.filter((affectationResponsableAgence) => affectationResponsableAgence.agenceImmobiliere.id == this.agenceSelectionnee.id);
+      }
+    );
   }
 
   //Fonction pour recupérer une agence immobilière (Responsable)
@@ -132,16 +75,18 @@ export class ResponsablesAgenceImmobiliereComponent implements OnInit, OnDestroy
     );
   }
 
-  listerResponsablesParAgence(numeroDeLaPage: number, elementsParPage: number): void {
-    this.affectationResponsableAgenceService.getResponsablesOfAgencesPagines(numeroDeLaPage, elementsParPage).subscribe(
+  getAffectationsReponsableAgencePage(numeroDeLaPage: number, elementsParPage: number): void {
+    this.affectationResponsableAgenceService.getAffectationsReponsableAgencePage(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
-        console.log(response)
         this.affectationsResponsableAgences = response;
+        if (this.ajoutReussi) {
+          this.messageService.add({ severity: 'success', summary: 'Ajout reussi', detail: 'Le co-responsable a été ajouté avec succès.' });
+        }
       }
     );
   }
 
-  listeResponsablesAgenceImmobiliere(numeroDeLaPage: number, elementsParPage: number): void {
+  getResponsablesAgenceImmobiliere(numeroDeLaPage: number, elementsParPage: number): void {
     this.responsableAgenceImmobiliereService.getResponsables(numeroDeLaPage, elementsParPage).subscribe(
       (response) => {
         this.responsablesAgenceImmobiliere = response;
@@ -150,212 +95,35 @@ export class ResponsablesAgenceImmobiliereComponent implements OnInit, OnDestroy
   }
 
   pagination(event: any) {
+    this.ajoutReussi = false;
     this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
-    if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
-      this.listeResponsablesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
+    if (this.personneService.estAdmin(this.user.role.code)) {
+      this.getResponsablesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
     } else {
-      this.listerResponsablesParAgence(this.numeroDeLaPage, this.elementsParPage);
+      this.getAffectationsReponsableAgencePage(this.numeroDeLaPage, this.elementsParPage);
     }
   }
 
   voirListe(): void {
-    if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
-      this.listeResponsablesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
+    this.ajoutReussi = false;
+    if (this.personneService.estAdmin(this.user.role.code)) {
+      this.getResponsablesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
     } else {
-      this.listerResponsablesParAgence(this.numeroDeLaPage, this.elementsParPage);
+      this.getAffectationsReponsableAgencePage(this.numeroDeLaPage, this.elementsParPage);
     }
-    this.visibleAddForm = 0;
-    this.affichage = 1;
   }
 
-  annuler(): void {
-    this.affectationResponsableAgenceForm.reset();
-    this.affichage = 0;
-    this.visibleAddForm = 1;
+  voirPageAjout(): void {
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/add/co-responsable']);
   }
 
-  detailResponsableAgenceImmobiliere(id: number): void {
-    this.responsableAgenceImmobiliereService.findById(id).subscribe(
-      (response) => {
-        this.responsableAgenceImmobiliere = response;
-        console.log(response);
-      }
-    );
-  }
-
-  detailAffectationResponsableAgence(id: number): void {
-    this.agenceImmobiliereService.detailAffectation(id).subscribe(
-      (response) => {
-        this.affectationResponsableAgence = response;
-      }
-    );
-  }
-
-  afficherPageDetail(id: number): void {
-    if (this.user.role.code == 'ROLE_ADMINISTRATEUR') {
-      this.detailResponsableAgenceImmobiliere(id);
+  voirPageDetail(id: number): void {
+    if (this.personneService.estAdmin(this.user.role.code)) {
+      this.router.navigate([this.navigateURLBYUSER(this.user) + '/responsable/' + id]);
     } else {
-      this.detailAffectationResponsableAgence(id);
+      this.router.navigate([this.navigateURLBYUSER(this.user) + '/co-responsable/' + id]);
     }
-    this.affichage = 2;
-  }
-
-  onChoixChange(event: any): void {
-    this.affectationResponsableAgenceForm.reset();
-    this.checked = event.value;
-    if (this.checked == 'Responsable existant') {
-      this.nom.clearValidators();
-      this.prenom.clearValidators();
-      this.email.clearValidators();
-      this.telephone.clearValidators();
-      this.agenceImmobiliere.setValidators([Validators.required]);
-      this.matricule.setValidators([Validators.required]);
-    } else if (this.checked == 'Nouveau responsable') {
-      this.nom.setValidators([Validators.required]);
-      this.prenom.setValidators([Validators.required]);
-      this.email.setValidators([Validators.required, Validators.email]);
-      this.telephone.setValidators([Validators.required]);
-      this.agenceImmobiliere.setValidators([Validators.required]);
-      this.matricule.clearValidators();
-    }
-    this.matricule.updateValueAndValidity();
-    this.nom.updateValueAndValidity();
-    this.prenom.updateValueAndValidity();
-    this.email.updateValueAndValidity();
-    this.telephone.updateValueAndValidity();
-    this.agenceImmobiliere.updateValueAndValidity();
-  }
-
-  agenceChoisie(event: any) {
-    this.agenceSelectionnee = event.value;
-  }
-
-  afficherFormulaireAjouter(): void {
-    this.listeDesChoix = [ 'Nouveau responsable', 'Responsable existant'];
-    this.checked = this.listeDesChoix[0];
-    const event = {value: this.checked};
-    this.onChoixChange(event);
-    this.affichage = 0;
-    this.visibleAddForm = 1;
-  }
-
-  ajouterAffectationResponsableAgence(): void {
-    if (this.checked == 'Nouveau responsable') {
-      this.responsableAgenceImmobiliere.nom = this.affectationResponsableAgenceForm.value.nom;
-      this.responsableAgenceImmobiliere.prenom = this.affectationResponsableAgenceForm.value.prenom;
-      this.responsableAgenceImmobiliere.email = this.affectationResponsableAgenceForm.value.email;
-      this.responsableAgenceImmobiliere.telephone = this.affectationResponsableAgenceForm.value.telephone;
-      this.responsableAgenceImmobiliere.role = this.roleRespnsable;
-      this.affectationResponsableAgenceRequest.responsable = this.responsableAgenceImmobiliere;
-      this.affectationResponsableAgenceRequest.agenceImmobiliere = this.agenceSelectionnee;
-      //console.log(this.affectationAgentAgenceRequest)
-      this.affectationResponsableAgenceService.ajouterResponsableAgence(this.affectationResponsableAgenceRequest).subscribe(
-        (response) => {
-          //console.log(response);
-          if (response.id > 0) {
-            this.voirListe();
-            this.messageSuccess = "Le co - responsable a été ajouté avec succès.";
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Ajout réussi',
-              detail: this.messageSuccess
-            });
-          } else {
-            this.messageErreur = "Erreur lors de l'ajout du co - responsable !"
-            this.afficherFormulaireAjouter();
-            this.responsableAgenceImmobiliere.nom = response.responsable.nom;
-            this.responsableAgenceImmobiliere.prenom = response.responsable.prenom;
-            this.responsableAgenceImmobiliere.email = response.responsable.email;
-            this.responsableAgenceImmobiliere.telephone = response.responsable.telephone;
-            this.responsableAgenceImmobiliere.matricule = response.responsable.matricule;
-            this.agenceSelectionnee = response.agenceImmobiliere;
-            this.messageService.add({
-              severity: 'error',
-              summary: "Erreur d'ajout",
-              detail: this.messageErreur
-            });
-          }
-      },
-      (error) =>{
-        //console.log(error)
-        if (error.message == "Ce responsable à été déjà affecté à cette agence.") {
-          this.messageErreur = "Ce co - responsable à été déjà affecté à cette agence !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: 'Ajout non réussi',
-            detail: this.messageErreur
-          });
-        } else if (error.message == "Un responsable avec cette adresse e-mail existe déjà." ) {
-          this.messageErreur = "Un co - responsable avec cette adresse e-mail existe déjà !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: 'Ajout non réussi',
-            detail: this.messageErreur
-          });
-        }
-      })
-    } else if (this.checked == 'Responsable existant') {
-      this.affectationResponsableAgenceRequest.matricule = this.responsableAgenceImmobiliere.matricule;
-      this.affectationResponsableAgenceRequest.agenceImmobiliere = this.agenceSelectionnee;
-      //console.log(this.affectationAgentAgenceRequest)
-      this.affectationResponsableAgenceService.ajoutParMatriculeResponsable(this.affectationResponsableAgenceRequest).subscribe(
-        (response) => {
-          //console.log(response);
-          if (response.id > 0) {
-            this.voirListe();
-            this.messageSuccess = "Le co - responsable a été ajouté avec succès.";
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Ajout réussi',
-              detail: this.messageSuccess
-            });
-          } else {
-            this.messageErreur = "Erreur lors de l'ajout du co - responsable !"
-            this.afficherFormulaireAjouter();
-            this.responsableAgenceImmobiliere.matricule = response.responsable.matricule;
-            this.agenceSelectionnee = response.agenceImmobiliere;
-            this.messageService.add({
-              severity: 'error',
-              summary: "Erreur d'ajout",
-              detail: this.messageErreur
-            });
-          }
-      },
-      (error) =>{
-        //console.log(error)
-        if (error.status == 409) {
-          this.messageErreur = "Un co - responsable avec cette adresse e-mail existe déjà !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: 'Ajout non réussi',
-            detail: this.messageErreur
-          });
-        } else if (error.status == 404) {
-          this.messageErreur = "La matricule du co - responsable est introuvable !";
-          this.messageService.add({
-            severity: 'warn',
-            summary: 'Ajout non réussi',
-            detail: this.messageErreur
-          });
-        }
-      })
-    }
-  }
-
-  supprimerResponsableAgenceImmobiliere(id: number): void {
-    this.responsableAgenceImmobiliereService.deleteById(id).subscribe(
-      (response) => {
-        //console.log(response);
-        this.voirListe();
-        this.messageSuccess = "Le client a été supprimé avec succès.";
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Suppression réussie',
-          detail: this.messageSuccess
-        });
-      }
-    );
   }
 
   activerCompte(id: number): void {
@@ -364,8 +132,8 @@ export class ResponsablesAgenceImmobiliereComponent implements OnInit, OnDestroy
       header: "Activation de compte",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.personneService.activerCompte(id).subscribe(response=>{
-          //console.log(response);
+        this.personneService.activerCompte(id).subscribe(
+          (response) => {
           this.voirListe();
           this.messageSuccess = "Le compte a été activé avec succès !";
           this.messageService.add({
@@ -403,8 +171,8 @@ export class ResponsablesAgenceImmobiliereComponent implements OnInit, OnDestroy
       header: "Désactivation de compte",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.personneService.desactiverCompte(id).subscribe(response=>{
-          //console.log(response);
+        this.personneService.desactiverCompte(id).subscribe(
+          (response) => {
           this.voirListe();
           this.messageSuccess = "Le compte a été désactivé avec succès.";
           this.messageService.add({
@@ -442,8 +210,8 @@ export class ResponsablesAgenceImmobiliereComponent implements OnInit, OnDestroy
       header: "Activation de compte",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.affectationResponsableAgenceService.activerCompteResponsableAgence(id).subscribe(response=>{
-          console.log(response);
+        this.affectationResponsableAgenceService.activerCompteResponsableAgence(id).subscribe(
+          (response) => {
           this.voirListe();
           this.messageSuccess = "Le compte a été activé avec succès !";
           this.messageService.add({
@@ -480,8 +248,8 @@ export class ResponsablesAgenceImmobiliereComponent implements OnInit, OnDestroy
       header: "Désactivation de compte",
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.affectationResponsableAgenceService.desactiverCompteResponsableAgence(id).subscribe(response=>{
-          //console.log(response);
+        this.affectationResponsableAgenceService.desactiverCompteResponsableAgence(id).subscribe(
+          (response) => {
           this.voirListe();
           this.messageSuccess = "Le compte a été désactivé avec succès.";
           this.messageService.add({
@@ -510,6 +278,38 @@ export class ResponsablesAgenceImmobiliereComponent implements OnInit, OnDestroy
         }
       }
     });
+  }
+
+  navigateURLBYUSER(user: any): string {
+    let roleBasedURL = '';
+
+    switch (user.role.code) {
+      case 'ROLE_ADMINISTRATEUR':
+        roleBasedURL = '/admin';
+        break;
+      case 'ROLE_PROPRIETAIRE':
+        roleBasedURL = '/proprietaire';
+        break;
+      case 'ROLE_RESPONSABLE':
+        roleBasedURL = '/responsable/agences-immobilieres';
+        break;
+      case 'ROLE_DEMARCHEUR':
+        roleBasedURL = '/demarcheur';
+        break;
+      case 'ROLE_GERANT':
+        roleBasedURL = '/gerant';
+        break;
+      case 'ROLE_AGENTIMMOBILIER':
+        roleBasedURL = '/agent-immobilier/agences-immobilieres';
+        break;
+      case 'ROLE_CLIENT':
+        roleBasedURL = '/client';
+        break;
+      default:
+        break;
+    }
+
+    return roleBasedURL;
   }
 
   ngOnDestroy(): void {

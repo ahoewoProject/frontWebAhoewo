@@ -19,6 +19,16 @@ export class AgenceImmobiliereService {
     this.url = APIEndpoint + 'api/';
   }
 
+
+  //Affichage Agences Immobilieres Pages;
+  // url: http://localhost:4040/api/agences-immobilieres/pages
+  getAgencesPages(numeroDeLaPage: number, elementsParPage: number): Observable<Page<AgenceImmobiliere>>{
+    let params = new HttpParams()
+      .set('numeroDeLaPage', numeroDeLaPage.toString())
+      .set('elementsParPage', elementsParPage.toString());
+    return this.httpClient.get<Page<AgenceImmobiliere>>(this.url + 'agences-immobilieres/pages', {params: params});
+  }
+
   //Affichage des agences immobilières actives par region
   // url: http://localhost:4040/api/agences/actives/region/{id}
   getAgencesActivesByRegionId(id: number, numeroDeLaPage: number, elementsParPage: number): Observable<Page<AgenceImmobiliere>>{
@@ -63,15 +73,21 @@ export class AgenceImmobiliereService {
   }
 
   // Liste Agences Immobilieres (Responsable/ Agent Immobilier);
-  // url: http://localhost:4040/api/agences-immobilieres-list
+  // url: http://localhost:4040/api/agences-immobilieres-list/user-actif
   getAgencesImmobilieresListIfUserActif(): Observable<Array<AgenceImmobiliere>>{
     return this.httpClient.get<Array<AgenceImmobiliere>>(this.url + 'agences-immobilieres-list/user-actif');
   }
 
+  // Liste Agences Immobilieres (Responsable/ Agent Immobilier);
+  // url: http://localhost:4040/api/agences-immobilieres-list/user
+  getAgencesImmobilieresList(): Observable<Array<AgenceImmobiliere>>{
+    return this.httpClient.get<Array<AgenceImmobiliere>>(this.url + 'agences-immobilieres-list/user');
+  }
+
   // Affichage de toutes les occurrences d'agence immobilière;
   // url: http://localhost:4040/api/agences-immobilieres
-  getAll(): Observable<Array<AffectationResponsableAgence>>{
-    return this.httpClient.get<Array<AffectationResponsableAgence>>(this.url + 'agences-immobilieres');
+  getAll(): Observable<Array<AgenceImmobiliere>>{
+    return this.httpClient.get<Array<AgenceImmobiliere>>(this.url + 'agences-immobilieres');
   }
 
   // Affichage de toutes les occurrences d'agence immobilière par responsable d'agence immobilière;
@@ -80,22 +96,13 @@ export class AgenceImmobiliereService {
     return this.httpClient.get<Array<AgenceImmobiliere>>(this.url + 'agences-immobilieres/responsable');
   }
 
-    // Affichage de toutes les occurrences d'agence immobilière paginées;
+  // Affichage de toutes les occurrences d'agence immobilière paginées;
   // url: http://localhost:4040/api/agences-immobilieres/paginees
   getAffectationsResponsableAgence(numeroDeLaPage: number, elementsParPage: number): Observable<Page<AffectationResponsableAgence>>{
     let params = new HttpParams()
       .set('numeroDeLaPage', numeroDeLaPage.toString())
       .set('elementsParPage', elementsParPage.toString());
     return this.httpClient.get<Page<AffectationResponsableAgence>>(this.url + 'agences-immobilieres/paginees', {params: params});
-  }
-
-  // Affichage de toutes les occurrences d'agence immobilière paginées par responsable d'agence immobilière;
-  // url: http://localhost:4040/api/agences-immobilieres/responsable/paginees
-  findAgencesByResponsablePaginees(numeroDeLaPage: number, elementsParPage: number): Observable<Page<AgenceImmobiliere>>{
-    let params = new HttpParams()
-      .set('numeroDeLaPage', numeroDeLaPage.toString())
-      .set('elementsParPage', elementsParPage.toString());
-    return this.httpClient.get<Page<AgenceImmobiliere>>(this.url + 'agences-immobilieres/responsable/paginees', {params: params});
   }
 
   // Affichage de toutes les occurrences d'agence immobilière par agent immobilier;
@@ -108,12 +115,6 @@ export class AgenceImmobiliereService {
   // url: http://localhost:4040/api/agence-immobiliere/{id}
   findById(id: number): Observable<AgenceImmobiliere>{
     return this.httpClient.get<AgenceImmobiliere>(this.url + 'agence-immobiliere/' + id);
-  }
-
-  // Recherche d'une occurrence d'affectation responsable agence par la clé primaire ;
-  // url: http://localhost:4040/api/affectation-responsable-agence/{id}
-  detailAffectation(id: number): Observable<AffectationResponsableAgence>{
-    return this.httpClient.get<AffectationResponsableAgence>(this.url + 'affectation-responsable-agence/' + id);
   }
 
   // Ajout d'une occurrence d'agence immobilière;

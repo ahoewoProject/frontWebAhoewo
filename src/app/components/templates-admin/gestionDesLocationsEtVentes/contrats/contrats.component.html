@@ -764,7 +764,8 @@
                     <a type="button" (click)="voirListe()" class="ud-btn btn-retour">Retour</a>
                 </div>
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end" *ngIf="user.role.code != 'ROLE_CLIENT'">
-                    <a type="button" *ngIf="contratVente.etatContrat == 'Validé' && afficherBoutonSiBienDelegue(contratVente.bienImmobilier.estDelegue)" (click)="voirFormulairePlanificationAchat(contratVente)" class="ud-btn btn-annuler">Planifier un paiement d'achat</a>
+                    <a type="button" *ngIf="(contratVente.etatContrat == 'Validé' || contratVente.etatContrat == 'Confirmé') && afficherBoutonSiBienDelegue(contratVente.bienImmobilier.estDelegue) && lastPlanificationPaiement?.restePaye != 0" (click)="voirFormulairePlanificationAchat(contratVente)"
+                        class="ud-btn btn-annuler">Planifier un paiement d'achat</a>
                     <span *ngIf="user.role.code != 'ROLE_CLIENT'">&nbsp;</span>
                     <a type="button" (click)="telechargerContratVente(contratVente.id)" class="ud-btn btn-valider">Imprimer</a>
                     <span *ngIf="user.role.code != 'ROLE_CLIENT'">&nbsp;</span>
@@ -1339,7 +1340,7 @@
             </div>
             <div class="col-xxl-7">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <a class="ud-btn btn-retour" type="button" (click)="retourDetailContrat()">Retour</a>
+                    <a class="ud-btn btn-retour" type="button" (click)="retourDetailContrat(contratLocation.id)">Retour</a>
                 </div>
             </div>
         </div>
@@ -2267,7 +2268,7 @@
             </div>
             <div class="col-xxl-7">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <a class="ud-btn btn-retour" type="button" (click)="retourDetailContrat()">Retour</a>
+                    <a class="ud-btn btn-retour" type="button" (click)="retourDetailContrat(contratVente.id)">Retour</a>
                 </div>
             </div>
         </div>
@@ -3379,7 +3380,7 @@
 
     <!-- Start Ajout planification -->
     <div *ngIf="affichage == 7">
-        <div class="row align-items-center pb40">
+        <div class="row align-items-center">
             <div class="col-xxl-5">
                 <div class="dashboard_title_area">
                     <h4>Planification d'un paiement {{ typePlanificationSelectionne == 'Paiement de location' ? 'de location' : 'd\'achat' }}</h4>
@@ -3388,9 +3389,23 @@
             </div>
             <div class="col-xxl-7">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <a class="ud-btn btn-retour" type="button" (click)="retourDetailContrat()">Retour</a>
+                    <a class="ud-btn btn-retour" type="button" (click)="retourDetailContrat(contratSelectionne.id)">Retour</a>
                 </div>
             </div>
+            <p-messages severity="info" *ngIf="typePlanificationSelectionne == 'Paiement d\'achat'">
+                <ng-template pTemplate>
+                    <div class="ml-2">
+                        <th scope="col">Contrat : {{ contratSelectionne.codeContrat }} | Prix de vente : {{ contratSelectionne.prixVente | number }} FCFA | nombre de tranches : {{ contratSelectionne.nombreDeTranche }} </th>
+                    </div>
+                </ng-template>
+            </p-messages>
+            <p-messages severity="info" *ngIf="typePlanificationSelectionne == 'Paiement de location'">
+                <ng-template pTemplate>
+                    <div class="ml-2">
+                        <th scope="col">Contrat : {{ contratSelectionne.codeContrat }} | Loyer : {{ contratSelectionne.loyer | number }} FCFA</th>
+                    </div>
+                </ng-template>
+            </p-messages>
         </div>
         <div class="row">
             <div class="col-xl-12">
@@ -3416,7 +3431,7 @@
                             <div class="col-sm-6" *ngIf="typePlanificationSelectionne == 'Paiement d\'achat'">
                                 <div class="mb20">
                                     <label class="heading-color ff-heading fw600 mb10">Montant à payer</label>
-                                    <p-inputNumber class="pInputNumber p-fluid" placeholder="Le montant à payer" formControlName="montantPaye" [(ngModel)]="planificationPaiement.montantPaye" inputId="montantPaye" mode="currency" currency="CFA" locale="de-DE" [required]="true" [max]="planificationPaiement.montantPaye">
+                                    <p-inputNumber class="pInputNumber p-fluid" placeholder="Le montant à payer" formControlName="montantPaye" [(ngModel)]="planificationPaiement.montantPaye" inputId="montantPaye" mode="currency" currency="CFA" locale="de-DE" [required]="true" [max]="planificationPaiement.montantDu">
                                     </p-inputNumber>
                                     <div class="error" [hidden]="montantPaye.valid || montantPaye.pristine && !montantPaye.touched ">Le montant à payer est requise</div>
                                 </div>
@@ -4082,7 +4097,7 @@ Retour
                         </div>
                     </div>
                     &nbsp;
-                    <a class="ud-btn btn-retour" type="button" (click)="retourDetailContrat()">Retour</a>
+                    <a class="ud-btn btn-retour" type="button" (click)="retourDetailContrat(contrat.id)">Retour</a>
                 </div>
             </div>
             <p-messages severity="info">
@@ -4123,7 +4138,7 @@ Retour
                                     </td>
                                     <td class="vam">
                                         <div class="d-flex">
-                                            <button pButton type="button" icon="pi pi-eye" (click)="voirPageDetailPaiementParContratId(paiement.planificationPaiement.contrat.id)" pTooltip="Détails" tooltipPosition="top" class="p-button-text p-button-info">
+                                            <button pButton type="button" icon="pi pi-eye" (click)="voirPageDetailPaiement(paiement.id)" pTooltip="Détails" tooltipPosition="top" class="p-button-text p-button-info">
             </button>
                                         </div>
                                     </td>

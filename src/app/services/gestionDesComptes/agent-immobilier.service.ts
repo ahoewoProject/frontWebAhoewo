@@ -20,4 +20,9 @@ export class AgentImmobilierService {
   getAll(): Observable<Array<AgentImmobilier>>{
     return this.httpClient.get<Array<AgentImmobilier>>(this.url + 'agents-immobiliers');
   }
+
+  // url: http://localhost:4040/api/agent-immobilier/{id}
+  findById(id: number): Observable<AgentImmobilier>{
+    return this.httpClient.get<AgentImmobilier>(this.url + 'agent-immobilier/' + id);
+  }
 }

@@ -1,0 +1,241 @@
+<div class="dashboard__content bgc-f7">
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
+    </div>
+
+    <p-toast></p-toast>
+
+    <!-- Details d'une agence immobilière - Vue Responsable -->
+    <div *ngIf="user.role.code != 'ROLE_AGENTIMMOBILIER'">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-8">
+                <div class="dashboard_title_area">
+                    <h4>Détails d'une agence immobilière</h4>
+                    <h6 *ngIf="!user.estCertifie && user.role.code == 'ROLE_RESPONSABLE'" class="text" style="color: rgb(202, 8, 8);">Votre agence immobilière n'est pas certifié, veuillez demander la certification de cette dernière <br>en cliquant sur le menu <b>certifications</b> !</h6>
+                    <p class="text"></p>
+                </div>
+            </div>
+            <div class="col-xxl-4">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Agences immobilières</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <img class="img-fluid" width="360" [src]="agenceImmobiliere.logoAgence !== '' ? APIEndpoint+'api/logo/agence-immobiliere/'+agenceImmobiliere.id : 'assets/images/team/logo_par_defaut.jpg'" alt="Logo de l'agence">
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <h4 class="title fz17 mb30" *ngIf="agenceImmobiliere.description">Description</h4>
+                                <p class="text justify-text" *ngIf="agenceImmobiliere.description">
+                                    {{ agenceImmobiliere.description }}
+                                </p>
+
+                                <p-divider *ngIf="agenceImmobiliere.description"></p-divider>
+                                <div class="col-sm-6 col-xl-4">
+                                    <p class="fw600 mb10 ff-heading dark-color">Code agence</p>
+                                    <p class="text">{{ agenceImmobiliere.codeAgence }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4">
+                                    <p class="fw600 mb10 ff-heading dark-color">Nom</p>
+                                    <p class="text">{{ agenceImmobiliere.nomAgence }} <i *ngIf="agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg" style="color: #0f77e6;"></i></p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4">
+                                    <p class="fw600 mb10 ff-heading dark-color">Adresse e-mail</p>
+                                    <p class="text">{{ agenceImmobiliere.adresseEmail }}</p>
+                                </div>
+
+                                <p-divider></p-divider>
+                                <div class="col-sm-6 col-xl-4">
+                                    <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
+                                    <p class="text">{{ agenceImmobiliere.telephone }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4">
+                                    <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
+                                    <p class="text">{{ agenceImmobiliere.heureOuverture }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4">
+                                    <p class="fw600 mb10 ff-heading dark-color">Heure Fermeture</p>
+                                    <p class="text">{{ agenceImmobiliere.heureFermeture }}</p>
+                                </div>
+
+                                <p-divider></p-divider>
+                                <div class="col-sm-6 col-xl-4">
+                                    <p class="fw600 mb10 ff-heading dark-color">Pays</p>
+                                    <p class="text">{{ agenceImmobiliere.quartier.ville.region.pays.libelle }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4">
+                                    <p class="fw600 mb10 ff-heading dark-color">Région</p>
+                                    <p class="text">{{ agenceImmobiliere.quartier.ville.region.libelle }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4">
+                                    <p class="fw600 mb10 ff-heading dark-color">Ville</p>
+                                    <p class="text">{{ agenceImmobiliere.quartier.ville.libelle }}</p>
+                                </div>
+
+                                <p-divider></p-divider>
+                                <div class="col-sm-6 col-xl-4">
+                                    <p class="fw600 mb10 ff-heading dark-color">Quartier</p>
+                                    <p class="text">{{ agenceImmobiliere.quartier.libelle }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4" *ngIf="agenceImmobiliere.adresse">
+                                    <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
+                                    <p class="text">{{ agenceImmobiliere.adresse }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4">
+                                    <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+                                    <p>
+                                        <p-tag *ngIf="agenceImmobiliere.etatAgence == true" severity="success" value="Activé"></p-tag>
+                                        <p-tag *ngIf="agenceImmobiliere.etatAgence == false" severity="danger" value="Désactivé"></p-tag>
+                                    </p>
+                                </div>
+
+                                <p-divider></p-divider>
+                                <div class="col-sm-6 col-xl-4">
+                                    <p class="fw600 mb10 ff-heading dark-color">Est certifiée</p>
+                                    <p>
+                                        <p-tag *ngIf="agenceImmobiliere.estCertifie == true" severity="success" value="Oui"></p-tag>
+                                        <p-tag *ngIf="agenceImmobiliere.estCertifie == false" severity="danger" value="Non"></p-tag>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-end">
+            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Agences immobilières</a>
+        </div>
+    </div>
+    <!-- End Details d'une agence immobilière - Vue Responsable -->
+
+    <!-- Details d'une agence immobilière - Vue Agent immobilier -->
+    <div *ngIf="user.role.code == 'ROLE_AGENTIMMOBILIER'">
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-8">
+                <div class="dashboard_title_area">
+                    <h4>Détails d'une affectation agent agence</h4>
+                    <p class="text"></p>
+                </div>
+            </div>
+            <div class="col-xxl-4">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Agences immobilières</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <img class="img-fluid" [src]="affectationAgentAgence.agenceImmobiliere.logoAgence !== '' ? this.APIEndpoint + 'api/logo/agence-immobiliere/' + affectationAgentAgence.agenceImmobiliere.id : 'assets/images/team/logo_par_defaut.jpg'" width="390" alt="Logo de l'agence">
+                        </div>
+
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <p class="fw600 mb10 ff-heading dark-color" *ngIf="affectationAgentAgence.agenceImmobiliere.description">Description</p>
+                                <p class="text justify-text" *ngIf="affectationAgentAgence.agenceImmobiliere.description">
+                                    {{ affectationAgentAgence.agenceImmobiliere.description }}
+                                </p>
+
+                                <p-divider *ngIf="affectationAgentAgence.agenceImmobiliere.description"></p-divider>
+                                <div class="form-group col-md-6">
+                                    <p class="fw600 mb10 ff-heading dark-color">Code agence</p>
+                                    <p class="text">{{ affectationAgentAgence.agenceImmobiliere.codeAgence }}</p>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <p class="fw600 mb10 ff-heading dark-color">Nom</p>
+                                    <p class="text">{{ affectationAgentAgence.agenceImmobiliere.nomAgence }} <i *ngIf="affectationAgentAgence.agenceImmobiliere && affectationAgentAgence.agenceImmobiliere.estCertifie == true" class="fa-sharp fa-solid fa-badge-check fa-lg"
+                                            style="color: #0f77e6;"></i></p>
+                                </div>
+
+                                <p-divider></p-divider>
+                                <div class="form-group col-md-6">
+                                    <p class="fw600 mb10 ff-heading dark-color">Email de l'agence</p>
+                                    <p class="text">{{ affectationAgentAgence.agenceImmobiliere.adresseEmail }}</p>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <p class="fw600 mb10 ff-heading dark-color">Numéro de téléphone</p>
+                                    <p class="text">{{ affectationAgentAgence.agenceImmobiliere.telephone }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <p-divider></p-divider>
+                        <div class="col-sm-6 col-xl-4">
+                            <p class="fw600 mb10 ff-heading dark-color">Heure ouverture</p>
+                            <p class="text">{{ affectationAgentAgence.agenceImmobiliere.heureOuverture }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4">
+                            <p class="fw600 mb10 ff-heading dark-color">Heure fermeture</p>
+                            <p class="text">{{ affectationAgentAgence.agenceImmobiliere.heureFermeture }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4">
+                            <p class="fw600 mb10 ff-heading dark-color">Pays</p>
+                            <p class="text">{{ affectationAgentAgence.agenceImmobiliere.quartier.ville.region.pays.libelle }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="col-sm-6 col-xl-4">
+                            <p class="fw600 mb10 ff-heading dark-color">Region</p>
+                            <p class="text">{{ affectationAgentAgence.agenceImmobiliere.quartier.ville.region.libelle }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4">
+                            <p class="fw600 mb10 ff-heading dark-color">Ville</p>
+                            <p class="text">{{ affectationAgentAgence.agenceImmobiliere.quartier.ville.libelle }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4">
+                            <p class="fw600 mb10 ff-heading dark-color">Quartier</p>
+                            <p class="text">{{ affectationAgentAgence.agenceImmobiliere.quartier.libelle }}</p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="col-sm-6 col-xl-4" *ngIf="affectationAgentAgence.agenceImmobiliere.adresse">
+                            <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
+                            <p class="text">{{ affectationAgentAgence.agenceImmobiliere.adresse }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4">
+                            <p class="fw600 mb10 ff-heading dark-color">Affectation</p>
+                            <p>
+                                <p-tag *ngIf="affectationAgentAgence.actif == true" severity="success" value="Activée"></p-tag>
+                                <p-tag *ngIf="affectationAgentAgence.actif == false" severity="danger" value="Désactivée"></p-tag>
+                            </p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4">
+                            <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+                            <p>
+                                <p-tag *ngIf="affectationAgentAgence.agenceImmobiliere.etatAgence == true" severity="success" value="Activé"></p-tag>
+                                <p-tag *ngIf="affectationAgentAgence.agenceImmobiliere.etatAgence == false" severity="danger" value="Désactivé"></p-tag>
+                            </p>
+                        </div>
+
+                        <p-divider></p-divider>
+                        <div class="col-sm-6 col-xl-4">
+                            <p class="fw600 mb10 ff-heading dark-color">Est certifiée</p>
+                            <p>
+                                <p-tag *ngIf="affectationAgentAgence.agenceImmobiliere.estCertifie == true" severity="success" value="Oui"></p-tag>
+                                <p-tag *ngIf="affectationAgentAgence.agenceImmobiliere.estCertifie == false" severity="danger" value="Non"></p-tag>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-end">
+            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Agences immobilières</a>
+        </div>
+    </div>
+    <!-- End Details d'une agence immobilière - Vue Agent immobilier -->
+
+
+</div>

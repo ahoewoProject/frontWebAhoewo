@@ -19,6 +19,9 @@ import { PaiementsComponent } from 'src/app/components/templates-admin/gestionDe
 import { PlanificationsPaiementsComponent } from 'src/app/components/templates-admin/gestionDesPaiements/planifications-paiements/planifications-paiements.component';
 import { ParametresComponent } from 'src/app/components/templates-admin/gestionDesComptes/parametres/parametres.component';
 import { BiensAssociesComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-associes/biens-associes.component';
+import { BiensContratsComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-contrats/biens-contrats.component';
+import { BiensPlanificationsPaiementsComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-planifications-paiements/biens-planifications-paiements.component';
+import { BiensPaiementsComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-paiements/biens-paiements.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -26,33 +29,66 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'gerants', component: GerantsComponent, canActivate: [AuthGuard] },
       { path: 'profil', component: ProfilComponent, canActivate: [AuthGuard] },
+
       { path: 'demandes-certifications', component: DemandesCertificationsComponent, canActivate: [AuthGuard] },
       { path: 'demandes-certifications/:id', component: DemandesCertificationsComponent, canActivate: [AuthGuard] },
+
       { path: 'biens-supports', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
       { path: 'biens-supports/:id', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
       { path: 'biens-supports/:id/biens-associes', component: BiensAssociesComponent, canActivate: [AuthGuard] },
       { path: 'biens-supports/:id/biens-associes/:idBienAssocie', component: BiensAssociesComponent, canActivate: [AuthGuard] },
+
+      { path: 'biens/contrats/:codeBien', component: BiensContratsComponent, canActivate: [AuthGuard] },
+      { path: 'biens/contrat-location/:idContratLocation', component: BiensContratsComponent, canActivate: [AuthGuard] },
+      { path: 'biens/contrat-vente/:idContratVente', component: BiensContratsComponent, canActivate: [AuthGuard] },
+      { path: 'biens/contrat-vente/:idContratVente', component: BiensContratsComponent, canActivate: [AuthGuard] },
+
+      { path: 'biens/contrats/planifications-paiements/:codeContrat', component: BiensPlanificationsPaiementsComponent, canActivate: [AuthGuard] },
+      { path: 'biens/contrats/planification-paiement/:idPlanificationPaiement', component: BiensPlanificationsPaiementsComponent, canActivate: [AuthGuard] },
+
+      { path: 'biens/contrats/paiements/:codeContrat', component: BiensPaiementsComponent, canActivate: [AuthGuard] },
+      { path: 'biens/contrats/paiement/:idPaiement', component: BiensPaiementsComponent, canActivate: [AuthGuard] },
+
+      { path: 'biens-delegues/contrats/:codeBien', component: BiensContratsComponent, canActivate: [AuthGuard] },
+      { path: 'biens-delegues/contrat-location/:idContratLocation', component: BiensContratsComponent, canActivate: [AuthGuard] },
+      { path: 'biens-delegues/contrat-vente/:idContratVente', component: BiensContratsComponent, canActivate: [AuthGuard] },
+
+      { path: 'biens-delegues/contrats/planifications-paiements/:codeContrat', component: BiensPlanificationsPaiementsComponent, canActivate: [AuthGuard] },
+      { path: 'biens-delegues/contrats/planification-paiement/:idPlanificationPaiement', component: BiensPlanificationsPaiementsComponent, canActivate: [AuthGuard] },
+
+      { path: 'biens-delegues/contrats/paiements/:codeContrat', component: BiensPaiementsComponent, canActivate: [AuthGuard] },
+      { path: 'biens-delegues/contrats/paiement/:idPaiement', component: BiensPaiementsComponent, canActivate: [AuthGuard] },
+
       { path: 'delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
       { path: 'delegations-gestions/:id', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
-      { path: 'delegations-gestions/contrats', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
+
       { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
+
       { path: 'publications', component: PublicationsComponent, canActivate: [AuthGuard] },
       { path: 'publications/:id', component: PublicationsComponent, canActivate: [AuthGuard] },
+
       { path: 'demandes-visites', component: DemandesVisitesComponent, canActivate: [AuthGuard] },
       { path: 'demandes-visites/:id', component: DemandesVisitesComponent, canActivate: [AuthGuard] },
+
       { path: 'demandes-locations', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
       { path: 'demandes-locations/:id', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
+
       { path: 'demandes-achats', component: DemandesAchatsComponent, canActivate: [AuthGuard] },
       { path: 'demandes-achats/:id', component: DemandesAchatsComponent, canActivate: [AuthGuard] },
+
       { path: 'contrats', component: ContratsComponent, canActivate: [AuthGuard] },
       { path: 'contrats/locations/:id', component: ContratsComponent, canActivate: [AuthGuard] },
       { path: 'contrats/ventes/:id', component: ContratsComponent, canActivate: [AuthGuard] },
+
       { path: 'suivis-entretiens', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
       { path: 'suivis-entretiens/:id', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
+
       { path: 'planifications-paiements', component: PlanificationsPaiementsComponent, canActivate: [AuthGuard] },
       { path: 'planifications-paiements/:id', component: PlanificationsPaiementsComponent, canActivate: [AuthGuard] },
+
       { path: 'paiements', component: PaiementsComponent, canActivate: [AuthGuard] },
       { path: 'paiements/:id', component: PaiementsComponent, canActivate: [AuthGuard] },
+
       { path: 'parametres', component: ParametresComponent, canActivate: [AuthGuard] },
     ]
   }

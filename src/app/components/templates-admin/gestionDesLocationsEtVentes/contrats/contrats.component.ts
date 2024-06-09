@@ -83,6 +83,7 @@ export class ContratsComponent implements OnInit, OnDestroy {
 
   planificationPaiementForm: any;
   planificationPaiement = this.planificationPaiementService.planificationPaiement;
+  lastPlanificationPaiement: PlanificationPaiement = new PlanificationPaiement();
 
   typesPlanifications: string[] = [];
   typePlanificationSelectionne!: string;
@@ -425,9 +426,16 @@ export class ContratsComponent implements OnInit, OnDestroy {
   }
 
   detailContratVente(id: number): void {
+    console.log(id)
+    this.lastPlanificationPaiement = new PlanificationPaiement();
     this.contratVenteService.findById(id).subscribe(
       (response) => {
         this.contratVente = response;
+        this.planificationPaiementService.lastPlanificationPaiement(this.contratVente.codeContrat).subscribe(
+          (data) => {
+            this.lastPlanificationPaiement = data;
+          }
+        )
         if (this.user.role.code == 'ROLE_CLIENT') {
           this.listeMotifs(this.contratVente.codeContrat, this.contratVente.refuserPar);
         } else {
@@ -435,7 +443,9 @@ export class ContratsComponent implements OnInit, OnDestroy {
         }
       }
     )
+
   }
+
 
   listeMotifs(code: string, creerPar: number): void {
     this.motifService.getMotifsByCodeAndCreerPar(code, creerPar).subscribe(
@@ -445,10 +455,18 @@ export class ContratsComponent implements OnInit, OnDestroy {
     );
   }
 
-  retourDetailContrat(): void {
+  retourDetailContratVente(id: number): void {
+    this.detailContratVente(id);
+    this.affichage = 3;
+  }
+
+  retourDetailContrat(id: number): void {
+    this.planificationPaiementForm.reset();
     if (this.router.url.includes('locations')) {
+      this.detailContratLocation(id);
       this.affichage = 2;
     } else if (this.router.url.includes('ventes')) {
+      this.detailContratVente(id);
       this.affichage = 3;
     }
   }
@@ -1036,6 +1054,8 @@ export class ContratsComponent implements OnInit, OnDestroy {
         }
       }
     )
+    console.log(this.contratSelectionne);
+    console.log(this.planificationPaiement.montantDu)
     this.affichage = 7;
   }
 
@@ -1056,6 +1076,7 @@ export class ContratsComponent implements OnInit, OnDestroy {
     this.planificationPaiementService.ajouterPlanificationPaiementLocation(this.planificationPaiement).subscribe(
       (response) => {
         if (response.id > 0) {
+          this.planificationPaiementForm.reset();
           this.router.navigate([this.navigateURLBYUSER(this.user) + '/planifications-paiements'], { queryParams: { planificationPaiementReussie: true } });
         } else {
           this.messageErreur = "Une erreur s'est produite lors de la planification !";
@@ -1085,6 +1106,7 @@ export class ContratsComponent implements OnInit, OnDestroy {
     this.planificationPaiementService.ajouterPlanificationPaiementLocation(this.planificationPaiement).subscribe(
       (response) => {
         if (response.id > 0) {
+          this.planificationPaiementForm.reset();
           this.router.navigate([this.navigateURLBYUSER(this.user) + '/planifications-paiements'], { queryParams: { planificationPaiementReussie: true } });
         } else {
           this.messageErreur = "Une erreur s'est produite lors de la planification !";
@@ -1250,8 +1272,8 @@ export class ContratsComponent implements OnInit, OnDestroy {
     this.listePaiementsByCodeContrat(this.codeContrat, this.numeroDeLaPagePaiement, this.elementsParPagePaiement);
   }
 
-  detailPaiementParContratId(contratId: number): void {
-    this.paiementService.findByContratId(contratId).subscribe(
+  detailPaiement(id: number): void {
+    this.paiementService.findById(id).subscribe(
       (response) => {
         this.paiement = response;
         if (this.paiement.planificationPaiement.typePlanification == 'Paiement de location') {
@@ -1263,8 +1285,8 @@ export class ContratsComponent implements OnInit, OnDestroy {
     )
   }
 
-  voirPageDetailPaiementParContratId(contratId: number): void {
-    this.detailPaiementParContratId(contratId);
+  voirPageDetailPaiement(id: number): void {
+    this.detailPaiement(id);
     this.affichage = 13;
   }
 

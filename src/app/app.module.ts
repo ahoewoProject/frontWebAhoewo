@@ -118,6 +118,34 @@ import { MenuGerantComponent } from './components/templates-admin/menu/menu-gera
 import { MenuDemarcheurComponent } from './components/templates-admin/menu/menu-demarcheur/menu-demarcheur.component';
 import { MenuNotaireComponent } from './components/templates-admin/menu/menu-notaire/menu-notaire.component';
 import { MenuProprietaireComponent } from './components/templates-admin/menu/menu-proprietaire/menu-proprietaire.component';
+import { BiensContratsComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-contrats/biens-contrats.component';
+import { BiensPlanificationsPaiementsComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-planifications-paiements/biens-planifications-paiements.component';
+import { BiensPaiementsComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-paiements/biens-paiements.component';
+import { DelegationGestionAddComponent } from './components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/delegation-gestion-add/delegation-gestion-add.component';
+import { BienDelegueUpdateComponent } from './components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/bien-delegue-update/bien-delegue-update.component';
+import { SidebarModule } from 'primeng/sidebar';
+import { AgentImmobilierAddComponent } from './components/templates-admin/gestionDesComptes/agents-immobiliers/agent-immobilier-add/agent-immobilier-add.component';
+import { ResponsableAgenceAddComponent } from './components/templates-admin/gestionDesComptes/responsables-agence-immobiliere/responsable-agence-add/responsable-agence-add.component';
+import { DetailResponsableComponent } from './components/templates-admin/gestionDesComptes/responsables-agence-immobiliere/detail-responsable/detail-responsable.component';
+import { DetailAgentImmobilierComponent } from './components/templates-admin/gestionDesComptes/agents-immobiliers/detail-agent-immobilier/detail-agent-immobilier.component';
+import { AddAgenceImmobiliereComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/agences-immobilieres/add-agence-immobiliere/add-agence-immobiliere.component';
+import { UpdateAgenceImmobiliereComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/agences-immobilieres/update-agence-immobiliere/update-agence-immobiliere.component';
+import { DetailAgenceImmobiliereComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/agences-immobilieres/detail-agence-immobiliere/detail-agence-immobiliere.component';
+import { DetailServiceAgenceComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/services-agence-immobiliere/detail-service-agence/detail-service-agence.component';
+import { AddServiceAgenceComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/services-agence-immobiliere/add-service-agence/add-service-agence.component';
+import { UpdateServiceAgenceComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/services-agence-immobiliere/update-service-agence/update-service-agence.component';
+import { UpdateServiceComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/services/update-service/update-service.component';
+import { AddServiceComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/services/add-service/add-service.component';
+import { DetailServiceComponent } from './components/templates-admin/gestionDesAgencesImmobilieres/services/detail-service/detail-service.component';
+import { AddBienImmobilierComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/add-bien-immobilier/add-bien-immobilier.component';
+import { UpdateBienImmobilierComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/update-bien-immobilier/update-bien-immobilier.component';
+import { AddBienAssocieComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-associes/add-bien-associe/add-bien-associe.component';
+import { UpdateBienAssocieComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-associes/update-bien-associe/update-bien-associe.component';
+import { DetailBienAssocieComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-associes/detail-bien-associe/detail-bien-associe.component';
+import { DetailBienImmobilierComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/detail-bien-immobilier/detail-bien-immobilier.component';
+import { AddDelegationGestionComponent } from './components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/add-delegation-gestion/add-delegation-gestion.component';
+import { UpdateDelegationGestionComponent } from './components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/update-delegation-gestion/update-delegation-gestion.component';
+import { DetailDelegationGestionComponent } from './components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/detail-delegation-gestion/detail-delegation-gestion.component';
 
 @NgModule({
   declarations: [
@@ -188,6 +216,33 @@ import { MenuProprietaireComponent } from './components/templates-admin/menu/men
     MenuDemarcheurComponent,
     MenuNotaireComponent,
     MenuProprietaireComponent,
+    BiensContratsComponent,
+    BiensPlanificationsPaiementsComponent,
+    BiensPaiementsComponent,
+    DelegationGestionAddComponent,
+    BienDelegueUpdateComponent,
+    AgentImmobilierAddComponent,
+    ResponsableAgenceAddComponent,
+    DetailResponsableComponent,
+    DetailAgentImmobilierComponent,
+    AddAgenceImmobiliereComponent,
+    UpdateAgenceImmobiliereComponent,
+    DetailAgenceImmobiliereComponent,
+    DetailServiceAgenceComponent,
+    AddServiceAgenceComponent,
+    UpdateServiceAgenceComponent,
+    UpdateServiceComponent,
+    AddServiceComponent,
+    DetailServiceComponent,
+    AddBienImmobilierComponent,
+    UpdateBienImmobilierComponent,
+    AddBienAssocieComponent,
+    UpdateBienAssocieComponent,
+    DetailBienAssocieComponent,
+    DetailBienImmobilierComponent,
+    AddDelegationGestionComponent,
+    UpdateDelegationGestionComponent,
+    DetailDelegationGestionComponent
   ],
   imports: [
     BrowserModule,
@@ -242,7 +297,8 @@ import { MenuProprietaireComponent } from './components/templates-admin/menu/men
     CalendarModule,
     CommonModule,
     ChartModule,
-    ScrollPanelModule
+    ScrollPanelModule,
+    SidebarModule
   ],
   providers: [
     MessageService,

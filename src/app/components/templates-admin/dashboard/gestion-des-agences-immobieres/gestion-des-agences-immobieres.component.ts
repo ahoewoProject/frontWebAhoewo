@@ -47,14 +47,14 @@ export class GestionDesAgencesImmobieresComponent implements OnInit, OnDestroy {
           this.nbreAgence = data.length;
         }
       )
-    } else if (this.personneService.estResponsable(this.user.role.code)) {
-      this.agenceResponsableService.getResponsablesOfAgences().subscribe(
+    } else if (this.personneService.estAgentImmobilier(this.user.role.code)) {
+      this.agenceAgentImmobilierService.getAffectationsAgentAgenceList().subscribe(
         (data) => {
           this.nbreAgence = data.length;
         }
       )
-    } else if (this.personneService.estAgentImmobilier(this.user.role.code)) {
-      this.agenceAgentImmobilierService.getAgencesOfAgent().subscribe(
+    } else if (this.personneService.estResponsable(this.user.role.code)) {
+      this.agenceResponsableService.getAffectationsResponsableAgenceList().subscribe(
         (data) => {
           this.nbreAgence = data.length;
         }
@@ -68,17 +68,17 @@ export class GestionDesAgencesImmobieresComponent implements OnInit, OnDestroy {
     if (this.personneService.estAdmin(this.user.role.code)) {
       this.agenceService.getAll().subscribe(
         (data) => {
-          this.nbreAgenceActif = data.filter(a => a.agenceImmobiliere.etatAgence = true).length;
+          this.nbreAgenceActif = data.filter(a => a.etatAgence = true).length;
         }
       )
-    } else if (this.personneService.estResponsable(this.user.role.code)) {
-      this.agenceResponsableService.getResponsablesOfAgences().subscribe(
+    } else if (this.personneService.estAgentImmobilier(this.user.role.code)) {
+      this.agenceAgentImmobilierService.getAffectationsAgentAgenceList().subscribe(
         (data) => {
           this.nbreAgenceActif = data.filter(a => a.actif = true).length;
         }
       )
-    } else if (this.personneService.estAgentImmobilier(this.user.role.code)) {
-      this.agenceAgentImmobilierService.getAgencesOfAgent().subscribe(
+    } else if (this.personneService.estResponsable(this.user.role.code)) {
+      this.agenceResponsableService.getAffectationsResponsableAgenceList().subscribe(
         (data) => {
           this.nbreAgenceActif = data.filter(a => a.actif = true).length;
         }
@@ -92,17 +92,17 @@ export class GestionDesAgencesImmobieresComponent implements OnInit, OnDestroy {
     if (this.personneService.estAdmin(this.user.role.code)) {
       this.agenceService.getAll().subscribe(
         (data) => {
-          this.nbreAgenceInactif = data.filter(a => a.agenceImmobiliere.etatAgence = false).length;
+          this.nbreAgenceInactif = data.filter(a => a.etatAgence = false).length;
         }
       )
-    } else if (this.personneService.estResponsable(this.user.role.code)) {
-      this.agenceResponsableService.getResponsablesOfAgences().subscribe(
+    } else if (this.personneService.estAgentImmobilier(this.user.role.code)) {
+      this.agenceAgentImmobilierService.getAffectationsAgentAgenceList().subscribe(
         (data) => {
           this.nbreAgenceInactif = data.filter(a => a.actif = false).length;
         }
       )
-    } else if (this.personneService.estAgentImmobilier(this.user.role.code)) {
-      this.agenceAgentImmobilierService.getAgencesOfAgent().subscribe(
+    } else if (this.personneService.estResponsable(this.user.role.code)) {
+      this.agenceResponsableService.getAffectationsResponsableAgenceList().subscribe(
         (data) => {
           this.nbreAgenceInactif = data.filter(a => a.actif = false).length;
         }
@@ -120,7 +120,7 @@ export class GestionDesAgencesImmobieresComponent implements OnInit, OnDestroy {
         }
       )
     } else if (this.personneService.estResponsable(this.user.role.code) || this.personneService.estAgentImmobilier(this.user.role.code)) {
-      this.servicesAgencesService.getServicesOfAgences().subscribe(
+      this.servicesAgencesService.getServicesAgencesList().subscribe(
         (data) => {
           this.nbreService = data.length;
         }
@@ -138,7 +138,7 @@ export class GestionDesAgencesImmobieresComponent implements OnInit, OnDestroy {
         }
       )
     } else if (this.personneService.estResponsable(this.user.role.code)) {
-      this.servicesAgencesService.getServicesOfAgences().subscribe(
+      this.servicesAgencesService.getServicesAgencesList().subscribe(
         (data) => {
           this.nbreServiceActif = data.filter(s => s.etat == 1).length;
         }
@@ -156,7 +156,7 @@ export class GestionDesAgencesImmobieresComponent implements OnInit, OnDestroy {
         }
       )
     } else if (this.personneService.estResponsable(this.user.role.code)) {
-      this.servicesAgencesService.getServicesOfAgences().subscribe(
+      this.servicesAgencesService.getServicesAgencesList().subscribe(
         (data) => {
           this.nbreServiceInactif = data.filter(s => s.etat == 2).length;
         }

@@ -14,7 +14,12 @@
     <p class="fz15 fw400 ff-heading mt30">AGENCES IMMOBILIERES</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/agent-immobilier/agences-immobilieres']" routerLinkActive="-is-active" [routerLinkActiveOptions]="{ exact: true }">
+    <a [routerLink]="['/agent-immobilier/agences-immobilieres']" [ngClass]="{'-is-active': isActive(
+      ['/agent-immobilier/agences-immobilieres',
+        '/agent-immobilier/agence-immobiliere/:id',
+        '/agent-immobilier/agence-immobiliere/:id/services',
+        '/agent-immobilier/agence-immobiliere/service/:id',
+      ])}">
         <i class="fa-light fa-key mr15"></i>&nbsp;Agences immobilières
     </a>
 </div>
@@ -25,15 +30,36 @@
     <p class="fz15 fw400 ff-heading mt30">BIENS IMMOBILIERS</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/agent-immobilier/agences-immobilieres/biens-supports'] ||
-    ['/agent-immobilier/agences-immobilieres/biens-supports', 'id'] ||
-    ['/agent-immobilier/agences-immobilieres/biens-supports', 'id', 'biens-associes'] ||
-    ['/agent-immobilier/agences-immobilieres/biens-supports', 'id', 'biens-associes', 'idBienAssocie']" routerLinkActive="-is-active">
+    <a [routerLink]="['/agent-immobilier/agences-immobilieres/biens-supports']" [ngClass]="{'-is-active': isActive(
+      ['/agent-immobilier/agences-immobilieres/biens-supports',
+      '/agent-immobilier/agences-immobilieres/biens-supports/:id',
+      '/agent-immobilier/agences-immobilieres/biens-supports/:id/biens-associes',
+      '/agent-immobilier/agences-immobilieres/biens-supports/:id/biens-associes/:id',
+      '/agent-immobilier/agences-immobilieres/biens/contrats/:codeBien',
+      '/agent-immobilier/agences-immobilieres/biens/contrat-location/:id',
+      '/agent-immobilier/agences-immobilieres/biens/contrat-vente/:id',
+      '/agent-immobilier/agences-immobilieres/biens/contrats/planifications-paiements/:codeContrat',
+      '/agent-immobilier/agences-immobilieres/biens/contrats/planification-paiement/:id',
+      '/agent-immobilier/agences-immobilieres/biens/contrats/paiements/:codeContrat',
+      '/agent-immobilier/agences-immobilieres/biens/contrats/paiement/:id',
+      ])}">
         <i class="fa-light fa-house-building mr15"></i>Biens immobiliers
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/agent-immobilier/agences-immobilieres/delegations-gestions'] || ['/agent-immobilier/agences-immobilieres/delegations-gestions', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/agent-immobilier/agences-immobilieres/delegations-gestions']" [ngClass]="{'-is-active': isActive(
+      ['/agent-immobilier/agences-immobilieres/delegations-gestions',
+      '/agent-immobilier/agences-immobilieres/delegations-gestions/:id',
+      '/agent-immobilier/agences-immobilieres/biens-delegues/contrats/:codeBien',
+      '/agent-immobilier/agences-immobilieres/biens-delegues/contrat-location/:id',
+      '/agent-immobilier/agences-immobilieres/biens-delegues/contrat-vente/:id',
+      '/agent-immobilier/agences-immobilieres/biens-delegues/contrats/planifications-paiements/:codeContrat',
+      '/agent-immobilier/agences-immobilieres/biens-delegues/contrats/planification-paiement/:id',
+      '/agent-immobilier/agences-immobilieres/biens-delegues/contrats/paiements/:codeContrat',
+      '/agent-immobilier/agences-immobilieres/biens-delegues/contrats/paiement/:id',
+      '/agent-immobilier/agences-immobilieres/delegation-gestion/add',
+      '/agent-immobilier/agences-immobilieres/bien-delegue/update/:id/:designation'
+      ])}">
         <i class="fa-light fa-handshake mr15"></i>Biens délégués
     </a>
 </div>
@@ -44,10 +70,14 @@
     <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/agent-immobilier/agences-immobilieres/publications'] || ['/agent-immobilier/agences-immobilieres/publications', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/agent-immobilier/agences-immobilieres/publications']" [ngClass]="{'-is-active': isActive(
+    ['/agent-immobilier/agences-immobilieres/publications',
+    '/agent-immobilier/agences-immobilieres/publications/:id'
+  ])}">
         <i class="fa-light fa-share-all mr15"></i>Publication des biens
     </a>
 </div>
+
 <!-- End Menu Gestion de la publication des biens -->
 
 <!-- Start Menu Gestion des locations et ventes -->
@@ -55,33 +85,46 @@
     <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-visites'] || ['/agent-immobilier/agences-immobilieres/demandes-visites', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-visites']" [ngClass]="{'-is-active': isActive(
+    ['/agent-immobilier/agences-immobilieres/demandes-visites',
+    '/agent-immobilier/agences-immobilieres/demandes-visites/:id'
+  ])}">
         <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-locations'] || ['/agent-immobilier/agences-immobilieres/demandes-locations', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-locations']" [ngClass]="{'-is-active': isActive(
+    ['/agent-immobilier/agences-immobilieres/demandes-locations',
+    '/agent-immobilier/agences-immobilieres/demandes-locations/:id'
+  ])}">
         <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-achats'] || ['/agent-immobilier/agences-immobilieres/demandes-achats', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-achats']" [ngClass]="{'-is-active': isActive(
+    ['/agent-immobilier/agences-immobilieres/demandes-achats',
+    '/agent-immobilier/agences-immobilieres/demandes-achats/:id'
+  ])}">
         <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/agent-immobilier/agences-immobilieres/contrats'] ||
-['/responsable/agences-immobilieres/contrats/locations', 'id'] ||
-['/responsable/agences-immobilieres/contrats/ventes', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/agent-immobilier/agences-immobilieres/contrats']" [ngClass]="{'-is-active': isActive(
+    ['/agent-immobilier/agences-immobilieres/contrats',
+    '/agent-immobilier/agences-immobilieres/contrats/locations/:id',
+    '/agent-immobilier/agences-immobilieres/contrats/ventes/:id'])}">
         <i class="fa-light fa-folders mr15"></i>Contrats
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/agent-immobilier/agences-immobilieres/suivis-entretiens'] ||
-['/responsable/agences-immobilieres/suivis-entretiens', 'id']" routerLinkActive="-is-active">
+    <a [routerLink]="['/agent-immobilier/agences-immobilieres/suivis-entretiens']" [ngClass]="{'-is-active': isActive(
+    ['/agent-immobilier/agences-immobilieres/suivis-entretiens',
+    '/agent-immobilier/agences-immobilieres/suivis-entretiens/:id'
+  ])}">
         <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
     </a>
 </div>
+
 <!-- End Menu Gestion des locations et ventes -->
 
 <!-- Start Menu Gestion des paiements -->
@@ -89,13 +132,20 @@
     <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/agent-immobilier/agences-immobilieres/planifications-paiements'] ||
-['/responsable/agences-immobilieres/planifications-paiements', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements</a>
+    <a [routerLink]="['/agent-immobilier/agences-immobilieres/planifications-paiements']" [ngClass]="{'-is-active': isActive(
+    ['/agent-immobilier/agences-immobilieres/planifications-paiements',
+    '/agent-immobilier/agences-immobilieres/planifications-paiements/:id'
+  ])}">
+        <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements
+    </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/agent-immobilier/agences-immobilieres/paiements'] ||
-['/responsable/agences-immobilieres/paiements', 'id']" routerLinkActive="-is-active">
-        <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements</a>
+    <a [routerLink]="['/agent-immobilier/agences-immobilieres/paiements']" [ngClass]="{'-is-active': isActive(
+    [
+    '/agent-immobilier/agences-immobilieres/paiements',
+    '/agent-immobilier/agences-immobilieres/paiements/:id'
+  ])}">
+        <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements
+    </a>
 </div>
 <!-- End Menu Gestion des paiements -->

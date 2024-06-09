@@ -160,3 +160,7 @@
 .p-minute-picker .p-link {
     border-radius: 10px;
 }
+
+.p-sidebar-mask {
+    z-index: initial !important;
+}
