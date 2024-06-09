@@ -22,7 +22,8 @@
       '/gerant/biens-delegues/contrats/planification-paiement',
       '/gerant/biens-delegues/contrats/paiements',
       '/gerant/biens-delegues/contrats/paiement',
-      '/gerant/delegation-gestion/add',
+      '/gerant/delegation-gestion/:id',
+      '/gerant/add/delegation-gestion',
       '/gerant/bien-delegue/update'
       ])}">
         <i class="fa-light fa-handshake mr15"></i>Biens délégués
@@ -35,7 +36,11 @@
     <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/gerant/publications']" [ngClass]="{'-is-active': isActive(['/gerant/publications'])}">
+    <a [routerLink]="['/gerant/publications']" [ngClass]="{'-is-active': isActive(
+    ['/gerant/publications',
+    '/gerant/update/publication/:id',
+    '/gerant/publication/:id'
+  ])}">
         <i class="fa-light fa-share-all mr15"></i>Publication des biens
     </a>
 </div>

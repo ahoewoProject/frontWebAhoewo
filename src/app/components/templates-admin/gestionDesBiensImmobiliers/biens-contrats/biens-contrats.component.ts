@@ -109,7 +109,7 @@ export class BiensContratsComponent implements OnInit, OnDestroy {
         (data) => {
           this.delegationGestion = data;
 
-          this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegations-gestions', this.delegationGestion.id], { queryParams: { idBien: this.delegationGestion.bienImmobilier.id } });
+          this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegation-gestion', this.delegationGestion.id], { queryParams: { idBien: this.delegationGestion.bienImmobilier.id } });
         }
       )
     }

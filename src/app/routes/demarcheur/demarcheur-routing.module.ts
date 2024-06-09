@@ -23,6 +23,9 @@ import { BiensPaiementsComponent } from 'src/app/components/templates-admin/gest
 import { BiensPlanificationsPaiementsComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-planifications-paiements/biens-planifications-paiements.component';
 import { DelegationGestionAddComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/delegation-gestion-add/delegation-gestion-add.component';
 import { BienDelegueUpdateComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/bien-delegue-update/bien-delegue-update.component';
+import { DetailPublicationComponent } from 'src/app/components/templates-admin/gestionDesPublications/publications/detail-publication/detail-publication.component';
+import { UpdatePublicationComponent } from 'src/app/components/templates-admin/gestionDesPublications/publications/update-publication/update-publication.component';
+import { DetailDelegationGestionComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/detail-delegation-gestion/detail-delegation-gestion.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -60,14 +63,17 @@ const routes: Routes = [
 
       { path: 'delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
       { path: 'delegations-gestions/:id', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
+      { path: 'delegation-gestion/:id', component: DetailDelegationGestionComponent, canActivate: [AuthGuard] },
 
-      { path: 'delegation-gestion/add', component: DelegationGestionAddComponent, canActivate: [AuthGuard] },
+      { path: 'add/delegation-gestion', component: DelegationGestionAddComponent, canActivate: [AuthGuard] },
       { path: 'bien-delegue/update/:id/:designation', component: BienDelegueUpdateComponent, canActivate: [AuthGuard] },
 
       { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
 
       { path: 'publications', component: PublicationsComponent, canActivate: [AuthGuard] },
       { path: 'publications/:id', component: PublicationsComponent, canActivate: [AuthGuard] },
+      { path: 'publication/:id', component: DetailPublicationComponent, canActivate: [AuthGuard] },
+      { path: 'update/publication/:id', component: UpdatePublicationComponent, canActivate: [AuthGuard] },
 
       { path: 'demandes-visites', component: DemandesVisitesComponent, canActivate: [AuthGuard] },
       { path: 'demandes-visites/:id', component: DemandesVisitesComponent, canActivate: [AuthGuard] },

@@ -22,6 +22,15 @@ import { BiensAssociesComponent } from 'src/app/components/templates-admin/gesti
 import { BiensContratsComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-contrats/biens-contrats.component';
 import { BiensPlanificationsPaiementsComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-planifications-paiements/biens-planifications-paiements.component';
 import { BiensPaiementsComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-paiements/biens-paiements.component';
+import { AddBienImmobilierComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/add-bien-immobilier/add-bien-immobilier.component';
+import { UpdateBienImmobilierComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/update-bien-immobilier/update-bien-immobilier.component';
+import { DetailBienImmobilierComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/detail-bien-immobilier/detail-bien-immobilier.component';
+import { AddBienAssocieComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-associes/add-bien-associe/add-bien-associe.component';
+import { UpdateBienAssocieComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-associes/update-bien-associe/update-bien-associe.component';
+import { DetailBienAssocieComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-associes/detail-bien-associe/detail-bien-associe.component';
+import { DetailPublicationComponent } from 'src/app/components/templates-admin/gestionDesPublications/publications/detail-publication/detail-publication.component';
+import { UpdatePublicationComponent } from 'src/app/components/templates-admin/gestionDesPublications/publications/update-publication/update-publication.component';
+import { DetailDelegationGestionComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/detail-delegation-gestion/detail-delegation-gestion.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -34,8 +43,19 @@ const routes: Routes = [
       { path: 'demandes-certifications/:id', component: DemandesCertificationsComponent, canActivate: [AuthGuard] },
 
       { path: 'biens-supports', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
+      { path: 'add/bien-support', component: AddBienImmobilierComponent, canActivate: [AuthGuard] },
+      { path: 'update/bien-support/:id', component: UpdateBienImmobilierComponent, canActivate: [AuthGuard] },
+      { path: 'bien-support/:id', component: DetailBienImmobilierComponent, canActivate: [AuthGuard] },
+
       { path: 'biens-supports/:id', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
       { path: 'biens-supports/:id/biens-associes', component: BiensAssociesComponent, canActivate: [AuthGuard] },
+
+      { path: 'bien-support/:id/biens-associes', component: BiensAssociesComponent, canActivate: [AuthGuard] },
+
+      { path: 'bien-support/:id/add/bien-associe', component: AddBienAssocieComponent, canActivate: [AuthGuard] },
+      { path: 'bien-support/:id/update/bien-associe', component: UpdateBienAssocieComponent, canActivate: [AuthGuard] },
+      { path: 'bien-support/:id/bien-associe/:idBienAssocie', component: DetailBienAssocieComponent, canActivate: [AuthGuard] },
+
       { path: 'biens-supports/:id/biens-associes/:idBienAssocie', component: BiensAssociesComponent, canActivate: [AuthGuard] },
 
       { path: 'biens/contrats/:codeBien', component: BiensContratsComponent, canActivate: [AuthGuard] },
@@ -61,11 +81,14 @@ const routes: Routes = [
 
       { path: 'delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
       { path: 'delegations-gestions/:id', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
+      { path: 'delegation-gestion/:id', component: DetailDelegationGestionComponent, canActivate: [AuthGuard] },
 
       { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
 
       { path: 'publications', component: PublicationsComponent, canActivate: [AuthGuard] },
       { path: 'publications/:id', component: PublicationsComponent, canActivate: [AuthGuard] },
+      { path: 'publication/:id', component: DetailPublicationComponent, canActivate: [AuthGuard] },
+      { path: 'update/publication/:id', component: UpdatePublicationComponent, canActivate: [AuthGuard] },
 
       { path: 'demandes-visites', component: DemandesVisitesComponent, canActivate: [AuthGuard] },
       { path: 'demandes-visites/:id', component: DemandesVisitesComponent, canActivate: [AuthGuard] },

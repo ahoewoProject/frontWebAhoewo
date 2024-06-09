@@ -45,6 +45,7 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/proprietaire/delegations-gestions']" [ngClass]="{'-is-active': isActive(
       ['/proprietaire/delegations-gestions',
+      '/proprietaire/delegation-gestion/:id',
       '/proprietaire/biens-delegues/contrats',
       '/proprietaire/biens-delegues/contrat-location',
       '/proprietaire/biens-delegues/contrat-vente',
@@ -63,7 +64,11 @@
     <p class="fz15 fw400 ff-heading mt30">PUBLICATION DES BIENS</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/proprietaire/publications']" [ngClass]="{'-is-active': isActive(['/proprietaire/publications'])}">
+    <a [routerLink]="['/proprietaire/publications']" [ngClass]="{'-is-active': isActive(
+    ['/proprietaire/publications',
+    '/proprietaire/update/publication/:id',
+    '/proprietaire/publication/:id'
+  ])}">
         <i class="fa-light fa-share-all mr15"></i>Publication des biens
     </a>
 </div>

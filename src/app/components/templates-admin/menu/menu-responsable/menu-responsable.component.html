@@ -100,7 +100,8 @@
       '/responsable/agences-immobilieres/biens-delegues/contrats/planification-paiement/:id',
       '/responsable/agences-immobilieres/biens-delegues/contrats/paiements/:codeContrat',
       '/responsable/agences-immobilieres/biens-delegues/contrats/paiement/:id',
-      '/responsable/agences-immobilieres/delegation-gestion/add',
+      '/responsable/agences-immobilieres/delegation-gestion/:id',
+      '/responsable/agences-immobilieres/add/delegation-gestion',
       '/responsable/agences-immobilieres/bien-delegue/update/:id/:designation'
       ])}">
         <i class="fa-light fa-handshake mr15"></i>Biens délégués
@@ -115,7 +116,8 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/responsable/agences-immobilieres/publications']" [ngClass]="{'-is-active': isActive(
     ['/responsable/agences-immobilieres/publications',
-    '/responsable/agences-immobilieres/publications/:id'
+    '/responsable/agences-immobilieres/update/publication/:id',
+    '/responsable/agences-immobilieres/publication/:id'
   ])}">
         <i class="fa-light fa-share-all mr15"></i>Publication des biens
     </a>

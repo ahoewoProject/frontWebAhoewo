@@ -57,7 +57,8 @@
       '/agent-immobilier/agences-immobilieres/biens-delegues/contrats/planification-paiement/:id',
       '/agent-immobilier/agences-immobilieres/biens-delegues/contrats/paiements/:codeContrat',
       '/agent-immobilier/agences-immobilieres/biens-delegues/contrats/paiement/:id',
-      '/agent-immobilier/agences-immobilieres/delegation-gestion/add',
+      '/agent-immobilier/agences-immobilieres/delegation-gestion/:id',
+      '/agent-immobilier/agences-immobilieres/add/delegation-gestion',
       '/agent-immobilier/agences-immobilieres/bien-delegue/update/:id/:designation'
       ])}">
         <i class="fa-light fa-handshake mr15"></i>Biens délégués
@@ -72,7 +73,8 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/agent-immobilier/agences-immobilieres/publications']" [ngClass]="{'-is-active': isActive(
     ['/agent-immobilier/agences-immobilieres/publications',
-    '/agent-immobilier/agences-immobilieres/publications/:id'
+        '/agent-immobilier/agences-immobilieres/update/publication/:id',
+    '/agent-immobilier/agences-immobilieres/publication/:id'
   ])}">
         <i class="fa-light fa-share-all mr15"></i>Publication des biens
     </a>

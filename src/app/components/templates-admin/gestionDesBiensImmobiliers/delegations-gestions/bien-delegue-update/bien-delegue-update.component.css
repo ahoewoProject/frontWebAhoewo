@@ -38,8 +38,8 @@
     border-radius: 10px;
 }
 
-:host ::ng-deep .imageLength0 {
-    border-radius: 10px;
+:host ::ng-deep .imageDetail {
+    width: 60%;
 }
 
 .error {
@@ -66,6 +66,10 @@
 
 :host ::ng-deep .p-message {
     font-family: 'DM Sans', sans-serif;
+}
+
+:host ::ng-deep .imageLength0 {
+    border-radius: 10px;
 }
 
 :host ::ng-deep .p-galleria-thumbnail-wrapper {

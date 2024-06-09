@@ -1,0 +1,466 @@
+<div class="dashboard__content property-page bgc-f7">
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
+    </div>
+
+    <p-toast></p-toast>
+    <p-confirmDialog [style]="{ width: '50vw' }" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+
+    <!-- Détails d'une publication -->
+    <div>
+        <div class="row align-items-center">
+            <div class="col-xxl-5">
+                <div class="dashboard_title_area">
+                    <h4>Détails d'une publication</h4>
+                </div>
+            </div>
+            <div class="col-xxl-7">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a *ngIf="
+              afficherBoutonSiBienDelegue(
+                publication.bienImmobilier.estDelegue
+              )
+            " type="button" (click)="voirPageModifier(publication.id)" class="ud-btn btn-modifier">Modifier</a>&nbsp;
+                    <a *ngIf="
+              publication.etat == true &&
+              afficherBoutonSiBienDelegue(
+                publication.bienImmobilier.estDelegue
+              )
+            " type="button" (click)="desactiverPublication(publication.id, publication.bienImmobilier.id)" class="ud-btn btn-danger">Désactiver</a>
+                    <a *ngIf="
+              publication.etat == false &&
+              afficherBoutonSiBienDelegue(
+                publication.bienImmobilier.estDelegue
+              )
+            " type="button" (click)="activerPublication(publication.id, publication.bienImmobilier.id)" class="ud-btn btn-valider">Activer</a>&nbsp;
+                    <a type="button" (click)="voirListe()" class="ud-btn btn-retour">Retour</a>
+                </div>
+            </div>
+            <p-messages severity="info">
+                <ng-template pTemplate>
+                    <div class="ml-2">
+                        <th scope="col">Libelle : {{ publication.libelle }}</th>
+                    </div>
+                </ng-template>
+            </p-messages>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <div class="text-center" *ngIf="images.length == 0">
+                        <p-image class="w-100" imageClass="imageLength0" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
+                    </div>
+
+                    <div *ngIf="images.length !== 0">
+                        <p-galleria [value]="images" [showIndicators]="false" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px', margin: '0 auto' }" [numVisible]="5">
+                            <ng-template pTemplate="item" let-item>
+                                <img src="{{
+              this.APIEndpoint + 'api/image/bien-immobilier/' + item.id
+            }}" style="width: 100%; border-radius: 10px" loading="lazy" />
+                            </ng-template>
+
+                            <ng-template pTemplate="thumbnail" *ngIf="images.length > 4" let-item>
+                                <div class="grid grid-nogutter justify-content-center">
+                                    <img src="{{
+                this.APIEndpoint + 'api/image/bien-immobilier/' + item.id
+              }}" style="width: 100%; border-radius: 8px" loading="lazy" />
+                                </div>
+                            </ng-template>
+                        </p-galleria>
+                    </div>
+
+                    <p-divider></p-divider>
+                    <h4 class="title title-detail fz17 mb30">Publication</h4>
+                    <!-- <div class="d-flex">
+              <div class="pd-list">
+                <p class="fw600 mb10 ff-heading dark-color">Libelle de la publication</p>
+              </div>
+              <div class="pd-list">
+                <p class="text mb10 ml15">{{ publication.libelle }}</p>
+              </div>
+              </div> -->
+                    <div class="row">
+                        <div class="col-md-6 col-xl-4">
+                            <div class="d-flex justify-content-between">
+                                <div class="pd-list">
+                                    <p class="fw600 mb10 ff-heading dark-color">
+                                        Code publication
+                                    </p>
+                                    <p class="fw600 mb10 ff-heading dark-color">
+                                        Type de transaction
+                                    </p>
+                                    <p class="fw600 mb10 ff-heading dark-color" *ngIf="publication.typeDeTransaction == 'Location'">
+                                        Avance
+                                    </p>
+                                    <p class="fw600 mb10 ff-heading dark-color" *ngIf="publication.commission">
+                                        Commission
+                                    </p>
+                                    <p class="fw600 mb10 ff-heading dark-color">
+                                        Etat
+                                    </p>
+                                </div>
+                                <div class="pd-list">
+                                    <p class="text mb10">{{ publication.codePublication }}</p>
+                                    <p class="text mb10">{{ publication.typeDeTransaction }}</p>
+                                    <p class="text mb10" *ngIf="publication.typeDeTransaction == 'Location'">
+                                        {{ publication.avance }} mois
+                                    </p>
+                                    <p class="text mb10" *ngIf="publication.commission">
+                                        {{ publication.commission }} {{ publication.typeDeTransaction === "Location" ? "mois" : "%" }}
+                                    </p>
+                                    <p class="text mb10">
+                                        <p-tag *ngIf="publication.etat == true" severity="success" value="Activé"></p-tag>
+                                        <p-tag *ngIf="publication.etat == false" severity="danger" value="Désactivé"></p-tag>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-xl-4 offset-xl-2">
+                            <div class="d-flex justify-content-between">
+                                <div class="pd-list">
+                                    <p class="fw600 mb10 ff-heading dark-color">
+                                        Prix {{ publication.typeDeTransaction === "Location" ? "mensuel" : "" }} du bien
+                                    </p>
+                                    <p class="fw600 mb10 ff-heading dark-color">
+                                        Date de publication
+                                    </p>
+                                    <p class="fw600 mb10 ff-heading dark-color" *ngIf="publication.typeDeTransaction == 'Location'">
+                                        Caution
+                                    </p>
+                                    <p class="fw600 mb10 ff-heading dark-color" *ngIf="
+                publication.fraisDeVisite &&
+                (user.role.code == 'ROLE_RESPONSABLE' ||
+                  user.role.code == 'ROLE_AGENTIMMOBILIER' ||
+                  user.role.code == 'ROLE_DEMARCHEUR')
+              ">
+                                        Frais de visite
+                                    </p>
+                                </div>
+                                <div class="pd-list">
+                                    <p class="text mb10">
+                                        {{ publication.prixDuBien | number }} FCFA
+                                    </p>
+                                    <p class="text mb10">
+                                        {{ publication.datePublication | date : "dd/MM/yyyy" }}
+                                    </p>
+                                    <p class="text mb10" *ngIf="publication.typeDeTransaction == 'Location'">
+                                        {{ publication.caution }} mois
+                                    </p>
+                                    <p class="text mb10" *ngIf="
+                publication.fraisDeVisite &&
+                (user.role.code == 'ROLE_RESPONSABLE' ||
+                  user.role.code == 'ROLE_AGENTIMMOBILIER' ||
+                  user.role.code == 'ROLE_DEMARCHEUR')
+              ">
+                                        {{ publication.fraisDeVisite }} FCFA
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p-divider></p-divider>
+                    <h4 class="title title-detail fz17 mb30">Bien immobilier</h4>
+                    <h4 class="title fz17 mb10 mt30" *ngIf="bienImm.description">
+                        Description du bien
+                    </h4>
+                    <p class="text justify-text" *ngIf="bienImm.description">
+                        {{ bienImm.description }}
+                    </p>
+
+                    <div class="row">
+                        <div class="col-md-6 col-xl-4">
+                            <div class="d-flex justify-content-between">
+                                <div class="pd-list">
+                                    <p class="fw600 mb10 ff-heading dark-color">Code</p>
+                                    <p class="fw600 mb10 ff-heading dark-color">Type de bien</p>
+                                    <p class="fw600 mb10 ff-heading dark-color" *ngIf="afficherCategorie()">
+                                        Catégorie
+                                    </p>
+                                    <p class="fw600 mb10 ff-heading dark-color">Pays</p>
+                                    <p class="fw600 mb10 ff-heading dark-color">Région</p>
+                                    <p class="fw600 mb-0 ff-heading dark-color">Ville</p>
+                                </div>
+                                <div class="pd-list">
+                                    <p class="text mb10">{{ bienImm.codeBien }}</p>
+                                    <p class="text mb10">{{ bienImm.typeDeBien.designation }}</p>
+                                    <p class="text mb10" *ngIf="afficherCategorie()">
+                                        {{ bienImm.categorie }}
+                                    </p>
+                                    <p class="text mb10">{{ bienImm.quartier.ville.region.pays.libelle }}</p>
+                                    <p class="text mb10">{{ bienImm.quartier.ville.region.libelle }}</p>
+                                    <p class="text mb-0">{{ bienImm.quartier.ville.libelle }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-4 offset-xl-2">
+                            <div class="d-flex justify-content-between">
+                                <div class="pd-list">
+                                    <p class="fw600 mb10 ff-heading dark-color">Quartier</p>
+                                    <p class="fw600 mb10 ff-heading dark-color">Adresse</p>
+                                    <p class="fw600 mb10 ff-heading dark-color">Surface</p>
+                                    <p class="fw600 mb10 ff-heading dark-color">Statut</p>
+                                    <p class="fw600 mb-0 ff-heading dark-color">Etat</p>
+                                </div>
+                                <div class="pd-list">
+                                    <p class="text mb10">{{ bienImm.quartier.libelle }}</p>
+                                    <p class="text mb10" *ngIf="bienImm.adresse">
+                                        {{ bienImm.adresse }}
+                                    </p>
+                                    <p class="text mb10" *ngIf="bienImm.surface">
+                                        {{ bienImm.surface }} m²
+                                    </p>
+                                    <p class="text mb10">
+                                        <p-tag *ngIf="bienImm.statutBien == 'Disponible'" severity="success" value="Disponible"></p-tag>
+                                    </p>
+                                    <p class="text mb-0">
+                                        <p-tag *ngIf="bienImm.etatBien == true" severity="success" value="Activé"></p-tag>
+                                        <p-tag *ngIf="bienImm.etatBien == false" severity="danger" value="Désactivé"></p-tag>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="title fz17 mb10 mt30" *ngIf="bienImm.typeDeBien.designation != 'Terrain'">
+                        Caractéristiques
+                    </h4>
+                    <div class="row">
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.nombreChambres">
+                            <p class="fw600 mb5 ff-heading dark-color">Nombre de chambres</p>
+                            <p class="text">{{ caracteristique.nombreChambres }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.nombreChambresSalon">
+                            <p class="fw600 mb5 ff-heading dark-color">
+                                Nombre de chambres salon
+                            </p>
+                            <p class="text">{{ caracteristique.nombreChambresSalon }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.nombreBureaux">
+                            <p class="fw600 mb5 ff-heading dark-color">Nombre de bureaux</p>
+                            <p class="text">{{ caracteristique.nombreBureaux }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.nombreBoutiques">
+                            <p class="fw600 mb5 ff-heading dark-color">Nombre de boutiques</p>
+                            <p class="text">{{ caracteristique.nombreBoutiques }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.nombreMagasins">
+                            <p class="fw600 mb5 ff-heading dark-color">Nombre de magasions</p>
+                            <p class="text">{{ caracteristique.nombreMagasins }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.nombreAppartements">
+                            <p class="fw600 mb5 ff-heading dark-color">
+                                Nombre d'appartements
+                            </p>
+                            <p class="text">{{ caracteristique.nombreAppartements }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.nombreEtages">
+                            <p class="fw600 mb5 ff-heading dark-color">Nombre d'étages</p>
+                            <p class="text">{{ caracteristique.nombreEtages }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.nombreGarages">
+                            <p class="fw600 mb5 ff-heading dark-color">Nombre de garages</p>
+                            <p class="text">{{ caracteristique.nombreGarages }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.nombreCuisineInterne">
+                            <p class="fw600 mb5 ff-heading dark-color">
+                                Nombre de cusine interne
+                            </p>
+                            <p class="text">{{ caracteristique.nombreCuisineInterne }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.nombreCuisineExterne">
+                            <p class="fw600 mb5 ff-heading dark-color">
+                                Nombre de cuisine externe
+                            </p>
+                            <p class="text">{{ caracteristique.nombreCuisineExterne }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.nombreWCDoucheInterne">
+                            <p class="fw600 mb5 ff-heading dark-color">
+                                Nombre de WC-Douche interne
+                            </p>
+                            <p class="text">{{ caracteristique.nombreWCDoucheInterne }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.nombreWCDoucheExterne">
+                            <p class="fw600 mb5 ff-heading dark-color">
+                                Nombre de WC-Douche externe
+                            </p>
+                            <p class="text">{{ caracteristique.nombreWCDoucheExterne }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.nombreSalons">
+                            <p class="fw600 mb5 ff-heading dark-color">Nombre de salons</p>
+                            <p class="text">{{ caracteristique.nombreSalons }}</p>
+                        </div>
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.nombrePlacards">
+                            <p class="fw600 mb5 ff-heading dark-color">Nombre de placards</p>
+                            <p class="text">{{ caracteristique.nombrePlacards }}</p>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.parking">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Parking
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.eauTde">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Eau TDE
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.compteurEau">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Compteur d'eau
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.wifi">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Wifi
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.placard">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Placards
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.cuisineInterne">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Cuisine interne
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.wcDoucheInterne">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche interne
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.balcon">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Balcon
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.garage">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Garage
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.eauForage">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.electriciteCeet">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.ascenseur">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.etage">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>À l'étage
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.dalle">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Dallé
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.cuisineExterne">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.wcDoucheExterne">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.climatisation">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.plafonne">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Plafonné
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.baieVitree">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Baie vitrée
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.solCarelle">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Sol carellé
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.cashPowerPersonnel">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Cash power personnel
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.compteurAdditionnel">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Compteur additionnel
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.jardin">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Jardin
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.piscine">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Piscine
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.terrasse">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Terrasse
+                            </p>
+                        </div>
+
+                        <div class="col-sm-6 col-xl-4" *ngIf="caracteristique.toiletteVisiteur">
+                            <p class="text mb10">
+                                <i style="color: #42a948" class="pi pi-check-circle align-middle pe-2"></i>Toilette visiteur
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-end">
+            <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
+        </div>
+    </div>
+    <!-- End Détails d'une publication -->
+</div>

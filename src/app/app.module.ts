@@ -143,9 +143,9 @@ import { AddBienAssocieComponent } from './components/templates-admin/gestionDes
 import { UpdateBienAssocieComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-associes/update-bien-associe/update-bien-associe.component';
 import { DetailBienAssocieComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-associes/detail-bien-associe/detail-bien-associe.component';
 import { DetailBienImmobilierComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/detail-bien-immobilier/detail-bien-immobilier.component';
-import { AddDelegationGestionComponent } from './components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/add-delegation-gestion/add-delegation-gestion.component';
-import { UpdateDelegationGestionComponent } from './components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/update-delegation-gestion/update-delegation-gestion.component';
 import { DetailDelegationGestionComponent } from './components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/detail-delegation-gestion/detail-delegation-gestion.component';
+import { DetailPublicationComponent } from './components/templates-admin/gestionDesPublications/publications/detail-publication/detail-publication.component';
+import { UpdatePublicationComponent } from './components/templates-admin/gestionDesPublications/publications/update-publication/update-publication.component';
 
 @NgModule({
   declarations: [
@@ -240,9 +240,9 @@ import { DetailDelegationGestionComponent } from './components/templates-admin/g
     UpdateBienAssocieComponent,
     DetailBienAssocieComponent,
     DetailBienImmobilierComponent,
-    AddDelegationGestionComponent,
-    UpdateDelegationGestionComponent,
-    DetailDelegationGestionComponent
+    DetailDelegationGestionComponent,
+    DetailPublicationComponent,
+    UpdatePublicationComponent
   ],
   imports: [
     BrowserModule,

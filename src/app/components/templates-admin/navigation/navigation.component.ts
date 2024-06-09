@@ -134,23 +134,23 @@ export class NavigationComponent implements OnInit, OnDestroy {
   }
 
   initNotification(): void {
-    interval(1000)
-    .pipe(
-      switchMap(() => {
-        this.notificationService.initListeNotificationsNonLues();
-        return this.notificationService.notificationsNonLuesEvent;
-      })
-    )
-    .subscribe((data: Notification[]) => {
-      this.notificationsNonLues = data;
-      this.notificationsNonLues.forEach((notification) => {
-        if (!this.notificationsDejaAffichees.includes(notification.id)) {
-          this.afficherNotification(notification.titre, notification.message);
-          this.notificationsDejaAffichees.push(notification.id);
-        }
-      });
-      this.initListeNotifications();
-    });
+    // interval(1000)
+    // .pipe(
+    //   switchMap(() => {
+    //     this.notificationService.initListeNotificationsNonLues();
+    //     return this.notificationService.notificationsNonLuesEvent;
+    //   })
+    // )
+    // .subscribe((data: Notification[]) => {
+    //   this.notificationsNonLues = data;
+    //   this.notificationsNonLues.forEach((notification) => {
+    //     if (!this.notificationsDejaAffichees.includes(notification.id)) {
+    //       this.afficherNotification(notification.titre, notification.message);
+    //       this.notificationsDejaAffichees.push(notification.id);
+    //     }
+    //   });
+    //   this.initListeNotifications();
+    // });
   }
 
   redirectToNotificationPage(): string {
@@ -256,19 +256,6 @@ export class NavigationComponent implements OnInit, OnDestroy {
   closeSidebar() {
     this.sidebarVisible = false;
   }
-
-  // @HostListener('document:click', ['$event'])
-  // onDocumentClick(event: MouseEvent) {
-  //   const target = event.target as HTMLElement;
-  //   if (!target.closest('.notification')) {
-  //     this.closeSidebar();
-  //   } else {
-  //     // Appliquer un z-index à la partie où vous cliquez
-  //     this.lireNotification();
-  //     this.zIndexForSidebar = 100; // Par exemple, vous pouvez définir un autre z-index ici
-  //   }
-  // }
-
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;

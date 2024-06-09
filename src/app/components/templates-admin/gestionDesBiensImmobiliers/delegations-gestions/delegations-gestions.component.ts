@@ -3,20 +3,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, ConfirmationService, ConfirmEventType, MenuItem } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
-import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
 import { BienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/BienImmobilier';
 import { Caracteristiques } from 'src/app/models/gestionDesBiensImmobiliers/Caracteristiques';
 import { DelegationGestion } from 'src/app/models/gestionDesBiensImmobiliers/DelegationGestion';
 import { DelegationGestionForm2 } from 'src/app/models/gestionDesBiensImmobiliers/DelegationGestionForm2';
 import { ImagesBienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/ImagesBienImmobilier';
-import { Pays } from 'src/app/models/gestionDesBiensImmobiliers/Pays';
-import { Quartier } from 'src/app/models/gestionDesBiensImmobiliers/Quartier';
-import { Region } from 'src/app/models/gestionDesBiensImmobiliers/Region';
-import { TypeDeBien } from 'src/app/models/gestionDesBiensImmobiliers/TypeDeBien';
-import { Ville } from 'src/app/models/gestionDesBiensImmobiliers/Ville';
-import { ContratLocation } from 'src/app/models/gestionDesLocationsEtVentes/ContratLocation';
-import { ContratVente } from 'src/app/models/gestionDesLocationsEtVentes/ContratVente';
-import { Paiement } from 'src/app/models/gestionDesPaiements/Paiement';
 import { PlanificationPaiement } from 'src/app/models/gestionDesPaiements/PlanificationPaiement';
 import { Motif } from 'src/app/models/Motif';
 import { BienImmAssocieService } from 'src/app/services/gestionDesBiensImmobiliers/bien-imm-associe.service';
@@ -167,12 +158,12 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     );
   }
 
-  voirListeDelegationsGestions(): void {
-    this.resetPublicationForm();
-    this.imgURLs = [];
-    this.imagesBienImmobilier = [];
-    this.affichage = 1;
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegations-gestions']);
+  voirDetailDelegationGestion(id: number, idBien: number): void {
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegation-gestion/' + id], {
+      queryParams: {
+          idBien: idBien
+      }
+  });
   }
 
   paginationListeDelegationsGestions(event: any) {
@@ -244,13 +235,6 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     this.detailDelegationGestion(idDelegationGestion);
     this.affichage = 2;
   }
-
-  //Page détail par url
-  voirPageDetail(idDelegationGestion: number, idBien: number): void {
-    this.getImagesBienImmobilier(idBien);
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegations-gestions', idDelegationGestion], { queryParams: { idBien: idBien } });
-  }
-
   afficherChampCategorie(designation: string): boolean {
     return designation == 'Chambre' || designation == 'Chambre salon' || designation == 'Bureau' ||
     designation == 'Appartement' || designation == 'Villa' || designation == 'Maison' ||
@@ -426,7 +410,7 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
 
   //Fonction pour afficher le formulaire déléguer un bien
   afficherFormulaireEnregistrerDelegation(): void {
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegation-gestion/add']);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/add/delegation-gestion']);
   }
 
   afficherFormulaireModificationBien(id: number, designation: string): void {

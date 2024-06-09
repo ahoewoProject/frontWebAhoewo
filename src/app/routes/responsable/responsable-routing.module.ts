@@ -37,6 +37,9 @@ import { DetailAgenceImmobiliereComponent } from 'src/app/components/templates-a
 import { AddServiceAgenceComponent } from 'src/app/components/templates-admin/gestionDesAgencesImmobilieres/services-agence-immobiliere/add-service-agence/add-service-agence.component';
 import { DetailServiceAgenceComponent } from 'src/app/components/templates-admin/gestionDesAgencesImmobilieres/services-agence-immobiliere/detail-service-agence/detail-service-agence.component';
 import { UpdateServiceAgenceComponent } from 'src/app/components/templates-admin/gestionDesAgencesImmobilieres/services-agence-immobiliere/update-service-agence/update-service-agence.component';
+import { DetailPublicationComponent } from 'src/app/components/templates-admin/gestionDesPublications/publications/detail-publication/detail-publication.component';
+import { UpdatePublicationComponent } from 'src/app/components/templates-admin/gestionDesPublications/publications/update-publication/update-publication.component';
+import { DetailDelegationGestionComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/detail-delegation-gestion/detail-delegation-gestion.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -93,14 +96,17 @@ const routes: Routes = [
 
       { path: 'agences-immobilieres/delegations-gestions', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/delegations-gestions/:id', component: DelegationsGestionsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/delegation-gestion/:id', component: DetailDelegationGestionComponent, canActivate: [AuthGuard] },
 
-      { path: 'agences-immobilieres/delegation-gestion/add', component: DelegationGestionAddComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/add/delegation-gestion', component: DelegationGestionAddComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/bien-delegue/update/:id/:designation', component: BienDelegueUpdateComponent, canActivate: [AuthGuard] },
 
       { path: 'agences-immobilieres/notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
 
       { path: 'agences-immobilieres/publications',  component: PublicationsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/publications/:id',  component: PublicationsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/publication/:id',  component: DetailPublicationComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/update/publication/:id',  component: UpdatePublicationComponent, canActivate: [AuthGuard] },
 
       { path: 'agences-immobilieres/demandes-visites', component: DemandesVisitesComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/demandes-visites/:id', component: DemandesVisitesComponent, canActivate: [AuthGuard] },

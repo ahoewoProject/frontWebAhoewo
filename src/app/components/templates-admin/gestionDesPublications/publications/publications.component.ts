@@ -58,37 +58,13 @@ export class PublicationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.publicationReussie = this.activatedRoute.snapshot.queryParams['publicationReussie'];
-
     this.initResponsiveOptions();
-    this.initialiserPublicationForm();
-    this.publicationForm.get('prixDuBien').valueChanges.subscribe((value: number) => {
-      this.updateCommissionInputState(value);
-    });
-    if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
+    if (this.personneService.estProprietaire(this.user.role.code)) {
       this.listeBiensPropres();
     } else {
       this.listeBiensPropresEtDelegues();
     }
-    this.listeTypeDeTransactions();
-    this.initActivatedRoute();
-  }
-
-  initActivatedRoute(): void {
-    this.activatedRoute.paramMap.subscribe(params => {
-      const id = params.get('id');
-      const idBien = this.activatedRoute.snapshot.queryParamMap.get('idBien');
-
-      if (id) {
-        this.affichage = 2;
-        if (idBien) {
-          this.getImagesBienImmobilier(parseInt(idBien));
-        }
-        this.detailPublication(parseInt(id));
-      } else {
-        this.listePublications(this.numeroDeLaPage, this.elementsParPage);
-      }
-    });
+    this.listePublications(this.numeroDeLaPage, this.elementsParPage);
   }
 
   initResponsiveOptions(): void {
@@ -115,56 +91,6 @@ export class PublicationsComponent implements OnInit, OnDestroy {
         this.images = response;
       }
     );
-  }
-
-  initialiserPublicationForm(): void {
-    this.publicationForm = new FormGroup({
-      bienImmobilier: new FormControl('', [Validators.required]),
-      typeDeTransaction: new FormControl('', [Validators.required]),
-      libelle: new FormControl('', [Validators.required]),
-      prixDuBien: new FormControl('', [Validators.required]),
-      avance: new FormControl(''),
-      caution: new FormControl(''),
-      commission: new FormControl({value: '', disabled: true}),
-    })
-  }
-
-  updateCommissionInputState(prix: number): void {
-    const commissionControl = this.publicationForm.get('commission');
-    if (this.typeDeTransactionSelectionne == 'Vente' && prix <= 100000000) {
-      commissionControl.setValue(10);
-      commissionControl.disable();
-    } else {
-      commissionControl.enable();
-    }
-  }
-
-  get avance () {
-    return this.publicationForm.get('avance');
-  }
-
-  get caution () {
-    return this.publicationForm.get('caution');
-  }
-
-  get commission () {
-    return this.publicationForm.get('commission');
-  }
-
-  get bienImmobilier() {
-    return this.publicationForm.get('bienImmobilier');
-  }
-
-  get typeDeTransaction() {
-    return this.publicationForm.get('typeDeTransaction');
-  }
-
-  get libelle() {
-    return this.publicationForm.get('libelle');
-  }
-
-  get prixDuBien() {
-    return this.publicationForm.get('prixDuBien');
   }
 
   // Liste des biens propres et délégués(Responsable, Agent immobilier, Démarcheur, Gérant)
@@ -196,34 +122,9 @@ export class PublicationsComponent implements OnInit, OnDestroy {
     )
   }
 
-  detailPublication(id: number): void {
-    this.publicationService.findById(id).subscribe(
-      (response) => {
-        this.publication = response;
-        this.bienSelectionne = this.publication.bienImmobilier;
-        this.typeDeTransactionSelectionne = this.publication.typeDeTransaction;
-        if (this.isTypeDeBienSupport(this.publication.bienImmobilier.typeDeBien.designation) ||
-          this.isTypeBienTerrain(this.publication.bienImmobilier.typeDeBien.designation)) {
-          this.detailBienImmobilier(this.publication.bienImmobilier.id);
-        } else if (this.isTypeDeBienAssocie(this.publication.bienImmobilier.typeDeBien.designation)) {
-          this.detailBienAssocie(this.publication.bienImmobilier.id);
-        }
-
-        if (this.isTypeBienTerrain(this.publication.bienImmobilier.typeDeBien.designation)) {
-          this.typesDeTransactions = ['Vente'];
-        } else if (this.isTypeDeBienSupport(this.publication.bienImmobilier.typeDeBien.designation)) {
-          this.typesDeTransactions = ['Location', 'Vente'];
-        } else if (this.isTypeDeBienAssocie(this.publication.bienImmobilier.typeDeBien.designation)) {
-          this.typesDeTransactions = ['Location'];
-        }
-      }
-    )
-  }
-
   //Page détails par url
   voirPageDetail(idPublication: number, idBien: number): void {
-    this.getImagesBienImmobilier(idBien);
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/publications', idPublication], { queryParams: { idBien: idBien } });
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/publication', idPublication], { queryParams: { idBien: idBien } });
   }
 
   pagination(event: any): void {
@@ -232,89 +133,13 @@ export class PublicationsComponent implements OnInit, OnDestroy {
     this.listePublications(this.numeroDeLaPage, this.elementsParPage);
   }
 
-  voirListe(): void {
-    if (this.affichage == 4 || this.affichage == 3 || this.affichage == 1) {
-      this.affichage = 1;
-      this.publicationForm.reset();
-      this.caracteristique = new Caracteristiques();
-      this.listePublications(this.numeroDeLaPage, this.elementsParPage);
-    } else {
-      this.router.navigate([this.navigateURLBYUSER(this.user) + '/publications']);
-    }
-  }
-
-  //Fonction pour afficher les détails d'un bien immobilier
-  detailBienImmobilier(id: number): void {
-    this.bienImmobilierService.findById(id).subscribe(
-      (response) => {
-        this.bienImm = response;
-        if (!this.isTypeBienTerrain(this.bienImm.typeDeBien.designation)) {
-          this.detailCaracteristiquesBien(id);
-        }
-      }
-    );
-  }
-
-  //Fonction pour afficher les détails d'un bien associé
-  detailBienAssocie(id: number): void {
-    this.bienImmAssocieService.findById(id).subscribe(
-      (response) => {
-        this.bienImm = response;
-        this.detailCaracteristiquesBien(id);
-      }
-    );
-  }
-
-  //Détails caracteristiques d'un bien
-  detailCaracteristiquesBien(id: number) {
-    this.caracteristiquesServices.getCaracteristiquesOfBienImmobilier(id).subscribe(
-      (response) => {
-        this.caracteristique = response;
-      }
-    );
-  }
-
-  //Retour page détails
-  afficherPageDetail(id: number, idBien: number): void {
-    this.detailPublication(id);
-    this.getImagesBienImmobilier(idBien);
-    this.affichage = 2;
-  }
-
-  listeTypeDeTransactions(): void {
-    this.typesDeTransactions = ['Location', 'Vente'];
-    this.typeDeTransactionSelectionne = this.typesDeTransactions[0];
-  }
-
-  bienChoisi(event: any) {
-    this.bienSelectionne = event.value;
-    if (this.isTypeBienTerrain(this.bienSelectionne.typeDeBien.designation)) {
-      this.typesDeTransactions = ['Vente'];
-      this.typeDeTransactionSelectionne = this.typesDeTransactions[0]
-    } else if (this.isTypeDeBienSupport(this.bienSelectionne.typeDeBien.designation)) {
-      this.typesDeTransactions = ['Location', 'Vente'];
-      this.typeDeTransactionSelectionne = this.typesDeTransactions[0]
-    } else if (this.isTypeDeBienAssocie(this.bienSelectionne.typeDeBien.designation)) {
-      this.typesDeTransactions = ['Location'];
-      this.typeDeTransactionSelectionne = this.typesDeTransactions[0]
-    }
-  }
-
-  typeDeTransactionChoisi(event: any) {
-    this.typeDeTransactionSelectionne = event.value;
-  }
-
-  voirFormulaireAjouter(): void {
-    this.affichage = 3;
-  }
-
   ajouterPublication(): void {
     this.publication.bienImmobilier = this.bienSelectionne;
     this.publication.typeDeTransaction = this.typeDeTransactionSelectionne;
     this.publicationService.ajouterPublication(this.publication).subscribe(
       (response) => {
         if (response.id > 0) {
-          this.voirListe();
+
           this.messageSuccess = "La publication a été ajouté avec succès !";
           this.messageService.add({
             severity: 'success',
@@ -361,199 +186,6 @@ export class PublicationsComponent implements OnInit, OnDestroy {
         }
       }
     )
-  }
-
-  voirFormulaireModifier(id: number): void {
-    this.detailPublication(id);
-    this.affichage = 4;
-  }
-
-  modifierPublication(): void {
-    this.publicationService.updatePublication(this.publication.id, this.publication).subscribe(
-      (response) => {
-        if (response.id > 0) {
-          this.afficherPageDetail(response.id, response.bienImmobilier.id);
-          this.messageSuccess = "La publication a été modifié avec succès !";
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Modification réussie',
-            detail: this.messageSuccess
-          })
-        } else {
-          this.messageErreur = "Une erreur s'est produite lors de la modification !";
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Modification échouée',
-            detail: this.messageErreur
-          })
-        }
-      },
-      (error) => {
-        // console.log(error)
-        // if (error.error == "Une publication avec ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
-        //   this.messageService.add({
-        //     severity: 'warn',
-        //     summary: 'Modification non réussie',
-        //     detail: error.error
-        //   });
-        // } else if (error.error == "Une publication avec un des biens associés à ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
-        //   this.messageService.add({
-        //     severity: 'warn',
-        //     summary: 'Modification non réussie',
-        //     detail: error.error
-        //   });
-        // } else if (error.error == "Une publication avec le bien support auquel est associé ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
-        //   this.messageService.add({
-        //     severity: 'warn',
-        //     summary: 'Modification non réussie',
-        //     detail: error.error
-        //   });
-        // }
-      }
-    )
-  }
-
-  activerPublication(id: number): void {
-    this.confirmationService.confirm({
-      message: 'Vous êtes sûr de vouloir activer cette publication ?',
-      header: "Activation d'une publication",
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.publicationService.activerPublication(id).subscribe(
-        (response) => {
-          // this.voirListe();
-          this.afficherPageDetail(id, this.publication.bienImmobilier.id);
-          this.messageSuccess = "La publication a été activé avec succès !";
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Activation d\'une publication confirmée',
-            detail: this.messageSuccess
-          })
-        },
-        (error) => {
-          if (error.error =  "Un contrat de location est toujours en cours pour ce bien immobilier.") {
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Publication non réussie',
-              detail: error.error
-            })
-          } else if (error.error == "Un contrat de vente a été confirmé pour ce bien immobilier") {
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Publication non réussie',
-              detail: error.error
-            })
-          } else if (error.error == "Une publication avec ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Publication non réussie',
-              detail: error.error
-            });
-          } else if (error.error == "Une publication avec un des biens associés à ce bien support est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Publication non réussie',
-              detail: error.error
-            });
-          } else if (error.error == "Une publication avec le bien support auquel est associé ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.") {
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Publication non réussie',
-              detail: error.error
-            });
-          }
-        })
-      },
-      reject: (type: ConfirmEventType) => {
-        switch (type) {
-          case ConfirmEventType.REJECT:
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Activation de la publication rejetée',
-              detail: "Vous avez rejeté l'activation de cette publication !"
-            });
-            break;
-          case ConfirmEventType.CANCEL:
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Activation de la publication annulée',
-              detail: "Vous avez annulé l'activation de cette publication !"
-            });
-            break;
-        }
-      }
-    });
-  }
-
-  desactiverPublication(id: number): void {
-    this.confirmationService.confirm({
-      message: 'Vous êtes sûr de vouloir désactiver cette publication ?',
-      header: "Désactivaction d'une publication",
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.publicationService.desactiverPublication(id).subscribe(
-          (response) => {
-          // this.voirListe();
-          this.afficherPageDetail(id, this.publication.bienImmobilier.id);
-          this.messageSuccess = "La publication a été désactivé avec succès !";
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Désactivation d\'une publication confirmée',
-            detail: this.messageSuccess
-          })
-        });
-
-      },
-      reject: (type: ConfirmEventType) => {
-        switch (type) {
-          case ConfirmEventType.REJECT:
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Désactivation de la publication rejetée',
-              detail: "Vous avez rejeté la désactivation de cette publication !"
-            });
-            break;
-          case ConfirmEventType.CANCEL:
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Désactivation de la publication annulée',
-              detail: "Vous avez annulé la désactivation de cette publication !"
-            });
-            break;
-        }
-      }
-    });
-  }
-
-
-  resetPublicationForm(): void {
-    this.publicationForm.reset();
-  }
-
-  private isTypeBienTerrain(designation :string): boolean {
-    return designation === "Terrain";
-  }
-
-  private isTypeDeBienSupport(designation: string): boolean {
-    return designation === "Maison" || designation === 'Villa' || designation === "Immeuble";
-  }
-
-  private isTypeDeBienAssocie(designation: string): boolean {
-    return designation === "Appartement" || designation === "Chambre salon" || designation === "Chambre" ||
-      designation === "Bureau" || designation === "Magasin" || designation === "Boutique";
-  }
-
-  afficherCommission(): boolean {
-    return (this.user.role.code == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_AGENTIMMOBILIER' || this.user.role.code == 'ROLE_DEMARCHEUR')
-    && (this.typeDeTransactionSelectionne == 'Location' || this.typeDeTransactionSelectionne == 'Vente');
-  }
-
-  afficherAvanceEtCaution(): boolean {
-    return this.typeDeTransactionSelectionne == 'Location'
-  }
-
-  afficherFraisDeVisite(): boolean {
-    return (this.user.role.code == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_AGENTIMMOBILIER' || this.user.role.code == 'ROLE_DEMARCHEUR');
   }
 
   afficherCategorie(): boolean {
