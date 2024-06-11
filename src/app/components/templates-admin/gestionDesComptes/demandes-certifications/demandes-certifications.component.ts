@@ -117,7 +117,7 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
   }
 
   annuler(): void {
-    if (this.user.role.code == 'ROLE_PROPRIETAIRE' || this.user.role.code == 'ROLE_DEMARCHEUR') {
+    if (this.personneService.estProprietaire(this.user.role.code) || this.personneService.estDemarcheur(this.user.role.code)) {
       this.documentJustificatif = '';
     } else {
       this.demandeCertificationForm.reset();
@@ -133,7 +133,6 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
 
   telechargerCNI(event: any) {
     const uploadedFile: File = event.files[0];
-    //console.log(uploadedFile)
     this.documentJustificatif = uploadedFile;
     this.messageSuccess = "Le carte d'identité a été téléchargé avec succès.";
     this.messageService.add({
@@ -145,7 +144,6 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
 
   telechargerCarteCfe(event: any) {
     const uploadedFile: File = event.files[0];
-    //console.log(uploadedFile)
     this.carteCfe = uploadedFile;
     this.messageSuccess = "Le carte cfe a été téléchargé avec succès.";
     this.messageService.add({
@@ -240,7 +238,7 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
   }
 
   afficherPageDetail(id: number): void {
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/demandes-certifications/' + id]);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/demande-certification/' + id]);
   }
 
   certifierCompte(idPersonne: number, idDemandeCertif: number): void {
@@ -251,7 +249,6 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
       accept: () => {
         this.demandeCertifService.certifierCompte(idPersonne, idDemandeCertif).subscribe(
           (response) => {
-            //console.log(response);
             this.voirListe();
             this.messageSuccess = "Le compte du demandeur a été certifié avec succès!";
             this.messageService.add({
@@ -291,7 +288,6 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
       accept: () => {
         this.demandeCertifService.certifierAgence(idAgence, idDemandeCertif).subscribe(
           (response) => {
-            //console.log(response);
             this.voirListe();
             this.messageSuccess = "L'agence immobilière a été certifiée avec succès!";
             this.messageService.add({

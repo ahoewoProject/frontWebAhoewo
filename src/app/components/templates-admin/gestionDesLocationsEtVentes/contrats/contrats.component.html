@@ -1519,17 +1519,17 @@
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Date début contrat</p>
-                                            <p class="text">{{ contratLocation.dateDebut | date: 'dd/MM/yyyy' }}</p>
+                                            <p class="text">{{ dateDebutSelectionnee | date: 'dd/MM/yyyy' }}</p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Date fin contrat</p>
-                                            <p class="text">{{ contratLocation.dateFin ? (contratLocation.dateFin | date: 'dd/MM/yyyy') : 'non connu' }}</p>
+                                            <p class="text">{{ dateFinSelectionnee ? (dateFinSelectionnee | date: 'dd/MM/yyyy') : 'non connu' }}</p>
                                         </div>
 
                                         <div class="col-sm-6 col-xl-4">
                                             <p class="fw600 mb5 ff-heading dark-color">Prochain paiement</p>
-                                            <p class="text">{{ calculerProchainPaiement(contratLocation.dateDebut, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd/MM/yyyy' }}
+                                            <p class="text">{{ calculerProchainPaiement(dateDebutSelectionnee, contratLocation.jourSupplementPaiement, contratLocation.debutPaiement) | date: 'dd/MM/yyyy' }}
                                             </p>
                                         </div>
                                     </div>

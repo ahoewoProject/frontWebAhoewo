@@ -112,7 +112,7 @@ export class PaiementsComponent implements OnInit, OnDestroy {
   }
 
   afficherPageDetail(id: number): void {
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/paiements/' + id]);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/paiement/' + id]);
   }
 
   validerPaiement(id: number): void {
@@ -124,7 +124,7 @@ export class PaiementsComponent implements OnInit, OnDestroy {
         this.paiementService.validerPaiement(id).subscribe(
           (response) => {
             this.detailPaiement(id);
-            this.router.navigateByUrl(this.navigateURLBYUSER + '/paiements/' + id);
+            this.router.navigateByUrl(this.navigateURLBYUSER + '/paiement/' + id);
             this.messageSuccess = "Le paiement a été validé avec succès !";
             this.messageService.add({
               severity: 'success',

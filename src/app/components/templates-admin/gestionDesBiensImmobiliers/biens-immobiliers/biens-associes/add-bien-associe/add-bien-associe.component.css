@@ -1,0 +1,134 @@
+.disabled-link {
+    pointer-events: none;
+    /* Désactive les événements de pointage, rendant le lien non cliquable */
+    opacity: 0.5;
+    /* Réduit l'opacité pour montrer qu'il est désactivé */
+    cursor: not-allowed;
+    /* Affiche un curseur "non autorisé" */
+}
+
+.ng-valid[required],
+.ng-valid.required {
+    border-left: 5px solid #42A948;
+}
+
+.ng-invalid:not(form):not(.select) {
+    border-left: 5px solid #a94442;
+}
+
+:host ::ng-deep .select .p-dropdown {
+    width: 100%;
+    /* Utilisation d'un pourcentage pour la largeur */
+    height: 55px;
+    border-radius: 8px;
+}
+
+:host ::ng-deep .select .p-dropdown-item {
+    margin-left: 0;
+    /* Suppression de la marge négative */
+}
+
+:host ::ng-deep .choose-label {
+    background-color: #4ebc87;
+    border-color: #4ebc87;
+    font-family: 'DM Sans', sans-serif;
+}
+
+:host ::ng-deep .image {
+    border-radius: 10px;
+}
+
+:host ::ng-deep .imageLength0 {
+    border-radius: 10px;
+}
+
+
+/* :host ::ng-deep .upload-label {
+background-color: #ee944e;
+border-color: #ee944e;
+}
+
+:host ::ng-deep .cancel-label {
+background-color: #f43838;
+border-color: #f43838;
+} */
+
+:host ::ng-deep .remove-label {
+    background-color: #f43838;
+    border-color: #f43838;
+}
+
+.error {
+    color: #a94442;
+    font-family: 'Inter var', sans-serif;
+}
+
+:host ::ng-deep .checkboxLabel {
+    font-size: 15px;
+}
+
+:host ::ng-deep .p-steps-title {
+    font-family: 'DM Sans', sans-serif;
+}
+
+:host ::ng-deep .p-message {
+    font-family: 'DM Sans', sans-serif;
+}
+
+:host ::ng-deep .p-galleria-thumbnail-wrapper {
+    border-radius: 10px;
+}
+
+:host ::ng-deep .pInputNumber {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.justify-text {
+    text-align: justify;
+}
+
+.title-detail {
+    color: #3B82F6;
+}
+
+:host ::ng-deep .p-dialog-title {
+    font-family: 'DM Sans', sans-serif;
+}
+
+:host ::ng-deep .p-dialog-header-close {
+    border-radius: 100%;
+}
+
+:host ::ng-deep .p-tabview-title {
+    font-family: 'DM Sans', sans-serif;
+    font-family: 16px !important;
+}
+
+:host ::ng-deep .p-tabview {
+    font-size: 0.9rem;
+}
+
+.file-item-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.file-name {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.remove-file {
+    margin-left: 10px;
+    /* Adjust as necessary */
+}
+
+.add-margin {
+    margin-left: 10px;
+    /* Adjust margin between buttons */
+}

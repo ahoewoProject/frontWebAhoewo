@@ -32,16 +32,20 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/agent-immobilier/agences-immobilieres/biens-supports']" [ngClass]="{'-is-active': isActive(
       ['/agent-immobilier/agences-immobilieres/biens-supports',
-      '/agent-immobilier/agences-immobilieres/biens-supports/:id',
-      '/agent-immobilier/agences-immobilieres/biens-supports/:id/biens-associes',
-      '/agent-immobilier/agences-immobilieres/biens-supports/:id/biens-associes/:id',
-      '/agent-immobilier/agences-immobilieres/biens/contrats/:codeBien',
-      '/agent-immobilier/agences-immobilieres/biens/contrat-location/:id',
-      '/agent-immobilier/agences-immobilieres/biens/contrat-vente/:id',
-      '/agent-immobilier/agences-immobilieres/biens/contrats/planifications-paiements/:codeContrat',
-      '/agent-immobilier/agences-immobilieres/biens/contrats/planification-paiement/:id',
-      '/agent-immobilier/agences-immobilieres/biens/contrats/paiements/:codeContrat',
-      '/agent-immobilier/agences-immobilieres/biens/contrats/paiement/:id',
+      '/agent-immobilier/agences-immobilieres/bien-support/:id',
+      '/agent-immobilier/agences-immobilieres/add/bien-support',
+      '/agent-immobilier/agences-immobilieres/update/bien-support/:id/:designation',
+      '/agent-immobilier/agences-immobilieres/bien-support/:id/biens-associes',
+      '/agent-immobilier/agences-immobilieres/bien-support/:id/bien-associe/:idBienAssocie',
+      '/agent-immobilier/agences-immobilieres/bien-support/:id/add/bien-associe',
+      '/agent-immobilier/agences-immobilieres/bien-support/:id/update/bien-associe/:idBienAssocie/:designation',
+      '/agent-immobilier/agences-immobilieres/bien/contrats/:codeBien',
+      '/agent-immobilier/agences-immobilieres/bien/contrat-location/:id',
+      '/agent-immobilier/agences-immobilieres/bien/contrat-vente/:id',
+      '/agent-immobilier/agences-immobilieres/bien/contrats/planifications-paiements/:codeContrat',
+      '/agent-immobilier/agences-immobilieres/bien/contrats/planification-paiement/:id',
+      '/agent-immobilier/agences-immobilieres/bien/contrats/paiements/:codeContrat',
+      '/agent-immobilier/agences-immobilieres/bien/contrats/paiement/:id',
       ])}">
         <i class="fa-light fa-house-building mr15"></i>Biens immobiliers
     </a>
@@ -49,17 +53,16 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/agent-immobilier/agences-immobilieres/delegations-gestions']" [ngClass]="{'-is-active': isActive(
       ['/agent-immobilier/agences-immobilieres/delegations-gestions',
-      '/agent-immobilier/agences-immobilieres/delegations-gestions/:id',
-      '/agent-immobilier/agences-immobilieres/biens-delegues/contrats/:codeBien',
-      '/agent-immobilier/agences-immobilieres/biens-delegues/contrat-location/:id',
-      '/agent-immobilier/agences-immobilieres/biens-delegues/contrat-vente/:id',
-      '/agent-immobilier/agences-immobilieres/biens-delegues/contrats/planifications-paiements/:codeContrat',
-      '/agent-immobilier/agences-immobilieres/biens-delegues/contrats/planification-paiement/:id',
-      '/agent-immobilier/agences-immobilieres/biens-delegues/contrats/paiements/:codeContrat',
-      '/agent-immobilier/agences-immobilieres/biens-delegues/contrats/paiement/:id',
       '/agent-immobilier/agences-immobilieres/delegation-gestion/:id',
       '/agent-immobilier/agences-immobilieres/add/delegation-gestion',
-      '/agent-immobilier/agences-immobilieres/bien-delegue/update/:id/:designation'
+      '/agent-immobilier/agences-immobilieres/bien-delegue/update/:id/:designation',
+      '/agent-immobilier/agences-immobilieres/bien-delegue/contrats/:codeBien',
+      '/agent-immobilier/agences-immobilieres/bien-delegue/contrat-location/:id',
+      '/agent-immobilier/agences-immobilieres/bien-delegue/contrat-vente/:id',
+      '/agent-immobilier/agences-immobilieres/bien-delegue/contrats/planifications-paiements/:codeContrat',
+      '/agent-immobilier/agences-immobilieres/bien-delegue/contrats/planification-paiement/:id',
+      '/agent-immobilier/agences-immobilieres/bien-delegue/contrats/paiements/:codeContrat',
+      '/agent-immobilier/agences-immobilieres/bien-delegue/contrats/paiement/:id',
       ])}">
         <i class="fa-light fa-handshake mr15"></i>Biens délégués
     </a>
@@ -89,7 +92,7 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-visites']" [ngClass]="{'-is-active': isActive(
     ['/agent-immobilier/agences-immobilieres/demandes-visites',
-    '/agent-immobilier/agences-immobilieres/demandes-visites/:id'
+    '/agent-immobilier/agences-immobilieres/demande-visite/:id'
   ])}">
         <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
     </a>
@@ -97,7 +100,7 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-locations']" [ngClass]="{'-is-active': isActive(
     ['/agent-immobilier/agences-immobilieres/demandes-locations',
-    '/agent-immobilier/agences-immobilieres/demandes-locations/:id'
+    '/agent-immobilier/agences-immobilieres/demande-location/:id'
   ])}">
         <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
     </a>
@@ -105,7 +108,7 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-achats']" [ngClass]="{'-is-active': isActive(
     ['/agent-immobilier/agences-immobilieres/demandes-achats',
-    '/agent-immobilier/agences-immobilieres/demandes-achats/:id'
+    '/agent-immobilier/agences-immobilieres/demande-achat/:id'
   ])}">
         <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
     </a>
@@ -113,15 +116,15 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/agent-immobilier/agences-immobilieres/contrats']" [ngClass]="{'-is-active': isActive(
     ['/agent-immobilier/agences-immobilieres/contrats',
-    '/agent-immobilier/agences-immobilieres/contrats/locations/:id',
-    '/agent-immobilier/agences-immobilieres/contrats/ventes/:id'])}">
+    '/agent-immobilier/agences-immobilieres/contrat-location/:id',
+    '/agent-immobilier/agences-immobilieres/contrat-vente/:id'])}">
         <i class="fa-light fa-folders mr15"></i>Contrats
     </a>
 </div>
 <div class="sidebar_list_item">
     <a [routerLink]="['/agent-immobilier/agences-immobilieres/suivis-entretiens']" [ngClass]="{'-is-active': isActive(
     ['/agent-immobilier/agences-immobilieres/suivis-entretiens',
-    '/agent-immobilier/agences-immobilieres/suivis-entretiens/:id'
+    '/agent-immobilier/agences-immobilieres/suivi-entretien/:id'
   ])}">
         <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
     </a>
@@ -136,7 +139,7 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/agent-immobilier/agences-immobilieres/planifications-paiements']" [ngClass]="{'-is-active': isActive(
     ['/agent-immobilier/agences-immobilieres/planifications-paiements',
-    '/agent-immobilier/agences-immobilieres/planifications-paiements/:id'
+    '/agent-immobilier/agences-immobilieres/planification-paiement/:id'
   ])}">
         <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements
     </a>
@@ -145,7 +148,7 @@
     <a [routerLink]="['/agent-immobilier/agences-immobilieres/paiements']" [ngClass]="{'-is-active': isActive(
     [
     '/agent-immobilier/agences-immobilieres/paiements',
-    '/agent-immobilier/agences-immobilieres/paiements/:id'
+    '/agent-immobilier/agences-immobilieres/paiement/:id'
   ])}">
         <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements
     </a>

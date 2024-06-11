@@ -169,7 +169,7 @@ export class ContratsComponent implements OnInit, OnDestroy {
 
   initActivatedRoute(): void {
     console.log(this.router.url)
-    if (this.router.url.includes('locations')) {
+    if (this.router.url.includes('location')) {
       this.activatedRoute.paramMap.subscribe(params => {
         const id = Number(params.get('id'));
         if (id) {
@@ -177,7 +177,7 @@ export class ContratsComponent implements OnInit, OnDestroy {
           this.affichage = 2;
         }
       })
-    } else if (this.router.url.includes('ventes')) {
+    } else if (this.router.url.includes('vente')) {
       this.activatedRoute.paramMap.subscribe(params => {
         const id = Number(params.get('id'));
         if (id) {
@@ -405,28 +405,28 @@ export class ContratsComponent implements OnInit, OnDestroy {
   }
 
   afficherPageDetailContratLocation(id: number) {
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrats/locations', id]);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrat-location', id]);
   }
 
   afficherPageDetailContratVente(id: number) {
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrats/ventes', id]);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrat-vente', id]);
   }
 
   detailContratLocation(id: number): void {
     this.contratLocationService.findById(id).subscribe(
       (response) => {
         this.contratLocation = response;
-        if (this.user.role.code == 'ROLE_CLIENT') {
-          this.listeMotifs(this.contratLocation.codeContrat, this.contratLocation.refuserPar);
+
+        if (this.personneService.estClient(this.user.role.code)) {
+          this.listeMotifs(this.contratLocation.codeContrat, this.contratLocation.creerPar);
         } else {
-          this.listeMotifs(this.contratLocation.codeContrat, this.contratLocation.annulerPar);
+          this.listeMotifs(this.contratLocation.codeContrat, this.contratLocation.client.id);
         }
       }
     )
   }
 
   detailContratVente(id: number): void {
-    console.log(id)
     this.lastPlanificationPaiement = new PlanificationPaiement();
     this.contratVenteService.findById(id).subscribe(
       (response) => {
@@ -436,10 +436,11 @@ export class ContratsComponent implements OnInit, OnDestroy {
             this.lastPlanificationPaiement = data;
           }
         )
-        if (this.user.role.code == 'ROLE_CLIENT') {
-          this.listeMotifs(this.contratVente.codeContrat, this.contratVente.refuserPar);
+        if (this.personneService.estClient(this.user.role.code)) {
+          this.listeMotifs(this.contratVente.codeContrat, this.contratVente.creerPar);
         } else {
-          this.listeMotifs(this.contratVente.codeContrat, this.contratVente.annulerPar);
+          this.listeMotifs(this.contratVente.codeContrat, this.contratVente.client.id);
+
         }
       }
     )
@@ -451,9 +452,18 @@ export class ContratsComponent implements OnInit, OnDestroy {
     this.motifService.getMotifsByCodeAndCreerPar(code, creerPar).subscribe(
       (data: Motif[]) => {
         this.listMotifs = data;
+        console.log(data)
       }
     );
   }
+
+  // listeMotifsClient(): void {
+
+  // }
+
+  // listeMotifsOwner(): void {
+
+  // }
 
   retourDetailContratVente(id: number): void {
     this.detailContratVente(id);
@@ -462,10 +472,10 @@ export class ContratsComponent implements OnInit, OnDestroy {
 
   retourDetailContrat(id: number): void {
     this.planificationPaiementForm.reset();
-    if (this.router.url.includes('locations')) {
+    if (this.router.url.includes('location')) {
       this.detailContratLocation(id);
       this.affichage = 2;
-    } else if (this.router.url.includes('ventes')) {
+    } else if (this.router.url.includes('vente')) {
       this.detailContratVente(id);
       this.affichage = 3;
     }
@@ -473,9 +483,9 @@ export class ContratsComponent implements OnInit, OnDestroy {
 
   voirListe(): void {
     this.affichage = 1;
-    if (this.router.url.includes('locations')) {
+    if (this.router.url.includes('location')) {
       this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrats'], { queryParams: { activeIndex: 0 }});
-    } else if (this.router.url.includes('ventes')) {
+    } else if (this.router.url.includes('vente')) {
       this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrats'], { queryParams: { activeIndex: 1 }});
     }
   }
@@ -507,7 +517,7 @@ export class ContratsComponent implements OnInit, OnDestroy {
       (response) => {
         this.modalRefusVisible = false;
         this.detailContratLocation(this.contratLocation.id);
-        this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrats/locations', this.contratLocation.id]);
+        this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrat-location', this.contratLocation.id]);
         this.messageSuccess = "Le contrat de location a été refusé avec succès !";
         this.messageService.add({
           severity: 'success',
@@ -523,7 +533,7 @@ export class ContratsComponent implements OnInit, OnDestroy {
       (response) => {
         this.modalRefusVisible = false;
         this.detailContratVente(this.contratVente.id);
-        this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrats/ventes', this.contratVente.id]);
+        this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrat-vente', this.contratVente.id]);
         this.messageSuccess = "Le contrat de vente a été refusé avec succès !";
         this.messageService.add({
           severity: 'success',
@@ -588,6 +598,8 @@ export class ContratsComponent implements OnInit, OnDestroy {
   }
 
   modifierContratLocation(id: number): void {
+    this.contratLocation.dateDebut = this.dateDebutSelectionnee;
+    this.contratLocation.dateFin = this.dateFinSelectionnee ?? new Date();
     this.contratLocation.typeContrat = this.typeDeContratSelectionne;
     this.contratLocation.bienImmobilier = this.contratLocation.demandeLocation.publication.bienImmobilier;
     if (this.contratLocation.demandeLocation.publication.bienImmobilier.estDelegue) {
@@ -642,7 +654,7 @@ export class ContratsComponent implements OnInit, OnDestroy {
         this.contratLocationService.mettreFin(id).subscribe(
           (response) => {
           this.detailContratLocation(id);
-          this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrats/locations', id]);
+          this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrat-location', id]);
           this.messageSuccess = "Le contrat de location a été terminée avec succès !";
           this.messageService.add({
             severity: 'success',
@@ -683,7 +695,7 @@ export class ContratsComponent implements OnInit, OnDestroy {
         this.contratLocationService.validerContratLocation(id).subscribe(
           (response) => {
             this.detailContratLocation(id);
-            this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrats/locations', id]);
+            this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrat-location', id]);
             this.messageSuccess = "Le contrat de location a été validée avec succès !";
             this.messageService.add({
               severity: 'success',
@@ -879,7 +891,7 @@ export class ContratsComponent implements OnInit, OnDestroy {
         this.contratVenteService.validerContratVente(id).subscribe(
           (response) => {
             this.detailContratVente(id);
-            this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrats/ventes', id]);
+            this.router.navigate([this.navigateURLBYUSER(this.user) + '/contrat-vente', id]);
             this.messageSuccess = "Le contrat de vente a été validée avec succès !";
             this.messageService.add({
               severity: 'success',

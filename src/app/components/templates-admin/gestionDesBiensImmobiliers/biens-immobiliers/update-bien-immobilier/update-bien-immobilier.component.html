@@ -1,1 +1,694 @@
-<p>update-bien-immobilier works!</p>
+<div class="dashboard__content bgc-f7">
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
+    </div>
+    <p-toast></p-toast>
+
+    <!-- Formulaire de modification d'un bien immobilier -->
+    <div>
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-5">
+                <div class="dashboard_title_area">
+                    <h4>Modification d'un bien support</h4>
+                </div>
+            </div>
+            <div class="col-xxl-7">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="afficherPageDetailBienSupport(bienImmobilier.id)">Retour</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <p-steps [model]="menus" [readonly]="false" [activeIndex]="activeIndex" (activeIndexChange)="onActiveIndexChange($event)"></p-steps>
+
+                    <!-- Start Etape 1e -->
+                    <div *ngIf="activeIndex == 0" class="ps-widget bgc-white bdrs12 p30 position-relative">
+                        <form [formGroup]="bienStep1Form" class="form-style1">
+                            <div class="row">
+
+                                <div class="col-sm-6">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Type du bien</label>
+                                        <p-dropdown class="select" emptyFilterMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé" [options]="typesDeBienToStart" placeholder="Choisir le type du bien" formControlName="typeDeBien" [filter]="true" filterBy="designation" filterPlaceholder="Rechercher"
+                                            (onChange)="typeDeBienChoisi($event)" [(ngModel)]="bienImmobilier.typeDeBien" optionLabel="designation">
+                                        </p-dropdown>
+                                        <div class="error" [hidden]="!typeDeBien?.hasError('required') || !typeDeBien.touched">La selection du type de bien est obligatoire</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6" *ngIf="afficherChampCategorie(typeDeBienSelectionne.designation)">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Catégorie</label>
+                                        <p-dropdown class="select" [options]="listeDesCategories" placeholder="Choisir une catégorie" formControlName="categorie" (onChange)="categorieChoisie($event)" [(ngModel)]="bienImmobilier.categorie">
+                                        </p-dropdown>
+                                        <div class="error" [hidden]="!categorie?.hasError('required') || !categorie.touched">La selection de la catégorie est obligatoire</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6" *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Agence immobilière</label>
+                                        <p-dropdown class="select" emptyFilterMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé" [options]="agencesImmobilieres" placeholder="Choisir l'agence" formControlName="agenceImmobiliere" [filter]="true" filterBy="nomAgence,codeAgence"
+                                            filterPlaceholder="Rechercher" (onChange)="agenceChoisie($event)" [(ngModel)]="bienImmobilier.agenceImmobiliere" optionLabel="nomAgence">
+                                        </p-dropdown>
+                                        <div class="error" [hidden]="!agenceImmobiliere?.hasError('required') || !agenceImmobiliere.touched">La selection de l'agence est obligatoire</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Surface en m²</label>
+                                        <input type="number" class="form-control" id="surface" placeholder="Entrer la surface du bien en m²" name="surface" [(ngModel)]="bienImmobilier.surface" [ngModelOptions]="{standalone: true}" min="0">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Description</label>
+                                        <textarea id="description" name="description" placeholder="La description du bien immobilier" style="height: 160px;" [(ngModel)]="bienImmobilier.description" [ngModelOptions]="{standalone: true}"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Images</label>
+                                        <p-fileUpload chooseLabel="Sélectionner les images" [auto]="true" url="https://www.primefaces.org/cdn/api/upload.php" [multiple]="true" (onUpload)="telechargerImagesBienImmobilier($event)" accept="image/*" chooseStyleClass="choose-label" removeStyleClass="remove-label">
+                                            <ng-template pTemplate="content">
+                                                <ul *ngIf="imagesBienImmobilier.length">
+                                                    <li *ngFor="let imageBienImmobilier of imagesBienImmobilier">{{ imageBienImmobilier.name }}
+                                                    </li>
+                                                </ul>
+                                            </ng-template>
+                                        </p-fileUpload>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="d-sm-flex justify-content-between">
+                                        <button class="ud-btn btn-annuler" type="button" (click)="resetFormStep1()">Annuler</button>
+                                        <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': bienStep1Form.invalid }" (click)="etape2()">Suivant<i class="pi pi-arrow-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- End Etape 1e -->
+
+                    <!-- Start Etape 2 -->
+                    <div *ngIf="activeIndex == 1" class="ps-widget bgc-white bdrs12 p30 position-relative">
+                        <form [formGroup]="bienStep2Form" class="form-style1">
+                            <div class="row">
+
+                                <div class="col-sm-6">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Pays</label>
+                                        <p-dropdown class="select" emptyFilterMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé" [options]="listeDesPays" placeholder="Choisir le pays" formControlName="pays" [filter]="true" filterBy="libelle" filterPlaceholder="Rechercher"
+                                            [(ngModel)]="bienImmobilier.quartier.ville.region.pays" (onChange)="paysChoisi($event)" optionLabel="libelle">
+                                        </p-dropdown>
+                                        <div class="error" [hidden]="!pays?.hasError('required') || !pays.touched">La selection du pays est obligatoire
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Région</label>
+                                        <p-dropdown class="select" emptyFilterMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé" [options]="regions" placeholder="Choisir la région" formControlName="region" [filter]="true" filterBy="libelle" filterPlaceholder="Rechercher" [(ngModel)]="bienImmobilier.quartier.ville.region"
+                                            [showClear]="true" (onChange)="regionChoisie($event)" optionLabel="libelle">
+                                        </p-dropdown>
+                                        <div class="error" [hidden]="!region?.hasError('required') || !region.touched">La selection de la région est obligatoire</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Ville</label>
+                                        <p-dropdown class="select" emptyFilterMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé" [options]="villes" placeholder="Choisir la ville" formControlName="ville" [filter]="true" filterBy="libelle" filterPlaceholder="Rechercher" [(ngModel)]="bienImmobilier.quartier.ville"
+                                            [showClear]="true" (onChange)="villeChoisie($event)" optionLabel="libelle">
+                                        </p-dropdown>
+                                        <div class="error" [hidden]="!ville?.hasError('required') || !ville.touched">La selection de la ville est obligatoire</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Quartier</label>
+                                        <p-dropdown class="select" emptyFilterMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé" [options]="quartiers" placeholder="Choisir le quartier" formControlName="quartier" [filter]="true" filterBy="libelle" filterPlaceholder="Rechercher"
+                                            [(ngModel)]="bienImmobilier.quartier" [showClear]="true" (onChange)="quartierChoisi($event)" optionLabel="libelle">
+                                        </p-dropdown>
+                                        <div class="error" [hidden]="!quartier?.hasError('required') || !quartier.touched">La selection du quartier est obligatoire</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Adresse</label>
+                                        <!-- <input type="text" class="form-control" id="adresse" name="adresse" placeholder="L'adresse du bien immobilier" [(ngModel)]="bienImmobilier.adresse" [ngModelOptions]="{standalone: true}"> -->
+                                        <textarea id="adresse" name="adresse" placeholder="L'adresse du bien immobilier" style="height: 100px;" [(ngModel)]="bienImmobilier.adresse" [ngModelOptions]="{standalone: true}"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="d-sm-flex justify-content-between">
+                                        <button class="ud-btn btn-retour" type="button" (click)="etape1()"><i class="pi pi-arrow-left"></i>
+                Précédent</button>
+                                        <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': bienStep1Form.invalid || bienStep2Form.invalid }" (click)="etape3()">Suivant<i class="pi pi-arrow-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- End Etape 2 -->
+
+                    <!-- Start Etape 3 -->
+                    <div *ngIf="activeIndex == 2" class="ps-widget bgc-white bdrs12 p30 position-relative">
+                        <div class="row" *ngIf="typeDeBienSelectionne.designation == 'Terrain'">
+                            <div class="text-center" *ngIf="imgURLs.length == 0">
+                                <p-image class="w-100" imageClass="imageLength0" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
+                            </div>
+
+                            <div *ngIf="imgURLs.length !== 0">
+                                <p-galleria [value]="imgURLs" [showThumbnails]="true" [circular]="true" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px', 'margin': '0 auto' }" [numVisible]="5">
+
+                                    <ng-template pTemplate="item" let-item>
+                                        <img [src]="item" style="width: 100%; border-radius:10px;" loading="lazy" />
+                                    </ng-template>
+
+                                    <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4" let-item>
+                                        <div class="grid grid-nogutter justify-content-center">
+                                            <img [src]="item" style="width: 100%; border-radius:8px;" loading="lazy" />
+                                        </div>
+                                    </ng-template>
+
+                                </p-galleria>
+                            </div>
+
+                            <p-divider *ngIf="bienImmobilier.description"></p-divider>
+                            <h4 class="title fz17 mb30" *ngIf="bienImmobilier.description">Description</h4>
+                            <p class="text justify-text" *ngIf="bienImmobilier.description">
+                                {{ bienImmobilier.description }}
+                            </p>
+
+                            <p-divider></p-divider>
+                            <h4 class="title fz17 mb30">Détails </h4>
+                            <div class="row">
+                                <div class="col-md-6 col-xl-4">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="pd-list">
+                                            <p *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="fw600 mb10 ff-heading dark-color">Agence immobiliere</p>
+                                            <p class="fw600 mb10 ff-heading dark-color">Type de bien</p>
+                                            <p class="fw600 mb10 ff-heading dark-color">Pays</p>
+                                            <p class="fw600 mb10 ff-heading dark-color">Région</p>
+                                            <p class="fw600 mb-0 ff-heading dark-color">Ville</p>
+                                        </div>
+                                        <div class="pd-list">
+                                            <p *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="text mb10">{{ bienImmobilier.agenceImmobiliere.nomAgence }}</p>
+                                            <p class="text mb10">{{ typeDeBienSelectionne.designation }}</p>
+                                            <p class="text mb10">{{ bienImmobilier.quartier.ville.region.pays.libelle }}</p>
+                                            <p class="text mb10">{{ bienImmobilier.quartier.ville.region.libelle }}</p>
+                                            <p class="text mb-0">{{ bienImmobilier.quartier.ville.libelle }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xl-4 offset-xl-2">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="pd-list">
+                                            <p *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="fw600 mb10 ff-heading dark-color">Téléphone de l'agence</p>
+                                            <p class="fw600 mb10 ff-heading dark-color">Quartier</p>
+                                            <p class="fw600 mb10 ff-heading dark-color" *ngIf="bienImmobilier.adresse">Adresse</p>
+                                            <p class="fw600 mb10 ff-heading dark-color" *ngIf="bienImmobilier.surface">Surface</p>
+                                        </div>
+                                        <div class="pd-list">
+                                            <p *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="text mb10">{{ bienImmobilier.agenceImmobiliere.telephone }}</p>
+                                            <p class="text mb10">{{ bienImmobilier.quartier.libelle }}</p>
+                                            <p class="text mb10" *ngIf="bienImmobilier.adresse">{{ bienImmobilier.adresse }}</p>
+                                            <p class="text mb10" *ngIf="bienImmobilier.surface">{{ bienImmobilier.surface }} m²</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt30">
+                                <div class="d-sm-flex justify-content-between">
+                                    <button class="ud-btn btn-retour" type="button" (click)="etape2()"><i class="pi pi-arrow-left"></i>
+              Précédent</button>
+                                    <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': bienStep1Form.invalid || bienStep2Form.invalid }" (click)="modifierTypeDeBienTerrain(bienImmobilier.id)">Modifier</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" *ngIf="typeDeBienSelectionne.designation !== 'Terrain'">
+                            <h6 class="title fz17 mb30" *ngIf="typeDeBienSelectionne.designation == 'Maison' || typeDeBienSelectionne.designation == 'Immeuble' || typeDeBienSelectionne.designation == 'Villa'">
+                                Caractéristiques à saisir :</h6>
+                            <div class="row">
+                                <div class="col-sm-6" *ngIf="typeDeBienSelectionne.designation == 'Maison' || typeDeBienSelectionne.designation == 'Immeuble' || typeDeBienSelectionne.designation == 'Villa'">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Nombre de chambres</label>
+                                        <input type="number" class="form-control" id="nombreChambres" placeholder="Nombre de chambres" name="nombreChambres" [(ngModel)]="caracteristiqueBien.nombreChambres" min="0">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" *ngIf="typeDeBienSelectionne.designation == 'Villa'">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Nombre de salons</label>
+                                        <input type="number" class="form-control" id="nombreSalons" placeholder="Nombre de salons" name="nombreSalons" [(ngModel)]="caracteristiqueBien.nombreSalons" min="0">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" *ngIf="typeDeBienSelectionne.designation == 'Villa'">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Nombre de placards</label>
+                                        <input type="number" class="form-control" id="nombrePlacards" placeholder="Nombre de placards" name="nombrePlacards" [(ngModel)]="caracteristiqueBien.nombrePlacards" min="0">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" *ngIf="typeDeBienSelectionne.designation == 'Maison' || typeDeBienSelectionne.designation == 'Immeuble'">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Nombre de chambres salon</label>
+                                        <input type="number" class="form-control" id="nombreChambresSalon" placeholder="Nombre de chambres salon" name="nombreChambresSalon" [(ngModel)]="caracteristiqueBien.nombreChambresSalon" min="0">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" *ngIf="typeDeBienSelectionne.designation == 'Maison' || typeDeBienSelectionne.designation == 'Immeuble'">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Nombre d'appartements</label>
+                                        <input type="number" class="form-control" id="nombreAppartements" placeholder="Nombre d'appartements" name="nombreAppartements" [(ngModel)]="caracteristiqueBien.nombreAppartements" min="0">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" *ngIf="typeDeBienSelectionne.designation == 'Maison' || typeDeBienSelectionne.designation == 'Immeuble'">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Nombre de bureaux</label>
+                                        <input type="number" class="form-control" id="nombreBureaux" placeholder="Nombre de bureaux" name="nombreBureaux" [(ngModel)]="caracteristiqueBien.nombreBureaux" min="0">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" *ngIf="typeDeBienSelectionne.designation == 'Maison' || typeDeBienSelectionne.designation == 'Immeuble'">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Nombre de boutiques</label>
+                                        <input type="number" class="form-control" id="nombreBoutiques" placeholder="Nombre de boutiques" name="nombreBoutiques" [(ngModel)]="caracteristiqueBien.nombreBoutiques" min="0">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" *ngIf="typeDeBienSelectionne.designation == 'Maison' || typeDeBienSelectionne.designation == 'Immeuble'">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Nombre de magasins</label>
+                                        <input type="number" class="form-control" id="nombreMagasins" placeholder="Nombre de magasins" name="nombreMagasins" [(ngModel)]="caracteristiqueBien.nombreMagasins" min="0">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" *ngIf="typeDeBienSelectionne.designation == 'Maison' || typeDeBienSelectionne.designation == 'Immeuble' || typeDeBienSelectionne.designation == 'Villa'">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Nombre d'étages</label>
+                                        <input type="number" class="form-control" id="nombreEtages" placeholder="Nombre d'étages" name="nombreEtages" [(ngModel)]="caracteristiqueBien.nombreEtages" min="0">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" *ngIf="typeDeBienSelectionne.designation == 'Maison' || typeDeBienSelectionne.designation == 'Immeuble' || typeDeBienSelectionne.designation == 'Villa'">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Nombre de garages</label>
+                                        <input type="number" class="form-control" id="nombreGarages" placeholder="Nombre de garages" name="nombreGarages" [(ngModel)]="caracteristiqueBien.nombreGarages" min="0">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" *ngIf="typeDeBienSelectionne.designation == 'Maison' || typeDeBienSelectionne.designation == 'Immeuble' || typeDeBienSelectionne.designation == 'Villa'">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Nombre de cuisine interne</label>
+                                        <input type="number" class="form-control" id="nombreCuisineInterne" placeholder="Nombre de cuisine interne" name="nombreCuisineInterne" [(ngModel)]="caracteristiqueBien.nombreCuisineInterne" min="0">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" *ngIf="typeDeBienSelectionne.designation == 'Maison' || typeDeBienSelectionne.designation == 'Immeuble' || typeDeBienSelectionne.designation == 'Villa'">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Nombre de cuisine externe</label>
+                                        <input type="number" class="form-control" id="nombreCuisineExterne" placeholder="Nombre de cuisine externe" name="nombreCuisineExterne" [(ngModel)]="caracteristiqueBien.nombreCuisineExterne" min="0">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" *ngIf="typeDeBienSelectionne.designation == 'Maison' || typeDeBienSelectionne.designation == 'Immeuble' || typeDeBienSelectionne.designation == 'Villa'">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Nombre de WC douche interne</label>
+                                        <input type="number" class="form-control" id="nombreWCDoucheInterne" placeholder="Nombre de WC douche interne" name="nombreWCDoucheInterne" [(ngModel)]="caracteristiqueBien.nombreWCDoucheInterne" min="0">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" *ngIf="typeDeBienSelectionne.designation == 'Maison' || typeDeBienSelectionne.designation == 'Immeuble' || typeDeBienSelectionne.designation == 'Villa'">
+                                    <div class="mb20">
+                                        <label class="heading-color ff-heading fw600 mb10">Nombre de WC douche externe</label>
+                                        <input type="number" class="form-control" id="nombreWCDoucheExterne" placeholder="Nombre de WC douche externe" name="nombreWCDoucheExterne" [(ngModel)]="caracteristiqueBien.nombreWCDoucheExterne" min="0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h6 class="title fz17 mb30">Caractéristiques à cocher :</h6>
+                            <div class="row">
+                                <div class="col-sm-6 col-xl-4">
+                                    <div class="checkbox-style1">
+                                        <div class="checkbox">
+                                            <div class="mb10">
+                                                <p-checkbox [binary]="true" (onChange)="check()" [(ngModel)]="caracteristiqueBien.parking" labelStyleClass="checkboxLabel" label="Parking">
+                                                </p-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="checkbox-style1">
+                                        <div class="checkbox">
+                                            <div class="mb10">
+                                                <p-checkbox [binary]="true" (onChange)="check()" [(ngModel)]="caracteristiqueBien.electriciteCeet" labelStyleClass="checkboxLabel" label="Electricité CEET">
+                                                </p-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="checkbox-style1">
+                                        <div class="checkbox">
+                                            <div class="mb10">
+                                                <p-checkbox [binary]="true" (onChange)="check()" [(ngModel)]="caracteristiqueBien.wifi" labelStyleClass="checkboxLabel" label="Wifi">
+                                                </p-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4">
+                                    <div class="checkbox-style1">
+                                        <div class="checkbox">
+                                            <div class="mb10">
+                                                <p-checkbox [binary]="true" (onChange)="check()" [(ngModel)]="caracteristiqueBien.eauTde" labelStyleClass="checkboxLabel" label="Eau TDE">
+                                                </p-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="checkbox-style1">
+                                        <div class="checkbox">
+                                            <div class="mb10">
+                                                <p-checkbox [binary]="true" (onChange)="check()" [(ngModel)]="caracteristiqueBien.jardin" labelStyleClass="checkboxLabel" label="Jardin">
+                                                </p-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="checkbox-style1">
+                                        <div class="checkbox">
+                                            <div class="mb10">
+                                                <p-checkbox [binary]="true" (onChange)="check()" [(ngModel)]="caracteristiqueBien.piscine" labelStyleClass="checkboxLabel" label="Piscine">
+                                                </p-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4">
+                                    <div class="checkbox-style1">
+                                        <div class="checkbox">
+                                            <div class="mb10">
+                                                <p-checkbox [binary]="true" (onChange)="check()" [(ngModel)]="caracteristiqueBien.eauForage" labelStyleClass="checkboxLabel" label="Eau Forage">
+                                                </p-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="checkbox-style1">
+                                        <div class="checkbox">
+                                            <div class="mb10">
+                                                <p-checkbox [binary]="true" (onChange)="check()" [(ngModel)]="caracteristiqueBien.climatisation" labelStyleClass="checkboxLabel" label="Climatisation">
+                                                </p-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="checkbox-style1" *ngIf="typeDeBienSelectionne.designation == 'Villa'">
+                                        <div class="checkbox">
+                                            <div class="mb10">
+                                                <p-checkbox [binary]="true" (onChange)="check()" [(ngModel)]="caracteristiqueBien.toiletteVisiteur" labelStyleClass="checkboxLabel" label="Toilette visiteur">
+                                                </p-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="checkbox-style1" *ngIf="typeDeBienSelectionne.designation !== 'Villa'">
+                                        <div class="checkbox">
+                                            <div class="mb10">
+                                                <p-checkbox [binary]="true" (onChange)="check()" [(ngModel)]="caracteristiqueBien.ascenseur" labelStyleClass="checkboxLabel" label="Ascenseur">
+                                                </p-checkbox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt30">
+                                <div class="d-sm-flex justify-content-between">
+                                    <button class="ud-btn btn-retour" (click)="etape2()"><i class="pi pi-arrow-left"></i>
+              Précédent</button>
+                                    <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': bienStep1Form.invalid || bienStep2Form.invalid }" (click)="etape4()" type="button">Suivant<i class="pi pi-arrow-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Etape 3 -->
+
+                    <!-- Start Etape 4 -->
+                    <div *ngIf="activeIndex == 3" class="ps-widget bgc-white bdrs12 p30 position-relative">
+                        <div class="row">
+                            <div class="text-center" *ngIf="imgURLs.length == 0">
+                                <p-image class="w-100" imageClass="imageLength0" src="assets/images/home/house.jpg" alt="" width="700" loading="lazy"></p-image>
+                            </div>
+
+                            <div *ngIf="imgURLs.length !== 0">
+                                <p-galleria [value]="imgURLs" [showThumbnails]="true" [circular]="true" [showItemNavigatorsOnHover]="true" [showItemNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px', 'margin': '0 auto' }" [numVisible]="5">
+
+                                    <ng-template pTemplate="item" let-item>
+                                        <img [src]="item" style="width: 100%; border-radius:10px;" loading="lazy" />
+                                    </ng-template>
+
+                                    <ng-template pTemplate="thumbnail" *ngIf="imgURLs.length > 4" let-item>
+                                        <div class="grid grid-nogutter justify-content-center">
+                                            <img [src]="item" style="width: 100%; border-radius:8px;" loading="lazy" />
+                                        </div>
+                                    </ng-template>
+
+                                </p-galleria>
+                            </div>
+
+                            <p-divider *ngIf="bienImmobilier.description"></p-divider>
+                            <h4 class="title fz17 mb30" *ngIf="bienImmobilier.description">Description</h4>
+                            <p class="text justify-text" *ngIf="bienImmobilier.description">
+                                {{ bienImmobilier.description }}
+                            </p>
+
+                            <p-divider></p-divider>
+                            <h4 class="title fz17 mb30">Détails </h4>
+                            <div class="row">
+                                <div class="col-md-6 col-xl-4">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="pd-list">
+                                            <p *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="fw600 mb10 ff-heading dark-color">Agence immobiliere</p>
+                                            <p class="fw600 mb10 ff-heading dark-color">Type de bien</p>
+                                            <p class="fw600 mb10 ff-heading dark-color">Catégorie</p>
+                                            <p class="fw600 mb10 ff-heading dark-color">Pays</p>
+                                            <p class="fw600 mb10 ff-heading dark-color">Région</p>
+                                            <p class="fw600 mb-0 ff-heading dark-color">Ville</p>
+                                        </div>
+                                        <div class="pd-list">
+                                            <p *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="text mb10">{{ agenceSelectionnee.nomAgence }}</p>
+                                            <p class="text mb10">{{ typeDeBienSelectionne.designation }}</p>
+                                            <p class="text mb10">{{ bienImmobilier.categorie }}</p>
+                                            <p class="text mb10">{{ bienImmobilier.quartier.ville.region.pays.libelle }}</p>
+                                            <p class="text mb10">{{ bienImmobilier.quartier.ville.region.libelle }}</p>
+                                            <p class="text mb-0">{{ bienImmobilier.quartier.ville.libelle }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xl-4 offset-xl-2">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="pd-list">
+                                            <p *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="fw600 mb10 ff-heading dark-color">Téléphone de l'agence</p>
+                                            <p class="fw600 mb10 ff-heading dark-color">Quartier</p>
+                                            <p class="fw600 mb10 ff-heading dark-color" *ngIf="bienImmobilier.adresse">Adresse</p>
+                                            <p class="fw600 mb10 ff-heading dark-color" *ngIf="bienImmobilier.surface">Surface</p>
+                                        </div>
+                                        <div class="pd-list">
+                                            <p *ngIf="user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER'" class="text mb10">{{ agenceSelectionnee.telephone }}</p>
+                                            <p class="text mb10">{{ bienImmobilier.quartier.libelle }}</p>
+                                            <p class="text mb10" *ngIf="bienImmobilier.adresse">{{ bienImmobilier.adresse }}</p>
+                                            <p class="text mb10" *ngIf="bienImmobilier.surface">{{ bienImmobilier.surface }} m²</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p-divider *ngIf="caracteristiqueBien"></p-divider>
+                            <h4 class="title fz17 mb30" *ngIf="caracteristiqueBien">Caractéristiques </h4>
+                            <div class="row">
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreChambres">
+                                    <p class="fw600 mb5 ff-heading dark-color">Nombre de chambres</p>
+                                    <p class="text">{{ caracteristiqueBien.nombreChambres }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreChambresSalon">
+                                    <p class="fw600 mb5 ff-heading dark-color">Nombre de chambres salon</p>
+                                    <p class="text">{{ caracteristiqueBien.nombreChambresSalon }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreBureaux">
+                                    <p class="fw600 mb5 ff-heading dark-color">Nombre de bureaux</p>
+                                    <p class="text">{{ caracteristiqueBien.nombreBureaux }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreBoutiques">
+                                    <p class="fw600 mb5 ff-heading dark-color">Nombre de boutiques</p>
+                                    <p class="text">{{ caracteristiqueBien.nombreBoutiques }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreMagasins">
+                                    <p class="fw600 mb5 ff-heading dark-color">Nombre de magasions</p>
+                                    <p class="text">{{ caracteristiqueBien.nombreMagasins }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreAppartements">
+                                    <p class="fw600 mb5 ff-heading dark-color">Nombre d'appartements</p>
+                                    <p class="text">{{ caracteristiqueBien.nombreAppartements }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreEtages">
+                                    <p class="fw600 mb5 ff-heading dark-color">Nombre d'étages</p>
+                                    <p class="text">{{ caracteristiqueBien.nombreEtages }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreGarages">
+                                    <p class="fw600 mb5 ff-heading dark-color">Nombre de garages</p>
+                                    <p class="text">{{ caracteristiqueBien.nombreGarages }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreCuisineInterne">
+                                    <p class="fw600 mb5 ff-heading dark-color">Nombre de cusine interne</p>
+                                    <p class="text">{{ caracteristiqueBien.nombreCuisineInterne }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreCuisineExterne">
+                                    <p class="fw600 mb5 ff-heading dark-color">Nombre de cuisine externe</p>
+                                    <p class="text">{{ caracteristiqueBien.nombreCuisineExterne }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreWCDoucheInterne">
+                                    <p class="fw600 mb5 ff-heading dark-color">Nombre de WC-Douche interne</p>
+                                    <p class="text">{{ caracteristiqueBien.nombreWCDoucheInterne }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreWCDoucheExterne">
+                                    <p class="fw600 mb5 ff-heading dark-color">Nombre de WC-Douche externe</p>
+                                    <p class="text">{{ caracteristiqueBien.nombreWCDoucheExterne }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombreSalons">
+                                    <p class="fw600 mb5 ff-heading dark-color">Nombre de salons</p>
+                                    <p class="text">{{ caracteristiqueBien.nombreSalons }}</p>
+                                </div>
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.nombrePlacards">
+                                    <p class="fw600 mb5 ff-heading dark-color">Nombre de placards</p>
+                                    <p class="text">{{ caracteristiqueBien.nombrePlacards }}</p>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.parking">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Parking</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.eauTde">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau TDE
+                                    </p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.compteurEau">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur d'eau</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.wifi">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Wifi
+                                    </p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.placard">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Placards</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.cuisineInterne">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine interne</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.wcDoucheInterne">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche interne</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.balcon">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Balcon</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.garage">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Garage</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.eauForage">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Eau Forage
+                                    </p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.electriciteCeet">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Électricité CEET</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.ascenseur">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Ascenceur</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.etage">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>À l'étage
+                                    </p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.dalle">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Dallé
+                                    </p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.cuisineExterne">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cuisine externe</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.wcDoucheExterne">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>WC-Douche externe</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.climatisation">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Climatiseur</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.plafonne">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Plafonné</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.baieVitree">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Baie vitrée
+                                    </p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.solCarelle">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Sol carellé
+                                    </p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.cashPowerPersonnel">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Cash power personnel</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.compteurAdditionnel">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Compteur additionnel</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.jardin">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Jardin</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.piscine">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Piscine</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.terrasse">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Terrasse</p>
+                                </div>
+
+                                <div class="col-sm-6 col-xl-4" *ngIf="caracteristiqueBien.toiletteVisiteur">
+                                    <p class="text mb10"><i style="color: #42A948;" class="pi pi-check-circle align-middle pe-2"></i>Toilette visiteur</p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 mt30">
+                                <div class="d-sm-flex justify-content-between">
+                                    <button class="ud-btn btn-retour" type="button" (click)="etape3()"><i class="pi pi-arrow-left"></i>
+              Précédent</button>
+                                    <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': bienStep1Form.invalid || bienStep2Form.invalid }" (click)="modifierOtherTypeDeBien(bienImmobilier.id)">Modifier</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Etape 4 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Formulaire de modification d'un bien immobilier -->
+</div>

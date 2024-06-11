@@ -10,8 +10,12 @@ export class MenuAdminComponent {
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
-  isActive(route: string[]): boolean {
-    return route.some(r => this.router.url.includes(r));
+  isActive(routes: string[]): boolean {
+    const currentRoute = this.router.url.split('?')[0];
+    return routes.some(route => {
+      const routeRegex = new RegExp('^' + route.replace(/:[^\s/]+/g, '[^/]+') + '$');
+      return routeRegex.test(currentRoute);
+    });
   }
 }
 

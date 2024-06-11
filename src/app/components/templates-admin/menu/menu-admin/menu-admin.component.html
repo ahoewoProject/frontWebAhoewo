@@ -89,7 +89,10 @@
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/admin/autres-services']" [ngClass]="{'-is-active': isActive(['/admin/autres-services'])}">
+    <a [routerLink]="['/admin/autres-services']" [ngClass]="{'-is-active': isActive(
+    ['/admin/autres-services',
+    '/admin/autre-service/:id'
+  ])}">
         <i class="fa-light fa-briefcase mr15"></i>&nbsp;Autres services
     </a>
 </div>

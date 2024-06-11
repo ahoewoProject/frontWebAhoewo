@@ -14,27 +14,43 @@
     <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/client/demandes-visites']" [ngClass]="{'-is-active': isActive(['/client/demandes-visites'])}">
+    <a [routerLink]="['/client/demandes-visites']" [ngClass]="{'-is-active': isActive(
+    ['/client/demandes-visites',
+    '/client/demande-visite/:id'
+  ])}">
         <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/client/demandes-locations']" [ngClass]="{'-is-active': isActive(['/client/demandes-locations'])}">
+    <a [routerLink]="['/client/demandes-locations']" [ngClass]="{'-is-active': isActive(
+    ['/client/demandes-locations',
+    '/client/demande-location/:id'
+  ])}">
         <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/client/demandes-achats']" [ngClass]="{'-is-active': isActive(['/client/demandes-achats'])}">
+    <a [routerLink]="['/client/demandes-achats']" [ngClass]="{'-is-active': isActive(
+    ['/client/demandes-achats',
+    '/client/demande-achat/:id'
+  ])}">
         <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/client/contrats']" [ngClass]="{'-is-active': isActive(['/client/contrats', '/client/contrats/locations', '/client/contrats/ventes'])}">
+    <a [routerLink]="['/client/contrats']" [ngClass]="{'-is-active': isActive(
+    ['/client/contrats',
+    '/client/contrat-location/:id',
+    '/client/contrat-vente/:id'
+  ])}">
         <i class="fa-light fa-folders mr15"></i>Contrats
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/client/suivis-entretiens']" [ngClass]="{'-is-active': isActive(['/client/suivis-entretiens'])}">
+    <a [routerLink]="['/client/suivis-entretiens']" [ngClass]="{'-is-active': isActive(
+    ['/client/suivis-entretiens',
+    '/client/suivi-entretien/:id'
+  ])}">
         <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
     </a>
 </div>
@@ -46,12 +62,18 @@
     <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/client/planifications-paiements']" [ngClass]="{'-is-active': isActive(['/client/planifications-paiements'])}">
+    <a [routerLink]="['/client/planifications-paiements']" [ngClass]="{'-is-active': isActive(
+    ['/client/planifications-paiements',
+    '/client/planification-paiement/:id'
+  ])}">
         <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/client/paiements']" [ngClass]="{'-is-active': isActive(['/client/paiements'])}">
+    <a [routerLink]="['/client/paiements']" [ngClass]="{'-is-active': isActive(
+    ['/client/paiements',
+    '/client/paiement/:id'
+  ])}">
         <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements
     </a>
 </div>

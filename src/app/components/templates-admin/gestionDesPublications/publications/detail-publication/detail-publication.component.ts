@@ -336,7 +336,7 @@ export class DetailPublicationComponent implements OnInit, OnDestroy {
   }
 
   afficherBoutonSiBienDelegue(estDelegue: boolean): boolean {
-    if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
+    if (this.personneService.estProprietaire(this.user.role.code)) {
       if (estDelegue) {
         return false
       } else {

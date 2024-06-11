@@ -24,23 +24,23 @@ const routes: Routes = [
       { path: 'demandes-visites/:id', component: DemandesVisitesComponent, canActivate: [AuthGuard] },
 
       { path: 'demandes-locations', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
-      { path: 'demandes-locations/:id', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
+      { path: 'demande-location/:id', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
 
       { path: 'demandes-achats', component: DemandesAchatsComponent, canActivate: [AuthGuard] },
-      { path: 'demandes-achats/:id', component: DemandesAchatsComponent, canActivate: [AuthGuard] },
+      { path: 'demande-achat/:id', component: DemandesAchatsComponent, canActivate: [AuthGuard] },
 
       { path: 'contrats', component: ContratsComponent, canActivate: [AuthGuard] },
-      { path: 'contrats/locations/:id', component: ContratsComponent, canActivate: [AuthGuard] },
-      { path: 'contrats/ventes/:id', component: ContratsComponent, canActivate: [AuthGuard] },
+      { path: 'contrat-location/:id', component: ContratsComponent, canActivate: [AuthGuard] },
+      { path: 'contrat-vente/:id', component: ContratsComponent, canActivate: [AuthGuard] },
 
       { path: 'suivis-entretiens', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
-      { path: 'suivis-entretiens/:id', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
+      { path: 'suivi-entretien/:id', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
 
       { path: 'planifications-paiements', component: PlanificationsPaiementsComponent, canActivate: [AuthGuard] },
-      { path: 'planifications-paiements/:id', component: PlanificationsPaiementsComponent, canActivate: [AuthGuard] },
+      { path: 'planification-paiement/:id', component: PlanificationsPaiementsComponent, canActivate: [AuthGuard] },
 
       { path: 'paiements', component: PaiementsComponent, canActivate: [AuthGuard] },
-      { path: 'paiements/:id', component: PaiementsComponent, canActivate: [AuthGuard] }
+      { path: 'paiement/:id', component: PaiementsComponent, canActivate: [AuthGuard] }
     ]
   }
 ];

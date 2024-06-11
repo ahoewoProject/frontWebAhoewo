@@ -31,7 +31,7 @@ export class AffectationResponsableAgenceService {
     let params = new HttpParams()
     .set('numeroDeLaPage', numeroDeLaPage.toString())
     .set('elementsParPage', elementsParPage.toString());
-    return this.httpClient.get<Page<AffectationResponsableAgence>>(this.url + 'affectations-responsables-agences/responsable/pagines', {params: params});
+    return this.httpClient.get<Page<AffectationResponsableAgence>>(this.url + 'affectations-responsable-agence/page', {params: params});
   }
 
   // Recherche d'une occurrence d'affectation responsable agence par la clé primaire ;

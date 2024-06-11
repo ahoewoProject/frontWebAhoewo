@@ -103,16 +103,18 @@
             <div [style]="{ 'background-color': 'var(--red-600)' }" class="icon text-center"><i class="fa-light fa-handshake" style="color: #ffffff;"></i></div>
         </div>
     </div>
+</div>
+<div class="row">
     <div class="col-sm-12 col-xxl-6">
         <div class="card flex justify-content-center statistics_funfact">
             <h5 class="graph-title">Disponibilités des biens</h5>
-            <p-chart type="doughnut" [data]="dataBien" [options]="optionsBien" height="500" />
+            <p-chart type="doughnut" [data]="dataBien" [options]="optionsBien" height="230" />
         </div>
     </div>
     <div class="col-sm-12 col-xxl-6">
         <div class="card flex justify-content-center statistics_funfact">
             <h5 class="graph-title">Délégations gestions</h5>
-            <p-chart type="doughnut" [data]="dataDelegation" [options]="optionsDelegation" height="500" />
+            <p-chart type="doughnut" [data]="dataDelegation" [options]="optionsDelegation" height="230" />
         </div>
     </div>
 </div>

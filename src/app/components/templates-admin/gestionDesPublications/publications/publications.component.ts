@@ -1,15 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { Page } from 'src/app/interfaces/Page';
 import { BienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/BienImmobilier';
 import { Caracteristiques } from 'src/app/models/gestionDesBiensImmobiliers/Caracteristiques';
 import { ImagesBienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/ImagesBienImmobilier';
 import { Publication } from 'src/app/models/gestionDesPublications/Publication';
-import { BienImmAssocieService } from 'src/app/services/gestionDesBiensImmobiliers/bien-imm-associe.service';
 import { BienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/bien-immobilier.service';
-import { CaracteristiquesService } from 'src/app/services/gestionDesBiensImmobiliers/caracteristiques.service';
 import { ImagesBienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/images-bien-immobilier.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
@@ -25,17 +22,12 @@ export class PublicationsComponent implements OnInit, OnDestroy {
   recherche: string = '';
   affichage = 1;
   responsiveOptions: any[] | undefined;
-  typesDeTransactions: string[] = [];
-  typeDeTransactionSelectionne!: string;
   elementsParPage = 5;
   numeroDeLaPage = 0;
 
   user: any;
   biensImmobiliers: BienImmobilier[] = [];
   images: ImagesBienImmobilier[] = [];
-  bienImm!: any;
-  bienSelectionne!: BienImmobilier;
-  publication = this.publicationService.publication;
   publications!: Page<Publication>;
   messageErreur: string = "";
   messageSuccess: string | null = null;
@@ -46,10 +38,9 @@ export class PublicationsComponent implements OnInit, OnDestroy {
   publicationReussie: any;
 
   constructor(private publicationService: PublicationService, private activatedRoute: ActivatedRoute,
-    private bienImmobilierService: BienImmobilierService, private bienImmAssocieService: BienImmAssocieService,
-    private messageService: MessageService, private confirmationService: ConfirmationService,
-    private personneService: PersonneService, private caracteristiquesServices: CaracteristiquesService,
-    private imagesBienImmobilierService: ImagesBienImmobilierService, private router: Router
+    private bienImmobilierService: BienImmobilierService, private messageService: MessageService,
+    private personneService: PersonneService, private imagesBienImmobilierService: ImagesBienImmobilierService,
+    private router: Router
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -58,6 +49,7 @@ export class PublicationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.publicationReussie = this.activatedRoute.snapshot.queryParamMap.get('publicationReussie') || '';
     this.initResponsiveOptions();
     if (this.personneService.estProprietaire(this.user.role.code)) {
       this.listeBiensPropres();
@@ -131,83 +123,6 @@ export class PublicationsComponent implements OnInit, OnDestroy {
     this.numeroDeLaPage = event.first / event.rows;
     this.elementsParPage = event.rows;
     this.listePublications(this.numeroDeLaPage, this.elementsParPage);
-  }
-
-  ajouterPublication(): void {
-    this.publication.bienImmobilier = this.bienSelectionne;
-    this.publication.typeDeTransaction = this.typeDeTransactionSelectionne;
-    this.publicationService.ajouterPublication(this.publication).subscribe(
-      (response) => {
-        if (response.id > 0) {
-
-          this.messageSuccess = "La publication a été ajouté avec succès !";
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Publication réussie',
-            detail: this.messageSuccess
-          })
-        } else {
-          this.messageErreur = "Une erreur s'est produite lors de l'ajout !";
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Publication échouée',
-            detail: this.messageErreur
-          })
-        }
-      },
-      (error) => {
-        this.messageErreur = error.error;
-        let messageDetail = '';
-
-        switch (this.messageErreur) {
-          case "Un contrat de location est toujours en cours pour ce bien immobilier.":
-            messageDetail = this.messageErreur;
-            break;
-          case "Une publication avec ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.":
-            messageDetail = this.messageErreur;
-            break;
-          case "Une publication avec un des biens associés à ce bien support est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.":
-            messageDetail = this.messageErreur;
-            break;
-          case "Une publication avec le bien support auquel est associé ce bien est toujours active. Veuillez désactiver la publication avant d'en ajouter une autre.":
-            messageDetail = this.messageErreur;
-            break;
-          default:
-            messageDetail = "Erreur inconnue";
-            break;
-        }
-
-        if (messageDetail !== "Erreur inconnue") {
-          this.messageService.add({
-            severity: 'warn',
-            summary: 'Publication non réussie',
-            detail: messageDetail
-          });
-        }
-      }
-    )
-  }
-
-  afficherCategorie(): boolean {
-    return this.bienImm.typeDeBien.designation == 'Maison' ||
-    this.bienImm.typeDeBien.designation == 'Villa' ||
-    this.bienImm.typeDeBien.designation == 'Immeuble' ||
-    this.bienImm.typeDeBien.designation == 'Appartement' ||
-    this.bienImm.typeDeBien.designation == 'Chambre salon' ||
-    this.bienImm.typeDeBien.designation == 'Chambre' ||
-    this.bienImm.typeDeBien.designation == 'Bureau';
-  }
-
-  afficherCaracteristique(): boolean {
-    return this.bienImm.typeDeBien.designation == 'Maison' ||
-    this.bienImm.typeDeBien.designation == 'Villa' ||
-    this.bienImm.typeDeBien.designation == 'Immeuble' ||
-    this.bienImm.typeDeBien.designation == 'Appartement' ||
-    this.bienImm.typeDeBien.designation == 'Chambre salon' ||
-    this.bienImm.typeDeBien.designation == 'Chambre' ||
-    this.bienImm.typeDeBien.designation == 'Bureau' ||
-    this.bienImm.typeDeBien.designation == 'Magasin' ||
-    this.bienImm.typeDeBien.designation == 'Boutique';
   }
 
   navigateURLBYUSER(user: any): string {

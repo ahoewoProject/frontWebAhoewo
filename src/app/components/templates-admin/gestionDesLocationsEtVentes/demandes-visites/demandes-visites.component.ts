@@ -154,10 +154,10 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
           this.detailBienAssocie(this.demandeVisite.publication.bienImmobilier.id);
         }
 
-        if (this.user.role.code == 'ROLE_CLIENT') {
-          this.listeMotifs(this.demandeVisite.codeDemande, this.demandeVisite.refuserPar);
+        if (this.personneService.estClient(this.user.role.code)) {
+          this.listeMotifs(this.demandeVisite.codeDemande, this.demandeVisite.creerPar);
         } else {
-          this.listeMotifs(this.demandeVisite.codeDemande, this.demandeVisite.annulerPar);
+          this.listeMotifs(this.demandeVisite.codeDemande, this.demandeVisite.client.id);
         }
       }
     );
@@ -195,7 +195,7 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
   }
 
   afficherPageDetail(id: any): void {
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/demandes-visites', id]);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/demande-visite', id]);
   }
 
   afficherModalRefus(id: number): void {
@@ -231,7 +231,7 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
       (response) => {
         this.modalRefusVisible = false;
         this.detailDemandeVisite(this.demandeVisiteId);
-        this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-visites/' + this.demandeVisiteId);
+        this.router.navigateByUrl(this.navigateURLBYUSER + '/demande-visite/' + this.demandeVisiteId);
         this.messageSuccess = "Le demande de visite a été refusée avec succès !";
         this.messageService.add({
           severity: 'success',
@@ -247,7 +247,7 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
       (response) => {
         this.modalAnnulationVisible = false;
         this.detailDemandeVisite(this.demandeVisiteId);
-        this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-visites/' + this.demandeVisiteId);
+        this.router.navigateByUrl(this.navigateURLBYUSER + '/demande-visite/' + this.demandeVisiteId);
         this.messageSuccess = "La demande de visite a été annulée avec succès !";
         this.messageService.add({
           severity: 'success',
@@ -415,7 +415,7 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
   }
 
   afficherBoutonSiBienDelegue(estDelegue: boolean): boolean {
-    if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
+    if (this.personneService.estProprietaire(this.user.role.code)) {
       if (estDelegue) {
         return false
       } else {

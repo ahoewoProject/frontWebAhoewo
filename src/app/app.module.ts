@@ -119,8 +119,8 @@ import { MenuDemarcheurComponent } from './components/templates-admin/menu/menu-
 import { MenuNotaireComponent } from './components/templates-admin/menu/menu-notaire/menu-notaire.component';
 import { MenuProprietaireComponent } from './components/templates-admin/menu/menu-proprietaire/menu-proprietaire.component';
 import { BiensContratsComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-contrats/biens-contrats.component';
-import { BiensPlanificationsPaiementsComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-planifications-paiements/biens-planifications-paiements.component';
-import { BiensPaiementsComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-paiements/biens-paiements.component';
+import { BiensPlanificationsPaiementsComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-planifications-paiements/biens-planifications-paiements.component';
+import { BiensPaiementsComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-paiements/biens-paiements.component';
 import { DelegationGestionAddComponent } from './components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/delegation-gestion-add/delegation-gestion-add.component';
 import { BienDelegueUpdateComponent } from './components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/bien-delegue-update/bien-delegue-update.component';
 import { SidebarModule } from 'primeng/sidebar';

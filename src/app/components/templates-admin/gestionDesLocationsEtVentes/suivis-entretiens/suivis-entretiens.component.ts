@@ -136,7 +136,7 @@ export class SuivisEntretiensComponent implements OnInit, OnDestroy {
   }
 
   afficherPageDetail(id: number): void {
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/suivis-entretiens/' + id]);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/suivi-entretien/' + id]);
   }
 
   afficherPageAjouter(): void {

@@ -267,7 +267,6 @@ export class DetailDelegationGestionComponent implements OnInit, OnDestroy {
     this.publicationService.ajouterPublication(this.publication).subscribe(
       (response) => {
         if (response.id > 0) {
-          this.resetPublicationForm();
           this.redirectToPublicationPage();
         } else {
           this.messageErreur = "Une erreur s'est produite lors de l'ajout !";
@@ -314,19 +313,11 @@ export class DetailDelegationGestionComponent implements OnInit, OnDestroy {
 
   redirectToPublicationPage(): void {
     this.resetPublicationForm();
-    if (this.user.role.code == 'ROLE_RESPONSABLE') {
-      this.router.navigate(['/responsable/agences-immobilieres/publications'], { queryParams: { publicationReussie: true }});
-    } else if (this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
-      this.router.navigate(['/agent-immobilier/agences-immobilieres/publications'], { queryParams: { publicationReussie: true }});
-    } else if (this.user.role.code == 'ROLE_DEMARCHEUR') {
-      this.router.navigate(['/demarcheur/publications'], { queryParams: { publicationReussie: true }});
-    } else if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
-      this.router.navigate(['/proprietaire/publications'], { queryParams: { publicationReussie: true }});
-    }
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/publications'], { queryParams: { publicationReussie: true }});
   }
 
   afficherCommission(): boolean {
-    return (this.user.role.code == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_AGENTIMMOBILIER' || this.user.role.code == 'ROLE_DEMARCHEUR')
+    return (this.personneService.estResponsable(this.user.role.code) || this.personneService.estAgentImmobilier(this.user.role.code) || this.personneService.estDemarcheur(this.user.role.code))
     && (this.typeDeTransactionSelectionne == 'Location' || this.typeDeTransactionSelectionne == 'Vente');
   }
 
@@ -335,7 +326,7 @@ export class DetailDelegationGestionComponent implements OnInit, OnDestroy {
   }
 
   afficherFraisDeVisite(): boolean {
-    return (this.user.role.code == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_AGENTIMMOBILIER' || this.user.role.code == 'ROLE_DEMARCHEUR');
+    return (this.personneService.estResponsable(this.user.role.code) || this.personneService.estAgentImmobilier(this.user.role.code) || this.personneService.estDemarcheur(this.user.role.code));
   }
 
   private isTypeBienTerrain(designation :string): boolean {
@@ -356,7 +347,7 @@ export class DetailDelegationGestionComponent implements OnInit, OnDestroy {
   }
 
   afficherBoutonSiBienDelegue(estDelegue: boolean): boolean {
-    if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
+    if (this.personneService.estProprietaire(this.user.role.code)) {
       if (estDelegue) {
         return false
       } else {
@@ -374,7 +365,7 @@ export class DetailDelegationGestionComponent implements OnInit, OnDestroy {
   }
 
   voirListeContratsBien(codeBien: string): void {
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/biens-delegues/contrats/', codeBien]);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/bien-delegue/contrats/', codeBien]);
   }
 
   afficherCategorie(designation: string): boolean {

@@ -82,9 +82,9 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
     this.initContratVenteStep1Form();
     this.initContratVenteStep2Form();
     this.initContratVenteStep3Form();
-    if (this.user.role.code == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
+    if (this.personneService.estResponsable(this.user.role.code) || this.personneService.estAgentImmobilier(this.user.role.code)) {
       this.menusOfAgence();
-    } else if (this.user.role.code == 'ROLE_DEMARCHEUR') {
+    } else if (this.personneService.estDemarcheur(this.user.role.code)) {
       this.menusOfDemarcheur();
     } else {
       this.menusOfOtherUser();
@@ -221,10 +221,10 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
           this.detailBienAssocie(this.demandeAchat.publication.bienImmobilier.id);
         }
 
-        if (this.user.role.code == 'ROLE_CLIENT') {
-          this.listeMotifs(this.demandeAchat.codeDemande, this.demandeAchat.refuserPar);
+        if (this.personneService.estClient(this.user.role.code)) {
+          this.listeMotifs(this.demandeAchat.codeDemande, this.demandeAchat.creerPar);
         } else {
-          this.listeMotifs(this.demandeAchat.codeDemande, this.demandeAchat.annulerPar);
+          this.listeMotifs(this.demandeAchat.codeDemande, this.demandeAchat.client.id);
         }
       }
     );
@@ -570,11 +570,11 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
         this.contratVente.agenceImmobiliere = this.demandeAchat.publication.agenceImmobiliere;
       } else if (this.demandeAchat.publication.personne &&
         this.demandeAchat.publication.personne.role &&
-        this.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR') {
+        this.personneService.estDemarcheur(this.demandeAchat.publication.personne.role.code)) {
         this.contratVente.demarcheur = this.demandeAchat.publication.personne
       } else if (this.demandeAchat.publication.personne &&
         this.demandeAchat.publication.personne.role &&
-        this.demandeAchat.publication.personne.role.code == 'ROLE_GERANT') {
+        this.personneService.estGerant(this.demandeAchat.publication.personne.role.code)) {
         this.contratVente.gerant = this.demandeAchat.publication.personne
       }
     } else {
@@ -582,11 +582,11 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
         this.contratVente.agenceImmobiliere = this.demandeAchat.publication.agenceImmobiliere;
       } else if (this.demandeAchat.publication.personne &&
         this.demandeAchat.publication.personne.role &&
-        this.demandeAchat.publication.personne.role.code == 'ROLE_DEMARCHEUR') {
+        this.personneService.estDemarcheur(this.demandeAchat.publication.personne.role.code)) {
         this.contratVente.demarcheur = this.demandeAchat.publication.personne
       } else if (this.demandeAchat.publication.personne &&
         this.demandeAchat.publication.personne.role &&
-        this.demandeAchat.publication.personne.role.code == 'ROLE_PROPRIETAIRE') {
+        this.personneService.estProprietaire(this.demandeAchat.publication.personne.role.code)) {
         this.contratVente.proprietaire = this.demandeAchat.publication.bienImmobilier.personne;
       }
     }
@@ -678,7 +678,7 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
   }
 
   afficherBoutonSiBienDelegue(estDelegue: boolean): boolean {
-    if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
+    if (this.personneService.estProprietaire(this.user.role.code)) {
       if (estDelegue) {
         return false
       } else {

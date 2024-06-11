@@ -596,10 +596,6 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     this.afficherPageDetail(delegationGestionInStore.id, delegationGestionInStore.bienImmobilier.id);
   }
 
-  voirListeContratsBien(codeBien: string): void {
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/biens-delegues/contrats/', codeBien]);
-  }
-
   afficherCategorie(designation: string): boolean {
     return designation == 'Maison' ||
     designation == 'Villa' ||

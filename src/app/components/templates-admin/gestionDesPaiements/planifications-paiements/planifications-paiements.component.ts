@@ -210,7 +210,7 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   }
 
   afficherPageDetail(id: number): void {
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/planifications-paiements/' + id]);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/planification-paiement/' + id]);
   }
 
   initPlanificationPaiementForm(): void {
@@ -404,7 +404,7 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   }
 
   listeModesPaiements() {
-    if (this.user.role.code != 'ROLE_CLIENT') {
+    if (!this.personneService.estClient(this.user.role.code)) {
       this.modesPaiements = ['Hors plateforme'];
       this.modePaiementSelectionne = this.modesPaiements[0];
     } else {

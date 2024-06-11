@@ -14,7 +14,10 @@
     <p class="fz15 fw400 ff-heading mt30">GESTION DES COMPTES</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/demandes-certifications']" [ngClass]="{'-is-active': isActive(['/demarcheur/demandes-certifications'])}">
+    <a [routerLink]="['/demarcheur/demandes-certifications']" [ngClass]="{'-is-active': isActive(
+    ['/demarcheur/demandes-certifications',
+    '/demarcheur/demande-certification/:id'
+  ])}">
         <i class="pi pi-verified mr15"></i>&nbsp;Certifications
     </a>
 </div>
@@ -28,13 +31,20 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/demarcheur/biens-supports']" [ngClass]="{'-is-active': isActive(
       ['/demarcheur/biens-supports',
-      '/demarcheur/biens/contrats',
-      '/demarcheur/biens/contrat-location',
-      '/demarcheur/biens/contrat-vente',
-      '/demarcheur/biens/contrats/planifications-paiements',
-      '/demarcheur/biens/contrats/planification-paiement',
-      '/demarcheur/biens/contrats/paiements',
-      '/demarcheur/biens/contrats/paiement'
+      '/demarcheur/bien-support/:id',
+      '/demarcheur/add/bien-support',
+      '/demarcheur/update/bien-support/:id/:designation',
+      '/demarcheur/bien-support/:id/biens-associes',
+      '/demarcheur/bien-support/:id/bien-associe/:idBienAssocie',
+      '/demarcheur/bien-support/:id/add/bien-associe',
+      '/demarcheur/bien-support/:id/update/bien-associe/:idBienAssocie/:designation',
+      '/demarcheur/bien/contrats/:codeBien',
+      '/demarcheur/bien/contrat-location/:id',
+      '/demarcheur/bien/contrat-vente/:id',
+      '/demarcheur/bien/contrats/planifications-paiements/:codeContrat',
+      '/demarcheur/bien/contrats/planification-paiement/:id',
+      '/demarcheur/bien/contrats/paiements/:codeContrat',
+      '/demarcheur/bien/contrats/paiement/:id'
       ])}">
         <i class="fa-light fa-house-building mr15"></i>Biens immobiliers
     </a>
@@ -42,16 +52,16 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/demarcheur/delegations-gestions']" [ngClass]="{'-is-active': isActive(
       ['/demarcheur/delegations-gestions',
-      '/demarcheur/biens-delegues/contrats',
-      '/demarcheur/biens-delegues/contrat-location',
-      '/demarcheur/biens-delegues/contrat-vente',
-      '/demarcheur/biens-delegues/contrats/planifications-paiements',
-      '/demarcheur/biens-delegues/contrats/planification-paiement',
-      '/demarcheur/biens-delegues/contrats/paiements',
-      '/demarcheur/biens-delegues/contrats/paiement',
       '/demarcheur/delegation-gestion/:id',
       '/demarcheur/add/delegation-gestion',
-      '/demarcheur/bien-delegue/update'
+      '/demarcheur/bien-delegue/update',
+      '/demarcheur/bien-delegue/contrats/:codeBien',
+      '/demarcheur/bien-delegue/contrat-location/:id',
+      '/demarcheur/bien-delegue/contrat-vente/:id',
+      '/demarcheur/bien-delegue/contrats/planifications-paiements/:codeContrat',
+      '/demarcheur/bien-delegue/contrats/planification-paiement/:id',
+      '/demarcheur/bien-delegue/contrats/paiements/:codeContrat',
+      '/demarcheur/bien-delegue/contrats/paiement/:id',
       ])}">
         <i class="fa-light fa-handshake mr15"></i>Biens délégués
     </a>
@@ -80,27 +90,43 @@
     <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/demandes-visites']" [ngClass]="{'-is-active': isActive(['/demarcheur/demandes-visites'])}">
+    <a [routerLink]="['/demarcheur/demandes-visites']" [ngClass]="{'-is-active': isActive(
+    ['/demarcheur/demandes-visites',
+    '/demarcheur/demande-visite/:id'
+  ])}">
         <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/demandes-locations']" [ngClass]="{'-is-active': isActive(['/demarcheur/demandes-locations'])}">
+    <a [routerLink]="['/demarcheur/demandes-locations']" [ngClass]="{'-is-active': isActive(
+    ['/demarcheur/demandes-locations',
+    '/demarcheur/demande-location/:id'
+  ])}">
         <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/demandes-achats']" [ngClass]="{'-is-active': isActive(['/demarcheur/demandes-achats'])}">
+    <a [routerLink]="['/demarcheur/demandes-achats']" [ngClass]="{'-is-active': isActive(
+    ['/demarcheur/demandes-achats',
+    '/demarcheur/demande-achat/:id'
+  ])}">
         <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/contrats']" [ngClass]="{'-is-active': isActive(['/demarcheur/contrats', '/demarcheur/contrats/locations', '/demarcheur/contrats/ventes'])}">
+    <a [routerLink]="['/demarcheur/contrats']" [ngClass]="{'-is-active': isActive(
+    ['/demarcheur/contrats',
+    '/demarcheur/contrat-location/:id',
+    '/demarcheur/contrat-vente/:id'
+  ])}">
         <i class="fa-light fa-folders mr15"></i>Contrats
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/suivis-entretiens']" [ngClass]="{'-is-active': isActive(['/demarcheur/suivis-entretiens'])}">
+    <a [routerLink]="['/demarcheur/suivis-entretiens']" [ngClass]="{'-is-active': isActive(
+    ['/demarcheur/suivis-entretiens',
+    '/demarcheur/suivi-entretien/:id'
+  ])}">
         <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
     </a>
 </div>
@@ -112,12 +138,18 @@
     <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/planifications-paiements']" [ngClass]="{'-is-active': isActive(['/demarcheur/planifications-paiements'])}">
+    <a [routerLink]="['/demarcheur/planifications-paiements']" [ngClass]="{'-is-active': isActive(
+    ['/demarcheur/planifications-paiements',
+    '/demarcheur/planification-paiement/:id'
+  ])}">
         <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/demarcheur/paiements']" [ngClass]="{'-is-active': isActive(['/demarcheur/paiements'])}">
+    <a [routerLink]="['/demarcheur/paiements']" [ngClass]="{'-is-active': isActive(
+    ['/demarcheur/paiements',
+    '/demarcheur/paiement/:id'
+  ])}">
         <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements
     </a>
 </div>

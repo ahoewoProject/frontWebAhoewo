@@ -99,10 +99,10 @@ export class BiensPaiementsComponent implements OnInit, OnDestroy {
     const currentURL = this.router.url;
     const segments = currentURL.split('/');
 
-    if (segments.includes('biens')) {
-      this.router.navigate([this.navigateURLBYUSER(this.user) + '/biens/contrats/paiement/', id]);
-    } else if (segments.includes('biens-delegues')) {
-      this.router.navigate([this.navigateURLBYUSER(this.user) + '/biens-delegues/contrats/paiement/', id]);
+    if (segments.includes('bien')) {
+      this.router.navigate([this.navigateURLBYUSER(this.user) + '/bien/contrats/paiement/', id]);
+    } else if (segments.includes('bien-delegue')) {
+      this.router.navigate([this.navigateURLBYUSER(this.user) + '/bien-delegue/contrats/paiement/', id]);
     }
   }
 
@@ -142,10 +142,10 @@ export class BiensPaiementsComponent implements OnInit, OnDestroy {
     const currentURL = this.router.url;
     const segments = currentURL.split('/');
 
-    if (segments.includes('biens')) {
-      this.router.navigate([this.navigateURLBYUSER(this.user) + '/biens/contrats/paiements/', codeContrat]);
-    } else if (segments.includes('biens-delegues')) {
-      this.router.navigate([this.navigateURLBYUSER(this.user) + '/biens-delegues/contrats/paiements/', codeContrat]);
+    if (segments.includes('bien')) {
+      this.router.navigate([this.navigateURLBYUSER(this.user) + '/bien/contrats/paiements/', codeContrat]);
+    } else if (segments.includes('bien-delegue')) {
+      this.router.navigate([this.navigateURLBYUSER(this.user) + '/bien-delegue/contrats/paiements/', codeContrat]);
     }
   }
 
@@ -160,10 +160,10 @@ export class BiensPaiementsComponent implements OnInit, OnDestroy {
     const currentURL = this.router.url;
     const segments = currentURL.split('/');
 
-    if (segments.includes('biens')) {
-      this.router.navigate([this.navigateURLBYUSER(this.user) + '/biens/contrats/', codeBien], { queryParams: { activeIndex: this.activeIndex }});
-    } else if (segments.includes('biens-delegues')) {
-      this.router.navigate([this.navigateURLBYUSER(this.user) + '/biens-delegues/contrats/', codeBien], { queryParams: { activeIndex: this.activeIndex }});
+    if (segments.includes('bien')) {
+      this.router.navigate([this.navigateURLBYUSER(this.user) + '/bien/contrats/', codeBien], { queryParams: { activeIndex: this.activeIndex }});
+    } else if (segments.includes('bien-delegue')) {
+      this.router.navigate([this.navigateURLBYUSER(this.user) + '/bien-delegue/contrats/', codeBien], { queryParams: { activeIndex: this.activeIndex }});
     }
   }
 
@@ -191,6 +191,9 @@ export class BiensPaiementsComponent implements OnInit, OnDestroy {
     let roleBasedURL = '';
 
     switch (user.role.code) {
+      case 'ROLE_GERANT':
+        roleBasedURL = '/gerant';
+        break;
       case 'ROLE_PROPRIETAIRE':
         roleBasedURL = '/proprietaire';
         break;

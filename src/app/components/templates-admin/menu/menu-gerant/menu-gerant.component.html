@@ -15,16 +15,16 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/gerant/delegations-gestions']" [ngClass]="{'-is-active': isActive(
       ['/gerant/delegations-gestions',
-      '/gerant/biens-delegues/contrats',
-      '/gerant/biens-delegues/contrat-location',
-      '/gerant/biens-delegues/contrat-vente',
-      '/gerant/biens-delegues/contrats/planifications-paiements',
-      '/gerant/biens-delegues/contrats/planification-paiement',
-      '/gerant/biens-delegues/contrats/paiements',
-      '/gerant/biens-delegues/contrats/paiement',
       '/gerant/delegation-gestion/:id',
       '/gerant/add/delegation-gestion',
-      '/gerant/bien-delegue/update'
+      '/gerant/bien-delegue/update',
+      '/gerant/bien-delegue/contrats/:codeBien',
+      '/gerant/bien-delegue/contrat-location/:id',
+      '/gerant/bien-delegue/contrat-vente/:id',
+      '/gerant/bien-delegue/contrats/planifications-paiements/:codeContrat',
+      '/gerant/bien-delegue/contrats/planification-paiement/:id',
+      '/gerant/bien-delegue/contrats/paiements/:codeContrat',
+      '/gerant/bien-delegue/contrats/paiement/:id',
       ])}">
         <i class="fa-light fa-handshake mr15"></i>Biens délégués
     </a>
@@ -51,27 +51,43 @@
     <p class="fz15 fw400 ff-heading mt30">LOCATIONS ET VENTES</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/gerant/demandes-visites']" [ngClass]="{'-is-active': isActive(['/gerant/demandes-visites'])}">
+    <a [routerLink]="['/gerant/demandes-visites']" [ngClass]="{'-is-active': isActive(
+    ['/gerant/demandes-visites',
+    '/gerant/demande-visite/:id',
+  ])}">
         <i class="fa-light fa-calendars mr15"></i>&nbsp;Demandes de visites
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/gerant/demandes-locations']" [ngClass]="{'-is-active': isActive(['/gerant/demandes-locations'])}">
+    <a [routerLink]="['/gerant/demandes-locations']" [ngClass]="{'-is-active': isActive(
+    ['/gerant/demandes-locations',
+    '/gerant/demande-location/:id'
+  ])}">
         <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/gerant/demandes-achats']" [ngClass]="{'-is-active': isActive(['/gerant/demandes-achats'])}">
+    <a [routerLink]="['/gerant/demandes-achats']" [ngClass]="{'-is-active': isActive(
+    ['/gerant/demandes-achats',
+    '/gerant/demande-achat/:id'
+  ])}">
         <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/gerant/contrats']" [ngClass]="{'-is-active': isActive(['/gerant/contrats'])}">
+    <a [routerLink]="['/gerant/contrats']" [ngClass]="{'-is-active': isActive(
+    ['/gerant/contrats',
+    '/gerant/contrat-location/:id',
+    '/gerant/contrat-vente/:id'
+  ])}">
         <i class="fa-light fa-folders mr15"></i>Contrats
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/gerant/suivis-entretiens']" [ngClass]="{'-is-active': isActive(['/gerant/suivis-entretiens'])}">
+    <a [routerLink]="['/gerant/suivis-entretiens']" [ngClass]="{'-is-active': isActive(
+    ['/gerant/suivis-entretiens',
+    '/gerant/suivi-entretien/:id'
+  ])}">
         <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
     </a>
 </div>
@@ -82,12 +98,18 @@
     <p class="fz15 fw400 ff-heading mt30">GESTION DES PAIEMENTS</p>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/gerant/planifications-paiements']" [ngClass]="{'-is-active': isActive(['/gerant/planifications-paiements'])}">
+    <a [routerLink]="['/gerant/planifications-paiements']" [ngClass]="{'-is-active': isActive(
+    ['/gerant/planifications-paiements',
+    '/gerant/planification-paiement/:id'
+  ])}">
         <i class="fa-light fa-money-check-dollar-pen mr15"></i>Suivi des paiements
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/gerant/paiements']" [ngClass]="{'-is-active': isActive(['/gerant/paiements'])}">
+    <a [routerLink]="['/gerant/paiements']" [ngClass]="{'-is-active': isActive(
+    ['/gerant/paiements',
+    '/gerant/paiement/:id'
+  ])}">
         <i class="fa-light fa-credit-card-front mr15"></i>&nbsp;Paiements
     </a>
 </div>
