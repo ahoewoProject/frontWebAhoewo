@@ -1,0 +1,293 @@
+<div class="dashboard__content property-page bgc-f7">
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
+    </div>
+
+    <p-toast></p-toast>
+    <!-- Start Détail paiement -->
+    <div>
+        <div class="row align-items-center">
+            <div class="col-xxl-5">
+                <div class="dashboard_title_area">
+                    <h4>Détails d'un paiement</h4>
+                </div>
+            </div>
+            <div class="col-xxl-7">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-valider" type="button" (click)="telechargerFichePaiement(paiement.id)">Imprimer</a> &nbsp;
+                    <a class="ud-btn btn-annuler" type="button" (click)="telechargerPreuvePaiement(paiement.id)" *ngIf="paiement.preuve != null">Vérifier la preuve</a> &nbsp;
+                    <a class="ud-btn btn-valider" type="button" *ngIf="paiement.statutPaiement == 'En attente' && afficherBoutonSiBienDelegue(paiement.planificationPaiement.contrat.bienImmobilier.estDelegue)" (click)="validerPaiement(paiement.id)">Valider</a>
+                    <span *ngIf="paiement.statutPaiement == 'En attente' && afficherBoutonSiBienDelegue(paiement.planificationPaiement.contrat.bienImmobilier.estDelegue)">&nbsp;</span>
+                    <a class="ud-btn btn-retour" type="button" (click)="listePaiements()">Retour</a>
+                </div>
+            </div>
+            <p-messages severity="info">
+                <ng-template pTemplate>
+                    <div class="ml-2">
+                        <th scope="col">Libelle : {{ paiement.planificationPaiement.libelle }} - Contrat : {{ paiement.planificationPaiement.contrat.codeContrat }} - Bien : {{ paiement.planificationPaiement.contrat.bienImmobilier.typeDeBien.designation }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.quartier.ville.region.libelle
+                            }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.quartier.ville.libelle }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.quartier.libelle }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.adresse
+                            }} | {{ paiement.planificationPaiement.contrat.bienImmobilier.surface }} m²</th>
+                    </div>
+                </ng-template>
+            </p-messages>
+        </div>
+
+        <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
+                    <div class="row">
+                        <h4 class="title title-detail fz17 mb10">Paiement</h4>
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Code</p>
+                            <p class="text">{{ paiement.codePaiement }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Mode</p>
+                            <p class="text">{{ paiement.modePaiement }}</p>
+                        </div>
+                        <!--
+                  <div class="col-sm-6" *ngIf="paiement.numeroComptePaiement">
+                      <p class="fw600 mb10 ff-heading dark-color">Numero compte de paiement</p>
+                      <p class="text">{{ paiement.numeroComptePaiement }}</p>
+                  </div>
+                  <div class="col-sm-6" *ngIf="paiement.numeroComptePaiement">
+                      <p class="fw600 mb10 ff-heading dark-color">Référence de la transaction</p>
+                      <p class="text">{{ paiement.referenceTransaction }}</p>
+                  </div>
+                  -->
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Montant payé</p>
+                            <p class="text">{{ paiement.montant | number }} FCFA</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Date de paiement</p>
+                            <p class="text">{{ paiement.datePaiement | date: 'dd/MM/yyyy' }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+                            <p>
+                                <p-tag *ngIf="paiement.statutPaiement == 'En attente'" severity="warning" value="En attente"></p-tag>
+                                <p-tag *ngIf="paiement.statutPaiement == 'Effectué'" severity="info" value="Effectué"></p-tag>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <h4 class="title title-detail fz17 mb10">Planification paiement</h4>
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Code</p>
+                            <p class="text">{{ paiement.planificationPaiement.codePlanification }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Type</p>
+                            <p class="text">{{ paiement.planificationPaiement.typePlanification }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Libelle</p>
+                            <p class="text">{{ paiement.planificationPaiement.libelle }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Montant dû</p>
+                            <p class="text">{{ paiement.planificationPaiement.montantDu | number }} FCFA</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Montant à payer</p>
+                            <p class="text">{{ paiement.planificationPaiement.montantPaye | number }} FCFA</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Reste à payer</p>
+                            <p class="text">{{ paiement.planificationPaiement.restePaye | number }} FCFA</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Date planifiée</p>
+                            <p class="text">{{ paiement.planificationPaiement.datePlanifiee | date: 'dd/MM/yyyy' }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Etat</p>
+                            <p>
+                                <p-tag *ngIf="paiement.planificationPaiement.statutPlanification == 'En attente'" severity="warning" value="{{paiement.planificationPaiement.statutPlanification}}"></p-tag>
+                                <p-tag *ngIf="paiement.planificationPaiement.statutPlanification == 'Payé'" severity="success" value="{{paiement.planificationPaiement.statutPlanification}}"></p-tag>
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="row" *ngIf="paiement.planificationPaiement.typePlanification == 'Paiement de location'">
+                        <h4 class="title title-detail fz17 mb10">Contrat</h4>
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Code</p>
+                            <p class="text">{{contratLocation.codeContrat }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Type de contrat</p>
+                            <p class="text">{{ contratLocation.typeContrat }}</p>
+                        </div>
+
+                        <div class="col-sm-6" *ngIf="user.role.code != 'ROLE_CLIENT'">
+                            <p class="fw600 mb10 ff-heading dark-color">Locataire</p>
+                            <p class="text">{{ contratLocation.client.nom + ' ' + contratLocation.client.prenom }}</p>
+                        </div>
+
+                        <div class="col-sm-6" *ngIf="user.role.code == 'ROLE_CLIENT'">
+                            <p class="fw600 mb10 ff-heading dark-color">Propriétaire</p>
+                            <p class="text">
+                                {{ contratLocation && contratLocation.bienImmobilier.agenceImmobiliere ? contratLocation.bienImmobilier.agenceImmobiliere.nomAgence : contratLocation && contratLocation.bienImmobilier.personne ? contratLocation.bienImmobilier.personne.nom + ' ' + contratLocation.bienImmobilier.personne.prenom
+                                : '' }}
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="row" *ngIf="paiement.planificationPaiement.typePlanification == 'Paiement de location'">
+                        <h4 class="title title-detail fz17 mb10">Bien immobilier</h4>
+                        <div *ngIf="contratLocation.bienImmobilier.description">
+                            <p class="fw600 mb10 ff-heading dark-color">Description du bien</p>
+                            <p class="text justify-text">{{ contratLocation.bienImmobilier.description }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Code du bien</p>
+                            <p class="text">{{ contratLocation.bienImmobilier.codeBien }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Type de bien</p>
+                            <p class="text">{{ contratLocation.bienImmobilier.typeDeBien.designation }}</p>
+                        </div>
+
+                        <div class="col-sm-6" *ngIf="afficherCategorie(contratLocation.bienImmobilier.categorie)">
+                            <p class="fw600 mb5 ff-heading dark-color">Catégorie</p>
+                            <p class="text">{{ contratLocation.bienImmobilier.categorie }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Pays</p>
+                            <p class="text">{{ contratLocation.bienImmobilier.quartier.ville.region.pays.libelle }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Région</p>
+                            <p class="text">{{ contratLocation.bienImmobilier.quartier.ville.region.libelle }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Ville</p>
+                            <p class="text">{{ contratLocation.bienImmobilier.quartier.ville.libelle }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Quartier</p>
+                            <p class="text">{{ contratLocation.bienImmobilier.quartier.libelle }}</p>
+                        </div>
+
+                        <div class="col-sm-6" *ngIf="contratLocation.bienImmobilier.adresse">
+                            <p class="fw600 mb5 ff-heading dark-color">Adresse</p>
+                            <p class="text">{{ contratLocation.bienImmobilier.adresse }}</p>
+                        </div>
+
+                        <div class="col-sm-6" *ngIf="contratLocation.bienImmobilier.surface">
+                            <p class="fw600 mb5 ff-heading dark-color">Surface</p>
+                            <p class="text">{{ contratLocation.bienImmobilier.surface | number }} m²</p>
+                        </div>
+                    </div>
+
+                    <div class="row" *ngIf="paiement.planificationPaiement.typePlanification == 'Paiement d\'achat'">
+                        <h4 class="title title-detail fz17 mb10">Contrat</h4>
+                        <div class="col-sm-6">
+                            <p class="fw600 mb10 ff-heading dark-color">Code</p>
+                            <p class="text">{{contratVente.codeContrat }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Prix de vente</p>
+                            <p class="text">{{ contratVente.prixVente | number }} FCFA</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Nombre de tranches du paiement</p>
+                            <p class="text">{{ contratVente.nombreDeTranche | number }} tranches</p>
+                        </div>
+
+                        <div class="col-sm-6" *ngIf="user.role.code != 'ROLE_CLIENT'">
+                            <p class="fw600 mb10 ff-heading dark-color">Acquéreur</p>
+                            <p class="text">{{ contratVente.client.nom + ' ' + contratVente.client.prenom }}</p>
+                        </div>
+
+                        <div class="col-sm-6" *ngIf="user.role.code == 'ROLE_CLIENT'">
+                            <p class="fw600 mb10 ff-heading dark-color">Vendeur</p>
+                            <p class="text">
+                                {{ contratVente && contratVente.bienImmobilier.agenceImmobiliere ? contratVente.bienImmobilier.agenceImmobiliere.nomAgence : contratVente && contratVente.bienImmobilier.personne ? contratVente.bienImmobilier.personne.nom + ' ' + contratVente.bienImmobilier.personne.prenom
+                                : '' }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row" *ngIf="paiement.planificationPaiement.typePlanification == 'Paiement d\'achat'">
+                        <h4 class="title title-detail fz17 mb10">Bien immobilier</h4>
+                        <div *ngIf="contratVente.bienImmobilier.description">
+                            <p class="fw600 mb10 ff-heading dark-color">Description du bien</p>
+                            <p class="text justify-text">{{ contratVente.bienImmobilier.description }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Code du bien</p>
+                            <p class="text">{{ contratVente.bienImmobilier.codeBien }}</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Type de bien</p>
+                            <p class="text">{{ contratVente.bienImmobilier.typeDeBien.designation }}</p>
+                        </div>
+
+                        <div class="col-sm-6" *ngIf="afficherCategorie(contratVente.bienImmobilier.categorie)">
+                            <p class="fw600 mb5 ff-heading dark-color">Catégorie</p>
+                            <p class="text">{{ contratVente.bienImmobilier.categorie }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Pays</p>
+                            <p class="text">{{ contratVente.bienImmobilier.quartier.ville.region.pays.libelle }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Région</p>
+                            <p class="text">{{ contratVente.bienImmobilier.quartier.ville.region.libelle }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Ville</p>
+                            <p class="text">{{ contratVente.bienImmobilier.quartier.ville.libelle }}</p>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <p class="fw600 mb5 ff-heading dark-color">Quartier</p>
+                            <p class="text">{{ contratVente.bienImmobilier.quartier.libelle }}</p>
+                        </div>
+
+                        <div class="col-sm-6" *ngIf="contratVente.bienImmobilier.adresse">
+                            <p class="fw600 mb5 ff-heading dark-color">Adresse</p>
+                            <p class="text">{{ contratVente.bienImmobilier.adresse }}</p>
+                        </div>
+
+                        <div class="col-sm-6" *ngIf="contratVente.bienImmobilier.surface">
+                            <p class="fw600 mb5 ff-heading dark-color">Surface</p>
+                            <p class="text">{{ contratVente.bienImmobilier.surface | number }} m²</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-end">
+                <a class="ud-btn btn-retour" (click)="listePaiements()" type="button">Retour</a>
+            </div>
+        </div>
+    </div>
+    <!-- End Détail paiement -->
+</div>

@@ -1,0 +1,101 @@
+<div class="dashboard__content property-page bgc-f7">
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
+    </div>
+
+    <p-toast></p-toast>
+
+    <!-- Start Effectuer un paiement -->
+    <div>
+        <div class="row align-items-center">
+            <div class="col-xxl-5">
+                <div class="dashboard_title_area">
+                    <h4>Effectuer un paiement {{ planificationPaiement.typePlanification == 'Paiement de location' ? 'de location' : 'd\'nachat' }}</h4>
+                </div>
+            </div>
+            <div class="col-xxl-7">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="retourPageDetailPlanification(planificationPaiement.id)">Retour</a>
+                </div>
+            </div>
+            <p-messages severity="info">
+                <ng-template pTemplate>
+                    <div class="ml-2">
+                        <th scope="col">Libelle : {{ planificationPaiement.libelle }} - Contrat : {{ planificationPaiement.contrat.codeContrat }} - Montant à payer : {{ planificationPaiement.montantPaye | number }} FCFA - Reste à payer : {{ planificationPaiement.restePaye
+                            | number }} FCFA</th>
+                    </div>
+                </ng-template>
+            </p-messages>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <form [formGroup]="paiementForm" (ngSubmit)="ajouterPaiement()" class="form-style1">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Mode de paiement</label>
+                                    <p-dropdown class="select1" emptyMessage="Aucun résultat trouvé" [options]="modesPaiements" placeholder="Choisir le mode de paiement" formControlName="modePaiement" [filter]="true" filterPlaceholder="Rechercher" [(ngModel)]="modePaiementSelectionne" [showClear]="true"
+                                        (onChange)="modePaiementChoisi($event)">
+                                    </p-dropdown>
+                                    <div class="error" [hidden]="!modePaiement?.hasError('required') || !modePaiement.touched">La selection du mode de paiement est requise</div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="col-sm-6" *ngIf="modePaiementSelectionne == 'Manuel'">
+                          <div class="mb20">
+                              <label class="heading-color ff-heading fw600 mb10">Numero compte de paiement</label>
+                              <input pInputText class="pInputText p-fluid" id="numeroComptePaiement" name="numeroComptePaiement" placeholder="Le numero compte de paiement" formControlName="numeroComptePaiement" [(ngModel)]="paiement.numeroComptePaiement" required>
+                              <div class="error" [hidden]="numeroComptePaiement.valid || numeroComptePaiement.pristine && !numeroComptePaiement.touched ">
+                                  Le numero compte de paiement est requise</div>
+                          </div>
+                      </div>
+
+                      <div class="col-sm-6" *ngIf="modePaiementSelectionne == 'Manuel'">
+                          <div class="mb20">
+                              <label class="heading-color ff-heading fw600 mb10">Référence de la
+                                  transaction</label>
+                              <input pInputText class="pInputText p-fluid" id="referenceTransaction" name="referenceTransaction" placeholder="La référence de la transaction" formControlName="referenceTransaction" [(ngModel)]="paiement.referenceTransaction" required>
+                              <div class="error" [hidden]="referenceTransaction.valid || referenceTransaction.pristine && !referenceTransaction.touched ">
+                                  La référence de la transaction est requise</div>
+                          </div>
+                      </div>
+-->
+
+                            <div class="col-sm-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Montant à payer</label>
+                                    <p-inputNumber class="pInputNumber p-fluid" placeholder="Le montant à payer" formControlName="montant" [(ngModel)]="paiement.montant" inputId="montant" mode="currency" currency="CFA" locale="de-DE" [required]="true" [disabled]="true"> </p-inputNumber>
+                                    <div class="error" [hidden]="montant.valid || montant.pristine && !montant.touched ">Le montant à payer est requise</div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12" *ngIf="modePaiementSelectionne == 'Hors plateforme'">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Preuve</label>
+                                    <p-fileUpload chooseLabel="Sélectionner la preuve du paiement" [auto]="true" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="telecharger($event)">
+                                        <ng-template pTemplate="content">
+                                            <ul *ngIf="preuve">
+                                                <li>{{ preuve.name }}</li>
+                                            </ul>
+                                        </ng-template>
+                                    </p-fileUpload>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-12">
+                            <div class="text-end">
+                                <button class="ud-btn btn-annuler" type="button" (click)="resetPaiementForm()">Annuler</button> &nbsp;
+                                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': paiementForm.invalid }" type="submit">Valider</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Effectuer un paiement -->
+</div>

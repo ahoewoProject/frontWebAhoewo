@@ -146,6 +146,9 @@ import { DetailBienImmobilierComponent } from './components/templates-admin/gest
 import { DetailDelegationGestionComponent } from './components/templates-admin/gestionDesBiensImmobiliers/delegations-gestions/detail-delegation-gestion/detail-delegation-gestion.component';
 import { DetailPublicationComponent } from './components/templates-admin/gestionDesPublications/publications/detail-publication/detail-publication.component';
 import { UpdatePublicationComponent } from './components/templates-admin/gestionDesPublications/publications/update-publication/update-publication.component';
+import { EffectuerPaiementComponent } from './components/templates-admin/gestionDesPaiements/planifications-paiements/effectuer-paiement/effectuer-paiement.component';
+import { DetailPlanificationPaiementComponent } from './components/templates-admin/gestionDesPaiements/planifications-paiements/detail-planification-paiement/detail-planification-paiement.component';
+import { DetailPaiementComponent } from './components/templates-admin/gestionDesPaiements/paiements/detail-paiement/detail-paiement.component';
 
 @NgModule({
   declarations: [
@@ -242,7 +245,10 @@ import { UpdatePublicationComponent } from './components/templates-admin/gestion
     DetailBienImmobilierComponent,
     DetailDelegationGestionComponent,
     DetailPublicationComponent,
-    UpdatePublicationComponent
+    UpdatePublicationComponent,
+    EffectuerPaiementComponent,
+    DetailPlanificationPaiementComponent,
+    DetailPaiementComponent,
   ],
   imports: [
     BrowserModule,

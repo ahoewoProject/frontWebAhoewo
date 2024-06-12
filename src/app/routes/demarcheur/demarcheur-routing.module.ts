@@ -32,6 +32,9 @@ import { UpdateBienImmobilierComponent } from 'src/app/components/templates-admi
 import { AddBienAssocieComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-associes/add-bien-associe/add-bien-associe.component';
 import { DetailBienAssocieComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-associes/detail-bien-associe/detail-bien-associe.component';
 import { UpdateBienAssocieComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/biens-associes/update-bien-associe/update-bien-associe.component';
+import { EffectuerPaiementComponent } from 'src/app/components/templates-admin/gestionDesPaiements/planifications-paiements/effectuer-paiement/effectuer-paiement.component';
+import { DetailPlanificationPaiementComponent } from 'src/app/components/templates-admin/gestionDesPaiements/planifications-paiements/detail-planification-paiement/detail-planification-paiement.component';
+import { DetailPaiementComponent } from 'src/app/components/templates-admin/gestionDesPaiements/paiements/detail-paiement/detail-paiement.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -100,10 +103,11 @@ const routes: Routes = [
       { path: 'suivi-entretien/:id', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
 
       { path: 'planifications-paiements', component: PlanificationsPaiementsComponent, canActivate: [AuthGuard] },
-      { path: 'planification-paiement/:id', component: PlanificationsPaiementsComponent, canActivate: [AuthGuard] },
+      { path: 'planification-paiement/:id', component: DetailPlanificationPaiementComponent, canActivate: [AuthGuard] },
+      { path: 'planification-paiement/effectuer-paiement/:id', component: EffectuerPaiementComponent, canActivate: [AuthGuard] },
 
       { path: 'paiements', component: PaiementsComponent, canActivate: [AuthGuard] },
-      { path: 'paiement/:id', component: PaiementsComponent, canActivate: [AuthGuard] },
+      { path: 'paiement/:id', component: DetailPaiementComponent, canActivate: [AuthGuard] },
 
       { path: 'parametres', component: ParametresComponent, canActivate: [AuthGuard] },
     ]
