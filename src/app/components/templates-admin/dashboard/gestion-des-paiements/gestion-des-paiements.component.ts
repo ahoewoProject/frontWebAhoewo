@@ -32,8 +32,8 @@ export class GestionDesPaiementsComponent implements OnInit, OnDestroy {
     .subscribe(
       (data) => {
         this.nbrePlanificationPaiement = data.length;
-        this.nbrePlanificationPaiementAttente = data.filter(p => p.statutPlanification == 'En attente').length;
-        this.nbrePlanificationPaiementPaye = data.filter(p => p.statutPlanification == 'Payé').length;
+        this.nbrePlanificationPaiementAttente = data.filter(p => p.statutPlanification === 'En attente').length;
+        this.nbrePlanificationPaiementPaye = data.filter(p => p.statutPlanification === 'Payé').length;
       }
     )
   }
@@ -42,8 +42,8 @@ export class GestionDesPaiementsComponent implements OnInit, OnDestroy {
     this.paiementService.getPaiementsList().subscribe(
       (data) => {
         this.nbrePaiement = data.length;
-        this.nbrePaiementAttente = data.filter(p => p.statutPaiement == 'En attente').length;
-        this.nbrePaiementEffectue = data.filter(p => p.statutPaiement == 'Effectué').length;
+        this.nbrePaiementAttente = data.filter(p => p.statutPaiement === 'En attente').length;
+        this.nbrePaiementEffectue = data.filter(p => p.statutPaiement === 'Effectué').length;
 
         this.initChartJsPlanificationPaiement();
         this.initChartJsPaiement();

@@ -155,9 +155,9 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
         }
 
         if (this.personneService.estClient(this.user.role.code)) {
-          this.listeMotifs(this.demandeVisite.codeDemande, this.demandeVisite.creerPar);
+          this.listeMotifs(this.demandeVisite.codeDemande, this.demandeVisite.refuserPar);
         } else {
-          this.listeMotifs(this.demandeVisite.codeDemande, this.demandeVisite.client.id);
+          this.listeMotifs(this.demandeVisite.codeDemande, this.demandeVisite.annulerPar);
         }
       }
     );
@@ -331,7 +331,7 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
         this.demandeVisiteService.valider(id).subscribe(
           (response) => {
             this.detailDemandeVisite(id);
-            this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-visites/' + id);
+            this.router.navigateByUrl(this.navigateURLBYUSER + '/demande-visite/' + id);
           this.messageSuccess = "La demande de visite a été validée avec succès !";
           this.messageService.add({
             severity: 'success',

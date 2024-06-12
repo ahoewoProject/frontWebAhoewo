@@ -21,7 +21,7 @@ const routes: Routes = [
       { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
 
       { path: 'demandes-visites', component: DemandesVisitesComponent, canActivate: [AuthGuard] },
-      { path: 'demandes-visites/:id', component: DemandesVisitesComponent, canActivate: [AuthGuard] },
+      { path: 'demande-visite/:id', component: DemandesVisitesComponent, canActivate: [AuthGuard] },
 
       { path: 'demandes-locations', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
       { path: 'demande-location/:id', component: DemandesLocationsComponent, canActivate: [AuthGuard] },

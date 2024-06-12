@@ -238,6 +238,13 @@ export class AddBienAssocieComponent implements OnInit, OnDestroy {
     });
   }
 
+  async deleteFile(imageBienImmobilier: any) {
+    const index = this.imagesBienImmobilier.findIndex(image => image === imageBienImmobilier);
+    if (index !== -1) {
+      this.imagesBienImmobilier.splice(index, 1);
+    }
+  }
+
   initBienStep1Form(): void {
     this.bienStep1Form = new FormGroup({
       typeDeBien: new FormControl('', [Validators.required]),

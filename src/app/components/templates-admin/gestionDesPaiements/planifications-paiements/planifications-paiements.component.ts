@@ -404,13 +404,15 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   }
 
   listeModesPaiements() {
-    if (!this.personneService.estClient(this.user.role.code)) {
-      this.modesPaiements = ['Hors plateforme'];
-      this.modePaiementSelectionne = this.modesPaiements[0];
-    } else {
-      this.modesPaiements = ['Hors plateforme' , 'Mobile Money', 'Virement bancaire'];
-      this.modePaiementSelectionne = this.modesPaiements[0];
-    }
+    // if (!this.personneService.estClient(this.user.role.code)) {
+    //   this.modesPaiements = ['Hors plateforme'];
+    //   this.modePaiementSelectionne = this.modesPaiements[0];
+    // } else {
+    //   this.modesPaiements = ['Hors plateforme' , 'Mobile Money', 'Virement bancaire'];
+    //   this.modePaiementSelectionne = this.modesPaiements[0];
+    // }
+    this.modesPaiements = ['Hors plateforme'];
+    this.modePaiementSelectionne = this.modesPaiements[0];
   }
 
   modePaiementChoisi(event: any): void {

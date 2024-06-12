@@ -76,10 +76,15 @@
                                 <div class="col-sm-12">
                                     <div class="mb20">
                                         <label class="heading-color ff-heading fw600 mb10">Images</label>
-                                        <p-fileUpload chooseLabel="Sélectionner les images" [auto]="true" url="https://www.primefaces.org/cdn/api/upload.php" [multiple]="true" (onUpload)="telechargerImagesBienImmobilier($event)" accept="image/*" chooseStyleClass="choose-label" removeStyleClass="remove-label">
+                                        <p-fileUpload chooseLabel="Sélectionner les images" [auto]="true" mode="advanced" url="https://www.primefaces.org/cdn/api/upload.php" [multiple]="true" (onUpload)="telechargerImagesBienImmobilier($event)" accept="image/*" chooseStyleClass="choose-label"
+                                            removeStyleClass="remove-label">
                                             <ng-template pTemplate="content">
                                                 <ul *ngIf="imagesBienImmobilier.length">
-                                                    <li *ngFor="let imageBienImmobilier of imagesBienImmobilier">{{ imageBienImmobilier.name }}
+                                                    <li *ngFor="let imageBienImmobilier of imagesBienImmobilier; let i = index" class="uploaded-file-item">
+                                                        <div class="file-item-container">
+                                                            <span class="file-name">{{ imageBienImmobilier.name }}</span>
+                                                            <p-button icon="pi pi-times" severity="danger" styleClass="remove-file" (click)="deleteFile(imageBienImmobilier)"></p-button>
+                                                        </div>
                                                     </li>
                                                 </ul>
                                             </ng-template>

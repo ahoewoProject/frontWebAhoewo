@@ -125,10 +125,10 @@ border-color: #f43838;
 
 .remove-file {
     margin-left: 10px;
+    margin-bottom: 20px
     /* Adjust as necessary */
 }
 
-.add-margin {
-    margin-left: 10px;
-    /* Adjust margin between buttons */
+:host ::ng-deep .p-button {
+    margin-bottom: 5px;
 }

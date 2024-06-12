@@ -301,9 +301,9 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
         }
 
         if (this.personneService.estClient(this.user.role.code)) {
-          this.listeMotifs(this.demandeLocation.codeDemande, this.demandeLocation.creerPar);
+          this.listeMotifs(this.demandeLocation.codeDemande, this.demandeLocation.refuserPar);
         } else {
-          this.listeMotifs(this.demandeLocation.codeDemande, this.demandeLocation.client.id);
+          this.listeMotifs(this.demandeLocation.codeDemande, this.demandeLocation.annulerPar);
         }
       }
     );
@@ -341,7 +341,7 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
   }
 
   afficherPageDetail(id: any): void {
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/demandes-locations', id]);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/demande-location', id]);
   }
 
   afficherModalRefus(id: number): void {
@@ -376,7 +376,7 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
       (response) => {
         this.modalRefusVisible = false;
         this.detailDemandeLocation(this.demandeLocationId);
-        this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-locations/' + this.demandeLocationId);
+        this.router.navigateByUrl(this.navigateURLBYUSER + '/demande-location/' + this.demandeLocationId);
         this.messageSuccess = "La demande de location a été refusée avec succès !";
         this.messageService.add({
           severity: 'success',
@@ -392,7 +392,7 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
       (response) => {
         this.modalAnnulationVisible = false;
         this.detailDemandeLocation(this.demandeLocationId);
-        this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-locations/' + this.demandeLocationId);
+        this.router.navigateByUrl(this.navigateURLBYUSER + '/demande-location/' + this.demandeLocationId);
         this.messageSuccess = "La demande de location a été annulée avec succès !";
         this.messageService.add({
           severity: 'success',
@@ -474,7 +474,7 @@ export class DemandesLocationsComponent implements OnInit, OnDestroy {
         this.demandeLocationService.valider(id).subscribe(
           (response) => {
           this.detailDemandeLocation(id);
-          this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-locations/' + id);
+          this.router.navigateByUrl(this.navigateURLBYUSER + '/demande-location/' + id);
           this.messageSuccess = "La demande de location a été validée avec succès !";
           this.messageService.add({
             severity: 'success',

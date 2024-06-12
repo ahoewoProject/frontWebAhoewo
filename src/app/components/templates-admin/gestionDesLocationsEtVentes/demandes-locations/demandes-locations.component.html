@@ -127,6 +127,11 @@
             <div class="col-xl-12">
                 <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
                     <div class="row">
+                        <div *ngFor="let listMotif of listMotifs; let i = index;">
+                            <h4 class="title title-detail fz17 mb20">{{ listMotif.libelle }} | {{ listMotif.creerLe | date: 'dd/MM/yyyy' }}</h4>
+                            <p class="text justify-text">{{ listMotif.motif }}</p>
+                        </div>
+                        <p-divider *ngIf="listMotifs.length !== 0"></p-divider>
 
                         <h4 class="title title-detail fz17 mb30">Demande de location</h4>
                         <div class="row" *ngIf="user.role.code !== 'ROLE_CLIENT'">
@@ -196,17 +201,11 @@
                                 <p class="text">
                                     <p-tag *ngIf="demandeLocation.etatDemande == 0" severity="warning" value="En attente"></p-tag>
                                     <p-tag *ngIf="demandeLocation.etatDemande == 1" severity="success" value="Validé"></p-tag>
-                                    <p-tag *ngIf="demandeLocation.etatDemande == 2" severity="danger" value="Annuler"></p-tag>
+                                    <p-tag *ngIf="demandeLocation.etatDemande == 2" severity="danger" value="Annulé"></p-tag>
                                     <p-tag *ngIf="demandeLocation.etatDemande == 3" severity="danger" value="Refusé"></p-tag>
                                     <p-tag *ngIf="demandeLocation.etatDemande == 4" severity="warning" value="Modifié"></p-tag>
                                 </p>
                             </div>
-                        </div>
-
-                        <p-divider *ngIf="listMotifs.length !== 0"></p-divider>
-                        <div *ngFor="let listMotif of listMotifs; let i = index;">
-                            <h4 class="title title-detail fz17 mb20">Motif {{ user.role.code == 'ROLE_CLIENT' ? 'de refus' : 'd\'annulation'}} #{{ i + 1 }}</h4>
-                            <p class="text justify-text">{{ listMotif.motif }}</p>
                         </div>
 
                         <p-divider></p-divider>

@@ -73,10 +73,10 @@ export class GestionDesLocationsEtVentesComponent implements OnInit, OnDestroy {
     this.demandeVisiteService.getDemandesVisitesList().subscribe(
       (data) => {
         this.nbreDemandeVisite = data.length;
-        this.nbreDemandeVisiteAttente = data.filter(d => d.etatDemande == 0).length;
-        this.nbreDemandeVisiteValidee = data.filter(d => d.etatDemande == 1).length;
-        this.nbreDemandeVisiteAnnulee = data.filter(d => d.etatDemande == 2).length;
-        this.nbreDemandeVisiteRefusee = data.filter(d => d.etatDemande == 3).length;
+        this.nbreDemandeVisiteAttente = data.filter(d => d.etatDemande === 0).length;
+        this.nbreDemandeVisiteValidee = data.filter(d => d.etatDemande === 1).length;
+        this.nbreDemandeVisiteAnnulee = data.filter(d => d.etatDemande === 2).length;
+        this.nbreDemandeVisiteRefusee = data.filter(d => d.etatDemande === 3).length;
 
         this.initChartJsDemandeVisite();
       }
@@ -87,10 +87,10 @@ export class GestionDesLocationsEtVentesComponent implements OnInit, OnDestroy {
     this.demandeAchatService.getDemandesAchatsList().subscribe(
       (data) => {
         this.nbreDemandeAchat = data.length;
-        this.nbreDemandeAchatAttente = data.filter(d => d.etatDemande == 0).length;
-        this.nbreDemandeAchatValidee = data.filter(d => d.etatDemande == 1).length;
-        this.nbreDemandeAchatAnnulee = data.filter(d => d.etatDemande == 2).length;
-        this.nbreDemandeAchatRefusee = data.filter(d => d.etatDemande == 3).length;
+        this.nbreDemandeAchatAttente = data.filter(d => d.etatDemande === 0).length;
+        this.nbreDemandeAchatValidee = data.filter(d => d.etatDemande === 1).length;
+        this.nbreDemandeAchatAnnulee = data.filter(d => d.etatDemande === 2).length;
+        this.nbreDemandeAchatRefusee = data.filter(d => d.etatDemande === 3).length;
 
         this.initChartJsDemandeAchat();
       }
@@ -101,10 +101,10 @@ export class GestionDesLocationsEtVentesComponent implements OnInit, OnDestroy {
     this.demandeLocationService.getDemandesLocationsList().subscribe(
       (data) => {
         this.nbreDemandeLocation = data.length;
-        this.nbreDemandeLocationAttente = data.filter(d => d.etatDemande == 0).length;
-        this.nbreDemandeLocationValidee = data.filter(d => d.etatDemande == 1).length;
-        this.nbreDemandeLocationAnnulee = data.filter(d => d.etatDemande == 2).length;
-        this.nbreDemandeLocationRefusee = data.filter(d => d.etatDemande == 3).length;
+        this.nbreDemandeLocationAttente = data.filter(d => d.etatDemande === 0).length;
+        this.nbreDemandeLocationValidee = data.filter(d => d.etatDemande === 1).length;
+        this.nbreDemandeLocationAnnulee = data.filter(d => d.etatDemande === 2).length;
+        this.nbreDemandeLocationRefusee = data.filter(d => d.etatDemande === 3).length;
 
         this.initChartJsDemandeLocation();
       }

@@ -26,11 +26,12 @@ export class GestionDesPublicationsComponent implements OnInit, OnDestroy {
   nombrePublications(): void {
     this.publicationService.getPublicationsByUser().subscribe(
       (data) => {
+        console.log(data);
         this.nbrePublications = data.length;
-        this.nbrePublicationsActivees =  data.filter(p => p.etat = true).length;
-        this.nbrePublicationsDesactivees = data.filter(p => p.etat = false).length;
-        this.nbrePublicationsLocations = data.filter(p => p.typeDeTransaction == 'Location').length;
-        this.nbrePublicationsVentes = data.filter(p => p.typeDeTransaction == 'Vente').length;
+        this.nbrePublicationsActivees =  data.filter(p => p.etat === true).length;
+        this.nbrePublicationsDesactivees = data.filter(p => p.etat === false).length;
+        this.nbrePublicationsLocations = data.filter(p => p.typeDeTransaction === 'Location').length;
+        this.nbrePublicationsVentes = data.filter(p => p.typeDeTransaction === 'Vente').length;
 
         this.nbreBiensDeleguesPublies = data.filter(p => p.bienImmobilier.estDelegue = true).length;
 

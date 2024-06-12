@@ -69,7 +69,7 @@ export class GestionDesBiensImmobiliersComponent implements OnInit, OnDestroy {
   nombreTypeDeBiensActifs(): void {
     this.typeDeBienService.getAll().subscribe(
       (data) => {
-        this.nbreTypeDeBienActif = data.filter(t => t.etat = true).length;
+        this.nbreTypeDeBienActif = data.filter(t => t.etat === true).length;
       }
     )
   }
@@ -77,7 +77,7 @@ export class GestionDesBiensImmobiliersComponent implements OnInit, OnDestroy {
   nombreTypeDeBiensInactifs(): void {
     this.typeDeBienService.getAll().subscribe(
       (data) => {
-        this.nbreTypeDeBienInactif = data.filter(t => t.etat = false).length;
+        this.nbreTypeDeBienInactif = data.filter(t => t.etat === false).length;
       }
     )
   }
@@ -101,9 +101,9 @@ export class GestionDesBiensImmobiliersComponent implements OnInit, OnDestroy {
   nombreBiensImmobiliers(): void {
     this.bienImmobilierService.getBiensImmobiliers().subscribe(
       (data) => {
-        this.nbreBiensDisponibles = data.filter(b =>  b.statutBien == 'Disponible').length;
-        this.nbreBiensVendus = data.filter(b =>  b.statutBien == 'Vendu').length;
-        this.nbreBiensLoues = data.filter(b =>  b.statutBien == 'Loué').length;
+        this.nbreBiensDisponibles = data.filter(b =>  b.statutBien === 'Disponible').length;
+        this.nbreBiensVendus = data.filter(b =>  b.statutBien === 'Vendu').length;
+        this.nbreBiensLoues = data.filter(b =>  b.statutBien === 'Loué').length;
 
         this.initChartBienJs();
       }
@@ -114,14 +114,27 @@ export class GestionDesBiensImmobiliersComponent implements OnInit, OnDestroy {
     this.delegationGestionService.getDelegationsGestionsList().subscribe(
       (data) => {
         this.nbreBiensDelegues =  data.length;
-        this.nbreDelegationsActives = data.filter(d => d.etatDelegation = true).length;
-        this.nbreDelegationsDesactives = data.filter(d => d.etatDelegation = false).length;
+        this.nbreDelegationsActives = data.filter(d => d.etatDelegation === true).length;
+        this.nbreDelegationsDesactives = data.filter(d => d.etatDelegation === false).length;
 
-        this.nbreDelegationsAttentes = data.filter(d => d.statutDelegation == 0).length;
-        this.nbreDelegationsAcceptees = data.filter(d => d.statutDelegation == 1).length;
-        this.nbreDelegationsRefusees = data.filter(d => d.statutDelegation == 2).length;
+        this.nbreDelegationsAttentes = data.filter(d => d.statutDelegation === 0).length;
+        this.nbreDelegationsAcceptees = data.filter(d => d.statutDelegation === 1).length;
+        this.nbreDelegationsRefusees = data.filter(d => d.statutDelegation === 2).length;
+
+        if (this.personneService.estAgentImmobilier(this.user.role.code) || this.personneService.estResponsable(this.user.role.code) ||
+            this.personneService.estDemarcheur(this.user.role.code)) {
+              this.nbreBiensDisponibles = (this.nbreBiensDisponibles || 0) + data.filter(d => d.bienImmobilier.statutBien === 'Disponible').length;
+              this.nbreBiensLoues = (this.nbreBiensLoues || 0) + data.filter(d => d.bienImmobilier.statutBien === 'Loué').length;
+              this.nbreBiensVendus = (this.nbreBiensVendus || 0) + data.filter(d => d.bienImmobilier.statutBien === 'Vendu').length;
+            } else if (this.personneService.estGerant(this.user.role.code)) {
+              this.nbreBiensDisponibles = data.filter(d => d.bienImmobilier.statutBien === 'Disponible').length;
+              this.nbreBiensLoues = data.filter(d => d.bienImmobilier.statutBien === 'Loué').length;
+              this.nbreBiensVendus = data.filter(d => d.bienImmobilier.statutBien === 'Vendu').length;
+            }
+
 
         this.initChartDelegationJs();
+        this.initChartBienJs();
       }
     )
   }

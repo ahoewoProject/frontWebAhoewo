@@ -52,6 +52,9 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
   demandeAchatId: any;
   demandeAchatReussie: any;
   listMotifs: Motif[] = [];
+  listMotifsRefus: Motif[] = [];
+  listMotifAnnulation: Motif[] = [];
+  listMotifModification: Motif[] = [];
   contratVenteFormStep1: any;
   contratVenteFormStep2: any;
   contratVenteFormStep3: any;
@@ -222,9 +225,9 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
         }
 
         if (this.personneService.estClient(this.user.role.code)) {
-          this.listeMotifs(this.demandeAchat.codeDemande, this.demandeAchat.creerPar);
+          this.listeMotifs(this.demandeAchat.codeDemande, this.demandeAchat.refuserPar);
         } else {
-          this.listeMotifs(this.demandeAchat.codeDemande, this.demandeAchat.client.id);
+          this.listeMotifs(this.demandeAchat.codeDemande, this.demandeAchat.annulerPar);
         }
       }
     );
@@ -262,7 +265,7 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
   }
 
   afficherPageDetail(id: any): void {
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/demandes-achats', id]);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/demande-achat', id]);
   }
 
   afficherModalRefus(id: number): void {
@@ -292,7 +295,7 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
       (response) => {
         this.modalRefusVisible = false;
         this.detailDemandeAchat(this.demandeAchatId);
-        this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-achats/' + this.demandeAchatId);
+        this.router.navigateByUrl(this.navigateURLBYUSER + '/demande-achat/' + this.demandeAchatId);
         this.messageSuccess = "La demande d'achat a été refusée avec succès !";
         this.messageService.add({
           severity: 'success',
@@ -313,7 +316,7 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
       (response) => {
         this.modalAnnulationVisible = false;
         this.detailDemandeAchat(this.demandeAchatId);
-        this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-achats/' + this.demandeAchatId);
+        this.router.navigateByUrl(this.navigateURLBYUSER + '/demande-achat/' + this.demandeAchatId);
         this.messageSuccess = "La demande d'achat a été annulée avec succès !";
         this.messageService.add({
           severity: 'success',
@@ -399,7 +402,7 @@ export class DemandesAchatsComponent implements OnInit, OnDestroy {
         this.demandeAchatService.valider(id).subscribe(
           (response) => {
             this.detailDemandeAchat(id);
-            this.router.navigateByUrl(this.navigateURLBYUSER + '/demandes-achats/' + id);
+            this.router.navigateByUrl(this.navigateURLBYUSER + '/demande-achat/' + id);
           this.messageSuccess = "La demande d'achat a été validée avec succès !";
           this.messageService.add({
             severity: 'success',
