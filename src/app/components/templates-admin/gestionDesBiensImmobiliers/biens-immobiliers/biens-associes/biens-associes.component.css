@@ -23,6 +23,21 @@
     border-radius: 8px;
 }
 
+.inputText {
+    border-radius: 12px;
+    border: 1px solid #DDDDDD;
+    box-shadow: none;
+    font-size: 14px;
+    font-family: 'Inter var', sans-serif;
+    height: 55px;
+    outline: none;
+    padding-left: 15px;
+}
+
+.input-group-text {
+    border-radius: 12px;
+}
+
 :host ::ng-deep .select .p-dropdown-item {
     margin-left: 0;
     /* Suppression de la marge négative */

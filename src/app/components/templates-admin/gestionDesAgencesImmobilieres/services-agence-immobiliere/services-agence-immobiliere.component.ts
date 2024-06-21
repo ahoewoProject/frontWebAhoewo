@@ -97,6 +97,10 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
     });
   }
 
+  rafraichir(): void {
+    this.getServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
+  }
+
   detailAgenceImmobiliere(id: number): void {
     this.agenceImmobiliereService.findById(id).subscribe(
       (data) => {

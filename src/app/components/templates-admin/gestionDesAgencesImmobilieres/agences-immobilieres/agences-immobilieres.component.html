@@ -10,18 +10,22 @@
     <!-- Liste des agences immobilières - Vue Responsable -->
     <div *ngIf="user.role.code == 'ROLE_RESPONSABLE'">
         <div class="row align-items-center pb40">
-            <div class="col-xxl-7">
+            <div class="col-xxl-5">
                 <div class="dashboard_title_area">
                     <h4>Agences immobilières</h4>
                     <h6 *ngIf="!user.estCertifie" class="text error"><i class="pi pi-exclamation-triangle"></i> Votre agence immobilière n'est pas certifiée, veuillez demander la certification de cette dernière en cliquant sur le menu <b>certifications</b> !</h6>
                 </div>
             </div>
-            <div class="col-xxl-5">
+            <div class="col-xxl-7">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
                     <div class="item1 mb15-sm">
                         <div class="search_area">
-                            <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
-                            <label><span class="flaticon-search"></span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                      <i class="pi pi-search" style="font-weight: bold"></i>
+                    </span>
+                                <input type="text" pInputText [(ngModel)]="recherche" class="inputText" placeholder="Que cherchez-vous ?">
+                            </div>
                         </div>
                     </div>
                     &nbsp;
@@ -105,8 +109,12 @@
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
                     <div class="item1 mb15-sm">
                         <div class="search_area">
-                            <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
-                            <label><span class="flaticon-search"></span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                          <i class="pi pi-search" style="font-weight: bold"></i>
+                        </span>
+                                <input type="text" pInputText [(ngModel)]="recherche" class="inputText" placeholder="Que cherchez-vous ?">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -188,8 +196,12 @@
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
                     <div class="item1 mb15-sm">
                         <div class="search_area">
-                            <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
-                            <label><span class="flaticon-search"></span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                      <i class="pi pi-search" style="font-weight: bold"></i>
+                    </span>
+                                <input type="text" pInputText [(ngModel)]="recherche" class="inputText" placeholder="Que cherchez-vous ?">
+                            </div>
                         </div>
                     </div>
                 </div>

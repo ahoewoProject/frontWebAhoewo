@@ -2,7 +2,7 @@
     <!-- Our Compare Area -->
     <section class="our-compare pt60 pb60">
         <a routerLink="/" class="logo"><img src="assets/images/icon/property.jpg" alt="" class="login-bg-icon wow fadeInLeft" data-wow-delay="300ms"></a>
-        <p-toast position="top-right" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'1000ms'" [hideTransitionOptions]="'3000ms'" [showTransformOptions]="'translateX(100%)'"></p-toast>
+        <p-toast position="bottom-right" [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'1000ms'" [hideTransitionOptions]="'3000ms'" [showTransformOptions]="'translateX(100%)'"></p-toast>
         <div class="container">
             <div class="row wow fadeInRight" data-wow-delay="300ms">
                 <div class="col-lg-6">
@@ -15,8 +15,8 @@
                             <p class="text">Connectez-vous pour avoir accès à nos fonctionnalités.</p>
                         </div>
 
-                        <!--  <div class="alert alert-success" *ngIf="reinitialisationMotDePasseReussie || inscriptionReussie">{{ message }}</div>
-            <div class="alert alert-danger" *ngIf="connexionNonReussie">{{ message }}</div>-->
+                        <!--<div class="alert alert-danger" *ngIf="connexionNonReussie">{{ message }}</div>-->
+                        <div class="alert alert-success" *ngIf="reinitialisationMotDePasseReussie || inscriptionReussie">{{ message }}</div>
                         <div>
 
                         </div>

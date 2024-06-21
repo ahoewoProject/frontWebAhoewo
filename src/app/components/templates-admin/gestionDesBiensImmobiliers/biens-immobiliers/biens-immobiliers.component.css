@@ -53,6 +53,21 @@
   border-color: #f43838;
 } */
 
+.inputText {
+    border-radius: 12px;
+    border: 1px solid #DDDDDD;
+    box-shadow: none;
+    font-size: 14px;
+    font-family: 'Inter var', sans-serif;
+    height: 55px;
+    outline: none;
+    padding-left: 15px;
+}
+
+.input-group-text {
+    border-radius: 12px;
+}
+
 :host ::ng-deep .remove-label {
     background-color: #f43838;
     border-color: #f43838;

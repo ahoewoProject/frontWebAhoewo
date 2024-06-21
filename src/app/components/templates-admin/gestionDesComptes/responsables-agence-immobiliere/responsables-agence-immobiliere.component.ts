@@ -57,6 +57,15 @@ export class ResponsablesAgenceImmobiliereComponent implements OnInit, OnDestroy
     }
   }
 
+  rafraichir(): void {
+    if (this.personneService.estAdmin(this.user.role.code)) {
+      this.getResponsablesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
+    } else {
+      this.getAgencesImmobilieresListIfUserActif();
+      this.getAffectationsReponsableAgencePage(this.numeroDeLaPage, this.elementsParPage);
+    }
+  }
+
   filtrerResponsableParAgence(event: any) {
     this.agenceSelectionnee = event.value;
     this.affectationResponsableAgenceService.getAffectationsReponsableAgencePage(this.numeroDeLaPage, this.elementsParPage).subscribe(

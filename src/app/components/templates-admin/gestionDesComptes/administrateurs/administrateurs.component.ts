@@ -14,6 +14,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 })
 export class AdministrateursComponent implements OnInit, OnDestroy {
 
+  recherche: string = '';
   affichage = 1;
   visibleAddForm = 0;
 

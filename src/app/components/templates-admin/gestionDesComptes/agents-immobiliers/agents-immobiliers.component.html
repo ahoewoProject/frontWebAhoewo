@@ -19,8 +19,12 @@
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
                     <div class="item1 mb15-sm">
                         <div class="search_area">
-                            <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
-                            <label><span class="flaticon-search"></span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                          <i class="pi pi-search" style="font-weight: bold"></i>
+                        </span>
+                                <input type="text" pInputText [(ngModel)]="recherche" class="inputText" placeholder="Que cherchez-vous ?">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -93,8 +97,12 @@
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
                     <div class="item1 mb15-sm">
                         <div class="search_area">
-                            <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche">
-                            <label><span class="flaticon-search"></span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                      <i class="pi pi-search" style="font-weight: bold"></i>
+                    </span>
+                                <input type="text" pInputText [(ngModel)]="recherche" class="inputText" placeholder="Que cherchez-vous ?">
+                            </div>
                         </div>
                     </div>
                     &nbsp;
@@ -106,13 +114,16 @@
             <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
             <div class="col-xl-12">
                 <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
-                    <div class="col-xl-4" *ngIf="agencesImmobilieres.length > 1">
-                        <p-dropdown class="select" emptyMessage="Aucun résultat trouvé" [options]="agencesImmobilieres" placeholder="Filtrer par agence" formControlName="agenceImmobiliere" [(ngModel)]="agenceSelectionnee" [showClear]="true" (onChange)="filterAgentParAgence($event)"
-                            optionLabel="nomAgence">
-                            <ng-template let-agenceImmobiliere pTemplate="item">
-                                {{ agenceImmobiliere.codeAgence }}/ {{ agenceImmobiliere.nomAgence }}
-                            </ng-template>
-                        </p-dropdown>
+                    <div class="d-flex align-items-center justify-content-between" *ngIf="agencesImmobilieres.length > 1">
+                        <div class="col-xl-4 mt10">
+                            <p-dropdown class="select" emptyMessage="Aucun résultat trouvé" [options]="agencesImmobilieres" placeholder="Filtrer par agence" formControlName="agenceImmobiliere" [(ngModel)]="agenceSelectionnee" [showClear]="true" (onChange)="filterAgentParAgence($event)"
+                                optionLabel="nomAgence">
+                                <ng-template let-agenceImmobiliere pTemplate="item">
+                                    {{ agenceImmobiliere.codeAgence }}/ {{ agenceImmobiliere.nomAgence }}
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                        <a class="ud-btn btn-retour" type="button" (click)="rafraichir()">Rafraîchir<i class="pi pi-refresh"></i></a>
                     </div>
                     <br>
                     <div class="packages_table table-responsive">

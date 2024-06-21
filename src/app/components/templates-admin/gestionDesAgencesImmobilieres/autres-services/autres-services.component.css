@@ -1,11 +1,26 @@
 :host ::ng-deep .p-dialog-title {
-  font-family: 'DM Sans', sans-serif;
+    font-family: 'DM Sans', sans-serif;
 }
 
 :host ::ng-deep .p-dialog-header-close {
-  border-radius: 100%;
+    border-radius: 100%;
 }
 
 .justify-text {
-  text-align: justify;
+    text-align: justify;
+}
+
+.inputText {
+    border-radius: 12px;
+    border: 1px solid #DDDDDD;
+    box-shadow: none;
+    font-size: 14px;
+    font-family: 'Inter var', sans-serif;
+    height: 55px;
+    outline: none;
+    padding-left: 15px;
+}
+
+.input-group-text {
+    border-radius: 12px;
 }

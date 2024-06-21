@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { Message, MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { LoginForm } from 'src/app/models/auth/LoginForm';
 import { BehaviorService } from 'src/app/services/behavior.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
@@ -11,7 +12,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit, OnDestroy {
 
   connexionNonReussie: boolean = false;
   voirMotDePasse: boolean = false;
@@ -22,6 +23,7 @@ export class LoginComponent implements OnInit{
   reinitialisationMotDePasseReussie: any;
   inscriptionReussie: any;
   from: any;
+  messageSubscription!: Subscription;
 
   constructor(
     private personneService: PersonneService, private router: Router,
@@ -34,22 +36,22 @@ export class LoginComponent implements OnInit{
     this.reinitialisationMotDePasseReussie = this.activatedRoute.snapshot.queryParamMap.get('passwordResetSuccess') || '';
     this.inscriptionReussie = this.activatedRoute.snapshot.queryParamMap.get('inscriptionSuccess') || '';
     this.from = this.activatedRoute.snapshot.queryParamMap.get('from') || '';
-    console.log(this.from)
 
     if (this.reinitialisationMotDePasseReussie) {
       this.message = 'Mot de passe réinitialisé avec succès !';
-      this.messageService.add({ severity: 'success', summary: 'Réinitialisation de mot réussie', detail: this.message });
+      // this.messageService.add({ severity: 'success', summary: 'Réinitialisation de mot réussie', detail: this.message });
       setTimeout(() => {
         this.message = '';
         this.reinitialisationMotDePasseReussie = null
-      }, 3000);
+      }, 6000);
     } else if (this.inscriptionReussie) {
       this.message = 'Compte crée avec succès !';
       setTimeout(() => {
         this.message = '';
         this.inscriptionReussie = null
-      }, 3000);
+      }, 6000);
     }
+
     this.initLoginForm();
   }
 
@@ -135,7 +137,7 @@ export class LoginComponent implements OnInit{
       }, 3000);
       //console.log(this.message);
     } else {
-      if (this.user.role.code === 'ROLE_ADMINISTRATEUR') {
+      if (this.personneService.estAdmin(this.user.role.code)) {
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
@@ -144,7 +146,7 @@ export class LoginComponent implements OnInit{
         } else {
           this.router.navigate(['/admin/dashboard'], { queryParams: { connexionReussie: true } })
         }
-      } else if (this.user.role.code === 'ROLE_NOTAIRE') {
+      } else if (this.personneService.estNotaire(this.user.role.code)) {
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
@@ -153,7 +155,7 @@ export class LoginComponent implements OnInit{
         } else {
           this.router.navigate(['/notaire/dashboard'], { queryParams: { connexionReussie: true } })
         }
-      } else if (this.user.role.code === 'ROLE_GERANT') {
+      } else if (this.personneService.estGerant(this.user.role.code)) {
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
@@ -162,7 +164,7 @@ export class LoginComponent implements OnInit{
         } else {
           this.router.navigate(['/gerant/dashboard'], { queryParams: { connexionReussie: true } })
         }
-      } else if (this.user.role.code === 'ROLE_AGENTIMMOBILIER') {
+      } else if (this.personneService.estAgentImmobilier(this.user.role.code)) {
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
@@ -171,7 +173,7 @@ export class LoginComponent implements OnInit{
         } else {
           this.router.navigate(['/agent-immobilier/dashboard'], { queryParams: { connexionReussie: true } })
         }
-      } else if (this.user.role.code === 'ROLE_CLIENT') {
+      } else if (this.personneService.estClient(this.user.role.code)) {
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
@@ -180,7 +182,7 @@ export class LoginComponent implements OnInit{
         } else {
           this.router.navigate(['/client/dashboard'], { queryParams: { connexionReussie: true } })
         }
-      } else if (this.user.role.code === 'ROLE_PROPRIETAIRE') {
+      } else if (this.personneService.estProprietaire(this.user.role.code)) {
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
@@ -189,7 +191,7 @@ export class LoginComponent implements OnInit{
         } else {
           this.router.navigate(['/proprietaire/dashboard'], { queryParams: { connexionReussie: true } })
         }
-      } else if (this.user.role.code === 'ROLE_RESPONSABLE') {
+      } else if (this.personneService.estResponsable(this.user.role.code)) {
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
@@ -198,7 +200,7 @@ export class LoginComponent implements OnInit{
         } else {
           this.router.navigate(['/responsable/dashboard'], { queryParams: { connexionReussie: true } })
         }
-      } else if (this.user.role.code === 'ROLE_DEMARCHEUR') {
+      } else if (this.personneService.estDemarcheur(this.user.role.code)) {
 
         this.personneService.enregistrerInfoUser(JSON.stringify(user));
 
@@ -244,4 +246,7 @@ export class LoginComponent implements OnInit{
     this.router.navigate(['/connexion']);
   }
 
+  ngOnDestroy(): void {
+
+  }
 }

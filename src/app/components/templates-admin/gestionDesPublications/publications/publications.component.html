@@ -20,8 +20,12 @@
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
                     <div class="item1 mb15-sm">
                         <div class="search_area">
-                            <input type="text" [(ngModel)]="recherche" class="form-control bdrs12" placeholder="Faire une recherche" />
-                            <label><span class="flaticon-search"></span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                          <i class="pi pi-search" style="font-weight: bold"></i>
+                        </span>
+                                <input type="text" pInputText [(ngModel)]="recherche" class="inputText" placeholder="Que cherchez-vous ?">
+                            </div>
                         </div>
                     </div>
                     &nbsp;

@@ -59,6 +59,10 @@ export class AgentsImmobiliersComponent implements OnInit, OnDestroy {
     this.getAgencesImmobilieresListIfUserActif();
   }
 
+  rafraichir(): void {
+    this.affectationsAgencesAgentList();
+  }
+
   filterAgentParAgence(event: any) {
     this.agenceSelectionnee = event.value;
     this.affectationAgentAgenceService.getAgentsOfAgence().subscribe(
