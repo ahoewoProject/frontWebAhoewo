@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { PlanificationPaiement } from 'src/app/models/gestionDesPaiements/PlanificationPaiement';
 import { Motif } from 'src/app/models/Motif';
@@ -8,6 +9,8 @@ import { ContratLocationService } from 'src/app/services/gestionDesLocationsEtVe
 import { ContratVenteService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-vente.service';
 import { PaiementService } from 'src/app/services/gestionDesPaiements/paiement.service';
 import { PlanificationPaiementService } from 'src/app/services/gestionDesPaiements/planification-paiement.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 
 @Component({
   selector: 'app-biens-planifications-paiements',
@@ -16,6 +19,8 @@ import { PlanificationPaiementService } from 'src/app/services/gestionDesPaiemen
 })
 export class BiensPlanificationsPaiementsComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   recherche: string = '';
   affichage: number = 1;
 
@@ -34,7 +39,8 @@ export class BiensPlanificationsPaiementsComponent implements OnInit, OnDestroy 
   constructor(private planificationPaiementService: PlanificationPaiementService, private contratLocationService: ContratLocationService,
     private contratVenteService: ContratVenteService, private activatedRoute: ActivatedRoute,
     private router: Router, private personneService: PersonneService,
-    private paiementService: PaiementService
+    private paiementService: PaiementService, private pageVisibilityService: PageVisibilityService,
+    private userInactivityService: UserInactivityService
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -43,6 +49,14 @@ export class BiensPlanificationsPaiementsComponent implements OnInit, OnDestroy 
 
   ngOnInit(): void {
     this.initActivatedRoute();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.initActivatedRoute();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.initActivatedRoute();
+    });
   }
 
   initActivatedRoute(): void {
@@ -242,6 +256,11 @@ export class BiensPlanificationsPaiementsComponent implements OnInit, OnDestroy 
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

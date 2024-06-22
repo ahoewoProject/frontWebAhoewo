@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { BienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/BienImmobilier';
 import { Caracteristiques } from 'src/app/models/gestionDesBiensImmobiliers/Caracteristiques';
 import { ImagesBienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/ImagesBienImmobilier';
@@ -22,6 +23,8 @@ import { TypeDeBienService } from 'src/app/services/gestionDesBiensImmobiliers/t
 import { VilleService } from 'src/app/services/gestionDesBiensImmobiliers/ville.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -31,6 +34,8 @@ import { environment } from 'src/environments/environment';
 })
 export class DetailBienImmobilierComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   affichage = 1;
 
   messageErreur: string | null = null;
@@ -71,7 +76,8 @@ export class DetailBienImmobilierComponent implements OnInit, OnDestroy {
     private agenceImmobiliereService: AgenceImmobiliereService, private bienImmobilierService: BienImmobilierService,
     private confirmationService: ConfirmationService, private router: Router, private activatedRoute: ActivatedRoute,
     private caracteristiqueService: CaracteristiquesService, private publicationService: PublicationService,
-    private delegationGestionService: DelegationGestionService, private sanitizer: DomSanitizer
+    private delegationGestionService: DelegationGestionService, private sanitizer: DomSanitizer,
+    private pageVisibilityService: PageVisibilityService, private userInactivityService: UserInactivityService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -80,6 +86,18 @@ export class DetailBienImmobilierComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.modificationReussie = this.activatedRoute.snapshot.queryParams['modificationReussie'];
     this.initialiserPublicationForm();
     this.publicationForm.get('prixDuBien').valueChanges.subscribe((value: number) => {
@@ -389,6 +407,11 @@ export class DetailBienImmobilierComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

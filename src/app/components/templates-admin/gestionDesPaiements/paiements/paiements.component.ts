@@ -1,12 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, ConfirmEventType, MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { Paiement } from 'src/app/models/gestionDesPaiements/Paiement';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { ContratLocationService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-location.service';
 import { ContratVenteService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-vente.service';
 import { PaiementService } from 'src/app/services/gestionDesPaiements/paiement.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -16,6 +19,8 @@ import { environment } from 'src/environments/environment';
 })
 export class PaiementsComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   recherche: string = '';
   elementsParPage = 5;
   numeroDeLaPage = 0;
@@ -28,7 +33,8 @@ export class PaiementsComponent implements OnInit, OnDestroy {
 
   constructor(private paiementService: PaiementService, private router: Router,
     private activatedRoute: ActivatedRoute, private personneService: PersonneService,
-    private messageService: MessageService
+    private messageService: MessageService, private userInactivityService: UserInactivityService,
+    private pageVisibilityService: PageVisibilityService
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -37,6 +43,18 @@ export class PaiementsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.paiementReussi = this.activatedRoute.snapshot.queryParams['paiementReussi'];
     this.listePaiements(this.numeroDeLaPage, this.elementsParPage);
   }
@@ -95,7 +113,12 @@ export class PaiementsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 
 }

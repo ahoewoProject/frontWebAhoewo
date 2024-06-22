@@ -1,8 +1,9 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { ContactezNousForm } from 'src/app/models/ContactezNousForm';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
@@ -12,6 +13,8 @@ import { ContactezNousService } from 'src/app/services/contactez-nous.service';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { ServicesAgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/services-agence-immobiliere.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -19,8 +22,10 @@ import { environment } from 'src/environments/environment';
   templateUrl: './details-agence.component.html',
   styleUrls: ['./details-agence.component.css']
 })
-export class DetailsAgenceComponent implements OnInit {
+export class DetailsAgenceComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   loading: boolean = false;
   loadingMessage: string = 'Chargement du formulaire en cours !';
   activeIndex: number = 0;
@@ -41,7 +46,8 @@ export class DetailsAgenceComponent implements OnInit {
     private _serviceAgenceService: ServicesAgenceImmobiliereService,
     private datePipe: DatePipe, private publicationService: PublicationService,
     private contactezNousService: ContactezNousService, private messageService: MessageService,
-    private router: Router
+    private router: Router, private pageVisibilityService: PageVisibilityService,
+    private userInactivityService: UserInactivityService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -52,6 +58,18 @@ export class DetailsAgenceComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.initContactezNousForm();
     this.detailAgenceImmobiliere();
     this.listeServicesAgenceImmobiliere(this.numeroDeLaPage, this.elementsParPage);
@@ -311,5 +329,14 @@ export class DetailsAgenceComponent implements OnInit {
     const hours = date.getHours();
     const minutes = date.getMinutes();
     return `${hours} heures ${minutes} minutes`;
+  }
+
+  ngOnDestroy() {
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

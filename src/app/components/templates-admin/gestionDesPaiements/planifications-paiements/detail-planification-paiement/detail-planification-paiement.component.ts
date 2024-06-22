@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { ContratLocationService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-location.service';
 import { ContratVenteService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-vente.service';
 import { PaiementService } from 'src/app/services/gestionDesPaiements/paiement.service';
 import { PlanificationPaiementService } from 'src/app/services/gestionDesPaiements/planification-paiement.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 
 @Component({
   selector: 'app-detail-planification-paiement',
@@ -14,6 +17,8 @@ import { PlanificationPaiementService } from 'src/app/services/gestionDesPaiemen
 })
 export class DetailPlanificationPaiementComponent {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   planificationPaiement = this.planificationPaiementService.planificationPaiement;
   contratLocation = this.contratLocationService.contratLocation;
   contratVente = this.contratVenteService.contratVente;
@@ -25,7 +30,8 @@ export class DetailPlanificationPaiementComponent {
     private planificationPaiementService: PlanificationPaiementService, private contratVenteService: ContratVenteService,
     private contratLocationService: ContratLocationService, private activatedRoute: ActivatedRoute,
     private router: Router, private personneService: PersonneService,
-    private messageService: MessageService
+    private messageService: MessageService, private pageVisibilityService: PageVisibilityService,
+    private userInactivityService: UserInactivityService
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -33,6 +39,18 @@ export class DetailPlanificationPaiementComponent {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.paiementAnnule = this.activatedRoute.snapshot.queryParamMap.get('token');
     this.initActivatedRoute();
   }
@@ -129,6 +147,11 @@ export class DetailPlanificationPaiementComponent {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { AffectationAgentAgence } from 'src/app/models/gestionDesAgencesImmobilieres/AffectationAgentAgence';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
 import { AgentImmobilier } from 'src/app/models/gestionDesComptes/AgentImmobilier';
@@ -10,6 +11,8 @@ import { AffectationAgentAgenceService } from 'src/app/services/gestionDesAgence
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { AgentImmobilierService } from 'src/app/services/gestionDesComptes/agent-immobilier.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 import { environment } from 'src/environments/environment';
 
 interface AutoCompleteCompleteEvent {
@@ -24,6 +27,8 @@ interface AutoCompleteCompleteEvent {
 })
 export class AgentsImmobiliersComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   agenceSelectionnee!: AgenceImmobiliere;
   recherche: string = '';
 
@@ -44,7 +49,8 @@ export class AgentsImmobiliersComponent implements OnInit, OnDestroy {
     private affectationAgentAgenceService: AffectationAgentAgenceService, private agentImmobilierService: AgentImmobilierService,
     private agenceImmobiliereService: AgenceImmobiliereService, private personneService: PersonneService,
     private messageService: MessageService, private confirmationService: ConfirmationService,
-    private router: Router, private activatedRoute: ActivatedRoute
+    private router: Router, private activatedRoute: ActivatedRoute,
+    private pageVisibilityService: PageVisibilityService, private userInactivityService: UserInactivityService
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -53,6 +59,18 @@ export class AgentsImmobiliersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.ajoutReussi = this.activatedRoute.snapshot.queryParamMap.get('ajoutReussi') || '';
     this.agentsImmobiliersList();
     this.affectationsAgencesAgentList();
@@ -318,6 +336,11 @@ export class AgentsImmobiliersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

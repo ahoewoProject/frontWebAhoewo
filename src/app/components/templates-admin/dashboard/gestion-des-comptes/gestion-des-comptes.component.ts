@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AffectationAgentAgenceService } from 'src/app/services/gestionDesAgencesImmobilieres/affectation-agent-agence.service';
 import { AgentImmobilierService } from 'src/app/services/gestionDesComptes/agent-immobilier.service';
 import { ClientService } from 'src/app/services/gestionDesComptes/client.service';
@@ -10,6 +11,8 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 import { ProprietaireService } from 'src/app/services/gestionDesComptes/proprietaire.service';
 import { ResponsableAgenceImmobiliereService } from 'src/app/services/gestionDesComptes/responsable-agence-immobiliere.service';
 import { RoleService } from 'src/app/services/gestionDesComptes/role.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 
 @Component({
   selector: 'app-gestion-des-comptes',
@@ -18,6 +21,8 @@ import { RoleService } from 'src/app/services/gestionDesComptes/role.service';
 })
 export class GestionDesComptesComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   nbreRole: number = 0;
   nbreUtilisateur: number = 0;
   nbreUtilisateurInactif: number = 0;
@@ -43,13 +48,26 @@ export class GestionDesComptesComponent implements OnInit, OnDestroy {
     private clientService: ClientService, private proprietaireService: ProprietaireService,
     private gerantService: GerantService, private demarcheurService: DemarcheurService,
     private responsableService: ResponsableAgenceImmobiliereService, private affectionAgenceService: AffectationAgentAgenceService,
-    private demandeCertificationService: DemandeCertificationService
+    private demandeCertificationService: DemandeCertificationService, private pageVisibilityService: PageVisibilityService,
+    private userInactivityService: UserInactivityService
   ) {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
     this.user = JSON.parse(utilisateurConnecte);
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.nombreRoles();
     this.nombreUtilisateurs();
     this.nombreAgentsImmobiliers();
@@ -203,6 +221,11 @@ export class GestionDesComptesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

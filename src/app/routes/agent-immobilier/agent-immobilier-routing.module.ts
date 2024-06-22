@@ -37,6 +37,8 @@ import { DetailBienImmobilierComponent } from 'src/app/components/templates-admi
 import { EffectuerPaiementComponent } from 'src/app/components/templates-admin/gestionDesPaiements/planifications-paiements/effectuer-paiement/effectuer-paiement.component';
 import { DetailPlanificationPaiementComponent } from 'src/app/components/templates-admin/gestionDesPaiements/planifications-paiements/detail-planification-paiement/detail-planification-paiement.component';
 import { DetailPaiementComponent } from 'src/app/components/templates-admin/gestionDesPaiements/paiements/detail-paiement/detail-paiement.component';
+import { ProposerContratVenteComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-achats/proposer-contrat-vente/proposer-contrat-vente.component';
+import { ProposerContratLocationComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-locations/proposer-contrat-location/proposer-contrat-location.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -45,9 +47,9 @@ const routes: Routes = [
       { path: 'profil', component: ProfilComponent, canActivate: [AuthGuard] },
 
       { path: 'agences-immobilieres', component: AgencesImmobilieresComponent, canActivate: [AuthGuard] },
-      { path: 'agence-immobiliere/:id', component: DetailAgenceImmobiliereComponent, canActivate: [AuthGuard] },
-      { path: 'agence-immobiliere/:id/services', component: ServicesAgenceImmobiliereComponent, canActivate: [AuthGuard] },
-      { path: 'agence-immobiliere/service/:id', component: DetailServiceAgenceComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/:id', component: DetailAgenceImmobiliereComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/:id/services', component: ServicesAgenceImmobiliereComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/service/:id', component: DetailServiceAgenceComponent, canActivate: [AuthGuard] },
 
       { path: 'agences-immobilieres/biens-supports', component: BiensImmobiliersComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/bien-support/:id', component: DetailBienImmobilierComponent, canActivate: [AuthGuard] },
@@ -95,9 +97,11 @@ const routes: Routes = [
 
       { path: 'agences-immobilieres/demandes-locations', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/demande-location/:id', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/demande-location/proposer-contrat/:id', component: ProposerContratLocationComponent, canActivate: [AuthGuard] },
 
       { path: 'agences-immobilieres/demandes-achats', component: DemandesAchatsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/demande-achat/:id', component: DemandesAchatsComponent, canActivate: [AuthGuard] },
+      { path: 'agences-immobilieres/demande-achat/proposer-contrat/:id', component: ProposerContratVenteComponent, canActivate: [AuthGuard] },
 
       { path: 'agences-immobilieres/contrats', component: ContratsComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/contrat-location/:id', component: ContratsComponent, canActivate: [AuthGuard] },

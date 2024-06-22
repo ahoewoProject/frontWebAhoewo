@@ -25,6 +25,8 @@ import { DetailDelegationGestionComponent } from 'src/app/components/templates-a
 import { EffectuerPaiementComponent } from 'src/app/components/templates-admin/gestionDesPaiements/planifications-paiements/effectuer-paiement/effectuer-paiement.component';
 import { DetailPlanificationPaiementComponent } from 'src/app/components/templates-admin/gestionDesPaiements/planifications-paiements/detail-planification-paiement/detail-planification-paiement.component';
 import { DetailPaiementComponent } from 'src/app/components/templates-admin/gestionDesPaiements/paiements/detail-paiement/detail-paiement.component';
+import { ProposerContratLocationComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-locations/proposer-contrat-location/proposer-contrat-location.component';
+import { ProposerContratVenteComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-achats/proposer-contrat-vente/proposer-contrat-vente.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -58,9 +60,11 @@ const routes: Routes = [
 
       { path: 'demandes-locations', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
       { path: 'demande-location/:id', component: DemandesLocationsComponent, canActivate: [AuthGuard] },
+      { path: 'demande-location/proposer-contrat/:id', component: ProposerContratLocationComponent, canActivate: [AuthGuard] },
 
       { path: 'demandes-achats', component: DemandesAchatsComponent, canActivate: [AuthGuard] },
       { path: 'demande-achat/:id', component: DemandesAchatsComponent, canActivate: [AuthGuard] },
+      { path: 'demande-achat/proposer-contrat/:id', component: ProposerContratVenteComponent, canActivate: [AuthGuard] },
 
       { path: 'contrats', component: ContratsComponent, canActivate: [AuthGuard] },
       { path: 'contrat-location/:id', component: ContratsComponent, canActivate: [AuthGuard] },

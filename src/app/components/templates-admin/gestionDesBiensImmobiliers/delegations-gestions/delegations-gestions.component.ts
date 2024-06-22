@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, ConfirmationService, ConfirmEventType, MenuItem } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { BienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/BienImmobilier';
 import { Caracteristiques } from 'src/app/models/gestionDesBiensImmobiliers/Caracteristiques';
@@ -17,6 +18,8 @@ import { DelegationGestionService } from 'src/app/services/gestionDesBiensImmobi
 import { ImagesBienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/images-bien-immobilier.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -26,6 +29,8 @@ import { environment } from 'src/environments/environment';
 })
 export class DelegationsGestionsComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   listeDesChoix: any[] | undefined;
   checked: string | undefined;
   responsiveOptions: any[] | undefined;
@@ -78,7 +83,8 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute, private caracteristiqueService: CaracteristiquesService,
     private confirmationService: ConfirmationService, private imagesBienImmobilierService: ImagesBienImmobilierService,
     private bienImmAssocieService: BienImmAssocieService, private publicationService: PublicationService,
-    private router: Router
+    private router: Router, private pageVisibilityService: PageVisibilityService,
+    private userInactivityService: UserInactivityService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -87,6 +93,18 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.delegationReussie = this.activatedRoute.snapshot.queryParamMap.get('delegationReussie') || '';
     this.modificationReussie = this.activatedRoute.snapshot.queryParamMap.get('modificationReussie') || '';
 
@@ -639,6 +657,11 @@ export class DelegationsGestionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

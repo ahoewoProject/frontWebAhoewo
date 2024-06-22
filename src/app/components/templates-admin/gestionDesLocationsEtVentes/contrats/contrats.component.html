@@ -556,6 +556,7 @@
                                             <p-tag *ngIf="contratLocation.etatContrat == 'En cours'" severity="success" value="{{contratLocation.etatContrat}}"></p-tag>
                                             <p-tag *ngIf="contratLocation.etatContrat == 'Terminé'" severity="success" value="{{contratLocation.etatContrat}}"></p-tag>
                                             <p-tag *ngIf="contratLocation.etatContrat == 'Refusé'" severity="danger" value="{{contratLocation.etatContrat}}"></p-tag>
+                                            <p-tag *ngIf="contratLocation.etatContrat == 'Validé'" severity="success" value="{{contratLocation.etatContrat}}"></p-tag>
                                         </p>
                                     </div>
 
@@ -1093,6 +1094,7 @@
                                             <p-tag *ngIf="contratVente.etatContrat == 'En attente'" severity="warning" value="{{contratVente.etatContrat}}"></p-tag>
                                             <p-tag *ngIf="contratVente.etatContrat == 'Modifié'" severity="warning" value="{{contratVente.etatContrat}}"></p-tag>
                                             <p-tag *ngIf="contratVente.etatContrat == 'Validé'" severity="success" value="{{contratVente.etatContrat}}"></p-tag>
+                                            <p-tag *ngIf="contrat.etatContrat == 'Confirmé'" severity="success" value="{{contrat.etatContrat}}"></p-tag>
                                             <p-tag *ngIf="contratVente.etatContrat == 'Refusé'" severity="danger" value="{{contratVente.etatContrat}}"></p-tag>
                                         </p>
                                     </div>

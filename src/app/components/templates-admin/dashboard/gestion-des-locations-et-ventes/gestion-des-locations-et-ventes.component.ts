@@ -1,10 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ContratLocationService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-location.service';
 import { ContratVenteService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-vente.service';
 import { DemandeAchatService } from 'src/app/services/gestionDesLocationsEtVentes/demande-achat.service';
 import { DemandeLocationService } from 'src/app/services/gestionDesLocationsEtVentes/demande-location.service';
 import { DemandeVisiteService } from 'src/app/services/gestionDesLocationsEtVentes/demande-visite.service';
 import { SuiviEntretienService } from 'src/app/services/gestionDesLocationsEtVentes/suivi-entretien.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 
 @Component({
   selector: 'app-gestion-des-locations-et-ventes',
@@ -13,6 +16,8 @@ import { SuiviEntretienService } from 'src/app/services/gestionDesLocationsEtVen
 })
 export class GestionDesLocationsEtVentesComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   nbreDemandeVisite: number = 0; nbreDemandeLocation: number = 0;
   nbreDemandeAchat: number = 0;
 
@@ -47,12 +52,25 @@ export class GestionDesLocationsEtVentesComponent implements OnInit, OnDestroy {
 
   constructor(private demandeVisiteService: DemandeVisiteService, private demandeLocationService: DemandeLocationService,
     private demandeAchatService: DemandeAchatService, private contratLocationService: ContratLocationService,
-    private contratVenteService: ContratVenteService, private suiviEntretienService: SuiviEntretienService
+    private contratVenteService: ContratVenteService, private suiviEntretienService: SuiviEntretienService,
+    private pageVisibilityService: PageVisibilityService, private userInactivityService: UserInactivityService
   ) {
 
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.nombreDemandeVisite();
     this.nombreDemandeLocation();
     this.nombreDemandeAchat();
@@ -322,7 +340,12 @@ export class GestionDesLocationsEtVentesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 
 }

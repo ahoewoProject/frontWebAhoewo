@@ -16,9 +16,9 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/agent-immobilier/agences-immobilieres']" [ngClass]="{'-is-active': isActive(
       ['/agent-immobilier/agences-immobilieres',
-        '/agent-immobilier/agence-immobiliere/:id',
-        '/agent-immobilier/agence-immobiliere/:id/services',
-        '/agent-immobilier/agence-immobiliere/service/:id',
+        '/agent-immobilier/agences-immobilieres/:id',
+        '/agent-immobilier/agences-immobilieres/:id/services',
+        '/agent-immobilier/agences-immobilieres/service/:id',
       ])}">
         <i class="fa-light fa-key mr15"></i>&nbsp;Agences immobilières
     </a>
@@ -100,7 +100,8 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-locations']" [ngClass]="{'-is-active': isActive(
     ['/agent-immobilier/agences-immobilieres/demandes-locations',
-    '/agent-immobilier/agences-immobilieres/demande-location/:id'
+    '/agent-immobilier/agences-immobilieres/demande-location/:id',
+    '/agent-immobilier/agences-immobilieres/demande-location/proposer-contrat/:id'
   ])}">
         <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
     </a>
@@ -108,7 +109,8 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/agent-immobilier/agences-immobilieres/demandes-achats']" [ngClass]="{'-is-active': isActive(
     ['/agent-immobilier/agences-immobilieres/demandes-achats',
-    '/agent-immobilier/agences-immobilieres/demande-achat/:id'
+    '/agent-immobilier/agences-immobilieres/demande-achat/:id',
+    '/agent-immobilier/agences-immobilieres/demande-achat/proposer-contrat/:id'
   ])}">
         <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
     </a>

@@ -1,11 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { Paiement } from 'src/app/models/gestionDesPaiements/Paiement';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { ContratLocationService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-location.service';
 import { ContratVenteService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-vente.service';
 import { PaiementService } from 'src/app/services/gestionDesPaiements/paiement.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 
 @Component({
   selector: 'app-biens-paiements',
@@ -14,6 +17,8 @@ import { PaiementService } from 'src/app/services/gestionDesPaiements/paiement.s
 })
 export class BiensPaiementsComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   recherche: string = '';
   affichage: number = 1;
   elementsParPage =  5;
@@ -28,7 +33,8 @@ export class BiensPaiementsComponent implements OnInit, OnDestroy {
 
   constructor(private paiementService: PaiementService, private activatedRoute: ActivatedRoute,
     private router: Router, private contratLocationService: ContratLocationService,
-    private contratVenteService: ContratVenteService, private personneService: PersonneService
+    private contratVenteService: ContratVenteService, private personneService: PersonneService,
+    private pageVisibilityService: PageVisibilityService, private userInactivityService: UserInactivityService
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -37,6 +43,14 @@ export class BiensPaiementsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initActivatedRoute();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.initActivatedRoute();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.initActivatedRoute();
+    });
   }
 
   initActivatedRoute(): void {
@@ -214,6 +228,11 @@ export class BiensPaiementsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

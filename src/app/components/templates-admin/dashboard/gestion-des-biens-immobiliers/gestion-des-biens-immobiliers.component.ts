@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { BienImmAssocieService } from 'src/app/services/gestionDesBiensImmobiliers/bien-imm-associe.service';
 import { BienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/bien-immobilier.service';
 import { DelegationGestionService } from 'src/app/services/gestionDesBiensImmobiliers/delegation-gestion.service';
 import { TypeDeBienService } from 'src/app/services/gestionDesBiensImmobiliers/type-de-bien.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 
 @Component({
   selector: 'app-gestion-des-biens-immobiliers',
@@ -12,6 +15,8 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 })
 export class GestionDesBiensImmobiliersComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   nbreTypeDeBien: number = 0;
   nbreTypeDeBienActif: number = 0;
   nbreTypeDeBienInactif: number = 0;
@@ -34,7 +39,8 @@ export class GestionDesBiensImmobiliersComponent implements OnInit, OnDestroy {
 
   constructor(private typeDeBienService: TypeDeBienService, private personneService: PersonneService,
     private bienImmobilierService: BienImmobilierService, private bienImmAssocieService: BienImmAssocieService,
-    private delegationGestionService: DelegationGestionService
+    private delegationGestionService: DelegationGestionService, private pageVisibilityService: PageVisibilityService,
+    private userInactivityService: UserInactivityService
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -42,6 +48,18 @@ export class GestionDesBiensImmobiliersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.nombreTypeDeBiens();
     this.nombreTypeDeBiensActifs();
     this.nombreTypeDeBiensInactifs();
@@ -196,6 +214,12 @@ export class GestionDesBiensImmobiliersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
 
   }
 }

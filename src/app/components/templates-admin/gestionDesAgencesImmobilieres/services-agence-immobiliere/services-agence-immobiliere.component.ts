@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { Motif } from 'src/app/models/Motif';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
@@ -10,10 +10,9 @@ import { Services } from 'src/app/models/gestionDesAgencesImmobilieres/Services'
 import { ServicesAgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/ServicesAgenceImmobiliere';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { ServicesAgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/services-agence-immobiliere.service';
-import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/services.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
-import { MotifService } from 'src/app/services/motif.service';
-import { NotificationsService } from 'src/app/services/notifications.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -23,6 +22,8 @@ import { environment } from 'src/environments/environment';
 })
 export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   serviceSelectionne!: Services;
   agenceSelectionnee!: AgenceImmobiliere;
   motif!: Motif;
@@ -68,7 +69,8 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
   constructor(private personneService: PersonneService, private agenceImmobiliereService: AgenceImmobiliereService,
     private servicesAgenceImmobiliereService: ServicesAgenceImmobiliereService, private messageService: MessageService,
     private confirmationService: ConfirmationService, private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router, private pageVisibilityService: PageVisibilityService,
+    private userInactivityService: UserInactivityService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -77,6 +79,18 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.ajoutReussi = this.activatedRoute.snapshot.queryParamMap.get('ajoutReussi') || '';
     this.modificationReussie = this.activatedRoute.snapshot.queryParamMap.get('modificationReussie') || '';
     this.demandeReussie = this.activatedRoute.snapshot.queryParamMap.get('demandeReussie') || '';
@@ -298,6 +312,11 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { Motif } from 'src/app/models/Motif';
 import { MotifForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifForm';
@@ -14,6 +15,8 @@ import { ImagesBienImmobilierService } from 'src/app/services/gestionDesBiensImm
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { DemandeVisiteService } from 'src/app/services/gestionDesLocationsEtVentes/demande-visite.service';
 import { MotifService } from 'src/app/services/motif.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -23,6 +26,8 @@ import { environment } from 'src/environments/environment';
 })
 export class DemandesVisitesComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   minDate: Date = new Date();
   modalRefusVisible: boolean = false;
   modalAnnulationVisible: boolean = false;
@@ -55,7 +60,8 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
     private motifService: MotifService, private imagesBienImmobilierService: ImagesBienImmobilierService,
     private bienImmobilierService: BienImmobilierService, private bienImmAssocieService: BienImmAssocieService,
     private messageService: MessageService, private confirmationService: ConfirmationService,
-    private caracteristiquesServices: CaracteristiquesService,
+    private caracteristiquesServices: CaracteristiquesService, private pageVisibilityService: PageVisibilityService,
+    private userInactivityService: UserInactivityService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -64,6 +70,18 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.demandeVisiteReussie = this.activatedRoute.snapshot.queryParams['demandeVisiteReussie'];
     const demandeRequest = localStorage.getItem('demandeRequest');
     if (demandeRequest !== null) {
@@ -427,6 +445,12 @@ export class DemandesVisitesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 
 }

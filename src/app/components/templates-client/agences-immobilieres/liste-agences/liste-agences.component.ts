@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FilterService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
 import { Quartier } from 'src/app/models/gestionDesBiensImmobiliers/Quartier';
@@ -10,6 +11,8 @@ import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmo
 import { QuartierService } from 'src/app/services/gestionDesBiensImmobiliers/quartier.service';
 import { RegionService } from 'src/app/services/gestionDesBiensImmobiliers/region.service';
 import { VilleService } from 'src/app/services/gestionDesBiensImmobiliers/ville.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 import { environment } from 'src/environments/environment';
 
 interface AutoCompleteCompleteEvent {
@@ -22,8 +25,10 @@ interface AutoCompleteCompleteEvent {
   templateUrl: './liste-agences.component.html',
   styleUrls: ['./liste-agences.component.css']
 })
-export class ListeAgencesComponent implements OnInit {
+export class ListeAgencesComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   numeroDeLaPage = 0;
   elementsParPage = 6;
   regions: Region[] = [];
@@ -39,13 +44,26 @@ export class ListeAgencesComponent implements OnInit {
 
   constructor(private regionService: RegionService, private villeService: VilleService,
     private quartierService: QuartierService, private agenceImmobilierService: AgenceImmobiliereService,
-    private datePipe: DatePipe, private filterService: FilterService
+    private datePipe: DatePipe, private filterService: FilterService,
+    private pageVisibilityService: PageVisibilityService, private userInactivityService: UserInactivityService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.listeRegionsActives();
     this.listeVillesActives();
     this.listeQuartiersActifs();
@@ -170,4 +188,12 @@ export class ListeAgencesComponent implements OnInit {
     this.quartierSelectionne = new Quartier();
   }
 
+  ngOnDestroy() {
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
+  }
 }

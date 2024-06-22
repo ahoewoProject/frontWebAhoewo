@@ -100,7 +100,8 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/demarcheur/demandes-locations']" [ngClass]="{'-is-active': isActive(
     ['/demarcheur/demandes-locations',
-    '/demarcheur/demande-location/:id'
+    '/demarcheur/demande-location/:id',
+    '/demarcheur/demande-location/proposer-contrat/:id'
   ])}">
         <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
     </a>
@@ -108,7 +109,8 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/demarcheur/demandes-achats']" [ngClass]="{'-is-active': isActive(
     ['/demarcheur/demandes-achats',
-    '/demarcheur/demande-achat/:id'
+    '/demarcheur/demande-achat/:id',
+    '/demarcheur/demande-achat/proposer-contrat/:id'
   ])}">
         <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
     </a>

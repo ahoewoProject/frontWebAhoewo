@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, ConfirmEventType, MenuItem, MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { BienImmobilierAssocie } from 'src/app/models/gestionDesBiensImmobiliers/BienImmAssocie';
 import { BienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/BienImmobilier';
@@ -18,6 +19,8 @@ import { ImagesBienImmobilierService } from 'src/app/services/gestionDesBiensImm
 import { TypeDeBienService } from 'src/app/services/gestionDesBiensImmobiliers/type-de-bien.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -27,6 +30,8 @@ import { environment } from 'src/environments/environment';
 })
 export class BiensAssociesComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   listeDesChoix: any[] | undefined;
   listeDesCategories: string[] = [];
   checked: string | undefined;
@@ -69,7 +74,8 @@ export class BiensAssociesComponent implements OnInit, OnDestroy {
     private messageService: MessageService, private imagesBienImmobilierService: ImagesBienImmobilierService,
     private caracteristiqueService: CaracteristiquesService, private delegationGestionService: DelegationGestionService,
     private publicationService: PublicationService, private typeDeBienService: TypeDeBienService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer, private pageVisibilityService: PageVisibilityService,
+    private userInactivityService: UserInactivityService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -78,6 +84,18 @@ export class BiensAssociesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.ajoutReussi = this.activatedRoute.snapshot.queryParams['ajoutReussi'];
     this.initDelegationGestionForm();
     this.initActivatedRoute();
@@ -509,6 +527,11 @@ export class BiensAssociesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

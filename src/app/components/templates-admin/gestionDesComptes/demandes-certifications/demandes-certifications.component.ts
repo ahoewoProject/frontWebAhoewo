@@ -2,12 +2,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
 import { DemandeCertification } from 'src/app/models/gestionDesComptes/DemandeCertification';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { DemandeCertificationService } from 'src/app/services/gestionDesComptes/demande-certification.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -16,6 +19,8 @@ import { environment } from 'src/environments/environment';
 })
 export class DemandesCertificationsComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   agenceSelectionnee!: AgenceImmobiliere;
   recherche: string = '';
   affichage = 1;
@@ -39,7 +44,8 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
   constructor(private agenceImmobiliereService: AgenceImmobiliereService, private personneService: PersonneService,
     private demandeCertifService: DemandeCertificationService, private messageService: MessageService,
     private confirmationService: ConfirmationService, private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router, private pageVisibilityService: PageVisibilityService,
+    private userInactivityService: UserInactivityService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -48,6 +54,18 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.initActivatedRoute();
     this.initDemandeCertificationForm();
     if (this.personneService.estResponsable(this.user.role.code)) {
@@ -363,6 +381,11 @@ export class DemandesCertificationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

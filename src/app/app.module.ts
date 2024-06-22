@@ -149,6 +149,9 @@ import { UpdatePublicationComponent } from './components/templates-admin/gestion
 import { EffectuerPaiementComponent } from './components/templates-admin/gestionDesPaiements/planifications-paiements/effectuer-paiement/effectuer-paiement.component';
 import { DetailPlanificationPaiementComponent } from './components/templates-admin/gestionDesPaiements/planifications-paiements/detail-planification-paiement/detail-planification-paiement.component';
 import { DetailPaiementComponent } from './components/templates-admin/gestionDesPaiements/paiements/detail-paiement/detail-paiement.component';
+import { PageVisibilityService } from './services/page-visibility.service';
+import { ProposerContratLocationComponent } from './components/templates-admin/gestionDesLocationsEtVentes/demandes-locations/proposer-contrat-location/proposer-contrat-location.component';
+import { ProposerContratVenteComponent } from './components/templates-admin/gestionDesLocationsEtVentes/demandes-achats/proposer-contrat-vente/proposer-contrat-vente.component';
 
 @NgModule({
   declarations: [
@@ -249,6 +252,8 @@ import { DetailPaiementComponent } from './components/templates-admin/gestionDes
     EffectuerPaiementComponent,
     DetailPlanificationPaiementComponent,
     DetailPaiementComponent,
+    ProposerContratLocationComponent,
+    ProposerContratVenteComponent,
   ],
   imports: [
     BrowserModule,
@@ -307,6 +312,7 @@ import { DetailPaiementComponent } from './components/templates-admin/gestionDes
     SidebarModule
   ],
   providers: [
+    PageVisibilityService,
     MessageService,
     ConfirmationService,
     TranslateStore,

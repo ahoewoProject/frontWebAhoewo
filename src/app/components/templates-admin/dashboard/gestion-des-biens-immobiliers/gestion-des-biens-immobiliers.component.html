@@ -104,7 +104,7 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" *ngIf="user.role.code != 'ROLE_ADMINISTRATEUR'">
     <div class="col-sm-12 col-xxl-6">
         <div class="card flex justify-content-center statistics_funfact">
             <h5 class="graph-title">Disponibilité des biens</h5>

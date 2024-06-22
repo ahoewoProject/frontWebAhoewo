@@ -1,10 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { PlanificationPaiement } from 'src/app/models/gestionDesPaiements/PlanificationPaiement';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { PlanificationPaiementService } from 'src/app/services/gestionDesPaiements/planification-paiement.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 
 @Component({
   selector: 'app-planifications-paiements',
@@ -16,6 +19,8 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   // url = 'https://sandbox-api.fedapay.com/v1';
   // token = 'sk_sandbox_CilfCtbWmwtBJt5mJqGGS2l7';
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   recherche: string = '';
   elementsParPage = 5;
   numeroDeLaPage = 0;
@@ -35,7 +40,8 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
 
   constructor(private planificationPaiementService: PlanificationPaiementService,
     private router: Router, private personneService: PersonneService,
-    private messageService: MessageService
+    private messageService: MessageService, private userInactivityService: UserInactivityService,
+    private pageVisibilityService: PageVisibilityService
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -43,7 +49,15 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.listePlanificationsPaiements(this.numeroDeLaPage, this.elementsParPage);;
+    this.listePlanificationsPaiements(this.numeroDeLaPage, this.elementsParPage);
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.listePlanificationsPaiements(this.numeroDeLaPage, this.elementsParPage);
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.listePlanificationsPaiements(this.numeroDeLaPage, this.elementsParPage);
+    });
   }
 
   listePlanificationsPaiements(numeroDeLaPage: number, elementsParPage: number): void {
@@ -110,7 +124,12 @@ export class PlanificationsPaiementsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 
 }

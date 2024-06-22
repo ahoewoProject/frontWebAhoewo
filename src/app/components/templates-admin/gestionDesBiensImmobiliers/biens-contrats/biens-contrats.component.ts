@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { BienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/BienImmobilier';
 import { ContratLocation } from 'src/app/models/gestionDesLocationsEtVentes/ContratLocation';
@@ -12,6 +13,8 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 import { ContratLocationService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-location.service';
 import { ContratVenteService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-vente.service';
 import { MotifService } from 'src/app/services/motif.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 
 @Component({
   selector: 'app-biens-contrats',
@@ -20,6 +23,8 @@ import { MotifService } from 'src/app/services/motif.service';
 })
 export class BiensContratsComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   recherche: string = '';
   affichage: number = 1;
 
@@ -43,7 +48,8 @@ export class BiensContratsComponent implements OnInit, OnDestroy {
     private motifService: MotifService, private personneService: PersonneService,
     private activatedRoute: ActivatedRoute, private router: Router,
     private bienImmobilierService: BienImmobilierService, private delegationGestionService: DelegationGestionService,
-    private bienImmAssocieService: BienImmAssocieService
+    private bienImmAssocieService: BienImmAssocieService, private pageVisibilityService: PageVisibilityService,
+    private userInactivityService: UserInactivityService
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -52,6 +58,14 @@ export class BiensContratsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initActivatedRoute();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.initActivatedRoute();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.initActivatedRoute();
+    });
   }
 
   initActivatedRoute(): void {
@@ -365,7 +379,12 @@ export class BiensContratsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 
 }

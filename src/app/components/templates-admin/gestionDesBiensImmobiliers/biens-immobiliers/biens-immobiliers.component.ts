@@ -2,21 +2,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmEventType, ConfirmationService, MenuItem, MessageService } from 'primeng/api';
+import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
-import { BienImmobilierAssocie } from 'src/app/models/gestionDesBiensImmobiliers/BienImmAssocie';
 import { BienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/BienImmobilier';
 import { Caracteristiques } from 'src/app/models/gestionDesBiensImmobiliers/Caracteristiques';
 import { DelegationGestionForm1 } from 'src/app/models/gestionDesBiensImmobiliers/DelegationGestionForm1';
 import { ImagesBienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/ImagesBienImmobilier';
-import { Pays } from 'src/app/models/gestionDesBiensImmobiliers/Pays';
-import { Quartier } from 'src/app/models/gestionDesBiensImmobiliers/Quartier';
-import { Region } from 'src/app/models/gestionDesBiensImmobiliers/Region';
-import { TypeDeBien } from 'src/app/models/gestionDesBiensImmobiliers/TypeDeBien';
-import { Ville } from 'src/app/models/gestionDesBiensImmobiliers/Ville';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
-import { BienImmAssocieService } from 'src/app/services/gestionDesBiensImmobiliers/bien-imm-associe.service';
 import { BienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/bien-immobilier.service';
 import { CaracteristiquesService } from 'src/app/services/gestionDesBiensImmobiliers/caracteristiques.service';
 import { DelegationGestionService } from 'src/app/services/gestionDesBiensImmobiliers/delegation-gestion.service';
@@ -28,6 +22,8 @@ import { TypeDeBienService } from 'src/app/services/gestionDesBiensImmobiliers/t
 import { VilleService } from 'src/app/services/gestionDesBiensImmobiliers/ville.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -37,6 +33,8 @@ import { environment } from 'src/environments/environment';
 })
 export class BiensImmobiliersComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   affichage = 1;
   recherche: string = '';
   elementsParPage = 5;
@@ -75,7 +73,8 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
     private agenceImmobiliereService: AgenceImmobiliereService, private bienImmobilierService: BienImmobilierService,
     private confirmationService: ConfirmationService, private router: Router, private activatedRoute: ActivatedRoute,
     private caracteristiqueService: CaracteristiquesService, private publicationService: PublicationService,
-    private delegationGestionService: DelegationGestionService, private sanitizer: DomSanitizer
+    private delegationGestionService: DelegationGestionService, private sanitizer: DomSanitizer,
+    private pageVisibilityService: PageVisibilityService, private userInactivityService: UserInactivityService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -84,6 +83,18 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.ajoutReussi = this.activatedRoute.snapshot.queryParams['ajoutReussi'];
     this.initResponsiveOptions();
     this.initDelegationGestionForm();
@@ -436,6 +447,11 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

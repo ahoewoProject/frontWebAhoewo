@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { BienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/BienImmobilier';
 import { Caracteristiques } from 'src/app/models/gestionDesBiensImmobiliers/Caracteristiques';
@@ -10,6 +11,8 @@ import { BienImmobilierService } from 'src/app/services/gestionDesBiensImmobilie
 import { ImagesBienImmobilierService } from 'src/app/services/gestionDesBiensImmobiliers/images-bien-immobilier.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -19,6 +22,8 @@ import { environment } from 'src/environments/environment';
 })
 export class PublicationsComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   recherche: string = '';
   affichage = 1;
   responsiveOptions: any[] | undefined;
@@ -40,7 +45,8 @@ export class PublicationsComponent implements OnInit, OnDestroy {
   constructor(private publicationService: PublicationService, private activatedRoute: ActivatedRoute,
     private bienImmobilierService: BienImmobilierService, private messageService: MessageService,
     private personneService: PersonneService, private imagesBienImmobilierService: ImagesBienImmobilierService,
-    private router: Router
+    private router: Router, private pageVisibilityService: PageVisibilityService,
+    private userInactivityService: UserInactivityService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -49,6 +55,18 @@ export class PublicationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.publicationReussie = this.activatedRoute.snapshot.queryParamMap.get('publicationReussie') || '';
     this.initResponsiveOptions();
     if (this.personneService.estProprietaire(this.user.role.code)) {
@@ -170,6 +188,11 @@ export class PublicationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

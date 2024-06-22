@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { Services } from 'src/app/models/gestionDesAgencesImmobilieres/Services';
 import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/services.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 
 @Component({
   selector: 'app-services',
@@ -14,6 +16,8 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 })
 export class ServicesComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   recherche: string = '';
   affichage = 1;
   visibleAddForm = 0;
@@ -33,7 +37,8 @@ export class ServicesComponent implements OnInit, OnDestroy {
 
   constructor(private _servicesService: ServicesService, private messageService: MessageService,
     private confirmationService: ConfirmationService, private personneService: PersonneService,
-    private router: Router, private activatedRoute: ActivatedRoute
+    private router: Router, private activatedRoute: ActivatedRoute,
+    private pageVisibilityService: PageVisibilityService, private userInactivityService: UserInactivityService
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -41,6 +46,18 @@ export class ServicesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.ajoutReussi = this.activatedRoute.snapshot.queryParamMap.get('ajoutReussi') || '';
     this.modificationReussie = this.activatedRoute.snapshot.queryParamMap.get('modificationReussie') || '';
     this.listeServices(this.numeroDeLaPage, this.elementsParPage);
@@ -201,6 +218,11 @@ export class ServicesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

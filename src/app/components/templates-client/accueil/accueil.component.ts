@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { AgenceImmobiliere } from 'src/app/models/gestionDesAgencesImmobilieres/AgenceImmobiliere';
 import { Quartier } from 'src/app/models/gestionDesBiensImmobiliers/Quartier';
@@ -16,6 +17,8 @@ import { RegionService } from 'src/app/services/gestionDesBiensImmobiliers/regio
 import { TypeDeBienService } from 'src/app/services/gestionDesBiensImmobiliers/type-de-bien.service';
 import { VilleService } from 'src/app/services/gestionDesBiensImmobiliers/ville.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -23,8 +26,10 @@ import { environment } from 'src/environments/environment';
   templateUrl: './accueil.component.html',
   styleUrls: ['./accueil.component.css']
 })
-export class AccueilComponent implements OnInit {
+export class AccueilComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   totalePublicationsTypeDeBien: { [key: string]: number } = {};
   totalePublicationsRegion: { [key: string]: number } = {};
 
@@ -59,11 +64,25 @@ export class AccueilComponent implements OnInit {
     private datePipe: DatePipe, private publicationService: PublicationService,
     private regionService: RegionService, private villeService: VilleService,
     private quartierService: QuartierService, private typeDeBienService: TypeDeBienService,
-    private router: Router) {
+    private router: Router, private pageVisibilityService: PageVisibilityService,
+    private userInactivityService: UserInactivityService
+  ) {
     this.APIEndpoint = environment.APIEndpoint;
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.initResponsiveOptions();
 
     this.typeDeTransactionChoisi('Location');
@@ -172,6 +191,9 @@ export class AccueilComponent implements OnInit {
         response.forEach(region => {
           this.totalePublicationsParRegion(region.libelle);
         });
+      },
+      (error) => {
+        console.log(error)
       }
     );
   }
@@ -510,5 +532,14 @@ export class AccueilComponent implements OnInit {
     const hours = date.getHours();
     const minutes = date.getMinutes();
     return `${hours} heures ${minutes} minutes`;
+  }
+
+  ngOnDestroy() {
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

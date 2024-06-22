@@ -1,11 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { MotifForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifForm';
 import { Services } from 'src/app/models/gestionDesAgencesImmobilieres/Services';
 import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/services.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 
 @Component({
   selector: 'app-autres-services',
@@ -14,6 +17,8 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 })
 export class AutresServicesComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   recherche: string = '';
   affichage = 1;
   user : any;
@@ -32,7 +37,8 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
 
   constructor(private _servicesService: ServicesService, private messageService: MessageService,
     private confirmationService: ConfirmationService, private activatedRoute: ActivatedRoute,
-    private personneService: PersonneService, private router: Router
+    private personneService: PersonneService, private router: Router,
+    private pageVisibilityService: PageVisibilityService, private userInactivityService: UserInactivityService
   )
   {
 
@@ -40,6 +46,14 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initActivatedRoute();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.initActivatedRoute();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.initActivatedRoute();
+    });
   }
 
   initActivatedRoute(): void {
@@ -167,6 +181,11 @@ export class AutresServicesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

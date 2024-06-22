@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Motif } from 'src/app/models/Motif';
 import { ServicesAgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/services-agence-immobiliere.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { MotifService } from 'src/app/services/motif.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -13,6 +16,8 @@ import { environment } from 'src/environments/environment';
 })
 export class DetailServiceAgenceComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   motif!: Motif;
   user : any;
 
@@ -25,7 +30,8 @@ export class DetailServiceAgenceComponent implements OnInit, OnDestroy {
 
   constructor(
     private servicesAgenceImmobiliereService: ServicesAgenceImmobiliereService, private activatedRoute: ActivatedRoute,
-    private router: Router, private motifService: MotifService, private personneService: PersonneService
+    private router: Router, private motifService: MotifService, private personneService: PersonneService,
+    private pageVisibilityService: PageVisibilityService, private userInactivityService: UserInactivityService
   ) {
     this.APIEndpoint = environment.APIEndpoint;
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -33,6 +39,18 @@ export class DetailServiceAgenceComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id !== null) {
@@ -101,6 +119,11 @@ export class DetailServiceAgenceComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

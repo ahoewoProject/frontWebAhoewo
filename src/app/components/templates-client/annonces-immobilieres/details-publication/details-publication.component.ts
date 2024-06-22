@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Galleria } from 'primeng/galleria';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { ContactezNousForm } from 'src/app/models/ContactezNousForm';
 import { Caracteristiques } from 'src/app/models/gestionDesBiensImmobiliers/Caracteristiques';
@@ -21,6 +22,8 @@ import { DemandeAchatService } from 'src/app/services/gestionDesLocationsEtVente
 import { DemandeLocationService } from 'src/app/services/gestionDesLocationsEtVentes/demande-location.service';
 import { DemandeVisiteService } from 'src/app/services/gestionDesLocationsEtVentes/demande-visite.service';
 import { PublicationService } from 'src/app/services/gestionDesPublications/publication.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -30,6 +33,8 @@ import { environment } from 'src/environments/environment';
 })
 export class DetailsPublicationComponent implements OnInit, OnDestroy  {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   minDate: Date = new Date();
   loading: boolean = false;
   loadingContactForm: boolean = false;
@@ -73,7 +78,8 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
     private decimalPipe: DecimalPipe, private contactezNousService: ContactezNousService,
     private messageService: MessageService, private personneService: PersonneService,
     private activatedRoute: ActivatedRoute, private demandeLocationService: DemandeLocationService,
-    private demandeAchatService: DemandeAchatService, private demandeVisiteService: DemandeVisiteService
+    private demandeAchatService: DemandeAchatService, private demandeVisiteService: DemandeVisiteService,
+    private pageVisibilityService: PageVisibilityService, private userInactivityService: UserInactivityService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -84,11 +90,15 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
   }
 
   ngOnInit(): void {
-    this.initDemandeForm();
-    this.initContactezNousForm();
-    this.initResponsiveOptions();
-    this.bindDocumentListeners();
-    this.initActivatedRoute();
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
   }
 
   initActivatedRoute(): void {
@@ -98,6 +108,14 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
         this.detailPublication(codePublication);
       }
     });
+  }
+
+  loadData(): void {
+    this.initDemandeForm();
+    this.initContactezNousForm();
+    this.initResponsiveOptions();
+    this.bindDocumentListeners();
+    this.initActivatedRoute();
   }
 
   initResponsiveOptions(): void {
@@ -632,7 +650,13 @@ export class DetailsPublicationComponent implements OnInit, OnDestroy  {
   }
 
   ngOnDestroy() {
-      this.unbindDocumentListeners();
+    this.unbindDocumentListeners();
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 
   galleriaClass() {

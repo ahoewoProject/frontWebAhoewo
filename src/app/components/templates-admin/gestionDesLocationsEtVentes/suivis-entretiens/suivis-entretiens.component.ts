@@ -2,12 +2,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { ContratLocation } from 'src/app/models/gestionDesLocationsEtVentes/ContratLocation';
 import { SuiviEntretien } from 'src/app/models/gestionDesLocationsEtVentes/SuiviEntretien';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { ContratLocationService } from 'src/app/services/gestionDesLocationsEtVentes/contrat-location.service';
 import { SuiviEntretienService } from 'src/app/services/gestionDesLocationsEtVentes/suivi-entretien.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -17,6 +20,8 @@ import { environment } from 'src/environments/environment';
 })
 export class SuivisEntretiensComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   recherche: string = '';
   affichage = 1;
   elementsParPage = 5;
@@ -37,7 +42,8 @@ export class SuivisEntretiensComponent implements OnInit, OnDestroy {
   constructor(private suiviEntretienService: SuiviEntretienService, private contratLocationService: ContratLocationService,
     private personneService: PersonneService, private activatedRoute: ActivatedRoute,
     private router: Router, private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService, private pageVisibilityService: PageVisibilityService,
+    private userInactivityService: UserInactivityService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -46,6 +52,18 @@ export class SuivisEntretiensComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.suiviEntretienReussi = this.activatedRoute.snapshot.queryParams['suiviEntretienReussi'];
     this.listeContratsLocations();
     this.initSuiviEntretienForm();
@@ -336,6 +354,11 @@ export class SuivisEntretiensComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

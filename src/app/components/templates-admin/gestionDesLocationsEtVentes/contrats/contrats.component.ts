@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEventType, ConfirmationService, MenuItem, MessageService } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { Page } from 'src/app/interfaces/Page';
 import { Motif } from 'src/app/models/Motif';
 import { MotifForm } from 'src/app/models/gestionDesAgencesImmobilieres/MotifForm';
@@ -16,6 +17,8 @@ import { SuiviEntretienService } from 'src/app/services/gestionDesLocationsEtVen
 import { PaiementService } from 'src/app/services/gestionDesPaiements/paiement.service';
 import { PlanificationPaiementService } from 'src/app/services/gestionDesPaiements/planification-paiement.service';
 import { MotifService } from 'src/app/services/motif.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -25,6 +28,8 @@ import { environment } from 'src/environments/environment';
 })
 export class ContratsComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   recherche: string = '';
 
   modalRefusVisible: boolean = false;
@@ -101,7 +106,8 @@ export class ContratsComponent implements OnInit, OnDestroy {
     private personneService: PersonneService, private router: Router,
     private motifService: MotifService, private activatedRoute: ActivatedRoute,
     private confirmationService: ConfirmationService, private planificationPaiementService: PlanificationPaiementService,
-    private suiviEntretienService: SuiviEntretienService, private paiementService: PaiementService
+    private suiviEntretienService: SuiviEntretienService, private paiementService: PaiementService,
+    private pageVisibilityService: PageVisibilityService, private userInactivityService: UserInactivityService
   )
   {
     this.APIEndpoint = environment.APIEndpoint;
@@ -110,6 +116,18 @@ export class ContratsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+    this.loadData();
+  }
+
+  loadData(): void {
     this.ajoutContratLocationReussie = this.activatedRoute.snapshot.queryParams['ajoutContratLocationReussie'];
     this.ajoutContratVenteReussie = this.activatedRoute.snapshot.queryParams['ajoutContratVenteReussie'];
     this.initResponsiveOptions();
@@ -138,10 +156,10 @@ export class ContratsComponent implements OnInit, OnDestroy {
     });
 
     this.initSuiviEntretienForm();
-    if (this.user.role.code == 'ROLE_RESPONSABLE' || this.user.role.code == 'ROLE_AGENTIMMOBILIER') {
+    if (this.personneService.estResponsable(this.user.role.code) || this.personneService.estAgentImmobilier(this.user.role.code)) {
       this.menusContratLocationOfAgence();
       this.menusContratVenteOfAgence();
-    } else if (this.user.role.code == 'ROLE_DEMARCHEUR') {
+    } else if (this.personneService.estDemarcheur(this.user.role.code)) {
       this.menusContratLocationOfDemarcheur();
       this.menusContratVenteOfDemarcheur();
     } else {
@@ -1345,6 +1363,12 @@ export class ContratsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 
 }

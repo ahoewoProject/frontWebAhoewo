@@ -205,7 +205,7 @@
                     </div>
 
                     <div *ngIf="demandeCertifications.totalElements !== 0 && user.role.code == 'ROLE_NOTAIRE'" class="mbp_pagination text-center mt30">
-                        <p-paginator (onPageChange)="pagination($event)" [first]="numeroDeLaPage" [rows]="elementsParPage" [totalRecords]="demandeCertifications.totalElements" [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} demandes de certifications"
+                        <p-paginator (onPageChange)="pagination($event)" [rows]="demandeCertifications.size" [totalRecords]="demandeCertifications.totalElements" [rowsPerPageOptions]="[5, 10, 15]" [showCurrentPageReport]="true" currentPageReportTemplate="Affichage du {first} au {last} des {totalRecords} demandes de certifications"
                             [showPageLinks]="true" [showFirstLastIcon]="true">
                         </p-paginator>
                     </div>

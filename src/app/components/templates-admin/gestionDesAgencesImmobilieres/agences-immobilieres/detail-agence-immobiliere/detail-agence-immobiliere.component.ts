@@ -1,10 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AffectationAgentAgence } from 'src/app/models/gestionDesAgencesImmobilieres/AffectationAgentAgence';
 import { AffectationAgentAgenceService } from 'src/app/services/gestionDesAgencesImmobilieres/affectation-agent-agence.service';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
 import { environment } from 'src/environments/environment';
+import { PageVisibilityService } from '../../../../../services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 
 @Component({
   selector: 'app-detail-agence-immobiliere',
@@ -13,14 +16,18 @@ import { environment } from 'src/environments/environment';
 })
 export class DetailAgenceImmobiliereComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   APIEndpoint: string;
   user: any;
   agenceImmobiliere = this.agenceImmobiliereService.agenceImmobiliere;
   affectationAgentAgence: AffectationAgentAgence = new AffectationAgentAgence();
+
   constructor(
     private agenceImmobiliereService: AgenceImmobiliereService, private affectationAgentAgenceService: AffectationAgentAgenceService,
     private personneService: PersonneService, private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute, private pageVisibilityService: PageVisibilityService,
+    private userInactivityService: UserInactivityService
   ) {
     this.APIEndpoint = environment.APIEndpoint;
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -28,6 +35,18 @@ export class DetailAgenceImmobiliereComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id !== null) {
@@ -94,6 +113,11 @@ export class DetailAgenceImmobiliereComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

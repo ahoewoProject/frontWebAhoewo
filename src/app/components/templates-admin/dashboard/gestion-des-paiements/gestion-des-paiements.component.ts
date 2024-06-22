@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { PaiementService } from 'src/app/services/gestionDesPaiements/paiement.service';
 import { PlanificationPaiementService } from 'src/app/services/gestionDesPaiements/planification-paiement.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 
 @Component({
   selector: 'app-gestion-des-paiements',
@@ -9,6 +12,8 @@ import { PlanificationPaiementService } from 'src/app/services/gestionDesPaiemen
 })
 export class GestionDesPaiementsComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   nbrePlanificationPaiement: number = 0; nbrePlanificationPaiementAttente: number = 0;
   nbrePlanificationPaiementPaye: number = 0;
 
@@ -18,11 +23,25 @@ export class GestionDesPaiementsComponent implements OnInit, OnDestroy {
   dataPlanificationPaiement: any; optionsPlanificationPaiement: any;
   dataPaiement: any; optionsPaiement: any;
 
-  constructor(private planficationPaiementService: PlanificationPaiementService, private paiementService: PaiementService) {
+  constructor(private planficationPaiementService: PlanificationPaiementService, private paiementService: PaiementService,
+    private pageVisibilityService: PageVisibilityService, private userInactivityService: UserInactivityService
+  ) {
 
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.nombrePlanificationPaiement();
     this.nombrePaiement();
   }
@@ -108,6 +127,11 @@ export class GestionDesPaiementsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
   }
 }

@@ -1,10 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AffectationAgentAgenceService } from 'src/app/services/gestionDesAgencesImmobilieres/affectation-agent-agence.service';
 import { AffectationResponsableAgenceService } from 'src/app/services/gestionDesAgencesImmobilieres/affectation-responsable-agence.service';
 import { AgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/agence-immobiliere.service';
 import { ServicesAgenceImmobiliereService } from 'src/app/services/gestionDesAgencesImmobilieres/services-agence-immobiliere.service';
 import { ServicesService } from 'src/app/services/gestionDesAgencesImmobilieres/services.service';
 import { PersonneService } from 'src/app/services/gestionDesComptes/personne.service';
+import { PageVisibilityService } from 'src/app/services/page-visibility.service';
+import { UserInactivityService } from 'src/app/services/user-inactivity.service';
 
 @Component({
   selector: 'app-gestion-des-agences-immobieres',
@@ -13,6 +16,8 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 })
 export class GestionDesAgencesImmobieresComponent implements OnInit, OnDestroy {
 
+  private visibilitySubscription!: Subscription;
+  private inactivitySubscription!: Subscription;
   nbreAgence: number = 0;
   nbreAgenceActif: number = 0;
   nbreAgenceInactif: number = 0;
@@ -23,7 +28,8 @@ export class GestionDesAgencesImmobieresComponent implements OnInit, OnDestroy {
 
   constructor(private personneService: PersonneService, private agenceService: AgenceImmobiliereService,
     private agenceResponsableService: AffectationResponsableAgenceService, private agenceAgentImmobilierService: AffectationAgentAgenceService,
-    private servicesService: ServicesService, private servicesAgencesService: ServicesAgenceImmobiliereService
+    private servicesService: ServicesService, private servicesAgencesService: ServicesAgenceImmobiliereService,
+    private pageVisibilityService: PageVisibilityService, private userInactivityService: UserInactivityService
   )
   {
     const utilisateurConnecte = this.personneService.utilisateurConnecte();
@@ -31,6 +37,18 @@ export class GestionDesAgencesImmobieresComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadData();
+    this.visibilitySubscription = this.pageVisibilityService.visibilityChange$.subscribe((isVisible) => {
+      if (isVisible) {
+        this.loadData();
+      }
+    });
+    this.inactivitySubscription = this.userInactivityService.onIdle.subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  loadData(): void {
     this.nombreAgences();
     this.nombreAgencesActifs();
     this.nombreAgencesInactifs();
@@ -39,7 +57,6 @@ export class GestionDesAgencesImmobieresComponent implements OnInit, OnDestroy {
     this.nombreServicesActifs();
     this.nombreServicesInactifs();
   }
-
   nombreAgences(): void {
     if (this.personneService.estAdmin(this.user.role.code)) {
       this.agenceService.getAll().subscribe(
@@ -167,6 +184,12 @@ export class GestionDesAgencesImmobieresComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.visibilitySubscription) {
+      this.visibilitySubscription.unsubscribe();
+    }
+    if (this.inactivitySubscription) {
+      this.inactivitySubscription.unsubscribe();
+    }
 
   }
 

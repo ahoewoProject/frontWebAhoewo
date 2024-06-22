@@ -17,7 +17,7 @@
       ['/gerant/delegations-gestions',
       '/gerant/delegation-gestion/:id',
       '/gerant/add/delegation-gestion',
-      '/gerant/bien-delegue/update',
+      '/gerant/bien-delegue/update/:id/:designation',
       '/gerant/bien-delegue/contrats/:codeBien',
       '/gerant/bien-delegue/contrat-location/:id',
       '/gerant/bien-delegue/contrat-vente/:id',
@@ -61,7 +61,8 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/gerant/demandes-locations']" [ngClass]="{'-is-active': isActive(
     ['/gerant/demandes-locations',
-    '/gerant/demande-location/:id'
+    '/gerant/demande-location/:id',
+    '/gerant/demande-location/proposer-contrat/:id'
   ])}">
         <i class="fa-light fa-suitcase mr15"></i>&nbsp;Demandes de locations
     </a>
@@ -69,7 +70,8 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/gerant/demandes-achats']" [ngClass]="{'-is-active': isActive(
     ['/gerant/demandes-achats',
-    '/gerant/demande-achat/:id'
+    '/gerant/demande-achat/:id',
+    '/gerant/demande-achat/proposer-contrat/:id'
   ])}">
         <i class="fa-light fa-sack-dollar mr15"></i>&nbsp;Demandes d'achats
     </a>
