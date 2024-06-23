@@ -6,7 +6,10 @@ import { ProfilComponent } from 'src/app/components/templates-admin/gestionDesCo
 import { ContratsComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/contrats/contrats.component';
 import { DemandesAchatsComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-achats/demandes-achats.component';
 import { DemandesVisitesComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-visites/demandes-visites.component';
+import { AddSuiviEntretienComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/suivis-entretiens/add-suivi-entretien/add-suivi-entretien.component';
+import { DetailSuiviEntretienComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/suivis-entretiens/detail-suivi-entretien/detail-suivi-entretien.component';
 import { SuivisEntretiensComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/suivis-entretiens/suivis-entretiens.component';
+import { UpdateSuiviEntretienComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/suivis-entretiens/update-suivi-entretien/update-suivi-entretien.component';
 import { DetailPaiementComponent } from 'src/app/components/templates-admin/gestionDesPaiements/paiements/detail-paiement/detail-paiement.component';
 import { PaiementsComponent } from 'src/app/components/templates-admin/gestionDesPaiements/paiements/paiements.component';
 import { DetailPlanificationPaiementComponent } from 'src/app/components/templates-admin/gestionDesPaiements/planifications-paiements/detail-planification-paiement/detail-planification-paiement.component';
@@ -37,7 +40,9 @@ const routes: Routes = [
       { path: 'contrat-vente/:id', component: ContratsComponent, canActivate: [AuthGuard] },
 
       { path: 'suivis-entretiens', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
-      { path: 'suivi-entretien/:id', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
+      { path: 'add/suivi-entretien/:idContrat', component: AddSuiviEntretienComponent, canActivate: [AuthGuard] },
+      { path: 'update/suivi-entretien/:id', component: UpdateSuiviEntretienComponent, canActivate: [AuthGuard] },
+      { path: 'suivi-entretien/:id', component: DetailSuiviEntretienComponent, canActivate: [AuthGuard] },
 
       { path: 'planifications-paiements', component: PlanificationsPaiementsComponent, canActivate: [AuthGuard] },
       { path: 'planification-paiement/:id', component: DetailPlanificationPaiementComponent, canActivate: [AuthGuard] },

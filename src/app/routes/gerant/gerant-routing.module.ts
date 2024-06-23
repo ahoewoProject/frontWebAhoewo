@@ -27,6 +27,9 @@ import { DetailPlanificationPaiementComponent } from 'src/app/components/templat
 import { DetailPaiementComponent } from 'src/app/components/templates-admin/gestionDesPaiements/paiements/detail-paiement/detail-paiement.component';
 import { ProposerContratLocationComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-locations/proposer-contrat-location/proposer-contrat-location.component';
 import { ProposerContratVenteComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-achats/proposer-contrat-vente/proposer-contrat-vente.component';
+import { AddSuiviEntretienComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/suivis-entretiens/add-suivi-entretien/add-suivi-entretien.component';
+import { UpdateSuiviEntretienComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/suivis-entretiens/update-suivi-entretien/update-suivi-entretien.component';
+import { DetailSuiviEntretienComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/suivis-entretiens/detail-suivi-entretien/detail-suivi-entretien.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -71,7 +74,9 @@ const routes: Routes = [
       { path: 'contrat-vente/:id', component: ContratsComponent, canActivate: [AuthGuard] },
 
       { path: 'suivis-entretiens', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
-      { path: 'suivi-entretien/:id', component: SuivisEntretiensComponent, canActivate: [AuthGuard] },
+      { path: 'add/suivi-entretien/:idContrat', component: AddSuiviEntretienComponent, canActivate: [AuthGuard] },
+      { path: 'update/suivi-entretien/:id', component: UpdateSuiviEntretienComponent, canActivate: [AuthGuard] },
+      { path: 'suivi-entretien/:id', component: DetailSuiviEntretienComponent, canActivate: [AuthGuard] },
 
       { path: 'planifications-paiements', component: PlanificationsPaiementsComponent, canActivate: [AuthGuard] },
       { path: 'planification-paiement/:id', component: DetailPlanificationPaiementComponent, canActivate: [AuthGuard] },

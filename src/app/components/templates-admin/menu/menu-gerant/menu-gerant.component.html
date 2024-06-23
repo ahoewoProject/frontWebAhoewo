@@ -80,7 +80,8 @@
     <a [routerLink]="['/gerant/contrats']" [ngClass]="{'-is-active': isActive(
     ['/gerant/contrats',
     '/gerant/contrat-location/:id',
-    '/gerant/contrat-vente/:id'
+    '/gerant/contrat-vente/:id',
+    '/gerant/add/suivi-entretien/:codeContrat'
   ])}">
         <i class="fa-light fa-folders mr15"></i>Contrats
     </a>
@@ -88,7 +89,8 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/gerant/suivis-entretiens']" [ngClass]="{'-is-active': isActive(
     ['/gerant/suivis-entretiens',
-    '/gerant/suivi-entretien/:id'
+    '/gerant/suivi-entretien/:id',
+    '/gerant/update/suivi-entretien/:id'
   ])}">
         <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
     </a>

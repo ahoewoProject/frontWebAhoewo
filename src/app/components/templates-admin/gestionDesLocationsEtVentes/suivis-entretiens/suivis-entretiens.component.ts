@@ -191,14 +191,7 @@ export class SuivisEntretiensComponent implements OnInit, OnDestroy {
   }
 
   afficherPageModifier(id: number): void {
-    this.listeContratsLocations();
-    this.suiviEntretienService.findById(id).subscribe(
-      (data) => {
-        this.suiviEntretien = data;
-        this.datePrevueSelectionnee = new Date(this.suiviEntretien.datePrevue)
-      }
-    )
-    this.affichage = 4;
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/update/suivi-entretien', id]);
   }
 
   modifierSuiviEntretien(): void{

@@ -1,0 +1,67 @@
+<div class="dashboard__content property-page bgc-f7">
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
+    </div>
+
+    <p-toast></p-toast>
+
+    <!-- Start Formulaire d'ajout d'un entretien -->
+    <div>
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-5">
+                <div class="dashboard_title_area">
+                    <h4>Signaler un souci d'entretien</h4>
+                </div>
+            </div>
+            <div class="col-xxl-7">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" (click)="voirListe()" type="button">Retour</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <form [formGroup]="suiviEntretienForm" (ngSubmit)="ajouterSuiviEntretien()" class="form-style1">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Libelle</label>
+                                    <input pInputText class="pInputText p-fluid" id="libelle" name="libelle" placeholder="Le libelle de l'entretien" formControlName="libelle" [(ngModel)]="suiviEntretien.libelle" required>
+                                    <div class="error" [hidden]="libelleSuiviEntretien.valid || libelleSuiviEntretien.pristine && !libelleSuiviEntretien.touched ">Le libelle de l'entretien est obligatoire</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Description</label>
+                                    <textarea id="description" name="description" placeholder="La description de l'entretien" formControlName="description" style="height: 160px;" [(ngModel)]="suiviEntretien.description"></textarea>
+                                    <!-- <div class="error" [hidden]="descriptionDuService.valid || descriptionDuService.pristine && !descriptionDuService.touched ">La description du service non trouvé est obligatoire</div> -->
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Date prévue</label>
+                                    <p-calendar class="pCalendar p-fluid" placeholder="La date prévue pour l'entretien" [(ngModel)]="suiviEntretien.datePrevue" formControlName="datePrevue" inputId="datePrevue" name="datePrevue" [required]="true">
+                                    </p-calendar>
+                                    <div class="error" [hidden]="!datePrevue?.hasError('required') || !datePrevue.touched">La date prévue est requise</div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-12">
+                            <div class="text-end">
+                                <button class="ud-btn btn-annuler" type="button" (click)="formReset()">Annuler</button> &nbsp;
+                                <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': suiviEntretienForm.invalid }" type="submit">Enregistrer</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Formulaire d'ajout d'un entretien -->
+</div>

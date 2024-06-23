@@ -153,6 +153,9 @@ import { PageVisibilityService } from './services/page-visibility.service';
 import { ProposerContratLocationComponent } from './components/templates-admin/gestionDesLocationsEtVentes/demandes-locations/proposer-contrat-location/proposer-contrat-location.component';
 import { ProposerContratVenteComponent } from './components/templates-admin/gestionDesLocationsEtVentes/demandes-achats/proposer-contrat-vente/proposer-contrat-vente.component';
 import { DeleguerBienComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/deleguer-bien/deleguer-bien.component';
+import { AddSuiviEntretienComponent } from './components/templates-admin/gestionDesLocationsEtVentes/suivis-entretiens/add-suivi-entretien/add-suivi-entretien.component';
+import { UpdateSuiviEntretienComponent } from './components/templates-admin/gestionDesLocationsEtVentes/suivis-entretiens/update-suivi-entretien/update-suivi-entretien.component';
+import { DetailSuiviEntretienComponent } from './components/templates-admin/gestionDesLocationsEtVentes/suivis-entretiens/detail-suivi-entretien/detail-suivi-entretien.component';
 
 @NgModule({
   declarations: [
@@ -256,6 +259,9 @@ import { DeleguerBienComponent } from './components/templates-admin/gestionDesBi
     ProposerContratLocationComponent,
     ProposerContratVenteComponent,
     DeleguerBienComponent,
+    AddSuiviEntretienComponent,
+    UpdateSuiviEntretienComponent,
+    DetailSuiviEntretienComponent,
   ],
   imports: [
     BrowserModule,

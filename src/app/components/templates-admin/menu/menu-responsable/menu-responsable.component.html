@@ -161,7 +161,8 @@
     <a [routerLink]="['/responsable/agences-immobilieres/contrats']" [ngClass]="{'-is-active': isActive(
     ['/responsable/agences-immobilieres/contrats',
   '/responsable/agences-immobilieres/contrat-location/:id',
-  '/responsable/agences-immobilieres/contrat-vente/:id'
+  '/responsable/agences-immobilieres/contrat-vente/:id',
+  '/responsable/agences-immobilieres/add/suivi-entretien/:codeContrat'
 ])}">
         <i class="fa-light fa-folders mr15"></i>Contrats
     </a>
@@ -169,7 +170,8 @@
 <div class="sidebar_list_item">
     <a [routerLink]="['/responsable/agences-immobilieres/suivis-entretiens']" [ngClass]="{'-is-active': isActive(
     ['/responsable/agences-immobilieres/suivis-entretiens',
-    '/responsable/agences-immobilieres/suivi-entretien/:id'
+    '/responsable/agences-immobilieres/suivi-entretien/:id',
+    '/responsable/agences-immobilieres/update/suivi-entretien/:id'
   ])}">
         <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
     </a>

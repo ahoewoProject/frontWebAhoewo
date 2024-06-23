@@ -1,0 +1,77 @@
+<div class="dashboard__content property-page bgc-f7">
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
+    </div>
+
+    <p-toast></p-toast>
+
+    <!-- Start Formulaire de modification d'un entretien -->
+    <div>
+        <div class="row align-items-center pb40">
+            <div class="col-xxl-7">
+                <div class="dashboard_title_area">
+                    <h4>Modification d'un souci d'entretien</h4>
+                </div>
+            </div>
+            <div class="col-xxl-5">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="voirListe()">Retour</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <form [formGroup]="suiviEntretienForm" (ngSubmit)="modifierSuiviEntretien()" class="form-style1">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Contrat de location</label>
+                                    <p-dropdown class="select1" emptyFilterMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé" [options]="contratsLocations" placeholder="Choisir un contrat" formControlName="contratLocation" [filter]="true" filterBy="codeContrat" filterPlaceholder="Rechercher"
+                                        [(ngModel)]="suiviEntretien.contratLocation" [showClear]="true" (onChange)="contratLocationChoisie($event)" optionLabel="codeContrat">
+                                    </p-dropdown>
+                                    <!-- <div class="error" [hidden]="!contratLocation?.hasError('required') || !contratLocation.touched">La selection du pays est obligatoire</div> -->
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Libelle</label>
+                                    <input type="text" class="form-control" id="libelle" name="libelle" placeholder="Le libelle de l'entretien" formControlName="libelle" [(ngModel)]="suiviEntretien.libelle" required>
+                                    <div class="error" [hidden]="libelle.valid || libelle.pristine && !libelle.touched ">Le libelle de l'entretien est obligatoire</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Description</label>
+                                    <textarea id="description" name="description" placeholder="La description de l'entretien" formControlName="description" style="height: 160px;" [(ngModel)]="suiviEntretien.description"></textarea>
+                                    <!-- <div class="error" [hidden]="descriptionDuService.valid || descriptionDuService.pristine && !descriptionDuService.touched ">La description du service non trouvé est obligatoire</div> -->
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Date prévue</label>
+                                    <p-calendar class="pCalendar p-fluid" placeholder="Date prévue pour l'entretien" [(ngModel)]="datePrevueSelectionnee" (onSelect)="datePrevueChoisie($event)" formControlName="datePrevue" inputId="datePrevue" name="datePrevue" [required]="true">
+                                    </p-calendar>
+                                    <div class="error" [hidden]="!datePrevue?.hasError('required') || !datePrevue.touched">La date prévue est requise</div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-12">
+                            <div class="text-end">
+                                <button class="ud-btn btn-annuler" type="button" (click)="formReset()">Annuler</button> &nbsp;
+                                <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': suiviEntretienForm.invalid }" type="submit">Modifier</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Formulaire de modification d'un entretien -->
+</div>

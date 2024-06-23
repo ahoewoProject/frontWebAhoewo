@@ -120,14 +120,17 @@
     <a [routerLink]="['/proprietaire/contrats']" [ngClass]="{'-is-active': isActive(
     ['/proprietaire/contrats',
     '/proprietaire/contrat-location/:id',
-    '/proprietaire/contrat-vente/:id'
+    '/proprietaire/contrat-vente/:id',
+    '/proprietaire/add/suivi-entretien/:codeContrat'
   ])}">
         <i class="fa-light fa-folders mr15"></i>Contrats
     </a>
 </div>
 <div class="sidebar_list_item">
-    <a [routerLink]="['/proprietaire/suivis-entretiens']" [ngClass]="{'-is-active': isActive(['
-    /proprietaire/suivis-entretiens'
+    <a [routerLink]="['/proprietaire/suivis-entretiens']" [ngClass]="{'-is-active': isActive(
+    ['/proprietaire/suivis-entretiens',
+    '/proprietaire/suivi-entretien/:id',
+    '/proprietaire/update/suivi-entretien/:id'
   ])}">
         <i class="fa-light fa-wrench mr15"></i>&nbsp;Suivi des entretiens
     </a>

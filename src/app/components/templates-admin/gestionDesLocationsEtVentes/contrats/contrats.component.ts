@@ -1195,8 +1195,9 @@ export class ContratsComponent implements OnInit, OnDestroy {
   }
 
   afficherFormulaireSuiviEntretien(contratLocation: ContratLocation): void {
-    this.suiviEntretien.contratLocation = contratLocation;
-    this.affichage = 8;
+    // this.suiviEntretien.contratLocation = contratLocation;
+    // this.affichage = 8;
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/add/suivi-entretien', contratLocation.id]);
   }
 
   datePrevueChoisie(event: any): void {
