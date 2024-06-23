@@ -339,16 +339,23 @@ export class BiensAssociesComponent implements OnInit, OnDestroy {
   }
 
   afficherPageDelegationGestion(id: number): void {
-    this.listeDesChoix = [ 'Gérant', 'Démarcheur', 'Agence immobilière'];
-    this.checked = this.listeDesChoix[0];
+    // this.listeDesChoix = [ 'Gérant', 'Démarcheur', 'Agence immobilière'];
+    // this.checked = this.listeDesChoix[0];
     this.bienImmAssocieService.findById(id).subscribe(
       (data) => {
         this.bienImmAssocie = data;
+        this.router.navigate([
+          '/proprietaire/bien-support',
+          this.bienImmAssocie.bienImmobilier.id,
+          'deleguer',
+          'bien-associe',
+          this.bienImmAssocie.id
+        ]);
       }
     )
-    const event = {value: this.checked};
-    this.onChoixChange(event);
-    this.affichage = 2;
+    // const event = {value: this.checked};
+    // this.onChoixChange(event);
+    // this.affichage = 2;
   }
 
   //Fonction pour initialiser le formulaire de délégation de gestion d'un bien

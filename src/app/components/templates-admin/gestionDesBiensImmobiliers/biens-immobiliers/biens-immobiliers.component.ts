@@ -257,16 +257,17 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   }
 
   afficherFormulaireDelegationGestionBien(id: number): void {
-    this.listeDesChoix = [ 'Gérant', 'Démarcheur', 'Agence immobilière'];
-    this.checked = this.listeDesChoix[0];
-    this.bienImmobilierService.findById(id).subscribe(
-      (data) => {
-        this.bienImmobilier = data;
-      }
-    );
-    const event = {value: this.checked};
-    this.onChoixChange(event);
-    this.affichage = 2;
+    // this.listeDesChoix = [ 'Gérant', 'Démarcheur', 'Agence immobilière'];
+    // this.checked = this.listeDesChoix[0];
+    // this.bienImmobilierService.findById(id).subscribe(
+    //   (data) => {
+    //     this.bienImmobilier = data;
+    //   }
+    // );
+    // const event = {value: this.checked};
+    // this.onChoixChange(event);
+    // this.affichage = 2;
+    this.router.navigate(['/proprietaire/deleguer/bien-support', id])
   }
 
   //Fonction pour initialiser le formulaire de délégation de gestion d'un bien
@@ -412,7 +413,7 @@ export class BiensImmobiliersComponent implements OnInit, OnDestroy {
   }
 
   afficherBoutonSiBienDelegue(estDelegue: boolean): boolean {
-    if (this.user.role.code == 'ROLE_PROPRIETAIRE') {
+    if (this.personneService.estProprietaire(this.user.role.code)) {
       if (estDelegue) {
         return false
       } else {

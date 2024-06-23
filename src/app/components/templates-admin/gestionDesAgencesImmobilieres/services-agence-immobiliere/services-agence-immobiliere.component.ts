@@ -190,15 +190,15 @@ export class ServicesAgenceImmobiliereComponent implements OnInit, OnDestroy {
   }
 
   voirPageAjout(): void {
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/agence-immobiliere/add/service']);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/agences-immobilieres/add/service']);
   }
 
   voirPageModifier(id: number): void {
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/agence-immobiliere/update/service/' + id]);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/agences-immobilieres/update/service/' + id]);
   }
 
   voirPageDetail(id: number): void {
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/agence-immobiliere/service/' + id]);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/agences-immobilieres/service/' + id]);
   }
 
   activerServiceAgenceImmobiliere(id: number): void {

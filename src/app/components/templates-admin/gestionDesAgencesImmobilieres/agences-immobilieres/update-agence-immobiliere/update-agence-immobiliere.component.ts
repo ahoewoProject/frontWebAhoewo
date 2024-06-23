@@ -21,6 +21,7 @@ import { environment } from 'src/environments/environment';
 })
 export class UpdateAgenceImmobiliereComponent implements OnInit, OnDestroy {
 
+  isSubmitting: boolean = false;
   logoURL: any;
   user: any;
   menus: MenuItem[] | undefined;
@@ -419,12 +420,13 @@ export class UpdateAgenceImmobiliereComponent implements OnInit, OnDestroy {
   }
 
   modifierAgenceImmobiliere(id: number): void {
-
+    this.isSubmitting = true;
     this.agenceImmobiliereData.append('logoAgence', this.logoAgence);
     this.agenceImmobiliereData.append('agenceImmobiliereJson', JSON.stringify(this.agenceImmobiliere));
 
     this.agenceImmobiliereService.updateAgenceImmobiliere(id, this.agenceImmobiliereData).subscribe(
       (response) => {
+        this.isSubmitting = false;
         if (response.id > 0) {
           this.router.navigate([this.navigateURLBYUSER(this.user) + '/agences-immobilieres'], { queryParams: { modificationReussie: true } });
         } else {
@@ -437,6 +439,7 @@ export class UpdateAgenceImmobiliereComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      this.isSubmitting = false;
       if (error.status == 409) {
         this.messageErreur = "Une agence immobilière avec ce nom existe déjà !";
         this.messageService.add({
@@ -446,6 +449,7 @@ export class UpdateAgenceImmobiliereComponent implements OnInit, OnDestroy {
         });
       }
     })
+
   }
 
   navigateURLBYUSER(user: any): string {

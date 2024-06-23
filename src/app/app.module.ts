@@ -152,6 +152,7 @@ import { DetailPaiementComponent } from './components/templates-admin/gestionDes
 import { PageVisibilityService } from './services/page-visibility.service';
 import { ProposerContratLocationComponent } from './components/templates-admin/gestionDesLocationsEtVentes/demandes-locations/proposer-contrat-location/proposer-contrat-location.component';
 import { ProposerContratVenteComponent } from './components/templates-admin/gestionDesLocationsEtVentes/demandes-achats/proposer-contrat-vente/proposer-contrat-vente.component';
+import { DeleguerBienComponent } from './components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/deleguer-bien/deleguer-bien.component';
 
 @NgModule({
   declarations: [
@@ -254,6 +255,7 @@ import { ProposerContratVenteComponent } from './components/templates-admin/gest
     DetailPaiementComponent,
     ProposerContratLocationComponent,
     ProposerContratVenteComponent,
+    DeleguerBienComponent,
   ],
   imports: [
     BrowserModule,

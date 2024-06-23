@@ -33,6 +33,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AddBienImmobilierComponent implements OnInit, OnDestroy {
 
+  isSubmitting: boolean = false;
   activeIndex: number = 0;
   messageErreur: string | null = null;
   messageSuccess: string | null = null;
@@ -461,6 +462,7 @@ export class AddBienImmobilierComponent implements OnInit, OnDestroy {
 
   //Fonction/ Ajout - Terrain/ Utilisateur Propriétaire - Démarcheur
   ajouterTypeDeBienTerrainIfUserIsProprietaireOrDemarcheur(): void {
+    this.isSubmitting = true;
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
     this.bienImmobilier.quartier = this.quartierSelectionne;
     this.bienImmobilier.personne = this.user;
@@ -474,7 +476,7 @@ export class AddBienImmobilierComponent implements OnInit, OnDestroy {
 
     this.bienImmobilierService.addBienImmobilier(this.bienImmobilierData).subscribe(
       (response) => {
-        console.log(response)
+        this.isSubmitting = false;
         if (response.id > 0) {
           this.bienImmobilierData.delete('images');
           this.bienImmobilierData.delete('bienImmobilierJson');
@@ -494,7 +496,7 @@ export class AddBienImmobilierComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
-      console.log(error);
+      this.isSubmitting = false;
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.messageErreur = "Une erreur s'est produite lors de l'ajout !";
@@ -508,6 +510,8 @@ export class AddBienImmobilierComponent implements OnInit, OnDestroy {
 
   //Fonction/ Ajout - Terrain/ Utilisateur Responsable - Agent Immobilier
   ajouterTypeDeBienTerrainIfUserIsNotProprietaireOrDemarcheur(): void {
+    this.isSubmitting = true;
+
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
     this.bienImmobilier.agenceImmobiliere = this.agenceSelectionnee;
     this.bienImmobilier.quartier = this.quartierSelectionne;
@@ -521,6 +525,8 @@ export class AddBienImmobilierComponent implements OnInit, OnDestroy {
 
     this.bienImmobilierService.addBienImmobilier(this.bienImmobilierData).subscribe(
       (response) => {
+        this.isSubmitting = false;
+
         if (response.id > 0) {
           this.bienImmobilierData.delete('images');
           this.bienImmobilierData.delete('bienImmobilierJson');
@@ -540,7 +546,7 @@ export class AddBienImmobilierComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
-      console.log(error)
+      this.isSubmitting = false;
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.messageErreur = "Une erreur s'est produite lors de l'ajout !";
@@ -563,6 +569,8 @@ export class AddBienImmobilierComponent implements OnInit, OnDestroy {
 
   //Fonction/ Ajout Villa-Immeuble-Maison/ Utilisateur Propriétaire-Démarcheur
   ajouterOtherTypeDeBienIfUserIsProprietaireOrDemarcheur(): void {
+    this.isSubmitting = true;
+
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
     this.bienImmobilier.categorie = this.categorieSelectionnee;
     this.bienImmobilier.quartier = this.quartierSelectionne;
@@ -578,6 +586,8 @@ export class AddBienImmobilierComponent implements OnInit, OnDestroy {
 
     this.bienImmobilierService.addBienImmobilier(this.bienImmobilierData).subscribe(
       (response) => {
+        this.isSubmitting = false;
+
         if (response.id > 0) {
           this.bienImmobilierData.delete('images');
           this.bienImmobilierData.delete('bienImmobilierJson');
@@ -599,7 +609,7 @@ export class AddBienImmobilierComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
-      console.log(error)
+      this.isSubmitting = false;
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.bienImmobilierData.delete('caracteristiquesJson');
@@ -614,6 +624,8 @@ export class AddBienImmobilierComponent implements OnInit, OnDestroy {
 
   //Fonction/ Ajout Villa-Immeuble-Maison/ Utilisateur Responsable - AgentImmobilier
   ajouterOtherTypeDeBienIfUserIsNotProprietaireOrDemarcheur(): void {
+    this.isSubmitting = true;
+
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
     this.bienImmobilier.categorie = this.categorieSelectionnee;
     this.bienImmobilier.agenceImmobiliere = this.agenceSelectionnee;
@@ -629,6 +641,8 @@ export class AddBienImmobilierComponent implements OnInit, OnDestroy {
 
     this.bienImmobilierService.addBienImmobilier(this.bienImmobilierData).subscribe(
       (response) => {
+        this.isSubmitting = false;
+
         if (response.id > 0) {
           this.bienImmobilierData.delete('images');
           this.bienImmobilierData.delete('bienImmobilierJson');
@@ -650,7 +664,7 @@ export class AddBienImmobilierComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
-      console.log(error)
+      this.isSubmitting = false;
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.bienImmobilierData.delete('caracteristiquesJson');

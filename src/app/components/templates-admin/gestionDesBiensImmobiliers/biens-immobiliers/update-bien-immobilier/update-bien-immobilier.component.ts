@@ -34,7 +34,7 @@ import { environment } from 'src/environments/environment';
 export class UpdateBienImmobilierComponent {
 
   affichage = 1;
-
+  isSubmitting: boolean = false;
   elementsParPage = 5;
   numeroDeLaPage = 0;
   activeIndex: number = 0;
@@ -508,6 +508,7 @@ export class UpdateBienImmobilierComponent {
 
   //Fonction/ Modifier - Terrain/ Utilisateur Propriétaire - Demarcheur
   modifierTypeDeBienTerrainIfUserIsProprietaireOrDemarcheur(id: number): void {
+    this.isSubmitting = true;
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
 
     for (const image of this.imagesBienImmobilier) {
@@ -518,7 +519,7 @@ export class UpdateBienImmobilierComponent {
 
     this.bienImmobilierService.updateBienImmobilier(id, this.bienImmobilierData).subscribe(
       (response) => {
-        console.log(response)
+        this.isSubmitting = false;
         if (response.id > 0) {
           this.bienImmobilierData.delete('images');
           this.bienImmobilierData.delete('bienImmobilierJson');
@@ -539,7 +540,7 @@ export class UpdateBienImmobilierComponent {
         }
     },
     (error) => {
-      console.log(error)
+      this.isSubmitting = false;
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.messageErreur = "Une erreur s'est produite lors de modification !";
@@ -553,6 +554,7 @@ export class UpdateBienImmobilierComponent {
 
   //Fonction/ Modifier Terrain/ Utilisateur Responsable - AgentImmobilier
   modifierTypeDeBienTerrainIfUserIsNotProprietaireOrDemarcheur(id: number): void {
+    this.isSubmitting = true;
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
     this.bienImmobilier.agenceImmobiliere = this.agenceSelectionnee;
     this.bienImmobilier.estDelegue = false;
@@ -565,6 +567,7 @@ export class UpdateBienImmobilierComponent {
 
     this.bienImmobilierService.updateBienImmobilier(id, this.bienImmobilierData).subscribe(
       (response) => {
+        this.isSubmitting = false;
         if (response.id > 0) {
           this.bienImmobilierData.delete('images');
           this.bienImmobilierData.delete('bienImmobilierJson');
@@ -585,7 +588,7 @@ export class UpdateBienImmobilierComponent {
         }
     },
     (error) => {
-      console.log(error)
+      this.isSubmitting = false;
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.messageErreur = "Une erreur s'est produite lors de modification !";
@@ -608,6 +611,7 @@ export class UpdateBienImmobilierComponent {
 
   //Fonction/ Modifier -Villa-Immeuble-Maison/ Utilisateur Demarcheur-Propriétaire
   modifierOtherTypeDeBienIfUserIsProprietaireOrDemarcheur(id: number): void {
+    this.isSubmitting = true;
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
 
     for (const image of this.imagesBienImmobilier) {
@@ -619,6 +623,7 @@ export class UpdateBienImmobilierComponent {
 
     this.bienImmobilierService.updateBienImmobilier(id, this.bienImmobilierData).subscribe(
       (response) => {
+        this.isSubmitting = false;
         if (response.id > 0) {
           this.bienImmobilierData.delete('images');
           this.bienImmobilierData.delete('bienImmobilierJson');
@@ -642,7 +647,7 @@ export class UpdateBienImmobilierComponent {
         }
     },
     (error) => {
-      console.log(error)
+      this.isSubmitting = false;
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.bienImmobilierData.delete('caracteristiquesJson');
@@ -657,6 +662,7 @@ export class UpdateBienImmobilierComponent {
 
   //Fonction/ Modifier - Immeubel-Villa-Maison/ Utilisateur Responsable-AgentImmbolier
   modifierOtherTypeDeBienIfUserIsNotProprietaireOrDemarcheur(id: number): void {
+    this.isSubmitting = true;
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
     this.bienImmobilier.agenceImmobiliere = this.agenceSelectionnee;
     this.bienImmobilier.estDelegue = false;
@@ -670,6 +676,7 @@ export class UpdateBienImmobilierComponent {
 
     this.bienImmobilierService.updateBienImmobilier(id, this.bienImmobilierData).subscribe(
       (response) => {
+        this.isSubmitting = false;
         if (response.id > 0) {
           this.bienImmobilierData.delete('images');
           this.bienImmobilierData.delete('bienImmobilierJson');
@@ -692,7 +699,7 @@ export class UpdateBienImmobilierComponent {
         }
     },
     (error) => {
-      console.log(error)
+      this.isSubmitting = false;
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.bienImmobilierData.delete('caracteristiquesJson');
@@ -704,6 +711,7 @@ export class UpdateBienImmobilierComponent {
       });
     })
   }
+
   afficherChampCategorie(designation: string): boolean {
     return designation == 'Chambre' || designation == 'Chambre salon' || designation == 'Bureau' ||
     designation == 'Appartement' || designation == 'Villa' || designation == 'Maison' ||

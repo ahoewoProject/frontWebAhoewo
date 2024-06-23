@@ -23,6 +23,7 @@ import { environment } from 'src/environments/environment';
 })
 export class UpdateBienAssocieComponent implements OnInit, OnDestroy {
 
+  isSubmitting: boolean = false;
   listeDesChoix: any[] | undefined;
   listeDesCategories: string[] = [];
   checked: string | undefined;
@@ -349,6 +350,7 @@ export class UpdateBienAssocieComponent implements OnInit, OnDestroy {
 
   //Fonction/ Modifier Bien associé/ Utilisateur Propriétaire-Démarcheur
   modifierBienAssocieIfUserIsProprietaireOrDemarcheur(id: number): void {
+    this.isSubmitting = true;
     this.bienImmAssocie.typeDeBien = this.typeDeBienSelectionne;
     this.bienImmAssocie.bienImmobilier = this.bienImmobilier;
     this.bienImmAssocie.quartier = this.bienImmobilier.quartier;
@@ -363,6 +365,7 @@ export class UpdateBienAssocieComponent implements OnInit, OnDestroy {
 
     this.bienImmAssocieService.updateBienImmAssocie(id, this.bienImmobilierData).subscribe(
       (response) => {
+        this.isSubmitting = false;
         if (response.id > 0) {
           this.bienImmobilierData.delete('images');
           this.bienImmobilierData.delete('bienImmAssocieJson');
@@ -384,6 +387,7 @@ export class UpdateBienAssocieComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      this.isSubmitting = false;
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmAssocieJson');
       this.bienImmobilierData.delete('caracteristiquesJson');
@@ -398,6 +402,7 @@ export class UpdateBienAssocieComponent implements OnInit, OnDestroy {
 
   //Fonction/ Modifier Bien associé/ Utilisateur Responsable-AgentImmobilier
   modifierBienAssocieIfUserIsResponsableOrAgentImmobilier(id: number): void {
+    this.isSubmitting = true;
     this.bienImmAssocie.typeDeBien = this.typeDeBienSelectionne;
     this.bienImmAssocie.bienImmobilier = this.bienImmobilier;;
     this.bienImmAssocie.quartier = this.bienImmobilier.quartier;
@@ -412,6 +417,7 @@ export class UpdateBienAssocieComponent implements OnInit, OnDestroy {
 
     this.bienImmAssocieService.updateBienImmAssocie(id, this.bienImmobilierData).subscribe(
       (response) => {
+        this.isSubmitting = false;
         if (response.id > 0) {
           this.bienImmobilierData.delete('images');
           this.bienImmobilierData.delete('bienImmAssocieJson');
@@ -433,7 +439,7 @@ export class UpdateBienAssocieComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
-      console.log(error);
+      this.isSubmitting = false;
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmAssocieJson');
       this.bienImmobilierData.delete('caracteristiquesJson');

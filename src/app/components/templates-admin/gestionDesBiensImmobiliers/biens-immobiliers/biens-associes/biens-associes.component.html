@@ -9,12 +9,12 @@
     <!-- Liste des biens associés -->
     <div *ngIf="affichage == 1">
         <div class="row align-items-center pb5">
-            <div class="col-xxl-5">
+            <div class="col-xxl-4">
                 <div class="dashboard_title_area">
                     <h4>Liste des biens associés</h4>
                 </div>
             </div>
-            <div class="col-xxl-7">
+            <div class="col-xxl-8">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
                     <div class="item1 mb15-sm">
                         <div class="search_area">
@@ -73,8 +73,8 @@
                                     <td class="vam">{{ bienImmAssocie.typeDeBien.designation }} </td>
                                     <td class="vam">{{ bienImmAssocie.quartier.ville.libelle }} </td>
                                     <td class="vam">
-                                        <p-tag *ngIf="bienImmAssocie.statutBien == 'Disponible'" severity="success" value="{{bienImmobilier.statutBien}}"></p-tag>
-                                        <p-tag *ngIf="bienImmAssocie.statutBien == 'Loué'" severity="info" value="{{bienImmobilier.statutBien}}"></p-tag>
+                                        <p-tag *ngIf="bienImmAssocie.statutBien == 'Disponible'" severity="success" value="{{bienImmAssocie.statutBien}}"></p-tag>
+                                        <p-tag *ngIf="bienImmAssocie.statutBien == 'Loué'" severity="info" value="{{bienImmAssocie.statutBien}}"></p-tag>
                                     </td>
                                     <td class="vam">
                                         <div class="d-flex">

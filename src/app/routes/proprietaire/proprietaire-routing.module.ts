@@ -36,6 +36,7 @@ import { DetailPlanificationPaiementComponent } from 'src/app/components/templat
 import { DetailPaiementComponent } from 'src/app/components/templates-admin/gestionDesPaiements/paiements/detail-paiement/detail-paiement.component';
 import { ProposerContratLocationComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-locations/proposer-contrat-location/proposer-contrat-location.component';
 import { ProposerContratVenteComponent } from 'src/app/components/templates-admin/gestionDesLocationsEtVentes/demandes-achats/proposer-contrat-vente/proposer-contrat-vente.component';
+import { DeleguerBienComponent } from 'src/app/components/templates-admin/gestionDesBiensImmobiliers/biens-immobiliers/deleguer-bien/deleguer-bien.component';
 
 const routes: Routes = [
   { path: '', component: TemplatesAdminComponent, canActivate: [AuthGuard],
@@ -51,11 +52,13 @@ const routes: Routes = [
       { path: 'bien-support/:id', component: DetailBienImmobilierComponent, canActivate: [AuthGuard] },
       { path: 'add/bien-support', component: AddBienImmobilierComponent, canActivate: [AuthGuard] },
       { path: 'update/bien-support/:id/:designation', component: UpdateBienImmobilierComponent, canActivate: [AuthGuard] },
+      { path: 'deleguer/bien-support/:id', component: DeleguerBienComponent, canActivate: [AuthGuard] },
 
       { path: 'bien-support/:id/biens-associes', component: BiensAssociesComponent, canActivate: [AuthGuard] },
       { path: 'bien-support/:id/bien-associe/:idBienAssocie', component: DetailBienAssocieComponent, canActivate: [AuthGuard] },
       { path: 'bien-support/:id/add/bien-associe', component: AddBienAssocieComponent, canActivate: [AuthGuard] },
       { path: 'bien-support/:id/update/bien-associe/:idBienAssocie/:designation', component: UpdateBienAssocieComponent, canActivate: [AuthGuard] },
+      { path: 'bien-support/:id/deleguer/bien-associe/:idBienAssocie', component: DeleguerBienComponent, canActivate: [AuthGuard] },
 
       { path: 'bien/contrats/:codeBien', component: BiensContratsComponent, canActivate: [AuthGuard] },
       { path: 'bien/contrat-location/:idContratLocation', component: BiensContratsComponent, canActivate: [AuthGuard] },

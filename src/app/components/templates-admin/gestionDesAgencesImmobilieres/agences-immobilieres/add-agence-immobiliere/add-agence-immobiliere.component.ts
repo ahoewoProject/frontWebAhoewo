@@ -20,6 +20,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 })
 export class AddAgenceImmobiliereComponent implements OnInit, OnDestroy {
 
+  isSubmitting: boolean = false;
   logoURL: any;
   user: any;
   menus: MenuItem[] | undefined;
@@ -396,7 +397,7 @@ export class AddAgenceImmobiliereComponent implements OnInit, OnDestroy {
   }
 
   ajouterAgenceImmobiliere(): void {
-
+    this.isSubmitting = true
     this.agenceImmobiliere.quartier = this.quartierSelectionne;
 
     this.agenceImmobiliereData.append('logoAgence', this.logoAgence);
@@ -404,6 +405,7 @@ export class AddAgenceImmobiliereComponent implements OnInit, OnDestroy {
 
     this.agenceImmobiliereService.addAgenceImmobiliere(this.agenceImmobiliereData).subscribe(
       (response) => {
+        this.isSubmitting = false;
         if (response.id > 0) {
           this.router.navigate([this.navigateURLBYUSER(this.user) + '/agences-immobilieres'], { queryParams: { ajoutReussi: true } });
         } else {
@@ -416,6 +418,7 @@ export class AddAgenceImmobiliereComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      this.isSubmitting = false;
       if (error.status == 409) {
         this.messageErreur = "Une agence immobilière avec ce nom existe déjà !";
         this.messageService.add({

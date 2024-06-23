@@ -1,0 +1,82 @@
+<div class="dashboard__content bgc-f7">
+    <div class="row pb40 d-block d-lg-none">
+        <!-- Menu responsive -->
+        <app-menu-responsive></app-menu-responsive>
+        <!-- End Menu responsive -->
+    </div>
+    <p-toast></p-toast>
+
+    <!-- Formulaire d'ajout de délégation de gestion d'un bien -->
+    <div>
+        <div class="row align-items-center">
+            <div class="col-xxl-7">
+                <div class="dashboard_title_area">
+                    <h4>Délégation de gestion de bien</h4>
+                    <p class="text"></p>
+                </div>
+            </div>
+            <div class="col-xxl-5">
+                <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
+                    <a class="ud-btn btn-retour" type="button" (click)="afficherListeBiens(bienImmobilier)">Retour</a>
+                </div>
+            </div>
+            <p-messages severity="info">
+                <ng-template pTemplate>
+                    <div class="ml-2">
+                        <th scope="col">Bien à déléguer : {{bienImmobilier.typeDeBien.designation}} | {{bienImmobilier.quartier.ville.region.libelle}} | {{bienImmobilier.quartier.ville.libelle}} | {{bienImmobilier.quartier.libelle}} | {{bienImmobilier.adresse}} | {{bienImmobilier.surface}}
+                            m²
+                        </th>
+                    </div>
+                </ng-template>
+            </p-messages>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="ps-widget bgc-white bdrs12 p30 mb30 position-relative">
+                    <form [formGroup]="delegationGestionForm" (ngSubmit)="ajouterDelegationGestion()" class="form-style1">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">À qui voulez vous déléguez la gestion de votre bien
+                ?</label>
+                                    <br>
+                                    <p-dropdown class="select" [options]="listeDesChoix" placeholder="Faire un choix" [(ngModel)]="checked" (onChange)="onChoixChange($event)" [ngModelOptions]="{standalone: true}">
+                                    </p-dropdown>
+                                </div>
+                            </div>
+
+                            <div *ngIf="checked == 'Gérant' || checked == 'Démarcheur'" class="col-md-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Matricule</label>
+                                    <input *ngIf="checked == 'Gérant'" type="text" class="form-control" id="matricule" name="matricule" placeholder="Le matricule du gérant" formControlName="matricule" [(ngModel)]="delegationGestionForm1.matricule" required>
+                                    <input *ngIf="checked == 'Démarcheur'" type="text" class="form-control" id="matricule" name="matricule" placeholder="Le matricule du démarcheur" formControlName="matricule" [(ngModel)]="delegationGestionForm1.matricule" required>
+                                    <div *ngIf="checked == 'Gérant'" class="error" [hidden]="!matricule?.hasError('required') || !matricule.touched">La matricule du gérant est obligatoire
+                                    </div>
+                                    <div *ngIf="checked == 'Démarcheur'" class="error" [hidden]="!matricule?.hasError('required') || !matricule.touched">La matricule du démarcheur est obligatoire
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="checked == 'Agence immobilière'" class="col-md-6">
+                                <div class="mb20">
+                                    <label class="heading-color ff-heading fw600 mb10">Code agence</label>
+                                    <input type="text" class="form-control" id="codeAgence" name="codeAgence" placeholder="Le code de l'agence immobilière" formControlName="codeAgence" [(ngModel)]="delegationGestionForm1.codeAgence" required>
+                                    <div class="error" [hidden]="!codeAgence?.hasError('required') || !codeAgence.touched">La code de l'agence immobilière est obligatoire</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="text-end">
+                                <button type="button" (click)="annulerDelegationGestion()" class="ud-btn btn-annuler">Annuler</button> &nbsp;
+                                <button [ngClass]="{ 'disabled-link': delegationGestionForm.invalid }" type="submit" class="ud-btn btn-valider">Déléguer</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Formulaire de délégation de gestion d'un bien -->
+</div>
