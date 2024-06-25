@@ -126,7 +126,7 @@
                                     <div class="mb20">
                                         <label class="heading-color ff-heading fw600 mb10">Pays</label>
                                         <p-dropdown class="select" emptyFilterMessage="Aucun résultat trouvé" emptyMessage="Aucun résultat trouvé" [options]="listeDesPays" placeholder="Choisir le pays" formControlName="pays" [filter]="true" filterBy="libelle" filterPlaceholder="Rechercher"
-                                            (onChange)="paysChoisi($event)" [showClear]="true" optionLabel="libelle" [(ngModel)]="listeDesPays[0]">
+                                            [(ngModel)]="paysSelectionne" (onChange)="paysChoisi($event)" [showClear]="true" optionLabel="libelle" [(ngModel)]="listeDesPays[0]">
                                         </p-dropdown>
                                         <div class="error" [hidden]="!pays?.hasError('required') || !pays.touched">La selection du pays est obligatoire
                                         </div>
@@ -478,7 +478,7 @@
                                 <div class="d-sm-flex justify-content-between">
                                     <button class="ud-btn btn-retour" type="button" (click)="etape2()"><i class="pi pi-arrow-left"></i>
                 Précédent</button>
-                                    <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': step1Form.invalid || step2Form.invalid }" (click)="enregistrerDelegationGestion()">Enregistrer</button>
+                                    <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': step1Form.invalid || step2Form.invalid || isSubmitting }" (click)="enregistrerDelegationGestion()"><i *ngIf="isSubmitting" class="pi pi-spin pi-spinner"></i> Enregistrer</button>
                                 </div>
                             </div>
                         </div>
@@ -665,7 +665,7 @@
 
                             <div class="col-md-12 mt30">
                                 <div class="d-sm-flex justify-content-between">
-                                    <button class="ud-btn btn-retour" (click)="etape3()"><i class="pi pi-arrow-left"></i>
+                                    <button class="ud-btn btn-retour" (click)="etape2()"><i class="pi pi-arrow-left"></i>
                 Précédent</button>
                                     <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': step1Form.invalid || step2Form.invalid }" (click)="etape4()" type="button">Suivant<i class="pi pi-arrow-right"></i></button>
                                 </div>
@@ -912,7 +912,7 @@
                                 <div class="d-sm-flex justify-content-between">
                                     <button class="ud-btn btn-retour" type="button" (click)="etape2()"><i class="pi pi-arrow-left"></i>
                 Précédent</button>
-                                    <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': step1Form.invalid || step2Form.invalid }" (click)="enregistrerDelegationGestion()">Enregistrer</button>
+                                    <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': step1Form.invalid || step2Form.invalid || isSubmitting }" (click)="enregistrerDelegationGestion()"><i *ngIf="isSubmitting" class="pi pi-spin pi-spinner"></i> Enregistrer</button>
                                 </div>
                             </div>
                         </div>
@@ -1170,7 +1170,7 @@
                                 <div class="d-sm-flex justify-content-between">
                                     <button class="ud-btn btn-retour" type="button" (click)="etape3()"><i class="pi pi-arrow-left"></i>
                 Précédent</button>
-                                    <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': step1Form.invalid || step2Form.invalid }" (click)="enregistrerDelegationGestion()">Enregistrer</button>
+                                    <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': step1Form.invalid || step2Form.invalid || isSubmitting }" (click)="enregistrerDelegationGestion()"><i *ngIf="isSubmitting" class="pi pi-spin pi-spinner"></i> Enregistrer</button>
                                 </div>
                             </div>
                         </div>

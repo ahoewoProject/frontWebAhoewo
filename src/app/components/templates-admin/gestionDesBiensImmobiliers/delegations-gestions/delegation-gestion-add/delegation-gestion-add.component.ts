@@ -26,6 +26,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 })
 export class DelegationGestionAddComponent implements OnInit, OnDestroy {
 
+  isSubmitting: boolean = false;
   agencesImmobilieres: AgenceImmobiliere[] = [];
   typesDeBien: TypeDeBien[] = [];
   listeDesPays: Pays[] = [];
@@ -560,6 +561,7 @@ export class DelegationGestionAddComponent implements OnInit, OnDestroy {
   }
 
   deleguerNotBienAssocieIfUserDemarcheurOrGerant(): void {
+    this.isSubmitting = true;
     this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
     this.delegationGestionForm2.categorie = this.categorieSelectionnee;
     this.delegationGestionForm2.quartier = this.quartierSelectionne;
@@ -573,7 +575,7 @@ export class DelegationGestionAddComponent implements OnInit, OnDestroy {
 
     this.delegationGestionService.enregistrerDelegationGestion(this.delegationGestionData).subscribe(
       (response) => {
-        console.log(response)
+        this.isSubmitting = false;
         if (response.id > 0) {
           this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegations-gestions'], { queryParams: { delegationReussie: true } });
         } else {
@@ -590,6 +592,7 @@ export class DelegationGestionAddComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      this.isSubmitting = false;
       this.delegationGestionData.delete('images');
       this.delegationGestionData.delete('delegationGestionJson');
       this.delegationGestionData.delete('caracteristiquesJson');
@@ -612,6 +615,7 @@ export class DelegationGestionAddComponent implements OnInit, OnDestroy {
   }
 
   deleguerNotBienAssocieIfUserNotDemarcheurOrGerant(): void {
+    this.isSubmitting = true;
     this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
     this.delegationGestionForm2.categorie = this.categorieSelectionnee;
     this.delegationGestionForm2.agenceImmobiliere = this.agenceSelectionnee;
@@ -626,6 +630,7 @@ export class DelegationGestionAddComponent implements OnInit, OnDestroy {
 
     this.delegationGestionService.enregistrerDelegationGestion(this.delegationGestionData).subscribe(
       (response) => {
+        this.isSubmitting = false;
         if (response.id > 0) {
           this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegations-gestions'], { queryParams: { delegationReussie: true } });
         } else {
@@ -642,6 +647,7 @@ export class DelegationGestionAddComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      this.isSubmitting = false;
       this.delegationGestionData.delete('images');
       this.delegationGestionData.delete('delegationGestionJson');
       this.delegationGestionData.delete('caracteristiquesJson');
@@ -672,6 +678,7 @@ export class DelegationGestionAddComponent implements OnInit, OnDestroy {
   }
 
   deleguerBienAssocieIfUserDemarcheurOrGerant(): void {
+    this.isSubmitting = true;
     this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
     this.delegationGestionForm2.categorie = this.categorieSelectionnee;
 
@@ -684,7 +691,7 @@ export class DelegationGestionAddComponent implements OnInit, OnDestroy {
 
     this.delegationGestionService.enregistrerDelegationGestion(this.delegationGestionData).subscribe(
       (response) => {
-        console.log(response)
+        this.isSubmitting = false;
         if (response.id > 0) {
           this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegations-gestions'], { queryParams: { delegationReussie: true } });
         } else {
@@ -701,6 +708,7 @@ export class DelegationGestionAddComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      this.isSubmitting = false;
       this.delegationGestionData.delete('images');
       this.delegationGestionData.delete('delegationGestionJson');
       this.delegationGestionData.delete('caracteristiquesJson');
@@ -723,6 +731,7 @@ export class DelegationGestionAddComponent implements OnInit, OnDestroy {
   }
 
   deleguerBienAssocieIfUserNotDemarcheurOrGerant(): void {
+    this.isSubmitting = true;
     this.delegationGestionForm2.typeDeBien = this.typeDeBienSelectionne;
     this.delegationGestionForm2.categorie = this.categorieSelectionnee;
     this.delegationGestionForm2.agenceImmobiliere = this.agenceSelectionnee;
@@ -736,6 +745,7 @@ export class DelegationGestionAddComponent implements OnInit, OnDestroy {
 
     this.delegationGestionService.enregistrerDelegationGestion(this.delegationGestionData).subscribe(
       (response) => {
+        this.isSubmitting = false;
         if (response.id > 0) {
           this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegations-gestions'], { queryParams: { delegationReussie: true } });
           this.messageSuccess = "Le délégation de gestion a été enregistrer avec succès.";
@@ -758,6 +768,7 @@ export class DelegationGestionAddComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      this.isSubmitting = false;
       this.delegationGestionData.delete('images');
       this.delegationGestionData.delete('delegationGestionJson');
       this.delegationGestionData.delete('caracteristiquesJson');

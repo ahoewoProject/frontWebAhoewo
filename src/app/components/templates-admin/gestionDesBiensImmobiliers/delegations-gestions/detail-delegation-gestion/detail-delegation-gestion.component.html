@@ -6,6 +6,7 @@
     </div>
 
     <p-toast [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'1000ms'" [hideTransitionOptions]="'3000ms'" [showTransformOptions]="'translateX(100%)'"></p-toast>
+    <p-confirmDialog [style]="{width: '50vw'}" acceptLabel="Oui" rejectLabel="Non" acceptButtonStyleClass="accept-label" rejectButtonStyleClass="reject-label"></p-confirmDialog>
 
     <!-- Details d'une délégation de gestion de bien - Type De Bien (Terrain) -->
     <div *ngIf="affichage == 0 && isTypeDeBienTerrain(delegationGestion.bienImmobilier.typeDeBien.designation)">
@@ -17,10 +18,35 @@
             </div>
             <div class="col-xxl-7">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <a class="ud-btn btn-annuler" type="button" (click)="voirListeContratsBien(delegationGestion.bienImmobilier.codeBien)">Contrats</a>&nbsp;
-                    <a *ngIf="delegationGestion.etatDelegation == true  && delegationGestion.statutDelegation == 1 && (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT')"
-                        class="ud-btn btn-valider" type="button" (click)="afficherFormulairePublicationBien(delegationGestion, delegationGestion.bienImmobilier)">Publier</a> &nbsp;
-                    <a class="ud-btn btn-retour" type="button" (click)="voirListeDelegationsGestions()">Retour</a>
+                    <!-- Accepter bouton -->
+                    <ng-container *ngIf="delegationGestion.statutDelegation == 0 && delegationGestion.porteeGestion &&
+  (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_GERANT' || user.role.code == 'ROLE_DEMARCHEUR')">
+                        <a class="ud-btn btn-valider" type="button" (click)="accepterDelegationGestion(delegationGestion.id)">Accepter</a>&nbsp;
+                    </ng-container>
+
+                    <!-- Refuser bouton -->
+                    <ng-container *ngIf="delegationGestion.statutDelegation == 0 && delegationGestion.porteeGestion &&
+  (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_GERANT' || user.role.code == 'ROLE_DEMARCHEUR')">
+                        <a class="ud-btn btn-danger" type="button" (click)="refuserDelegationGestion(delegationGestion.id)">Refuser</a>&nbsp;
+                    </ng-container>
+
+                    <!-- Contrats bouton -->
+                    <ng-container>
+                        <a class="ud-btn btn-annuler" type="button" (click)="voirListeContratsBien(delegationGestion)">Contrats</a>&nbsp;
+                    </ng-container>
+
+                    <!-- Publier bouton -->
+                    <ng-container *ngIf="delegationGestion.etatDelegation && delegationGestion.statutDelegation == 1 &&
+  (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT')">
+                        <a class="ud-btn btn-valider" type="button" (click)="afficherFormulairePublicationBien(delegationGestion, delegationGestion.bienImmobilier)">Publier</a>&nbsp;
+                    </ng-container>
+
+                    <!-- Retour bouton -->
+                    <ng-container>
+                        <a class="ud-btn btn-retour" type="button" (click)="voirListeDelegationsGestions()">Retour</a>
+                    </ng-container>
+
+
                 </div>
             </div>
         </div>
@@ -197,10 +223,34 @@
             </div>
             <div class="col-xxl-7">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <a class="ud-btn btn-annuler" type="button" (click)="voirListeContratsBien(delegationGestion.bienImmobilier.codeBien)">Contrats</a>&nbsp;
-                    <a *ngIf="delegationGestion.etatDelegation == true  && delegationGestion.statutDelegation == 1 && (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT')"
-                        class="ud-btn btn-valider" type="button" (click)="afficherFormulairePublicationBien(delegationGestion, delegationGestion.bienImmobilier)">Publier</a>&nbsp;
-                    <a class="ud-btn btn-retour" type="button" (click)="voirListeDelegationsGestions()">Retour</a>
+                    <!-- Accepter bouton -->
+                    <ng-container *ngIf="delegationGestion.statutDelegation == 0 && delegationGestion.porteeGestion &&
+(user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_GERANT' || user.role.code == 'ROLE_DEMARCHEUR')">
+                        <a class="ud-btn btn-valider" type="button" (click)="accepterDelegationGestion(delegationGestion.id)">Accepter</a>&nbsp;
+                    </ng-container>
+
+                    <!-- Refuser bouton -->
+                    <ng-container *ngIf="delegationGestion.statutDelegation == 0 && delegationGestion.porteeGestion &&
+(user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_GERANT' || user.role.code == 'ROLE_DEMARCHEUR')">
+                        <a class="ud-btn btn-danger" type="button" (click)="refuserDelegationGestion(delegationGestion.id)">Refuser</a>&nbsp;
+                    </ng-container>
+
+                    <!-- Contrats bouton -->
+                    <ng-container>
+                        <a class="ud-btn btn-annuler" type="button" (click)="voirListeContratsBien(delegationGestion)">Contrats</a>&nbsp;
+                    </ng-container>
+
+                    <!-- Publier bouton -->
+                    <ng-container *ngIf="delegationGestion.etatDelegation && delegationGestion.statutDelegation == 1 &&
+(user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT')">
+                        <a class="ud-btn btn-valider" type="button" (click)="afficherFormulairePublicationBien(delegationGestion, delegationGestion.bienImmobilier)">Publier</a>&nbsp;
+                    </ng-container>
+
+                    <!-- Retour bouton -->
+                    <ng-container>
+                        <a class="ud-btn btn-retour" type="button" (click)="voirListeDelegationsGestions()">Retour</a>
+                    </ng-container>
+
                 </div>
             </div>
         </div>
@@ -564,10 +614,34 @@
             </div>
             <div class="col-xxl-7">
                 <div class="dashboard_search_meta d-md-flex align-items-center justify-content-xxl-end">
-                    <a class="ud-btn btn-annuler" type="button" (click)="voirListeContratsBien(delegationGestion.bienImmobilier.codeBien)">Contrats</a>&nbsp;
-                    <a *ngIf="delegationGestion.etatDelegation == true  && delegationGestion.statutDelegation == 1 && (user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT')"
-                        class="ud-btn btn-valider" type="button" (click)="afficherFormulairePublicationBien(delegationGestion, delegationGestion.bienImmobilier)">Publier</a> &nbsp;
-                    <a class="ud-btn btn-retour" type="button" (click)="voirListeDelegationsGestions()">Retour</a>
+                    <!-- Accepter bouton -->
+                    <ng-container *ngIf="delegationGestion.statutDelegation == 0 && delegationGestion.porteeGestion &&
+(user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_GERANT' || user.role.code == 'ROLE_DEMARCHEUR')">
+                        <a class="ud-btn btn-valider" type="button" (click)="accepterDelegationGestion(delegationGestion.id)">Accepter</a>&nbsp;
+                    </ng-container>
+
+                    <!-- Refuser bouton -->
+                    <ng-container *ngIf="delegationGestion.statutDelegation == 0 && delegationGestion.porteeGestion &&
+(user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_GERANT' || user.role.code == 'ROLE_DEMARCHEUR')">
+                        <a class="ud-btn btn-danger" type="button" (click)="refuserDelegationGestion(delegationGestion.id)">Refuser</a>&nbsp;
+                    </ng-container>
+
+                    <!-- Contrats bouton -->
+                    <ng-container>
+                        <a class="ud-btn btn-annuler" type="button" (click)="voirListeContratsBien(delegationGestion)">Contrats</a>&nbsp;
+                    </ng-container>
+
+                    <!-- Publier bouton -->
+                    <ng-container *ngIf="delegationGestion.etatDelegation && delegationGestion.statutDelegation == 1 &&
+(user.role.code == 'ROLE_RESPONSABLE' || user.role.code == 'ROLE_AGENTIMMOBILIER' || user.role.code == 'ROLE_DEMARCHEUR' || user.role.code == 'ROLE_GERANT')">
+                        <a class="ud-btn btn-valider" type="button" (click)="afficherFormulairePublicationBien(delegationGestion, delegationGestion.bienImmobilier)">Publier</a>&nbsp;
+                    </ng-container>
+
+                    <!-- Retour bouton -->
+                    <ng-container>
+                        <a class="ud-btn btn-retour" type="button" (click)="voirListeDelegationsGestions()">Retour</a>
+                    </ng-container>
+
                 </div>
             </div>
             <p-messages severity="info">

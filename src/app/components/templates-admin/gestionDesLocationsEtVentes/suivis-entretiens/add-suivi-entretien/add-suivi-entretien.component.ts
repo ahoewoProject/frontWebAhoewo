@@ -43,10 +43,10 @@ export class AddSuiviEntretienComponent implements OnInit, OnDestroy {
 
   initActivatedRoute(): void {
     this.activatedRoute.paramMap.subscribe(params => {
-      const id = params.get('id');
+      const idContrat = params.get('idContrat');
 
-      if (id) {
-        this.detailContratLocation(parseInt(id));
+      if (idContrat) {
+        this.detailContratLocation(parseInt(idContrat));
       }
     });
   }
@@ -54,7 +54,8 @@ export class AddSuiviEntretienComponent implements OnInit, OnDestroy {
   detailContratLocation(id: number): void {
     this.contratLocationService.findById(id).subscribe(
       (data) => {
-        this.suiviEntretien.contratLocation = data;
+        console.log(data)
+        this.contratLocationSelectionne = data;
       }
     )
   }
@@ -93,6 +94,7 @@ export class AddSuiviEntretienComponent implements OnInit, OnDestroy {
   }
 
   ajouterSuiviEntretien(): void {
+    this.suiviEntretien.contratLocation = this.contratLocationSelectionne;
     this.suiviEntretienService.ajouterSuiviEntretien(this.suiviEntretien).subscribe(
       (response) => {
         if (response.id > 0) {

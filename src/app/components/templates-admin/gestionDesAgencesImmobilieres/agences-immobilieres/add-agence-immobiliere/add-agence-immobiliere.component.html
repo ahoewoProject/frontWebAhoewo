@@ -247,7 +247,7 @@
                             <div class="col-md-12 mt30">
                                 <div class="d-sm-flex justify-content-between">
                                     <button class="ud-btn btn-retour" type="button" (click)="etape2()"><i class="pi pi-arrow-left"></i> Précédent</button>
-                                    <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': agenceStep1Form.invalid || agenceStep2Form.invalid || isSubmitting }" (click)="ajouterAgenceImmobiliere()">Ajouter</button>
+                                    <button class="ud-btn btn-valider" [ngClass]="{ 'disabled-link': agenceStep1Form.invalid || agenceStep2Form.invalid || isSubmitting }" (click)="ajouterAgenceImmobiliere()"><i *ngIf="isSubmitting" class="pi pi-spin pi-spinner"></i> Ajouter</button>
                                 </div>
                             </div>
                         </div>

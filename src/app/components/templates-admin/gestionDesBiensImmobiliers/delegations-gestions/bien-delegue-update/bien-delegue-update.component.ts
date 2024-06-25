@@ -30,6 +30,7 @@ import { PersonneService } from 'src/app/services/gestionDesComptes/personne.ser
 })
 export class BienDelegueUpdateComponent implements OnInit, OnDestroy {
 
+  isSubmitting: boolean = false;
   menus: MenuItem[] | undefined;
   listeDesCategories: string[] = [];
   imagesBienImmobilier: any[] = [];
@@ -633,6 +634,7 @@ export class BienDelegueUpdateComponent implements OnInit, OnDestroy {
   }
 
   modifierTypeDeBienTerrain(id: number): void {
+    this.isSubmitting = true;
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
 
     for (const image of this.imagesBienImmobilier) {
@@ -643,7 +645,7 @@ export class BienDelegueUpdateComponent implements OnInit, OnDestroy {
 
     this.bienImmobilierService.updateBienImmobilier(id, this.bienImmobilierData).subscribe(
       (response) => {
-        console.log(response)
+        this.isSubmitting = false;
         if (response.id > 0) {
           this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegations-gestions'], { queryParams: { modificationReussie: true } });
         } else {
@@ -662,7 +664,7 @@ export class BienDelegueUpdateComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
-      console.log(error);
+      this.isSubmitting = false;
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.messageErreur = "Une erreur s'est produite lors de modification !";
@@ -675,6 +677,7 @@ export class BienDelegueUpdateComponent implements OnInit, OnDestroy {
   }
 
   modifierOtherTypeDeBien(id: number): void {
+    this.isSubmitting = true;
     this.bienImmobilier.typeDeBien = this.typeDeBienSelectionne;
 
     for (const image of this.imagesBienImmobilier) {
@@ -686,6 +689,7 @@ export class BienDelegueUpdateComponent implements OnInit, OnDestroy {
 
     this.bienImmobilierService.updateBienImmobilier(id, this.bienImmobilierData).subscribe(
       (response) => {
+        this.isSubmitting = false;
         if (response.id > 0) {
           this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegations-gestions'], { queryParams: { modificationReussie: true } });
           this.messageSuccess = "Le bien a été modifié avec succès.";
@@ -706,7 +710,7 @@ export class BienDelegueUpdateComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
-      console.log(error);
+      this.isSubmitting = false;
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmobilierJson');
       this.bienImmobilierData.delete('caracteristiquesJson');
@@ -720,7 +724,7 @@ export class BienDelegueUpdateComponent implements OnInit, OnDestroy {
   }
 
   modifierBienImmAssocie(id: number): void {
-
+    this.isSubmitting = true;
     this.bienImmAssocie.typeDeBien = this.typeDeBienSelectionne;
 
     for (const image of this.imagesBienImmobilier) {
@@ -732,6 +736,7 @@ export class BienDelegueUpdateComponent implements OnInit, OnDestroy {
 
     this.bienImmAssocieService.updateBienImmAssocie(id, this.bienImmobilierData).subscribe(
       (response) => {
+        this.isSubmitting = false;
         if (response.id > 0) {
           this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegations-gestions'], { queryParams: { modificationReussie: true } });
         } else {
@@ -750,6 +755,7 @@ export class BienDelegueUpdateComponent implements OnInit, OnDestroy {
         }
     },
     (error) => {
+      this.isSubmitting = false;
       this.bienImmobilierData.delete('images');
       this.bienImmobilierData.delete('bienImmAssocieJson');
       this.bienImmobilierData.delete('caracteristiquesJson');

@@ -66,8 +66,7 @@
                                             <button pButton type="button" icon="pi pi-eye" (click)="afficherPageDetail(suiviEntretien.id)" pTooltip="Détails" tooltipPosition="top" class="p-button-text p-button-info">
                       </button>
 
-                                            <button pButton type="button" *ngIf="suiviEntretien.etatSuiviEntretien == 'Terminé' || suiviEntretien.etatSuiviEntretien == 'En cours'" icon="pi pi-pencil pi-lg" (click)="afficherPageModifier(suiviEntretien.id)" pTooltip="Modifier" tooltipPosition="top"
-                                                class="p-button-text p-button-warning">
+                                            <button pButton type="button" *ngIf="suiviEntretien.etatSuiviEntretien == 'En attente'" icon="pi pi-pencil pi-lg" (click)="afficherPageModifier(suiviEntretien.id)" pTooltip="Modifier" tooltipPosition="top" class="p-button-text p-button-warning">
                       </button>
 
                                             <button *ngIf="suiviEntretien.etatSuiviEntretien == 'En attente'" pButton type="button" icon="pi pi-check-circle pi-lg" (click)="debuterEntretien(suiviEntretien.id)" pTooltip="Débuter cet entretien" tooltipPosition="right" class="p-button-text p-button-success">

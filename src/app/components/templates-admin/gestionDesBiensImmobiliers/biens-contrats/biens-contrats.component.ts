@@ -109,6 +109,7 @@ export class BiensContratsComponent implements OnInit, OnDestroy {
   }
 
   performActionBasedOnURL(contratBien: any): void {
+    console.log(contratBien)
     const currentURL = this.router.url;
     const segments = currentURL.split('/');
 
@@ -119,13 +120,8 @@ export class BiensContratsComponent implements OnInit, OnDestroy {
         this.router.navigate([this.navigateURLBYUSER(this.user) + '/bien-support/', contratBien.bienImmobilier.id, 'bien-associe', contratBien.id]);
       }
     } else if (segments.includes('bien-delegue')) {
-      this.delegationGestionService.findByBienImmobilier(contratBien.id).subscribe(
-        (data) => {
-          this.delegationGestion = data;
-
-          this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegation-gestion', this.delegationGestion.id], { queryParams: { idBien: this.delegationGestion.bienImmobilier.id } });
-        }
-      )
+      const delegationGestionInStore = JSON.parse(localStorage.getItem('delegationGestion')!);
+      this.router.navigate([this.navigateURLBYUSER(this.user) + '/delegation-gestion', delegationGestionInStore.id], { queryParams: { idBien: delegationGestionInStore.bienImmobilier.id } });
     }
   }
 
@@ -134,15 +130,6 @@ export class BiensContratsComponent implements OnInit, OnDestroy {
     designation == 'Villa' ||
     designation == 'Maison' ||
     designation == 'Immeuble';
-  }
-
-  private isBienAssocie(designation: string): boolean {
-    return designation == 'Chambre' ||
-    designation == 'Chambre salon' ||
-    designation == 'Appartement' ||
-    designation == 'Magasin' ||
-    designation == 'Bureau' ||
-    designation ==  'Boutique';
   }
 
   afficherContratVente(contratBien: BienImmobilier) {

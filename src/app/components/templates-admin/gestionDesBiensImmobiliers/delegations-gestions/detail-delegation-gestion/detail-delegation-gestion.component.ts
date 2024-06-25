@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
+import { ConfirmationService, ConfirmEventType, MenuItem, MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { BienImmobilier } from 'src/app/models/gestionDesBiensImmobiliers/BienImmobilier';
 import { Caracteristiques } from 'src/app/models/gestionDesBiensImmobiliers/Caracteristiques';
@@ -211,6 +211,100 @@ export class DetailDelegationGestionComponent implements OnInit, OnDestroy {
     designation == 'Immeuble';
   }
 
+  accepterDelegationGestion(id: number): void {
+    this.confirmationService.confirm({
+      message: 'Vous êtes sûr de vouloir accepter la délégation de la gestion de ce bien ?',
+      header: "Acceptation de la délégation de gestion d'un bien",
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.delegationGestionService.accepterDelegationGestion(id).subscribe(
+          (response) => {
+            this.detailDelegationGestion(id)
+            this.messageSuccess = "La délégation de la gestion de ce bien a été accepté avec succès !";
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Acceptation de la délégation de gestion d\'un bien confirmée',
+              detail: this.messageSuccess
+            });
+          },
+          error => {
+            if (error.status == 400) {
+              this.messageErreur = "Impossible d'accepter cette délégation de gestion car ce bien est délégué à un autre utilisateur !"
+              this.messageService.add({
+                severity: 'warn',
+                summary: 'Acceptation de la délégation de gestion impossible',
+                detail: this.messageErreur
+              })
+            } else {
+              this.messageErreur = "Une erreur s'est produite lors de l'acceptation de la délégation de gestion !"
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur lors de l\'acceptation de la délégation de gestion',
+                detail: this.messageErreur
+              })
+            }
+          }
+        );
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Acceptation de la délégation de gestion d\'un bien rejetée',
+              detail: "Vous avez rejeté l'acceptation de la délégation de gestion de ce bien !"
+            });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Acceptation de la délégation de gestion d\'un bien annulée',
+              detail: "Vous avez annulé l'acceptation de la délégation de gestion de ce bien !"
+            });
+            break;
+        }
+      }
+    });
+  }
+
+  refuserDelegationGestion(id: number): void {
+    this.confirmationService.confirm({
+      message: 'Vous êtes sûr de vouloir refuser la délégation de la gestion de ce bien ?',
+      header: "Refus de la délégation de gestion d'un bien",
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.delegationGestionService.refuserDelegationGestion(id).subscribe(
+          (response) => {
+            this.detailDelegationGestion(id)
+            this.messageSuccess = "La délégation de la gestion de ce bien a été refusé avec succès !";
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Refus de la délégation de gestion d\'un bien confirmé',
+              detail: this.messageSuccess
+            });
+        });
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Refus de la délégation de gestion d\'un bien rejeté',
+              detail: "Vous avez rejeté le refus de la délégation de gestion de ce bien !"
+            });
+            break;
+          case ConfirmEventType.CANCEL:
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Refus de la délégation de gestion d\'un bien annulée',
+              detail: "Vous avez annulé le refus de la délégation de gestion de ce bien !"
+            });
+            break;
+        }
+      }
+    });
+  }
+
   afficherFormulairePublicationBien(delegationGestion: DelegationGestion, bien: BienImmobilier): void {
     this.resetPublicationForm();
     this.bienChoisi(bien);
@@ -377,12 +471,12 @@ export class DetailDelegationGestionComponent implements OnInit, OnDestroy {
 
   retourDetailDelegationGestion(): void {
     const delegationGestionInStore = JSON.parse(localStorage.getItem('delegationGestion')!);
-    console.log(delegationGestionInStore)
     this.afficherPageDetail(delegationGestionInStore.id, delegationGestionInStore.bienImmobilier.id);
   }
 
-  voirListeContratsBien(codeBien: string): void {
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/bien-delegue/contrats/', codeBien]);
+  voirListeContratsBien(delegationGestion: any): void {
+    localStorage.setItem('delegationGestion', JSON.stringify(delegationGestion));
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/bien-delegue/contrats/', delegationGestion.bienImmobilier.codeBien]);
   }
 
   afficherCategorie(designation: string): boolean {

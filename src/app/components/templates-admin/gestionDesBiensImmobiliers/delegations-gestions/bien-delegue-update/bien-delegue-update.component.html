@@ -224,7 +224,7 @@
                                 <div class="d-sm-flex justify-content-between">
                                     <button class="ud-btn btn-retour" type="button" (click)="etape2()"><i class="pi pi-arrow-left"></i>
                 Précédent</button>
-                                    <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': step1Form.invalid || step2Form.invalid }" (click)="modifierBien(bienImmobilier.id)">Modifier</button>
+                                    <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': step1Form.invalid || step2Form.invalid || isSubmitting }" (click)="modifierBien(bienImmobilier.id)"><i *ngIf="isSubmitting" class="pi pi-spin pi-spinner"></i> Modifier</button>
                                 </div>
                             </div>
                         </div>
@@ -669,7 +669,7 @@
                                 <div class="d-sm-flex justify-content-between">
                                     <button class="ud-btn btn-retour" type="button" (click)="etape3()"><i class="pi pi-arrow-left"></i>
                 Précédent</button>
-                                    <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': step1Form.invalid || step2Form.invalid }" (click)="modifierBien(bienImmobilier.id)">Modifier</button>
+                                    <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': step1Form.invalid || step2Form.invalid || isSubmitting }" (click)="modifierBien(bienImmobilier.id)"><i *ngIf="isSubmitting" class="pi pi-spin pi-spinner"></i> Modifier</button>
                                 </div>
                             </div>
                         </div>
@@ -1232,7 +1232,7 @@
                                 <div class="d-sm-flex justify-content-between">
                                     <button class="ud-btn btn-retour" type="button" (click)="etape2()"><i class="pi pi-arrow-left"></i>
                 Précédent</button>
-                                    <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': step1Form.invalid || step2Form.invalid }" (click)="modifierBien(bienImmAssocie.id)" type="button">Modifier</button>
+                                    <button class="ud-btn btn-modifier" [ngClass]="{ 'disabled-link': step1Form.invalid || step2Form.invalid || isSubmitting }" (click)="modifierBien(bienImmAssocie.id)" type="button"><i *ngIf="isSubmitting" class="pi pi-spin pi-spinner"></i> Modifier</button>
                                 </div>
                             </div>
                         </div>

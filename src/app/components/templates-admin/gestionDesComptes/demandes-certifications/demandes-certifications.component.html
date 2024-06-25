@@ -151,10 +151,10 @@
                         </div>
                     </div>
                     &nbsp;
-                    <a type="button" *ngIf="visibleAddForm == 0 && demandeCertifications.totalElements == 0 && user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR' && user.etatCompte == true" (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
+                    <a type="button" *ngIf="visibleAddForm == 0 && demandeCertifications.totalElements == 0 && user.role.code == 'ROLE_PROPRIETAIRE' || user.role.code == 'ROLE_DEMARCHEUR' && user.etatCompte == false" (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
             Demander la certification de compte
           </a>
-                    <a type="button" *ngIf="visibleAddForm == 0 && agencesImmobilieres.length !== 0 && demandeCertifications.totalElements == 0 && user.role.code == 'ROLE_RESPONSABLE' && user.etatCompte == true" (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
+                    <a type="button" *ngIf="visibleAddForm == 0 && agencesImmobilieres.length !== 0 && demandeCertifications.totalElements == 0 && user.role.code == 'ROLE_RESPONSABLE' && user.etatCompte == false" (click)="afficherFormulaireAjouter()" class="ud-btn btn-thm">
             Demander la certification de son agence
           </a>
                 </div>
