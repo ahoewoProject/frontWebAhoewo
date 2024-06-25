@@ -157,7 +157,7 @@ export class AgencesImmobilieresComponent implements OnInit, OnDestroy {
   }
 
   voirPageServices(id: number): void {
-    this.router.navigate([this.navigateURLBYUSER(this.user) + '/agence-immobiliere/' + id + '/services']);
+    this.router.navigate([this.navigateURLBYUSER(this.user) + '/agences-immobilieres/' + id + '/services']);
   }
 
   activerAgence(id: number): void {

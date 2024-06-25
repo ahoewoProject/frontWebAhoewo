@@ -163,7 +163,7 @@ export class GestionDesLocationsEtVentesComponent implements OnInit, OnDestroy {
       (data) => {
         this.nbreSuiviEntretien = data.length;
         this.nbreSuiviEntretienAttente = data.filter(s => s.etatSuiviEntretien == 'En attente').length;
-        this.nbreSuiviEntretienDebute = data.filter(s => s.etatSuiviEntretien == 'Débuté').length;
+        this.nbreSuiviEntretienDebute = data.filter(s => s.etatSuiviEntretien == 'En cours').length;
         this.nbreSuiviEntretienTermine = data.filter(s => s.etatSuiviEntretien == 'Terminé').length;
 
         this.initChartJsSuiviEntretien();
@@ -316,7 +316,7 @@ export class GestionDesLocationsEtVentesComponent implements OnInit, OnDestroy {
     const textColor = documentStyle.getPropertyValue('--text-color');
 
     this.dataSuiviEntretien = {
-        labels: ['En attente', 'Débutés', 'Terminés'],
+        labels: ['En attente', 'En cours', 'Terminés'],
         datasets: [
             {
                 data: [this.nbreSuiviEntretienAttente, this.nbreSuiviEntretienDebute, this.nbreSuiviEntretienTermine],

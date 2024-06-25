@@ -50,7 +50,7 @@ const routes: Routes = [
       { path: 'profil', component: ProfilComponent, canActivate: [AuthGuard] },
 
       { path: 'agences-immobilieres', component: AgencesImmobilieresComponent, canActivate: [AuthGuard] },
-      { path: 'agences-immobilieres/:id', component: DetailAgenceImmobiliereComponent, canActivate: [AuthGuard] },
+      { path: 'agence-immobiliere/:id', component: DetailAgenceImmobiliereComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/:id/services', component: ServicesAgenceImmobiliereComponent, canActivate: [AuthGuard] },
       { path: 'agences-immobilieres/service/:id', component: DetailServiceAgenceComponent, canActivate: [AuthGuard] },
 
